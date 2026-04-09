@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teloscopy &mdash; Agent Dashboard</title>
+    <style>
+        /* ============================================================
+           CSS VARIABLES (matches index.html theme)
+           ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-primary:    #0b0f19;
+            --bg-secondary:  #131825;
+            --bg-card:       #1a2035;
+            --bg-card-hover: #222b45;
+            --accent:        #00d4aa;
+            --accent-dim:    #009e7e;
+            --accent-glow:   rgba(0, 212, 170, .15);
+            --danger:        #ff4d6a;
+            --warning:       #ffb347;
+            --info:          #4da6ff;
+            --text:          #e0e6ed;
+            --text-dim:      #8f9bb3;
+            --border:        #2e3a59;
+            --radius:        12px;
+            --radius-sm:     8px;
+            --shadow:        0 4px 24px rgba(0,0,0,.35);
+            --font:          'Segoe UI', system-ui, -apple-system, sans-serif;
+            --mono:          'Fira Code', 'Consolas', monospace;
+            --transition:    .25s ease;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* ============================================================
+           NAVBAR
+           ============================================================ */
+        .navbar {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: .75rem 2rem;
+            background: rgba(11, 15, 25, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .navbar-brand {
+            font-size: 1.4rem; font-weight: 700;
+            color: var(--accent); letter-spacing: .5px;
+        }
+        .navbar-brand span { color: var(--text); }
+        .navbar-links { display: flex; gap: 1.5rem; list-style: none; }
+        .navbar-links a {
+            color: var(--text-dim); font-size: .95rem; transition: color var(--transition);
+        }
+        .navbar-links a:hover, .navbar-links a.active { color: var(--accent); text-decoration: none; }
+
+        /* ============================================================
+           LAYOUT
+           ============================================================ */
+        .dashboard-header {
+            padding: 2.5rem 2rem 1.5rem;
+            max-width: 1200px; margin: 0 auto;
+        }
+        .dashboard-header h1 { font-size: 1.8rem; font-weight: 800; }
+        .dashboard-header p  { color: var(--text-dim); margin-top: .25rem; }
+
+        .dashboard-content {
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        /* ============================================================
+           METRIC CARDS (top row)
+           ============================================================ */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem; margin-bottom: 2rem;
+        }
+        .metric-card {
+            background: var(--bg-card); border-radius: var(--radius);
+            padding: 1.25rem 1.5rem; border: 1px solid var(--border);
+        }
+        .metric-card .metric-label {
+            font-size: .78rem; text-transform: uppercase; letter-spacing: .5px;
+            color: var(--text-dim); margin-bottom: .25rem;
+        }
+        .metric-card .metric-value {
+            font-size: 2rem; font-weight: 700; color: var(--accent);
+        }
+        .metric-card .metric-sub {
+            font-size: .82rem; color: var(--text-dim); margin-top: .15rem;
+        }
+
+        /* ============================================================
+           AGENT CARDS
+           ============================================================ */
+        .section-title {
+            font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;
+            display: flex; align-items: center; gap: .5rem;
+        }
+        .section-title .refresh-btn {
+            background: none; border: 1px solid var(--border); color: var(--text-dim);
+            padding: .25rem .6rem; border-radius: var(--radius-sm); font-size: .8rem;
+            cursor: pointer; transition: all var(--transition);
+        }
+        .section-title .refresh-btn:hover {
+            border-color: var(--accent); color: var(--accent);
+        }
+
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem; margin-bottom: 2.5rem;
+        }
+        .agent-card {
+            background: var(--bg-card); border-radius: var(--radius);
+            padding: 1.5rem; border: 1px solid var(--border);
+            transition: border-color var(--transition);
+            display: flex; flex-direction: column; gap: .65rem;
+        }
+        .agent-card:hover { border-color: var(--accent); }
+
+        .agent-card .agent-header {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .agent-card .agent-name { font-weight: 700; font-size: 1.05rem; }
+        .agent-card .agent-icon { font-size: 1.4rem; }
+
+        .status-badge {
+            display: inline-flex; align-items: center; gap: .3rem;
+            font-size: .78rem; padding: .2rem .65rem; border-radius: 999px;
+            font-weight: 600; text-transform: uppercase; letter-spacing: .3px;
+        }
+        .status-badge.idle    { background: rgba(0,212,170,.12); color: var(--accent); }
+        .status-badge.busy    { background: rgba(77,166,255,.12); color: var(--info); }
+        .status-badge.error   { background: rgba(255,77,106,.12); color: var(--danger); }
+        .status-badge.offline { background: rgba(143,155,179,.12); color: var(--text-dim); }
+        .status-badge .dot {
+            width: 7px; height: 7px; border-radius: 50%; display: inline-block;
+        }
+        .status-badge.idle .dot    { background: var(--accent); }
+        .status-badge.busy .dot    { background: var(--info); animation: pulse 1.2s infinite; }
+        .status-badge.error .dot   { background: var(--danger); }
+        .status-badge.offline .dot { background: var(--text-dim); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50%      { opacity: .4; }
+        }
+
+        .agent-stat { font-size: .88rem; color: var(--text-dim); }
+        .agent-stat strong { color: var(--text); }
+        .agent-task {
+            font-size: .85rem; padding: .4rem .75rem;
+            background: var(--bg-secondary); border-radius: var(--radius-sm);
+            color: var(--info); border-left: 3px solid var(--info);
+        }
+
+        /* ============================================================
+           RECENT ANALYSES TABLE
+           ============================================================ */
+        .table-wrapper {
+            overflow-x: auto; margin-bottom: 2.5rem;
+        }
+        table {
+            width: 100%; border-collapse: collapse;
+            background: var(--bg-card); border-radius: var(--radius);
+            overflow: hidden;
+        }
+        thead { background: var(--bg-secondary); }
+        th {
+            text-align: left; padding: .75rem 1rem; font-size: .8rem;
+            text-transform: uppercase; letter-spacing: .5px; color: var(--text-dim);
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: .75rem 1rem; font-size: .9rem;
+            border-bottom: 1px solid var(--border);
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: var(--bg-card-hover); }
+
+        .status-pill {
+            display: inline-block; padding: .15rem .55rem; border-radius: 999px;
+            font-size: .78rem; font-weight: 600;
+        }
+        .status-pill.completed { background: rgba(0,212,170,.12); color: var(--accent); }
+        .status-pill.running   { background: rgba(77,166,255,.12); color: var(--info); }
+        .status-pill.failed    { background: rgba(255,77,106,.12); color: var(--danger); }
+        .status-pill.pending   { background: rgba(143,155,179,.12); color: var(--text-dim); }
+
+        /* ============================================================
+           IMPROVEMENT SUGGESTIONS
+           ============================================================ */
+        .suggestions-list {
+            display: flex; flex-direction: column; gap: .75rem;
+        }
+        .suggestion-item {
+            background: var(--bg-card); border-radius: var(--radius);
+            padding: 1.25rem; border: 1px solid var(--border);
+            border-left: 4px solid var(--warning);
+        }
+        .suggestion-item .sug-title {
+            font-weight: 600; margin-bottom: .35rem;
+            display: flex; align-items: center; gap: .4rem;
+        }
+        .suggestion-item .sug-body {
+            font-size: .9rem; color: var(--text-dim); line-height: 1.6;
+        }
+        .suggestion-item .sug-meta {
+            margin-top: .5rem; font-size: .78rem; color: var(--text-dim);
+            display: flex; gap: 1rem;
+        }
+        .priority-badge {
+            padding: .1rem .45rem; border-radius: 999px; font-size: .72rem;
+            font-weight: 600; text-transform: uppercase;
+        }
+        .priority-badge.high   { background: rgba(255,77,106,.12); color: var(--danger); }
+        .priority-badge.medium { background: rgba(255,179,71,.12); color: var(--warning); }
+        .priority-badge.low    { background: rgba(0,212,170,.12); color: var(--accent); }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .footer {
+            text-align: center; padding: 2rem 1.5rem;
+            border-top: 1px solid var(--border); color: var(--text-dim);
+            font-size: .85rem; margin-top: 1rem;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .navbar { padding: .75rem 1rem; }
+            .dashboard-header, .dashboard-content { padding-left: 1rem; padding-right: 1rem; }
+            .metrics-row { grid-template-columns: 1fr 1fr; }
+            .agents-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .metrics-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================================================================
+     NAVBAR
+     ================================================================ -->
+<nav class="navbar">
+    <a href="/" class="navbar-brand" style="text-decoration:none;">Telo<span>scopy</span></a>
+    <ul class="navbar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#upload-section">Analyze</a></li>
+        <li><a href="/dashboard" class="active">Dashboard</a></li>
+    </ul>
+</nav>
+
+<!-- ================================================================
+     HEADER
+     ================================================================ -->
+<div class="dashboard-header">
+    <h1>Agent Dashboard</h1>
+    <p>Monitor the multi-agent analysis system, review recent jobs, and view improvement suggestions.</p>
+</div>
+
+<!-- ================================================================
+     CONTENT
+     ================================================================ -->
+<div class="dashboard-content">
+
+    <!-- Metrics Row -->
+    <div class="metrics-row" id="metrics-row">
+        <div class="metric-card">
+            <div class="metric-label">Total Analyses</div>
+            <div class="metric-value" id="m-total">--</div>
+            <div class="metric-sub">all time</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Active Jobs</div>
+            <div class="metric-value" id="m-active">--</div>
+            <div class="metric-sub">currently running</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Agents Online</div>
+            <div class="metric-value" id="m-online">--</div>
+            <div class="metric-sub" id="m-online-sub">of 4 agents</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Uptime</div>
+            <div class="metric-value" id="m-uptime">--</div>
+            <div class="metric-sub">since last restart</div>
+        </div>
+    </div>
+
+    <!-- Agent Cards -->
+    <div class="section-title">
+        Agents
+        <button class="refresh-btn" onclick="loadDashboard()">&#8635; Refresh</button>
+    </div>
+    <div class="agents-grid" id="agents-grid">
+        <!-- Populated by JS -->
+    </div>
+
+    <!-- Recent Analyses -->
+    <div class="section-title">Recent Analyses</div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Job ID</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                    <th>Message</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody id="jobs-tbody">
+                <tr><td colspan="5" style="text-align:center;color:var(--text-dim);">Loading&hellip;</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Improvement Suggestions -->
+    <div class="section-title">Improvement Suggestions</div>
+    <div class="suggestions-list" id="suggestions-list">
+        <!-- Static suggestions from the improvement agent -->
+        <div class="suggestion-item">
+            <div class="sug-title">
+                <span class="priority-badge high">High</span>
+                Implement GPU-accelerated image segmentation
+            </div>
+            <div class="sug-body">
+                Current CPU-based segmentation takes 8-12 seconds per image. Migrating to
+                GPU-accelerated processing with CUDA could reduce latency to under 2 seconds,
+                improving user experience and throughput by ~5x.
+            </div>
+            <div class="sug-meta">
+                <span>Source: Improvement Agent</span>
+                <span>Impact: Performance</span>
+            </div>
+        </div>
+        <div class="suggestion-item">
+            <div class="sug-title">
+                <span class="priority-badge medium">Medium</span>
+                Add ensemble model for disease-risk prediction
+            </div>
+            <div class="sug-body">
+                The current single-model approach achieves 82% accuracy on the validation set.
+                Implementing an ensemble of gradient-boosted trees, logistic regression, and a
+                small neural network could push accuracy to ~89% based on preliminary experiments.
+            </div>
+            <div class="sug-meta">
+                <span>Source: Improvement Agent</span>
+                <span>Impact: Accuracy</span>
+            </div>
+        </div>
+        <div class="suggestion-item">
+            <div class="sug-title">
+                <span class="priority-badge medium">Medium</span>
+                Expand regional dietary databases
+            </div>
+            <div class="sug-body">
+                Nutrition recommendations currently draw from Western dietary databases. Adding
+                region-specific food composition data for South Asia, East Asia, and Sub-Saharan
+                Africa would significantly improve recommendation relevance for those populations.
+            </div>
+            <div class="sug-meta">
+                <span>Source: Nutrition Agent</span>
+                <span>Impact: Coverage</span>
+            </div>
+        </div>
+        <div class="suggestion-item">
+            <div class="sug-title">
+                <span class="priority-badge low">Low</span>
+                Cache telomere length distributions per age cohort
+            </div>
+            <div class="sug-body">
+                Pre-computing reference distributions for each 5-year age cohort would eliminate
+                redundant calculations during comparison analysis, saving ~300ms per request and
+                reducing memory allocation overhead.
+            </div>
+            <div class="sug-meta">
+                <span>Source: Improvement Agent</span>
+                <span>Impact: Performance</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer class="footer">
+    <p>&copy; 2024 Teloscopy &mdash; Agent Monitoring Dashboard &middot; v0.1.0</p>
+</footer>
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+<script>
+(function () {
+    'use strict';
+
+    const AGENT_ICONS = {
+        'Image Analysis Agent': '&#x1F52C;',
+        'Genomics Agent':       '&#x1F9EC;',
+        'Nutrition Agent':      '&#x1F957;',
+        'Improvement Agent':    '&#x1F4A1;',
+    };
+
+    function formatUptime(seconds) {
+        if (seconds < 60) return Math.round(seconds) + 's';
+        if (seconds < 3600) return Math.round(seconds / 60) + 'm';
+        const h = Math.floor(seconds / 3600);
+        const m = Math.round((seconds % 3600) / 60);
+        return h + 'h ' + m + 'm';
+    }
+
+    function shortId(id) {
+        if (!id) return '--';
+        return id.substring(0, 8) + '\u2026';
+    }
+
+    async function loadDashboard() {
+        try {
+            /* Agent & system status */
+            const res = await fetch('/api/agents/status');
+            const data = await res.json();
+
+            /* Metrics */
+            document.getElementById('m-total').textContent  = data.total_analyses;
+            document.getElementById('m-active').textContent = data.active_jobs;
+            const online = data.agents.filter(a => a.status !== 'offline').length;
+            document.getElementById('m-online').textContent    = online;
+            document.getElementById('m-online-sub').textContent = 'of ' + data.agents.length + ' agents';
+            document.getElementById('m-uptime').textContent    = formatUptime(data.uptime_seconds);
+
+            /* Agent cards */
+            const grid = document.getElementById('agents-grid');
+            grid.innerHTML = '';
+            data.agents.forEach(a => {
+                const icon = AGENT_ICONS[a.name] || '&#x2699;';
+                const taskHtml = a.current_task
+                    ? `<div class="agent-task">${a.current_task}</div>`
+                    : '';
+                grid.innerHTML += `
+                    <div class="agent-card">
+                        <div class="agent-header">
+                            <span class="agent-name">${a.name}</span>
+                            <span class="agent-icon">${icon}</span>
+                        </div>
+                        <span class="status-badge ${a.status}">
+                            <span class="dot"></span> ${a.status}
+                        </span>
+                        <div class="agent-stat">Tasks completed: <strong>${a.tasks_completed}</strong></div>
+                        ${a.last_active ? '<div class="agent-stat">Last active: <strong>' + new Date(a.last_active).toLocaleTimeString() + '</strong></div>' : ''}
+                        ${taskHtml}
+                    </div>`;
+            });
+
+            /* Jobs table — we don't have a list endpoint, so we show a helpful message */
+            const tbody = document.getElementById('jobs-tbody');
+            if (data.total_analyses === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);">No analyses yet. <a href="/#upload-section">Start one!</a></td></tr>';
+            } else {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-dim);">${data.total_analyses} analysis job(s) tracked &middot; ${data.active_jobs} active</td></tr>`;
+            }
+        } catch (e) {
+            console.error('Dashboard load error:', e);
+        }
+    }
+
+    window.loadDashboard = loadDashboard;
+
+    /* Initial load + auto-refresh */
+    loadDashboard();
+    setInterval(loadDashboard, 8000);
+})();
+</script>
+</body>
+</html>

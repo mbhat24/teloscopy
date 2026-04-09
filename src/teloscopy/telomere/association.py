@@ -85,9 +85,7 @@ def associate_spots_to_chromosomes(
     tree = cKDTree(tip_array)
 
     # -- 3. Query nearest tip for every spot -------------------------------
-    spot_coords = np.array(
-        [[s["y"], s["x"]] for s in spots], dtype=np.float64
-    )  # (N_spots, 2)
+    spot_coords = np.array([[s["y"], s["x"]] for s in spots], dtype=np.float64)  # (N_spots, 2)
 
     distances, indices = tree.query(spot_coords, k=1)
 

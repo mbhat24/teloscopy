@@ -26,6 +26,7 @@ from skimage.morphology import disk, opening, white_tophat
 # Image loading
 # ---------------------------------------------------------------------------
 
+
 def _normalise_to_uint16(arr: np.ndarray) -> np.ndarray:
     """Cast an array to uint16, rescaling if necessary."""
     if arr.dtype == np.uint16:
@@ -109,9 +110,7 @@ def load_image(path: str) -> dict[str, np.ndarray]:
 
     # --- 3-D array: determine axis layout ------------------------------
     if raw.ndim != 3:
-        raise ValueError(
-            f"Unexpected image dimensions ({raw.ndim}). Expected 2-D or 3-D."
-        )
+        raise ValueError(f"Unexpected image dimensions ({raw.ndim}). Expected 2-D or 3-D.")
 
     # Heuristic: if last axis is small (≤4) → (Y, X, C); otherwise if
     # first axis is small → (C, Y, X).
@@ -123,9 +122,7 @@ def load_image(path: str) -> dict[str, np.ndarray]:
         raw = np.moveaxis(raw, 0, -1)
         c_axis = 2
     else:
-        raise ValueError(
-            f"Cannot determine channel axis for shape {raw.shape}."
-        )
+        raise ValueError(f"Cannot determine channel axis for shape {raw.shape}.")
 
     n_channels = raw.shape[c_axis]
 
@@ -141,18 +138,18 @@ def load_image(path: str) -> dict[str, np.ndarray]:
     if n_channels in (3, 4):
         # Treat as RGB(A): blue → DAPI, red → Cy3
         dapi = _normalise_to_uint16(raw[..., 2])  # blue channel
-        cy3 = _normalise_to_uint16(raw[..., 0])   # red channel
+        cy3 = _normalise_to_uint16(raw[..., 0])  # red channel
         return {"dapi": dapi, "cy3": cy3}
 
     raise ValueError(
-        f"Unsupported number of channels ({n_channels}) in image of shape "
-        f"{raw.shape}."
+        f"Unsupported number of channels ({n_channels}) in image of shape {raw.shape}."
     )
 
 
 # ---------------------------------------------------------------------------
 # Background subtraction
 # ---------------------------------------------------------------------------
+
 
 def subtract_background(
     image: np.ndarray,
@@ -232,6 +229,7 @@ def subtract_background(
 # Denoising
 # ---------------------------------------------------------------------------
 
+
 def denoise(image: np.ndarray, sigma: float = 1.0) -> np.ndarray:
     """Apply Gaussian denoising to a single-channel image.
 
@@ -253,6 +251,7 @@ def denoise(image: np.ndarray, sigma: float = 1.0) -> np.ndarray:
 # ---------------------------------------------------------------------------
 # Combined pipeline
 # ---------------------------------------------------------------------------
+
 
 def preprocess(
     path: str,

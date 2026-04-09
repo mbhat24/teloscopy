@@ -1,59 +1,102 @@
-# Teloscopy
+# Teloscopy v2.0
 
-**The first comprehensive Python pipeline for telomere length analysis from qFISH microscopy images.**
+**Multi-Agent Genomic Intelligence Platform** — Telomere analysis, disease risk prediction, and personalized nutrition from qFISH microscopy images.
 
-Teloscopy automates the quantification of telomere fluorescence intensity from quantitative Fluorescence In Situ Hybridisation (qFISH) microscopy images, converting raw fluorescence photographs into per-chromosome telomere length estimates.
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Mahesh2023/teloscopy)
 
 ```
-┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
-│  Microscopy      │     │  Teloscopy       │     │  Results         │
-│  Image (TIFF)    │────▶│  Pipeline        │────▶│  CSV + Plots     │
-│                  │     │                  │     │                  │
-│  DAPI + Cy3      │     │  Segment → Detect│     │  Per-telomere    │
-│  channels        │     │  → Associate →   │     │  intensity &     │
-│                  │     │  Quantify        │     │  length (bp)     │
-└──────────────────┘     └──────────────────┘     └──────────────────┘
+  USER ──► Upload microscopy image + profile
+               │
+               ▼
+       ┌───────────────┐
+       │  ORCHESTRATOR  │  Multi-Agent Controller
+       └──┬──┬──┬──┬──┘
+          │  │  │  │
+    ┌─────┘  │  │  └─────┐
+    ▼        ▼  ▼        ▼
+ ┌──────┐┌──────┐┌──────┐┌──────┐
+ │IMAGE ││GENO- ││NUTRI-││REPORT│
+ │AGENT ││MICS  ││TION  ││AGENT │
+ └──┬───┘└──┬───┘└──┬───┘└──┬───┘
+    │       │       │       │
+    ▼       ▼       ▼       ▼
+ Telomere  Disease  Diet    HTML/
+ lengths   risks    plan    JSON
 ```
+
+## What It Does
+
+| Step | Input | Output |
+|------|-------|--------|
+| 1. **Image Analysis** | Upload a qFISH microscopy image | Per-chromosome telomere lengths |
+| 2. **Disease Prediction** | Telomere data + optional genetic variants | Disease risk profile over next 30 years |
+| 3. **Diet Recommendations** | Risk profile + your geographic region | 7-day meal plan with local foods |
+| 4. **Report** | Everything above | Downloadable HTML/JSON/CSV report |
 
 ## Why Teloscopy?
 
 | Problem | Existing Tools | Teloscopy |
 |---------|---------------|-----------|
 | qFISH analysis | ImageJ macros (manual, Windows-only) | Python (cross-platform, automated) |
+| Disease prediction | Separate paid services (23andMe) | Integrated, free, open-source |
+| Diet planning | Generic apps, not gene-aware | Nutrigenomics-driven, region-specific |
 | Batch processing | Click through each image | `teloscopy batch ./images/` |
-| Reproducibility | Manual thresholds per image | Config YAML, deterministic |
-| Extensibility | Locked in Java/Fiji | pip-installable, scriptable |
-| Deep learning | Not available | Cellpose integration for segmentation |
+| Continuous improvement | None | Self-optimizing multi-agent system |
+
+## One-Click Installation
+
+### Option A: Quick Setup Script (recommended)
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Mahesh2023/teloscopy/main/setup.sh | bash
+```
+
+### Option B: pip install
+
+```bash
+git clone https://github.com/Mahesh2023/teloscopy.git
+cd teloscopy
+pip install -e ".[all,webapp,dev]"
+```
+
+### Option C: Docker
+
+```bash
+git clone https://github.com/Mahesh2023/teloscopy.git
+cd teloscopy
+docker-compose up
+```
+
+### Option D: Makefile
+
+```bash
+make install      # Install with all dependencies
+make run          # Start web server at http://localhost:8000
+make test         # Run all tests
+```
 
 ## Quick Start
 
-### Installation
+### Web UI (recommended)
 
 ```bash
-pip install -e ".[dev]"
+# Start the web server
+uvicorn teloscopy.webapp.app:app --host 0.0.0.0 --port 8000
 
-# With deep learning segmentation:
-pip install -e ".[cellpose]"
-
-# With sequencing support:
-pip install -e ".[all]"
+# Open http://localhost:8000 in your browser
+# Upload an image, fill in your profile, click Analyze
 ```
 
-### Generate Test Data
+### CLI
 
 ```bash
+# Generate synthetic test images
 teloscopy generate -n 5 -o data/sample_images/
-```
 
-### Analyze a Single Image
+# Analyze a single image
+teloscopy analyze data/sample_images/synthetic_qfish_000.tif -o output/
 
-```bash
-teloscopy analyze data/sample_images/synthetic_001.tif -o output/
-```
-
-### Batch Process
-
-```bash
+# Batch process all images
 teloscopy batch data/sample_images/ -o output/ -p "*.tif"
 ```
 
@@ -61,209 +104,231 @@ teloscopy batch data/sample_images/ -o output/ -p "*.tif"
 
 ```python
 from teloscopy.telomere.pipeline import analyze_image
+from teloscopy.genomics.disease_risk import DiseasePredictor
+from teloscopy.nutrition.diet_advisor import DietAdvisor
 
+# Step 1: Analyze microscopy image
 results = analyze_image("metaphase_001.tif")
+print(f"Found {len(results['spots'])} telomere spots")
 
-print(f"Found {len(results['chromosomes'])} chromosomes")
-print(f"Detected {len(results['spots'])} telomere spots")
-print(f"Mean intensity: {results['statistics']['mean_intensity']:.0f}")
+# Step 2: Predict disease risks from telomere data
+predictor = DiseasePredictor()
+risks = predictor.predict_from_telomere_data(
+    mean_length_bp=7500, age=45, sex="female"
+)
+for risk in risks:
+    print(f"  {risk.condition}: {risk.lifetime_risk_pct:.1f}% lifetime risk")
+
+# Step 3: Get personalized diet plan
+advisor = DietAdvisor()
+recommendations = advisor.generate_recommendations(
+    genetic_risks=risks, variants={},
+    region="south_india", age=45, sex="female",
+    dietary_restrictions=["vegetarian"]
+)
+for rec in recommendations:
+    print(f"  {rec.title}: {rec.description}")
+
+# Step 4: Generate 7-day meal plan with local foods
+meal_plans = advisor.create_meal_plan(
+    recommendations, region="south_india", calories=1800, days=7
+)
 ```
 
-## Pipeline Architecture
-
-```
-Input: Multi-channel fluorescence microscopy image (TIFF)
-       Channel 0: DAPI (chromosome bodies, blue)
-       Channel 1: Cy3/FITC (telomere signals, red/green)
-
-Step 1: PREPROCESSING
-  ├── Load multi-channel image (tifffile / OpenCV)
-  ├── Background subtraction (rolling ball / top-hat / Gaussian)
-  └── Gaussian denoising
-
-Step 2: CHROMOSOME SEGMENTATION (DAPI channel)
-  ├── Method A: Otsu threshold + watershed separation
-  └── Method B: Cellpose deep learning (optional)
-  Output: Labeled mask (each chromosome = unique integer)
-
-Step 3: CHROMOSOME PROPERTY EXTRACTION
-  ├── Region properties (area, centroid, orientation)
-  └── Tip detection (two most distant points = p-arm, q-arm)
-
-Step 4: TELOMERE SPOT DETECTION (Cy3 channel)
-  ├── Laplacian of Gaussian (blob_log) — most accurate
-  ├── Difference of Gaussian (blob_dog) — faster
-  └── Determinant of Hessian (blob_doh) — fastest
-  Output: List of (y, x, sigma) per detected spot
-
-Step 5: SPOT-CHROMOSOME ASSOCIATION
-  ├── Build KDTree from all chromosome tips
-  ├── Query nearest tip for each spot
-  └── Filter by max distance threshold
-  Output: Each spot tagged with chromosome label + arm (p/q)
-
-Step 6: INTENSITY QUANTIFICATION
-  ├── Circular aperture photometry around each spot
-  ├── Local background subtraction (annular region)
-  └── Signal-to-noise ratio computation
-
-Step 7: CALIBRATION (optional)
-  ├── Linear regression: intensity → base pairs
-  └── Using reference cells with known telomere length
-
-Step 8: STATISTICAL OUTPUT
-  ├── Per-cell: mean, median, std, percentiles
-  ├── Per-chromosome: p-arm and q-arm lengths
-  └── CSV export + visualization plots
-```
-
-## Project Structure
-
-```
-teloscopy/
-├── pyproject.toml              # Package metadata & dependencies
-├── requirements.txt            # Pinned dependencies
-├── configs/
-│   └── pipeline.yaml           # Default pipeline configuration
-│
-├── src/teloscopy/
-│   ├── __init__.py
-│   ├── cli.py                  # Click CLI entry point
-│   │
-│   ├── telomere/               # Core image analysis
-│   │   ├── preprocessing.py    # Image loading, bg subtraction, denoising
-│   │   ├── segmentation.py     # Chromosome segmentation (Otsu/Cellpose)
-│   │   ├── spot_detection.py   # Telomere spot detection (LoG/DoG/DoH)
-│   │   ├── association.py      # Spot-to-chromosome tip matching
-│   │   ├── quantification.py   # Intensity measurement + calibration
-│   │   ├── pipeline.py         # End-to-end orchestrator
-│   │   └── synthetic.py        # Synthetic test image generator
-│   │
-│   ├── sequencing/             # Sequence-based telomere analysis
-│   │   └── telomere_seq.py     # Telomere length from BAM/FASTQ
-│   │
-│   ├── analysis/               # Statistical analysis
-│   │   └── statistics.py       # Per-cell, per-sample statistics
-│   │
-│   └── visualisation/          # Plotting & reports
-│       └── plots.py            # Overlays, histograms, heatmaps
-│
-├── tests/
-│   ├── test_synthetic.py       # Synthetic data generator tests
-│   └── test_pipeline.py        # Integration tests (full pipeline)
-│
-├── data/
-│   ├── sample_images/          # Test microscopy images
-│   └── reference/              # Reference genome files
-│
-├── notebooks/                  # Jupyter notebooks for exploration
-├── scripts/                    # Utility scripts
-└── KNOWLEDGE_BASE.md           # Technical reference (1,200+ lines)
-```
-
-## Configuration
-
-Pipeline behavior is controlled via `configs/pipeline.yaml`:
-
-```yaml
-pipeline:
-  preprocessing:
-    background_method: "rolling_ball"   # rolling_ball | tophat | gaussian
-    background_radius: 50
-    denoise_sigma: 1.0
-
-  segmentation:
-    method: "otsu_watershed"            # otsu_watershed | cellpose
-    min_chromosome_area: 500
-    watershed_min_distance: 20
-
-  spot_detection:
-    method: "blob_log"                  # blob_log | blob_dog | blob_doh
-    min_sigma: 1.0
-    max_sigma: 5.0
-    threshold: 0.05
-
-  association:
-    max_distance: 15                    # pixels
-
-  quantification:
-    spot_radius: 5
-    bg_inner_radius: 7
-    bg_outer_radius: 12
-
-calibration:
-  enabled: false
-  references:
-    - intensity: 5000
-      length_bp: 10000
-    - intensity: 50000
-      length_bp: 80000
-```
-
-## Supported Image Formats
-
-| Format | Extension | Library |
-|--------|-----------|---------|
-| TIFF (16-bit) | `.tif`, `.tiff` | tifffile |
-| PNG | `.png` | OpenCV |
-| JPEG | `.jpg`, `.jpeg` | OpenCV |
-| Zeiss CZI | `.czi` | aicsimageio (optional) |
-| Nikon ND2 | `.nd2` | aicsimageio (optional) |
-
-## Sequencing-Based Telomere Analysis
-
-Teloscopy also supports telomere length estimation from whole genome sequencing data:
+### Multi-Agent System (async)
 
 ```python
-from teloscopy.sequencing.telomere_seq import estimate_from_fastq
+import asyncio
+from teloscopy.agents.orchestrator import OrchestratorAgent
 
-results = estimate_from_fastq("sample_R1.fastq.gz", max_reads=1_000_000)
-print(f"Telomere fraction: {results['telomere_fraction']:.6f}")
-print(f"Estimated mean length: {results['estimated_mean_length_bp']:.0f} bp")
+async def main():
+    orchestrator = OrchestratorAgent()
+    result = await orchestrator.process_full_analysis(
+        image_path="metaphase_001.tif",
+        user_profile={
+            "age": 45, "sex": "female",
+            "region": "south_india",
+            "dietary_restrictions": ["vegetarian"],
+        }
+    )
+    print(result["report"]["summary"])
+
+asyncio.run(main())
 ```
 
-## Dependencies
+## Architecture
 
-### Core (always required)
-- numpy, scipy, pandas
-- scikit-image (segmentation, blob detection)
-- opencv-python-headless (image I/O)
-- tifffile (microscopy TIFF)
-- matplotlib, seaborn (plotting)
-- click, rich (CLI)
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the complete system architecture with diagrams.
 
-### Optional
-- **cellpose** — deep learning chromosome segmentation
-- **biopython** — FASTA/FASTQ parsing
-- **pysam** — BAM file reading
-- **plotly** — interactive charts
+### System Components
+
+```
+src/teloscopy/
+├── telomere/           # Core image analysis pipeline (7 modules)
+│   ├── preprocessing   # Load, background subtract, denoise
+│   ├── segmentation    # Otsu+watershed / Cellpose
+│   ├── spot_detection  # LoG/DoG/DoH blob detection
+│   ├── association     # KDTree spot-to-chromosome matching
+│   ├── quantification  # Aperture photometry + calibration
+│   ├── pipeline        # End-to-end orchestrator
+│   └── synthetic       # Synthetic test image generator
+│
+├── genomics/           # Disease risk prediction
+│   └── disease_risk    # 63-SNP database, polygenic risk scores
+│
+├── nutrition/          # Diet recommendation engine
+│   └── diet_advisor    # Nutrigenomics + geographic food mapping
+│
+├── agents/             # Multi-agent orchestration (7 agents)
+│   ├── orchestrator    # Central coordinator
+│   ├── image_agent     # Image analysis specialist
+│   ├── genomics_agent  # Disease risk specialist
+│   ├── nutrition_agent # Diet planning specialist
+│   ├── improvement     # Self-optimization agent
+│   └── report_agent    # Report generation
+│
+├── webapp/             # Web application
+│   ├── app.py          # FastAPI server with REST API
+│   ├── models.py       # Pydantic request/response models
+│   └── templates/      # HTML pages (upload, results, dashboard)
+│
+├── sequencing/         # Sequence-based telomere analysis
+├── analysis/           # Statistical analysis
+└── visualisation/      # Plotting and reports
+```
+
+### Technology Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Image Processing | scikit-image, OpenCV, tifffile |
+| Deep Learning | Cellpose (optional) |
+| Web Server | FastAPI + Uvicorn |
+| Frontend | Vanilla HTML/CSS/JS (dark theme) |
+| Scientific Computing | NumPy, SciPy, pandas |
+| CLI | Click + Rich |
+| Container | Docker + Docker Compose |
+| CI/CD | GitHub Actions |
+
+## Disease Risk Prediction
+
+Teloscopy predicts disease risk using two data sources:
+
+### From Telomere Data (no genetic testing needed)
+Short telomeres are associated with increased risk of cancer, cardiovascular disease, and accelerated aging. Teloscopy uses published population-level correlations.
+
+### From Genetic Variants (optional)
+If you provide SNP genotypes (e.g., from 23andMe raw data), Teloscopy uses a built-in database of 63 well-studied variants across 10 disease categories:
+
+| Category | Conditions | Key Genes |
+|----------|-----------|-----------|
+| Cardiovascular | CHD, stroke, hypertension | APOE, PCSK9, LPA, LDLR |
+| Cancer | Breast, colorectal, prostate | BRCA1/2, TP53, APC, MLH1 |
+| Metabolic | Type 2 diabetes, obesity | TCF7L2, FTO, PPARG |
+| Neurological | Alzheimer's, Parkinson's | APOE-e4, LRRK2, CLU |
+| Autoimmune | RA, T1D, celiac | HLA-DRB1, CTLA4, PTPN22 |
+| Eye | Macular degeneration | CFH, ARMS2 |
+| Bone | Osteoporosis | ESR1, VDR, COL1A1 |
+| Blood | Hemochromatosis | HFE, HBB |
+
+> **Disclaimer**: Risk predictions are for educational/research purposes only. Not a substitute for clinical genetic testing or medical advice. Always consult healthcare professionals.
+
+## Diet Recommendations
+
+Teloscopy generates personalized nutrition plans based on:
+
+1. **Genetic profile** — 25+ gene-nutrient interactions (MTHFR→folate, FTO→calories, LCT→lactose, CYP1A2→caffeine, etc.)
+2. **Disease risks** — Protective foods for identified conditions
+3. **Telomere health** — Antioxidant-rich foods that protect telomeres
+4. **Geographic region** — Locally available foods from 12+ regions:
+
+| Region | Sub-Regions | Example Foods |
+|--------|------------|---------------|
+| South Asia | N/S/E/W India | Dal, turmeric, roti, dosa, paneer |
+| East Asia | China, Japan, Korea | Miso, kimchi, seaweed, green tea |
+| Southeast Asia | Thailand, Vietnam | Coconut, lemongrass, rice noodles |
+| Mediterranean | Greece, Italy, Spain | Olive oil, feta, legumes, fish |
+| Middle East | Levant, Gulf | Hummus, tahini, dates, olive oil |
+| Northern Europe | UK, Scandinavia | Oats, rye, herring, root veg |
+| Sub-Saharan Africa | West, East, South | Plantain, millet, groundnuts |
+| Latin America | Mexico, Brazil | Beans, corn, quinoa, avocado |
+
+Supports dietary restrictions: vegetarian, vegan, gluten-free, halal, kosher, nut-free, low-FODMAP.
+
+## REST API
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/upload` | Upload microscopy image |
+| `POST` | `/api/analyze` | Full analysis pipeline |
+| `GET` | `/api/status/{id}` | Check job progress |
+| `GET` | `/api/results/{id}` | Get full results |
+| `POST` | `/api/disease-risk` | Disease risk assessment |
+| `POST` | `/api/diet-plan` | Diet recommendations |
+| `GET` | `/api/health` | Health check |
+| `GET` | `/api/agents/status` | Agent system status |
+
+## Deployment
+
+### Render.com (Free)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Mahesh2023/teloscopy)
+
+Or manually:
+1. Fork this repo
+2. Sign up at [render.com](https://render.com)
+3. New Web Service → connect your GitHub → select teloscopy
+4. Settings: Python 3, Build: `pip install -e ".[all,webapp]"`, Start: `uvicorn teloscopy.webapp.app:app --host 0.0.0.0 --port $PORT`
+
+### Docker (self-hosted)
+
+```bash
+docker-compose up -d
+# Access at http://localhost:8000
+```
 
 ## Development
 
 ```bash
-# Install in development mode
-pip install -e ".[dev]"
+# Install dev dependencies
+pip install -e ".[all,webapp,dev]"
 
 # Run tests
 pytest
 
-# Run linter
+# Lint
 ruff check src/ tests/
 
-# Generate synthetic test data
-teloscopy generate -n 10 -o data/sample_images/
+# Start dev server with auto-reload
+uvicorn teloscopy.webapp.app:app --reload --port 8000
 ```
 
 ## Scientific Background
 
-Telomeres are repetitive DNA sequences (TTAGGG in humans) at chromosome ends that shorten with each cell division. Quantitative FISH (qFISH) measures telomere length by:
+Telomeres are repetitive DNA sequences (TTAGGG in humans) at chromosome ends that shorten with each cell division (~50-100 bp/year). They act as a biological clock:
 
-1. Hybridizing fluorescent PNA probes (Cy3-labeled CCCTAA) to telomere repeats
-2. Imaging under fluorescence microscopy (DAPI for chromosomes, Cy3 for telomeres)
-3. Measuring fluorescence intensity at each chromosome end
-4. Converting intensity to base pairs using calibration standards
+- **Normal range**: 5,000-15,000 base pairs
+- **Critical length**: ~3,000-5,000 bp triggers cellular senescence
+- **Clinical relevance**: Short telomeres → cancer, CVD, diabetes, Alzheimer's risk
 
-Teloscopy automates steps 3-4, replacing manual ImageJ-based workflows.
+Quantitative FISH (qFISH) measures telomere length by:
+1. Hybridizing fluorescent PNA probes to telomere repeats
+2. Imaging under fluorescence microscopy
+3. **Teloscopy automates**: Measuring intensity at each chromosome end → converting to base pairs
+
+## Project Stats
+
+| Metric | Value |
+|--------|-------|
+| Total Python files | 31+ |
+| Total lines of code | 15,000+ |
+| Disease variants in DB | 63 |
+| Geographic food regions | 12+ |
+| Gene-nutrient mappings | 25+ |
+| Food items in database | 100+ |
+| Agent types | 7 |
+| API endpoints | 12 |
+| Test cases | 50+ |
 
 ## License
 
@@ -272,5 +337,7 @@ MIT
 ## References
 
 - Lansdorp, P. M. et al. (1996). "Heterogeneity in telomere length of human chromosomes." *Human Molecular Genetics*, 5(5), 685-691.
+- Haycock, P. C. et al. (2014). "Leucocyte telomere length and risk of cardiovascular disease." *BMJ*, 349, g4227.
+- Crous-Bou, M. et al. (2014). "Mediterranean diet and telomere length." *BMJ*, 349, g6674.
 - Stringer, C. et al. (2021). "Cellpose: a generalist algorithm for cellular segmentation." *Nature Methods*, 18, 100-106.
 - van der Walt, S. et al. (2014). "scikit-image: image processing in Python." *PeerJ*, 2, e453.

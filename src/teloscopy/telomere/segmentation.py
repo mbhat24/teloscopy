@@ -23,6 +23,7 @@ from skimage.segmentation import watershed
 # Otsu + Watershed segmentation
 # ---------------------------------------------------------------------------
 
+
 def segment_otsu_watershed(
     dapi: np.ndarray,
     min_area: int = 500,
@@ -89,6 +90,7 @@ def segment_otsu_watershed(
 # ---------------------------------------------------------------------------
 # Cellpose segmentation
 # ---------------------------------------------------------------------------
+
 
 def segment_cellpose(
     dapi: np.ndarray,
@@ -173,8 +175,7 @@ def segment(
     """
     if method not in _SEGMENTERS:
         raise ValueError(
-            f"Unknown segmentation method '{method}'. "
-            f"Available: {sorted(_SEGMENTERS)}"
+            f"Unknown segmentation method '{method}'. Available: {sorted(_SEGMENTERS)}"
         )
     return _SEGMENTERS[method](dapi, **kwargs)
 
@@ -182,6 +183,7 @@ def segment(
 # ---------------------------------------------------------------------------
 # Morphometric property extraction
 # ---------------------------------------------------------------------------
+
 
 def _find_tips(coords: np.ndarray) -> tuple[tuple[int, int], tuple[int, int]]:
     """Find the two most distant points (chromosome tips) in a point set.

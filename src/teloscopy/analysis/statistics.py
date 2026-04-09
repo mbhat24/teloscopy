@@ -42,24 +42,17 @@ def compute_cell_statistics(spots: list[dict[str, Any]]) -> dict[str, Any]:
         - ``max_intensity`` (float): Maximum corrected intensity.
         - ``cv`` (float): Coefficient of variation (std / mean), 0 if mean=0.
     """
-    telomere_spots = [
-        s for s in spots
-        if s.get("associated", False) and s.get("valid", False)
-    ]
+    telomere_spots = [s for s in spots if s.get("associated", False) and s.get("valid", False)]
 
     n_telomeres = len(telomere_spots)
     total_spots = len(spots)
     associated_spots = sum(1 for s in spots if s.get("associated", False))
 
     if n_telomeres > 0:
-        intensities = np.array(
-            [s["corrected_intensity"] for s in telomere_spots], dtype=np.float64
-        )
+        intensities = np.array([s["corrected_intensity"] for s in telomere_spots], dtype=np.float64)
         mean_intensity = float(np.mean(intensities))
         median_intensity = float(np.median(intensities))
-        std_intensity = (
-            float(np.std(intensities, ddof=1)) if n_telomeres > 1 else 0.0
-        )
+        std_intensity = float(np.std(intensities, ddof=1)) if n_telomeres > 1 else 0.0
         min_intensity = float(np.min(intensities))
         max_intensity = float(np.max(intensities))
         cv = std_intensity / mean_intensity if mean_intensity != 0 else 0.0

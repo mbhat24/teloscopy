@@ -27,15 +27,14 @@ TELOMERE_FORWARD: str = "TTAGGG"
 TELOMERE_REVERSE: str = "CCCTAA"
 """Canonical human telomere repeat on the C-rich (reverse) strand."""
 
-TELOMERE_PATTERN: re.Pattern[str] = re.compile(
-    r"(TTAGGG){3,}|(CCCTAA){3,}"
-)
+TELOMERE_PATTERN: re.Pattern[str] = re.compile(r"(TTAGGG){3,}|(CCCTAA){3,}")
 """Regex matching ≥3 consecutive telomere repeats in either orientation."""
 
 
 # ---------------------------------------------------------------------------
 # Core counting function
 # ---------------------------------------------------------------------------
+
 
 def count_telomere_repeats(sequence: str) -> dict:
     """Count TTAGGG and CCCTAA repeats in a DNA sequence.
@@ -78,6 +77,7 @@ def count_telomere_repeats(sequence: str) -> dict:
 # ---------------------------------------------------------------------------
 # FASTQ estimation (pure Python, no biopython needed)
 # ---------------------------------------------------------------------------
+
 
 def estimate_from_fastq(
     fastq_path: str,
@@ -123,9 +123,7 @@ def estimate_from_fastq(
 
     # Choose opener based on extension
     is_gzipped = (
-        path.suffix == ".gz"
-        or path.name.endswith(".fastq.gz")
-        or path.name.endswith(".fq.gz")
+        path.suffix == ".gz" or path.name.endswith(".fastq.gz") or path.name.endswith(".fq.gz")
     )
     opener = gzip.open if is_gzipped else open
 
@@ -143,7 +141,7 @@ def estimate_from_fastq(
             if not header:
                 break  # EOF
             sequence = fh.readline().strip()
-            _plus = fh.readline()   # '+' separator line
+            _plus = fh.readline()  # '+' separator line
             _quality = fh.readline()  # quality scores
 
             # Validate we got a complete record
@@ -157,9 +155,7 @@ def estimate_from_fastq(
                 telomere_reads += 1
             telomere_bases_total += result["telomeric_bases"]
 
-    telomere_fraction: float = (
-        telomere_reads / total_reads if total_reads > 0 else 0.0
-    )
+    telomere_fraction: float = telomere_reads / total_reads if total_reads > 0 else 0.0
     estimated_mean_length_bp: float = (
         telomere_bases_total / telomere_reads if telomere_reads > 0 else 0.0
     )
@@ -176,6 +172,7 @@ def estimate_from_fastq(
 # ---------------------------------------------------------------------------
 # BAM estimation (requires pysam)
 # ---------------------------------------------------------------------------
+
 
 def estimate_from_bam(
     bam_path: str,
@@ -249,9 +246,7 @@ def estimate_from_bam(
                 telomere_reads += 1
             telomere_bases_total += result["telomeric_bases"]
 
-    telomere_fraction: float = (
-        telomere_reads / total_reads if total_reads > 0 else 0.0
-    )
+    telomere_fraction: float = telomere_reads / total_reads if total_reads > 0 else 0.0
     estimated_mean_length_bp: float = (
         telomere_bases_total / telomere_reads if telomere_reads > 0 else 0.0
     )
@@ -268,6 +263,7 @@ def estimate_from_bam(
 # ---------------------------------------------------------------------------
 # Report generation
 # ---------------------------------------------------------------------------
+
 
 def generate_telomere_report(results: dict) -> str:
     """Generate a human-readable report from telomere estimation results.
@@ -307,10 +303,12 @@ def generate_telomere_report(results: dict) -> str:
     else:
         interpretation = "No telomeric reads found."
 
-    lines.extend([
-        f"  Interpretation:  {interpretation}",
-        "",
-        divider,
-    ])
+    lines.extend(
+        [
+            f"  Interpretation:  {interpretation}",
+            "",
+            divider,
+        ]
+    )
 
     return "\n".join(lines)

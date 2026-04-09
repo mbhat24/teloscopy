@@ -17,6 +17,7 @@ import numpy as np
 # Intensity measurement
 # ---------------------------------------------------------------------------
 
+
 def _make_circular_mask(radius: int, dtype: type = bool) -> np.ndarray:
     """Return a 2D boolean mask for a filled circle of the given *radius*.
 
@@ -29,9 +30,7 @@ def _make_circular_mask(radius: int, dtype: type = bool) -> np.ndarray:
     return (dist2 <= radius * radius).astype(dtype)
 
 
-def _make_annular_mask(
-    inner_radius: int, outer_radius: int, dtype: type = bool
-) -> np.ndarray:
+def _make_annular_mask(inner_radius: int, outer_radius: int, dtype: type = bool) -> np.ndarray:
     """Return a 2D boolean mask for an annulus (ring).
 
     The mask is a square array of shape
@@ -41,7 +40,7 @@ def _make_annular_mask(
     size = 2 * outer_radius + 1
     yy, xx = np.ogrid[:size, :size]
     dist2 = (yy - outer_radius) ** 2 + (xx - outer_radius) ** 2
-    return ((dist2 >= inner_radius ** 2) & (dist2 <= outer_radius ** 2)).astype(dtype)
+    return ((dist2 >= inner_radius**2) & (dist2 <= outer_radius**2)).astype(dtype)
 
 
 def measure_spot_intensity(
@@ -87,13 +86,9 @@ def measure_spot_intensity(
         ValueError: If *bg_inner* < *radius* or *bg_outer* ≤ *bg_inner*.
     """
     if bg_inner < radius:
-        raise ValueError(
-            f"bg_inner ({bg_inner}) must be >= radius ({radius})"
-        )
+        raise ValueError(f"bg_inner ({bg_inner}) must be >= radius ({radius})")
     if bg_outer <= bg_inner:
-        raise ValueError(
-            f"bg_outer ({bg_outer}) must be > bg_inner ({bg_inner})"
-        )
+        raise ValueError(f"bg_outer ({bg_outer}) must be > bg_inner ({bg_inner})")
 
     img = image.astype(np.float64)
     h, w = img.shape[:2]
@@ -109,12 +104,7 @@ def measure_spot_intensity(
     x1 = cx + patch_half + 1
 
     # Check whether the signal aperture stays inside the image
-    valid = (
-        cy - radius >= 0
-        and cy + radius < h
-        and cx - radius >= 0
-        and cx + radius < w
-    )
+    valid = cy - radius >= 0 and cy + radius < h and cx - radius >= 0 and cx + radius < w
 
     # Clip to image bounds for extraction
     ey0 = max(y0, 0)
@@ -217,6 +207,7 @@ def quantify_all_spots(
 # Calibration: fluorescence → base pairs
 # ---------------------------------------------------------------------------
 
+
 class Calibration:
     """Convert fluorescence intensity to telomere length in base pairs.
 
@@ -261,8 +252,7 @@ class Calibration:
             except ValueError:
                 pass
         raise ValueError(
-            f"Unknown calibration method '{method}'. "
-            f"Use 'linear' or 'polyN' (e.g. 'poly2')."
+            f"Unknown calibration method '{method}'. Use 'linear' or 'polyN' (e.g. 'poly2')."
         )
 
     # -- fitting -----------------------------------------------------------

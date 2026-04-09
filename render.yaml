@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: teloscopy
+    runtime: python
+    repo: https://github.com/Mahesh2023/teloscopy
+    plan: free
+    buildCommand: pip install -e ".[all,webapp]"
+    startCommand: uvicorn teloscopy.webapp.app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.3"
+      - key: TELOSCOPY_ENV
+        value: production
+      - key: TELOSCOPY_UPLOAD_DIR
+        value: /tmp/teloscopy_uploads
+      - key: TELOSCOPY_OUTPUT_DIR
+        value: /tmp/teloscopy_output
+      - key: TELOSCOPY_LOG_LEVEL
+        value: INFO
+    healthCheckPath: /api/health
+    autoDeploy: true

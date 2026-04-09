@@ -4,18 +4,19 @@ build-backend = "setuptools.backends._legacy:_Backend"
 
 [project]
 name = "teloscopy"
-version = "0.1.0"
-description = "Python pipeline for telomere length analysis from qFISH microscopy images and sequencing data"
+version = "2.0.0"
+description = "Multi-agent genomic intelligence platform: telomere analysis, disease risk prediction, and personalized nutrition from qFISH microscopy images"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.11"
 authors = [
     {name = "Teloscopy Contributors"},
 ]
-keywords = ["telomere", "qFISH", "microscopy", "bioinformatics", "image-analysis", "fluorescence"]
+keywords = ["telomere", "qFISH", "microscopy", "bioinformatics", "image-analysis", "fluorescence", "genomics", "disease-risk", "nutrigenomics", "multi-agent"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
+    "Intended Audience :: Healthcare Industry",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
@@ -23,6 +24,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
     "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
 ]
 dependencies = [
     "numpy>=1.26",
@@ -41,15 +43,29 @@ dependencies = [
 cellpose = ["cellpose>=3.0"]
 sequencing = ["biopython>=1.83", "pysam>=0.22"]
 interactive = ["plotly>=5.18", "napari>=0.4"]
+webapp = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "python-multipart>=0.0.6",
+    "jinja2>=3.1",
+    "aiofiles>=23.2",
+]
 all = [
     "cellpose>=3.0",
     "biopython>=1.83",
     "pysam>=0.22",
     "plotly>=5.18",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "python-multipart>=0.0.6",
+    "jinja2>=3.1",
+    "aiofiles>=23.2",
 ]
 dev = [
     "pytest>=8.0",
     "pytest-cov>=4.1",
+    "pytest-asyncio>=0.23",
+    "httpx>=0.27",
     "ruff>=0.3",
 ]
 
@@ -57,8 +73,8 @@ dev = [
 teloscopy = "teloscopy.cli:main"
 
 [project.urls]
-Repository = "https://github.com/teloscopy/teloscopy"
-Documentation = "https://teloscopy.readthedocs.io"
+Repository = "https://github.com/Mahesh2023/teloscopy"
+Documentation = "https://github.com/Mahesh2023/teloscopy/blob/main/ARCHITECTURE.md"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -69,6 +85,7 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP"]
+ignore = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

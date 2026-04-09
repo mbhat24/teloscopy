@@ -97,6 +97,7 @@ def load_config(path: str) -> dict[str, Any]:
 # Internal stage helpers
 # ---------------------------------------------------------------------------
 
+
 def _load_image(image_path: str, cfg: dict) -> dict[str, np.ndarray]:
     """Load a multi-channel TIFF and return individual channel arrays.
 
@@ -104,9 +105,11 @@ def _load_image(image_path: str, cfg: dict) -> dict[str, np.ndarray]:
     """
     try:
         import tifffile
+
         img = tifffile.imread(image_path)
     except ImportError:
         from skimage.io import imread
+
         img = imread(image_path)
 
     if img.ndim == 2:
@@ -157,6 +160,7 @@ def _preprocess_channel(channel: np.ndarray, cfg: dict) -> np.ndarray:
         processed = np.clip(processed - background, 0, None)
     elif method == "median":
         from scipy.ndimage import median_filter
+
         radius = cfg.get("rolling_ball_radius", 50)
         background = median_filter(processed, size=radius)
         processed = np.clip(processed - background, 0, None)
@@ -194,6 +198,7 @@ def _segment_chromosomes(dapi: np.ndarray, cfg: dict) -> np.ndarray:
         # Distance-transform watershed to split touching chromosomes
         distance = distance_transform_edt(binary)
         from skimage.feature import peak_local_max
+
         coords = peak_local_max(distance, min_distance=10, labels=binary)
         markers = np.zeros_like(binary, dtype=np.int32)
         for i, (r, c) in enumerate(coords, start=1):
@@ -204,6 +209,7 @@ def _segment_chromosomes(dapi: np.ndarray, cfg: dict) -> np.ndarray:
         # Cellpose integration (optional dependency)
         try:
             from cellpose import models
+
             model = models.Cellpose(model_type="nuclei", gpu=False)
             labels, _, _, _ = model.eval([dapi], channels=[0, 0], diameter=None)
             labels = labels[0]
@@ -247,19 +253,21 @@ def _extract_chromosome_properties(labels: np.ndarray) -> list[dict[str, Any]]:
         tip_p = (cy - dy, cx + dx)  # p-arm tip
         tip_q = (cy + dy, cx - dx)  # q-arm tip
 
-        chromosomes.append({
-            "label": int(prop.label),
-            "centroid_y": float(cy),
-            "centroid_x": float(cx),
-            "area": int(prop.area),
-            "major_axis_length": float(prop.major_axis_length),
-            "minor_axis_length": float(prop.minor_axis_length),
-            "orientation": float(orientation),
-            "bbox": prop.bbox,
-            "tips": [tip_p, tip_q],
-            "chromosome_label": str(prop.label),
-            "arms": ["p", "q"],
-        })
+        chromosomes.append(
+            {
+                "label": int(prop.label),
+                "centroid_y": float(cy),
+                "centroid_x": float(cx),
+                "area": int(prop.area),
+                "major_axis_length": float(prop.major_axis_length),
+                "minor_axis_length": float(prop.minor_axis_length),
+                "orientation": float(orientation),
+                "bbox": prop.bbox,
+                "tips": [tip_p, tip_q],
+                "chromosome_label": str(prop.label),
+                "arms": ["p", "q"],
+            }
+        )
 
     return chromosomes
 
@@ -297,20 +305,22 @@ def _detect_spots(cy3: np.ndarray, cfg: dict) -> list[dict[str, Any]]:
         # Peak intensity (from original, un-normalised channel)
         peak = float(cy3[iy, ix]) if 0 <= iy < cy3.shape[0] and 0 <= ix < cy3.shape[1] else 0.0
 
-        spots.append({
-            "y": float(y),
-            "x": float(x),
-            "sigma": float(sigma),
-            "radius": float(radius),
-            "peak_intensity": peak,
-            "corrected_intensity": 0.0,  # placeholder – computed in quantification
-            "background_level": 0.0,
-            "snr": 0.0,
-            "associated": False,
-            "valid": True,
-            "chromosome_label": "",
-            "arm": "",
-        })
+        spots.append(
+            {
+                "y": float(y),
+                "x": float(x),
+                "sigma": float(sigma),
+                "radius": float(radius),
+                "peak_intensity": peak,
+                "corrected_intensity": 0.0,  # placeholder – computed in quantification
+                "background_level": 0.0,
+                "snr": 0.0,
+                "associated": False,
+                "valid": True,
+                "chromosome_label": "",
+                "arm": "",
+            }
+        )
 
     return spots
 
@@ -448,6 +458,7 @@ def _apply_calibration(
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
+
 
 def analyze_image(
     image_path: str,

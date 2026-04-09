@@ -32,6 +32,7 @@ except ImportError:  # pragma: no cover
 # Internal helpers
 # ---------------------------------------------------------------------------
 
+
 def _finish(
     fig: plt.Figure,
     save_path: str | None,
@@ -65,6 +66,7 @@ def _valid_spots(spots: list[dict]) -> list[dict]:
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
+
 
 def plot_telomere_overlay(
     dapi: np.ndarray,
@@ -207,12 +209,18 @@ def plot_intensity_histogram(
     mean_val = float(np.mean(values)) if values.size else 0
     median_val = float(np.median(values)) if values.size else 0
     ax.axvline(
-        mean_val, color="firebrick", linestyle="--",
-        linewidth=1.2, label=f"Mean {mean_val:.1f}",
+        mean_val,
+        color="firebrick",
+        linestyle="--",
+        linewidth=1.2,
+        label=f"Mean {mean_val:.1f}",
     )
     ax.axvline(
-        median_val, color="darkorange", linestyle="-.",
-        linewidth=1.2, label=f"Median {median_val:.1f}",
+        median_val,
+        color="darkorange",
+        linestyle="-.",
+        linewidth=1.2,
+        label=f"Median {median_val:.1f}",
     )
 
     ax.set_xlabel(xlabel, fontsize=11)
@@ -355,8 +363,14 @@ def plot_cell_comparison(
             df = pd.DataFrame(long_rows)
             sns.boxplot(data=df, x="Cell", y="Value", ax=ax, palette="Set2", width=0.5)
             sns.stripplot(
-                data=df, x="Cell", y="Value", ax=ax,
-                color="0.3", size=2, alpha=0.4, jitter=True,
+                data=df,
+                x="Cell",
+                y="Value",
+                ax=ax,
+                color="0.3",
+                size=2,
+                alpha=0.4,
+                jitter=True,
             )
         else:
             ax.text(0.5, 0.5, "No data", transform=ax.transAxes, ha="center")
@@ -410,8 +424,15 @@ def plot_spot_gallery(
     n = len(valid)
     if n == 0:
         fig, ax = plt.subplots(figsize=(4, 3))
-        ax.text(0.5, 0.5, "No valid spots to display", ha="center", va="center",
-                transform=ax.transAxes, fontsize=12)
+        ax.text(
+            0.5,
+            0.5,
+            "No valid spots to display",
+            ha="center",
+            va="center",
+            transform=ax.transAxes,
+            fontsize=12,
+        )
         ax.axis("off")
         return _finish(fig, save_path, show, tight=False)
 

@@ -18,6 +18,7 @@ from skimage.feature import blob_dog, blob_doh, blob_log
 # Normalisation helper
 # ---------------------------------------------------------------------------
 
+
 def _normalise_to_float(image: np.ndarray) -> np.ndarray:
     """Normalise any numeric image to ``float64`` in ``[0, 1]``.
 
@@ -34,6 +35,7 @@ def _normalise_to_float(image: np.ndarray) -> np.ndarray:
 # ---------------------------------------------------------------------------
 # Low-level blob detectors
 # ---------------------------------------------------------------------------
+
 
 def detect_spots_log(
     image: np.ndarray,
@@ -228,10 +230,7 @@ def detect_spots(
         If *method* is not one of the supported detector names.
     """
     if method not in _DETECTORS:
-        raise ValueError(
-            f"Unknown detection method '{method}'. "
-            f"Available: {sorted(_DETECTORS)}"
-        )
+        raise ValueError(f"Unknown detection method '{method}'. Available: {sorted(_DETECTORS)}")
 
     detector_fn = _DETECTORS[method]
     blobs = detector_fn(image, **kwargs)
@@ -263,6 +262,7 @@ def detect_spots(
 # ---------------------------------------------------------------------------
 # Post-detection filtering
 # ---------------------------------------------------------------------------
+
 
 def filter_spots(
     spots: list[dict[str, float]],

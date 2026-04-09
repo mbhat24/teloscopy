@@ -26,6 +26,7 @@ from scipy.ndimage import rotate as ndi_rotate
 # Single-object generators
 # ---------------------------------------------------------------------------
 
+
 def generate_chromosome(
     shape: tuple[int, int] = (100, 30),
     intensity: float = 5000.0,
@@ -56,10 +57,10 @@ def generate_chromosome(
     yg, xg = np.meshgrid(yy, xx, indexing="ij")
 
     # Longitudinal envelope (tapers at both ends)
-    long_env = np.clip(1.0 - yg ** 6, 0, 1)  # super-Gaussian taper
+    long_env = np.clip(1.0 - yg**6, 0, 1)  # super-Gaussian taper
 
     # Lateral envelope (elliptical cross-section that narrows at tips)
-    width_factor = np.clip(1.0 - 0.3 * yg ** 2, 0.3, 1.0)  # narrower at tips
+    width_factor = np.clip(1.0 - 0.3 * yg**2, 0.3, 1.0)  # narrower at tips
     lat_env = np.clip(1.0 - (xg / (0.35 * width_factor)) ** 4, 0, 1)
 
     body = long_env * lat_env
@@ -100,13 +101,14 @@ def generate_telomere_spot(
     centre = (size - 1) / 2.0
     yy, xx = np.mgrid[:size, :size]
     r2 = (yy - centre) ** 2 + (xx - centre) ** 2
-    spot = intensity * np.exp(-r2 / (2.0 * sigma ** 2))
+    spot = intensity * np.exp(-r2 / (2.0 * sigma**2))
     return spot
 
 
 # ---------------------------------------------------------------------------
 # Metaphase spread generator
 # ---------------------------------------------------------------------------
+
 
 def _place_stamp(
     canvas: np.ndarray,
@@ -352,8 +354,7 @@ def generate_metaphase_spread(
             # Simulate a correlation: brighter <-> longer telomere
             length_bp = max(
                 200.0,
-                500.0 + (telo_int - lo) / (hi - lo) * 20000.0
-                + rng.normal(0, 800),
+                500.0 + (telo_int - lo) / (hi - lo) * 20000.0 + rng.normal(0, 800),
             )
 
             spot = generate_telomere_spot(
@@ -398,6 +399,7 @@ def generate_metaphase_spread(
 # ---------------------------------------------------------------------------
 # I/O helpers
 # ---------------------------------------------------------------------------
+
 
 def save_synthetic_image(data: dict, path: str) -> None:
     """Save a synthetic image dict as a multi-channel TIFF.

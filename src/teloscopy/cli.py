@@ -60,9 +60,7 @@ def _load_yaml(path: str) -> dict:
     try:
         import yaml
     except ImportError:
-        _error(
-            "PyYAML is not installed.  Install it with: pip install pyyaml"
-        )
+        _error("PyYAML is not installed.  Install it with: pip install pyyaml")
         sys.exit(1)
     with open(path) as fh:
         data = yaml.safe_load(fh)
@@ -76,6 +74,7 @@ def _load_yaml(path: str) -> dict:
 # CLI group
 # ---------------------------------------------------------------------------
 
+
 @click.group()
 @click.version_option(version="0.1.0", prog_name="teloscopy")
 def main() -> None:
@@ -86,22 +85,26 @@ def main() -> None:
 # analyze
 # ---------------------------------------------------------------------------
 
+
 @main.command()
 @click.argument("image_path", type=click.Path(exists=True))
 @click.option(
-    "--config", "-c",
+    "--config",
+    "-c",
     type=click.Path(exists=True),
     default=None,
     help="Pipeline configuration YAML file.",
 )
 @click.option(
-    "--output", "-o",
+    "--output",
+    "-o",
     type=click.Path(),
     default="output",
     help="Output directory for results.",
 )
 @click.option(
-    "--method", "-m",
+    "--method",
+    "-m",
     type=click.Choice(["otsu_watershed", "cellpose"], case_sensitive=False),
     default="otsu_watershed",
     help="Chromosome segmentation method.",
@@ -199,6 +202,7 @@ def analyze(
 # batch
 # ---------------------------------------------------------------------------
 
+
 @main.command()
 @click.argument("input_dir", type=click.Path(exists=True))
 @click.option("--config", "-c", type=click.Path(exists=True), default=None)
@@ -255,6 +259,7 @@ def batch(input_dir: str, config: str | None, output: str, pattern: str) -> None
 # generate
 # ---------------------------------------------------------------------------
 
+
 @main.command()
 @click.option("--output", "-o", type=click.Path(), default="data/sample_images")
 @click.option("--n-images", "-n", default=5, help="Number of images to generate.")
@@ -289,7 +294,7 @@ def generate(output: str, n_images: int, seed: int) -> None:
                 yy = int(cy + t * np.sin(angle))
                 xx = int(cx + t * np.cos(angle))
                 if 0 <= yy < height and 0 <= xx < width:
-                    dapi[max(0, yy - 2):yy + 3, max(0, xx - 2):xx + 3] += rng.uniform(300, 800)
+                    dapi[max(0, yy - 2) : yy + 3, max(0, xx - 2) : xx + 3] += rng.uniform(300, 800)
         dapi += rng.normal(100, 20, size=(height, width))
         dapi = np.clip(dapi, 0, 65535)
 
@@ -304,15 +309,11 @@ def generate(output: str, n_images: int, seed: int) -> None:
                 for dx in range(-5, 6):
                     yy, xx = sy + dy, sx + dx
                     if 0 <= yy < height and 0 <= xx < width:
-                        cy3[yy, xx] += intensity * np.exp(
-                            -(dy**2 + dx**2) / (2 * sigma**2)
-                        )
+                        cy3[yy, xx] += intensity * np.exp(-(dy**2 + dx**2) / (2 * sigma**2))
         cy3 = np.clip(cy3, 0, 65535)
 
         # Stack as multi-channel TIFF (C, H, W)
-        merged = np.stack(
-            [dapi.astype(np.uint16), cy3.astype(np.uint16)], axis=0
-        )
+        merged = np.stack([dapi.astype(np.uint16), cy3.astype(np.uint16)], axis=0)
         fname = out_dir / f"synthetic_qfish_{i:03d}.tif"
         imsave(str(fname), merged)
         _info(f"  Saved {fname}")
@@ -323,6 +324,7 @@ def generate(output: str, n_images: int, seed: int) -> None:
 # ---------------------------------------------------------------------------
 # report
 # ---------------------------------------------------------------------------
+
 
 @main.command()
 @click.argument("csv_path", type=click.Path(exists=True))

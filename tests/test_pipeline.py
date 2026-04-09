@@ -6,7 +6,7 @@ import sys
 import numpy as np
 import pytest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from teloscopy.analysis.statistics import compute_cell_statistics, create_results_dataframe
 from teloscopy.telomere.association import associate_spots_to_chromosomes, summarize_associations
@@ -153,11 +153,21 @@ class TestStatistics:
 class TestResultsDataFrame:
     def test_creates_dataframe(self):
         spots = [
-            {"y": 10, "x": 20, "sigma": 2.0, "radius": 2.83,
-             "peak_intensity": 5000, "corrected_intensity": 4500,
-             "background_level": 100, "snr": 45.0,
-             "chromosome_label": 1, "arm": "p",
-             "tip_distance": 3.0, "associated": True, "valid": True},
+            {
+                "y": 10,
+                "x": 20,
+                "sigma": 2.0,
+                "radius": 2.83,
+                "peak_intensity": 5000,
+                "corrected_intensity": 4500,
+                "background_level": 100,
+                "snr": 45.0,
+                "chromosome_label": 1,
+                "arm": "p",
+                "tip_distance": 3.0,
+                "associated": True,
+                "valid": True,
+            },
         ]
         df = create_results_dataframe(spots, image_name="test.tif")
         assert len(df) == 1

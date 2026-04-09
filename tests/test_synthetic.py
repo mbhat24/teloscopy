@@ -6,7 +6,7 @@ import sys
 import numpy as np
 import pytest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from teloscopy.telomere.synthetic import (
     generate_chromosome,
@@ -65,9 +65,7 @@ class TestGenerateTelomereSpot:
 class TestGenerateMetaphaseSpread:
     def test_returns_required_keys(self):
         """Should return dict with dapi, cy3, ground_truth."""
-        data = generate_metaphase_spread(
-            image_size=(256, 256), n_chromosomes=5, seed=42
-        )
+        data = generate_metaphase_spread(image_size=(256, 256), n_chromosomes=5, seed=42)
         assert "dapi" in data
         assert "cy3" in data
         assert "ground_truth" in data
@@ -75,15 +73,11 @@ class TestGenerateMetaphaseSpread:
         assert "telomeres" in data["ground_truth"]
 
     def test_dapi_shape(self):
-        data = generate_metaphase_spread(
-            image_size=(512, 512), n_chromosomes=10, seed=42
-        )
+        data = generate_metaphase_spread(image_size=(512, 512), n_chromosomes=10, seed=42)
         assert data["dapi"].shape == (512, 512)
 
     def test_cy3_shape(self):
-        data = generate_metaphase_spread(
-            image_size=(512, 512), n_chromosomes=10, seed=42
-        )
+        data = generate_metaphase_spread(image_size=(512, 512), n_chromosomes=10, seed=42)
         assert data["cy3"].shape == (512, 512)
 
     def test_ground_truth_chromosomes_count(self):
@@ -108,18 +102,14 @@ class TestGenerateMetaphaseSpread:
 
     def test_dapi_has_contrast(self):
         """DAPI channel should have bright chromosomes above dark background."""
-        data = generate_metaphase_spread(
-            image_size=(512, 512), n_chromosomes=10, seed=42
-        )
+        data = generate_metaphase_spread(image_size=(512, 512), n_chromosomes=10, seed=42)
         dapi = data["dapi"].astype(np.float64)
         assert dapi.max() > 5000
         assert dapi.min() < 1000
 
     def test_cy3_has_spots(self):
         """Cy3 channel should contain telomere spots above background."""
-        data = generate_metaphase_spread(
-            image_size=(512, 512), n_chromosomes=10, seed=42
-        )
+        data = generate_metaphase_spread(image_size=(512, 512), n_chromosomes=10, seed=42)
         cy3 = data["cy3"].astype(np.float64)
         assert cy3.max() > 5000
 

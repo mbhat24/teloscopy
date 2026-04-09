@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teloscopy — Telomere Analysis &amp; Personalised Health</title>
+    <style>
+        /* ============================================================
+           CSS RESET & VARIABLES
+           ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-primary:    #0b0f19;
+            --bg-secondary:  #131825;
+            --bg-card:       #1a2035;
+            --bg-card-hover: #222b45;
+            --accent:        #00d4aa;
+            --accent-dim:    #009e7e;
+            --accent-glow:   rgba(0, 212, 170, .15);
+            --danger:        #ff4d6a;
+            --warning:       #ffb347;
+            --info:          #4da6ff;
+            --text:          #e0e6ed;
+            --text-dim:      #8f9bb3;
+            --border:        #2e3a59;
+            --radius:        12px;
+            --radius-sm:     8px;
+            --shadow:        0 4px 24px rgba(0,0,0,.35);
+            --font:          'Segoe UI', system-ui, -apple-system, sans-serif;
+            --mono:          'Fira Code', 'Consolas', monospace;
+            --transition:    .25s ease;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        img { max-width: 100%; height: auto; }
+
+        /* ============================================================
+           NAVBAR
+           ============================================================ */
+        .navbar {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: .75rem 2rem;
+            background: rgba(11, 15, 25, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .navbar-brand {
+            font-size: 1.4rem; font-weight: 700;
+            color: var(--accent); letter-spacing: .5px;
+        }
+        .navbar-brand span { color: var(--text); }
+        .navbar-links { display: flex; gap: 1.5rem; list-style: none; }
+        .navbar-links a {
+            color: var(--text-dim); font-size: .95rem; transition: color var(--transition);
+        }
+        .navbar-links a:hover, .navbar-links a.active { color: var(--accent); text-decoration: none; }
+
+        .hamburger { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
+
+        /* ============================================================
+           HERO
+           ============================================================ */
+        .hero {
+            text-align: center;
+            padding: 5rem 1.5rem 3rem;
+            background: linear-gradient(180deg, rgba(0,212,170,.06) 0%, transparent 70%);
+        }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; margin-bottom: .75rem; }
+        .hero h1 .highlight { color: var(--accent); }
+        .hero p {
+            max-width: 680px; margin: 0 auto 2rem; font-size: 1.1rem;
+            color: var(--text-dim); line-height: 1.7;
+        }
+        .hero-badges { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+        .badge {
+            display: inline-flex; align-items: center; gap: .4rem;
+            padding: .35rem .9rem; border-radius: 999px; font-size: .8rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+        .badge .dot {
+            width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+        }
+        .dot--green  { background: var(--accent); }
+        .dot--blue   { background: var(--info); }
+        .dot--yellow { background: var(--warning); }
+
+        /* ============================================================
+           SECTIONS (generic)
+           ============================================================ */
+        .section {
+            max-width: 1100px; margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+        .section-title {
+            font-size: 1.6rem; font-weight: 700; margin-bottom: .5rem;
+        }
+        .section-subtitle {
+            color: var(--text-dim); margin-bottom: 2rem; font-size: .95rem;
+        }
+
+        /* ============================================================
+           UPLOAD AREA
+           ============================================================ */
+        #upload-section { scroll-margin-top: 80px; }
+
+        .upload-card {
+            background: var(--bg-card); border: 2px dashed var(--border);
+            border-radius: var(--radius); padding: 3rem 2rem; text-align: center;
+            transition: border-color var(--transition), background var(--transition);
+            cursor: pointer; position: relative;
+        }
+        .upload-card.drag-over {
+            border-color: var(--accent); background: var(--accent-glow);
+        }
+        .upload-card svg { width: 56px; height: 56px; stroke: var(--accent); margin-bottom: 1rem; }
+        .upload-card h3 { margin-bottom: .5rem; font-size: 1.15rem; }
+        .upload-card p  { color: var(--text-dim); font-size: .9rem; }
+        .upload-card input[type="file"] {
+            position: absolute; inset: 0; opacity: 0; cursor: pointer;
+        }
+        .file-info {
+            margin-top: 1rem; padding: .6rem 1rem; background: var(--bg-secondary);
+            border-radius: var(--radius-sm); display: none; font-size: .9rem;
+        }
+        .file-info.visible { display: flex; align-items: center; gap: .5rem; justify-content: center; }
+
+        /* ============================================================
+           PROFILE FORM
+           ============================================================ */
+        .profile-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem; margin-top: 2rem;
+        }
+        .form-group { display: flex; flex-direction: column; gap: .35rem; }
+        .form-group label {
+            font-size: .85rem; font-weight: 600; color: var(--text-dim);
+            text-transform: uppercase; letter-spacing: .5px;
+        }
+        .form-group input,
+        .form-group select {
+            padding: .65rem .9rem; border-radius: var(--radius-sm);
+            border: 1px solid var(--border); background: var(--bg-secondary);
+            color: var(--text); font-size: .95rem; outline: none;
+            transition: border-color var(--transition);
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--accent);
+        }
+
+        .checkbox-group {
+            display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .25rem;
+        }
+        .checkbox-group label {
+            display: flex; align-items: center; gap: .35rem;
+            font-size: .88rem; color: var(--text); text-transform: none;
+            letter-spacing: 0; font-weight: 400; cursor: pointer;
+        }
+        .checkbox-group input[type="checkbox"] {
+            accent-color: var(--accent); width: 16px; height: 16px;
+        }
+
+        /* ============================================================
+           BUTTONS
+           ============================================================ */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: .5rem; padding: .75rem 2rem; border-radius: var(--radius-sm);
+            font-size: 1rem; font-weight: 600; border: none; cursor: pointer;
+            transition: background var(--transition), transform .15s;
+        }
+        .btn:active { transform: scale(.97); }
+        .btn-primary {
+            background: var(--accent); color: var(--bg-primary);
+        }
+        .btn-primary:hover { background: var(--accent-dim); }
+        .btn-primary:disabled {
+            opacity: .5; cursor: not-allowed;
+        }
+        .btn-outline {
+            background: transparent; border: 1px solid var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-row { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center; }
+
+        /* ============================================================
+           PROGRESS
+           ============================================================ */
+        .progress-wrapper {
+            display: none; margin-top: 2rem;
+            background: var(--bg-card); border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+        }
+        .progress-wrapper.visible { display: block; }
+        .progress-header { display: flex; justify-content: space-between; margin-bottom: .5rem; font-size: .9rem; }
+        .progress-bar-bg {
+            height: 10px; border-radius: 99px; background: var(--bg-secondary); overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--info));
+            border-radius: 99px; transition: width .4s ease;
+        }
+        .progress-message {
+            margin-top: .75rem; font-size: .85rem; color: var(--text-dim);
+        }
+
+        /* ============================================================
+           RESULTS
+           ============================================================ */
+        #results-section { scroll-margin-top: 80px; display: none; }
+        #results-section.visible { display: block; }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        .result-card {
+            background: var(--bg-card); border-radius: var(--radius);
+            padding: 1.5rem; box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: border-color var(--transition);
+        }
+        .result-card:hover { border-color: var(--accent); }
+        .result-card h3 {
+            font-size: 1.1rem; margin-bottom: 1rem;
+            display: flex; align-items: center; gap: .5rem;
+        }
+        .result-card h3 .icon { font-size: 1.3rem; }
+
+        /* Telomere stats */
+        .stat-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;
+        }
+        .stat-item { background: var(--bg-secondary); padding: .75rem; border-radius: var(--radius-sm); }
+        .stat-label { font-size: .75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: .5px; }
+        .stat-value { font-size: 1.4rem; font-weight: 700; color: var(--accent); margin-top: .15rem; }
+
+        /* Disease risk cards */
+        .risk-list { display: flex; flex-direction: column; gap: .75rem; }
+        .risk-item {
+            display: flex; align-items: center; gap: .75rem;
+            padding: .75rem; background: var(--bg-secondary); border-radius: var(--radius-sm);
+            border-left: 4px solid transparent;
+        }
+        .risk-item.low       { border-left-color: var(--accent); }
+        .risk-item.moderate  { border-left-color: var(--warning); }
+        .risk-item.high      { border-left-color: var(--danger); }
+        .risk-item.very_high { border-left-color: #ff1a40; }
+        .risk-name { font-weight: 600; flex: 1; }
+        .risk-badge {
+            padding: .2rem .6rem; border-radius: 999px; font-size: .75rem;
+            font-weight: 600; text-transform: uppercase;
+        }
+        .risk-badge.low       { background: rgba(0,212,170,.15); color: var(--accent); }
+        .risk-badge.moderate  { background: rgba(255,179,71,.15); color: var(--warning); }
+        .risk-badge.high      { background: rgba(255,77,106,.15); color: var(--danger); }
+        .risk-badge.very_high { background: rgba(255,26,64,.2); color: #ff1a40; }
+
+        .risk-prob { font-size: .85rem; color: var(--text-dim); min-width: 45px; text-align: right; }
+
+        /* Diet */
+        .diet-summary { font-size: .92rem; color: var(--text-dim); margin-bottom: 1rem; line-height: 1.6; }
+        .nutrient-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+        .nutrient-tag {
+            padding: .2rem .6rem; border-radius: 999px; font-size: .78rem;
+            background: rgba(77,166,255,.12); color: var(--info); border: 1px solid rgba(77,166,255,.25);
+        }
+        .food-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .food-col h4 { font-size: .85rem; margin-bottom: .5rem; color: var(--text-dim); }
+        .food-col ul { list-style: none; font-size: .88rem; }
+        .food-col ul li { padding: .2rem 0; }
+        .food-col ul li::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: .5rem; vertical-align: middle; }
+        .food-col.increase ul li::before { background: var(--accent); }
+        .food-col.avoid ul li::before    { background: var(--danger); }
+
+        /* Meal plan accordion */
+        .meal-plans { margin-top: 1rem; }
+        .meal-day {
+            background: var(--bg-secondary); border-radius: var(--radius-sm);
+            margin-bottom: .5rem; overflow: hidden;
+        }
+        .meal-day-header {
+            padding: .65rem 1rem; cursor: pointer; font-weight: 600;
+            display: flex; justify-content: space-between; align-items: center;
+            user-select: none; transition: background var(--transition);
+        }
+        .meal-day-header:hover { background: var(--bg-card-hover); }
+        .meal-day-body { padding: 0 1rem; max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s ease; }
+        .meal-day.open .meal-day-body { max-height: 300px; padding: .75rem 1rem; }
+        .meal-day-body p { font-size: .88rem; margin-bottom: .3rem; }
+        .meal-day-body .meal-label { font-weight: 600; color: var(--accent); }
+
+        /* Downloads */
+        .download-row { display: flex; gap: .75rem; margin-top: 1.5rem; flex-wrap: wrap; }
+
+        /* ============================================================
+           DASHBOARD TEASER
+           ============================================================ */
+        .agent-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+        .agent-card {
+            background: var(--bg-card); border-radius: var(--radius);
+            padding: 1.25rem; border: 1px solid var(--border);
+            display: flex; flex-direction: column; gap: .5rem;
+        }
+        .agent-card .agent-name { font-weight: 600; font-size: 1rem; }
+        .agent-card .agent-status-badge {
+            display: inline-flex; align-items: center; gap: .3rem;
+            font-size: .8rem; padding: .15rem .6rem; border-radius: 999px;
+            width: fit-content;
+        }
+        .agent-status-badge.idle    { background: rgba(0,212,170,.12); color: var(--accent); }
+        .agent-status-badge.busy    { background: rgba(77,166,255,.12); color: var(--info); }
+        .agent-status-badge.error   { background: rgba(255,77,106,.12); color: var(--danger); }
+        .agent-status-badge.offline { background: rgba(143,155,179,.12); color: var(--text-dim); }
+        .agent-card .agent-tasks { font-size: .85rem; color: var(--text-dim); }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .footer {
+            text-align: center; padding: 2rem 1.5rem;
+            border-top: 1px solid var(--border); color: var(--text-dim);
+            font-size: .85rem; margin-top: 3rem;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .navbar { padding: .75rem 1rem; }
+            .navbar-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-primary); border-bottom: 1px solid var(--border); padding: 1rem; gap: 1rem; }
+            .navbar-links.open { display: flex; }
+            .hamburger { display: block; }
+            .hero { padding: 3rem 1rem 2rem; }
+            .section { padding: 2rem 1rem; }
+            .stat-grid { grid-template-columns: 1fr; }
+            .food-columns { grid-template-columns: 1fr; }
+            .profile-form { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================================
+           UTILITY
+           ============================================================ */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: .5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+
+        /* Spinner */
+        .spinner {
+            display: inline-block; width: 18px; height: 18px;
+            border: 2.5px solid var(--border); border-top-color: var(--accent);
+            border-radius: 50%; animation: spin .7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Toast */
+        .toast-container {
+            position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+            display: flex; flex-direction: column; gap: .5rem;
+        }
+        .toast {
+            padding: .75rem 1.25rem; border-radius: var(--radius-sm);
+            font-size: .9rem; color: #fff; animation: fadeInUp .3s ease;
+            box-shadow: var(--shadow);
+        }
+        .toast.success { background: #1a8a6e; }
+        .toast.error   { background: #c0394f; }
+        .toast.info    { background: #2e6fbf; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================================================================
+     NAVBAR
+     ================================================================ -->
+<nav class="navbar">
+    <div class="navbar-brand">Telo<span>scopy</span></div>
+    <button class="hamburger" onclick="document.querySelector('.navbar-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+    <ul class="navbar-links">
+        <li><a href="#hero" class="active">Home</a></li>
+        <li><a href="#upload-section">Analyze</a></li>
+        <li><a href="#results-section">Results</a></li>
+        <li><a href="#agents-section">Agents</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+    </ul>
+</nav>
+
+<!-- ================================================================
+     HERO
+     ================================================================ -->
+<section class="hero" id="hero">
+    <h1>Decode Your <span class="highlight">Telomeres</span></h1>
+    <p>
+        Upload a fluorescence microscopy image and receive a comprehensive
+        analysis of telomere length, personalised disease-risk assessment,
+        and AI-driven dietary recommendations &mdash; all powered by our
+        multi-agent genomics pipeline.
+    </p>
+    <div class="hero-badges">
+        <span class="badge"><span class="dot dot--green"></span> Image Analysis</span>
+        <span class="badge"><span class="dot dot--blue"></span> Genomics</span>
+        <span class="badge"><span class="dot dot--yellow"></span> Nutrition AI</span>
+        <span class="badge"><span class="dot dot--green"></span> Improvement Agent</span>
+    </div>
+</section>
+
+<!-- ================================================================
+     UPLOAD & PROFILE
+     ================================================================ -->
+<section class="section" id="upload-section">
+    <h2 class="section-title">Upload &amp; Profile</h2>
+    <p class="section-subtitle">
+        Drag-and-drop a microscopy image and fill in your profile to start the analysis.
+    </p>
+
+    <!-- Drop zone -->
+    <div class="upload-card" id="drop-zone">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/>
+        </svg>
+        <h3>Drop your microscopy image here</h3>
+        <p>or click to browse &mdash; PNG, JPEG, TIFF, BMP up to 50 MB</p>
+        <input type="file" id="file-input" accept=".png,.jpg,.jpeg,.tif,.tiff,.bmp">
+    </div>
+    <div class="file-info" id="file-info">
+        <span id="file-name"></span>
+        <span id="file-size" style="color:var(--text-dim);"></span>
+        <button class="btn btn-outline" style="padding:.3rem .8rem;font-size:.8rem;margin-left:auto;" onclick="clearFile()">Remove</button>
+    </div>
+
+    <!-- Profile form -->
+    <form id="profile-form" class="profile-form" onsubmit="return false;">
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" min="1" max="150" placeholder="e.g. 35" required>
+        </div>
+        <div class="form-group">
+            <label for="sex">Biological Sex</label>
+            <select id="sex" name="sex" required>
+                <option value="">Select&hellip;</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="region">Region</label>
+            <select id="region" name="region" required>
+                <option value="">Select&hellip;</option>
+                <option value="East Asia">East Asia</option>
+                <option value="South Asia">South Asia</option>
+                <option value="Southeast Asia">Southeast Asia</option>
+                <option value="Central Asia">Central Asia</option>
+                <option value="Western Asia">Western Asia</option>
+                <option value="Northern Europe">Northern Europe</option>
+                <option value="Western Europe">Western Europe</option>
+                <option value="Eastern Europe">Eastern Europe</option>
+                <option value="Southern Europe">Southern Europe</option>
+                <option value="North Africa">North Africa</option>
+                <option value="Sub-Saharan Africa">Sub-Saharan Africa</option>
+                <option value="North America">North America</option>
+                <option value="Central America">Central America</option>
+                <option value="South America">South America</option>
+                <option value="Oceania">Oceania</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="variants">Known Genetic Variants</label>
+            <input type="text" id="variants" name="known_variants" placeholder="e.g. APOE-e4, BRCA1, rs429358">
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Dietary Restrictions</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="diet" value="vegetarian"> Vegetarian</label>
+                <label><input type="checkbox" name="diet" value="vegan"> Vegan</label>
+                <label><input type="checkbox" name="diet" value="gluten-free"> Gluten-free</label>
+                <label><input type="checkbox" name="diet" value="dairy-free"> Dairy-free</label>
+                <label><input type="checkbox" name="diet" value="nut-free"> Nut-free</label>
+                <label><input type="checkbox" name="diet" value="halal"> Halal</label>
+                <label><input type="checkbox" name="diet" value="kosher"> Kosher</label>
+                <label><input type="checkbox" name="diet" value="low-sodium"> Low-sodium</label>
+            </div>
+        </div>
+    </form>
+
+    <div class="btn-row">
+        <button class="btn btn-primary" id="analyze-btn" onclick="startAnalysis()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+            Analyze
+        </button>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrapper" id="progress-wrapper">
+        <div class="progress-header">
+            <span id="progress-label">Analyzing&hellip;</span>
+            <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <p class="progress-message" id="progress-message">Preparing analysis pipeline&hellip;</p>
+    </div>
+</section>
+
+<!-- ================================================================
+     RESULTS
+     ================================================================ -->
+<section class="section" id="results-section">
+    <h2 class="section-title">Analysis Results</h2>
+    <p class="section-subtitle" id="results-subtitle">Your personalised telomere analysis and health recommendations.</p>
+
+    <div class="results-grid" id="results-grid">
+        <!-- Telomere Card -->
+        <div class="result-card" id="telomere-card">
+            <h3><span class="icon">&#x1F9EC;</span> Telomere Analysis</h3>
+            <div class="stat-grid" id="telomere-stats"></div>
+            <div id="telomere-overlay" class="mt-2"></div>
+        </div>
+
+        <!-- Disease Risk Card -->
+        <div class="result-card" id="risk-card">
+            <h3><span class="icon">&#x1F3E5;</span> Disease Risk Assessment</h3>
+            <div class="risk-list" id="risk-list"></div>
+        </div>
+
+        <!-- Diet Card (spans full width) -->
+        <div class="result-card" style="grid-column: 1 / -1;" id="diet-card">
+            <h3><span class="icon">&#x1F957;</span> Dietary Recommendations</h3>
+            <div id="diet-content"></div>
+        </div>
+    </div>
+
+    <!-- Downloads -->
+    <div class="download-row" id="download-row" style="display:none;">
+        <button class="btn btn-outline" onclick="downloadCSV()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+            Download CSV
+        </button>
+        <button class="btn btn-outline" onclick="downloadJSON()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+            Download JSON
+        </button>
+    </div>
+</section>
+
+<!-- ================================================================
+     AGENT STATUS TEASER
+     ================================================================ -->
+<section class="section" id="agents-section">
+    <h2 class="section-title">Multi-Agent System</h2>
+    <p class="section-subtitle">Real-time status of the analysis agents.</p>
+    <div class="agent-status-grid" id="agent-grid">
+        <!-- Populated by JS -->
+    </div>
+    <div class="btn-row">
+        <a href="/dashboard" class="btn btn-outline">Open Full Dashboard</a>
+    </div>
+</section>
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer class="footer">
+    <p>&copy; 2024 Teloscopy &mdash; Multi-agent Telomere Analysis Platform &middot; v0.1.0</p>
+</footer>
+
+<!-- Toast container -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+<script>
+(function () {
+    'use strict';
+
+    /* ---- State ---- */
+    let selectedFile = null;
+    let currentJobId = null;
+    let pollTimer    = null;
+    let lastResult   = null;
+
+    /* ---- DOM refs ---- */
+    const dropZone        = document.getElementById('drop-zone');
+    const fileInput       = document.getElementById('file-input');
+    const fileInfo        = document.getElementById('file-info');
+    const fileName        = document.getElementById('file-name');
+    const fileSize        = document.getElementById('file-size');
+    const analyzeBtn      = document.getElementById('analyze-btn');
+    const progressWrapper = document.getElementById('progress-wrapper');
+    const progressFill    = document.getElementById('progress-fill');
+    const progressPct     = document.getElementById('progress-pct');
+    const progressMessage = document.getElementById('progress-message');
+    const resultsSection  = document.getElementById('results-section');
+
+    /* ---- Drag & Drop ---- */
+    ['dragenter', 'dragover'].forEach(ev => {
+        dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    });
+    ['dragleave', 'drop'].forEach(ev => {
+        dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', e => {
+        const files = e.dataTransfer.files;
+        if (files.length) handleFile(files[0]);
+    });
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) handleFile(fileInput.files[0]);
+    });
+
+    function handleFile(file) {
+        selectedFile = file;
+        fileName.textContent = file.name;
+        fileSize.textContent = '(' + (file.size / 1024 / 1024).toFixed(2) + ' MB)';
+        fileInfo.classList.add('visible');
+    }
+
+    window.clearFile = function () {
+        selectedFile = null;
+        fileInput.value = '';
+        fileInfo.classList.remove('visible');
+    };
+
+    /* ---- Toasts ---- */
+    function toast(msg, type) {
+        type = type || 'info';
+        const el = document.createElement('div');
+        el.className = 'toast ' + type;
+        el.textContent = msg;
+        document.getElementById('toast-container').appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+    }
+
+    /* ---- Analysis ---- */
+    window.startAnalysis = async function () {
+        if (!selectedFile) { toast('Please select an image first.', 'error'); return; }
+        const age    = document.getElementById('age').value;
+        const sex    = document.getElementById('sex').value;
+        const region = document.getElementById('region').value;
+        if (!age || !sex || !region) { toast('Please fill in age, sex, and region.', 'error'); return; }
+
+        const diets = Array.from(document.querySelectorAll('input[name="diet"]:checked')).map(cb => cb.value);
+        const variants = document.getElementById('variants').value;
+
+        const fd = new FormData();
+        fd.append('file', selectedFile);
+        fd.append('age', age);
+        fd.append('sex', sex);
+        fd.append('region', region);
+        fd.append('dietary_restrictions', diets.join(','));
+        fd.append('known_variants', variants);
+
+        analyzeBtn.disabled = true;
+        progressWrapper.classList.add('visible');
+        progressFill.style.width = '0%';
+        progressPct.textContent = '0%';
+        progressMessage.textContent = 'Uploading image\u2026';
+        resultsSection.classList.remove('visible');
+
+        try {
+            const res = await fetch('/api/analyze', { method: 'POST', body: fd });
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.detail || 'Upload failed');
+            }
+            const data = await res.json();
+            currentJobId = data.job_id;
+            toast('Analysis started!', 'success');
+            startPolling();
+        } catch (err) {
+            toast(err.message, 'error');
+            analyzeBtn.disabled = false;
+            progressWrapper.classList.remove('visible');
+        }
+    };
+
+    /* ---- Polling ---- */
+    function startPolling() {
+        if (pollTimer) clearInterval(pollTimer);
+        pollTimer = setInterval(pollStatus, 800);
+    }
+
+    async function pollStatus() {
+        if (!currentJobId) return;
+        try {
+            const res  = await fetch('/api/status/' + currentJobId);
+            const data = await res.json();
+            progressFill.style.width = data.progress_pct + '%';
+            progressPct.textContent  = Math.round(data.progress_pct) + '%';
+            progressMessage.textContent = data.message;
+
+            if (data.status === 'completed') {
+                clearInterval(pollTimer);
+                pollTimer = null;
+                toast('Analysis complete!', 'success');
+                await fetchResults();
+            } else if (data.status === 'failed') {
+                clearInterval(pollTimer);
+                pollTimer = null;
+                toast('Analysis failed: ' + data.message, 'error');
+                analyzeBtn.disabled = false;
+            }
+        } catch (err) {
+            /* ignore transient fetch errors */
+        }
+    }
+
+    async function fetchResults() {
+        try {
+            const res  = await fetch('/api/results/' + currentJobId);
+            const data = await res.json();
+            lastResult = data;
+            renderResults(data);
+        } catch (err) {
+            toast('Could not load results.', 'error');
+        }
+        analyzeBtn.disabled = false;
+    }
+
+    /* ---- Render ---- */
+    function renderResults(r) {
+        resultsSection.classList.add('visible');
+
+        /* Telomere stats */
+        const t = r.telomere_results;
+        document.getElementById('telomere-stats').innerHTML = `
+            <div class="stat-item"><div class="stat-label">Mean Length</div><div class="stat-value">${t.mean_length} kb</div></div>
+            <div class="stat-item"><div class="stat-label">Std Dev</div><div class="stat-value">${t.std_dev} kb</div></div>
+            <div class="stat-item"><div class="stat-label">T/S Ratio</div><div class="stat-value">${t.t_s_ratio}</div></div>
+            <div class="stat-item"><div class="stat-label">Bio Age Est.</div><div class="stat-value">${t.biological_age_estimate} yr</div></div>
+        `;
+
+        /* Disease risks */
+        const rl = document.getElementById('risk-list');
+        rl.innerHTML = '';
+        r.disease_risks.forEach(d => {
+            const cls = d.risk_level;
+            rl.innerHTML += `
+                <div class="risk-item ${cls}">
+                    <span class="risk-name">${d.disease}</span>
+                    <span class="risk-badge ${cls}">${d.risk_level.replace('_', ' ')}</span>
+                    <span class="risk-prob">${(d.probability * 100).toFixed(1)}%</span>
+                </div>`;
+        });
+
+        /* Diet */
+        const dc = document.getElementById('diet-content');
+        const diet = r.diet_recommendations;
+        let html = `<p class="diet-summary">${diet.summary}</p>`;
+        html += '<div class="nutrient-tags">';
+        diet.key_nutrients.forEach(n => { html += `<span class="nutrient-tag">${n}</span>`; });
+        html += '</div>';
+        html += '<div class="food-columns">';
+        html += '<div class="food-col increase"><h4>Increase</h4><ul>';
+        diet.foods_to_increase.forEach(f => { html += `<li>${f}</li>`; });
+        html += '</ul></div>';
+        html += '<div class="food-col avoid"><h4>Avoid / Reduce</h4><ul>';
+        diet.foods_to_avoid.forEach(f => { html += `<li>${f}</li>`; });
+        html += '</ul></div></div>';
+
+        if (diet.meal_plans && diet.meal_plans.length) {
+            html += '<h4 style="margin-bottom:.5rem;color:var(--text-dim);">Sample Meal Plans</h4><div class="meal-plans">';
+            diet.meal_plans.forEach((mp, i) => {
+                html += `<div class="meal-day" id="meal-${i}">
+                    <div class="meal-day-header" onclick="toggleMeal(${i})">${mp.day} <span>&#9660;</span></div>
+                    <div class="meal-day-body">
+                        <p><span class="meal-label">Breakfast:</span> ${mp.breakfast}</p>
+                        <p><span class="meal-label">Lunch:</span> ${mp.lunch}</p>
+                        <p><span class="meal-label">Dinner:</span> ${mp.dinner}</p>
+                        ${mp.snacks.length ? '<p><span class="meal-label">Snacks:</span> ' + mp.snacks.join(', ') + '</p>' : ''}
+                    </div>
+                </div>`;
+            });
+            html += '</div>';
+        }
+        if (diet.calorie_target) {
+            html += `<p class="mt-2" style="font-size:.9rem;color:var(--text-dim);">Target: ~${diet.calorie_target} kcal/day</p>`;
+        }
+        dc.innerHTML = html;
+
+        document.getElementById('download-row').style.display = 'flex';
+        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    window.toggleMeal = function (i) {
+        document.getElementById('meal-' + i).classList.toggle('open');
+    };
+
+    /* ---- Downloads ---- */
+    function downloadBlob(content, filename, mime) {
+        const blob = new Blob([content], { type: mime });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href = url; a.download = filename; a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    window.downloadJSON = function () {
+        if (!lastResult) return;
+        downloadBlob(JSON.stringify(lastResult, null, 2), 'teloscopy_results.json', 'application/json');
+    };
+
+    window.downloadCSV = function () {
+        if (!lastResult) return;
+        const t = lastResult.telomere_results;
+        let csv = 'metric,value\n';
+        csv += `mean_length,${t.mean_length}\n`;
+        csv += `std_dev,${t.std_dev}\n`;
+        csv += `t_s_ratio,${t.t_s_ratio}\n`;
+        csv += `biological_age_estimate,${t.biological_age_estimate}\n\n`;
+        csv += 'disease,risk_level,probability\n';
+        lastResult.disease_risks.forEach(d => {
+            csv += `"${d.disease}",${d.risk_level},${d.probability}\n`;
+        });
+        downloadBlob(csv, 'teloscopy_results.csv', 'text/csv');
+    };
+
+    /* ---- Agent status (for teaser) ---- */
+    async function loadAgents() {
+        try {
+            const res  = await fetch('/api/agents/status');
+            const data = await res.json();
+            const grid = document.getElementById('agent-grid');
+            grid.innerHTML = '';
+            data.agents.forEach(a => {
+                grid.innerHTML += `
+                    <div class="agent-card">
+                        <span class="agent-name">${a.name}</span>
+                        <span class="agent-status-badge ${a.status}">
+                            <span class="dot dot--${a.status === 'idle' ? 'green' : a.status === 'busy' ? 'blue' : 'yellow'}"></span>
+                            ${a.status}
+                        </span>
+                        <span class="agent-tasks">${a.tasks_completed} tasks completed</span>
+                        ${a.current_task ? '<span class="agent-tasks" style="color:var(--info);">Current: ' + a.current_task + '</span>' : ''}
+                    </div>`;
+            });
+        } catch (e) { /* silent */ }
+    }
+    loadAgents();
+    setInterval(loadAgents, 10000);
+
+    /* ---- Auto-load results if job_id in URL ---- */
+    const pathMatch = window.location.pathname.match(/^\/results\/(.+)/);
+    if (pathMatch) {
+        currentJobId = pathMatch[1];
+        progressWrapper.classList.add('visible');
+        startPolling();
+    }
+
+})();
+</script>
+</body>
+</html>
