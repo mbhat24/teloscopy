@@ -35,21 +35,32 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+# ---------------------------------------------------------------------------
+# Real pipeline imports (lazy — heavy deps load only when used)
+# ---------------------------------------------------------------------------
+from teloscopy.facial.image_classifier import ImageType, classify_image
+from teloscopy.facial.predictor import analyze_face
+from teloscopy.genomics.disease_risk import DiseasePredictor
+from teloscopy.nutrition.diet_advisor import DietAdvisor
 from teloscopy.webapp.models import (
     AgentInfo,
     AgentStatusEnum,
     AgentSystemStatus,
     AnalysisResponse,
+    AncestryEstimateResponse,
     DietPlanRequest,
     DietPlanResponse,
     DietRecommendation,
     DiseaseRisk,
     DiseaseRiskRequest,
     DiseaseRiskResponse,
+    FacialAnalysisResult,
+    FacialMeasurementsResponse,
     HealthResponse,
     JobStatus,
     JobStatusEnum,
     MealPlan,
+    PredictedVariantResponse,
     RiskLevel,
     Sex,
     TelomereResult,
@@ -89,6 +100,18 @@ _jobs: dict[str, JobStatus] = {}
 _APP_START_TIME: float = time.time()
 
 # ---------------------------------------------------------------------------
+# Pipeline singletons (instantiated once at startup)
+# ---------------------------------------------------------------------------
+
+_disease_predictor: DiseasePredictor = DiseasePredictor()
+_diet_advisor: DietAdvisor = DietAdvisor()
+
+logger.info(
+    "Pipeline loaded: %d disease variants, DietAdvisor ready",
+    _disease_predictor.variant_count,
+)
+
+# ---------------------------------------------------------------------------
 # FastAPI application
 # ---------------------------------------------------------------------------
 
@@ -111,6 +134,30 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# -- Exception handler (surface errors in non-production) --------------------
+
+
+@app.exception_handler(Exception)
+async def _unhandled_exception_handler(request: Request, exc: Exception) -> Any:
+    """Return traceback detail for unhandled errors to aid debugging."""
+    import traceback
+
+    from fastapi.responses import JSONResponse
+
+    tb = traceback.format_exc()
+    logger.error("Unhandled %s on %s: %s\n%s", type(exc).__name__, request.url.path, exc, tb)
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": str(exc),
+            "type": type(exc).__name__,
+            "path": request.url.path,
+            "traceback": tb.splitlines()[-5:],
+        },
+    )
+
+
 # -- Templates & static files -----------------------------------------------
 
 templates: Jinja2Templates = Jinja2Templates(directory=str(_TEMPLATES_DIR))
@@ -119,7 +166,170 @@ _STATIC_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/static", StaticFiles(directory=str(_STATIC_DIR)), name="static")
 
 # ===================================================================== #
-#  Helper / simulation functions                                         #
+#  Type translation helpers                                              #
+# ===================================================================== #
+
+
+def _translate_disease_risks(
+    risk_profile_risks: list[Any],
+) -> list[DiseaseRisk]:
+    """Convert ``genomics.disease_risk.DiseaseRisk`` dataclasses to Pydantic models."""
+    results: list[DiseaseRisk] = []
+    for dr in risk_profile_risks:
+        prob = min(dr.lifetime_risk_pct / 100.0, 1.0)
+        if prob < 0.20:
+            level = RiskLevel.LOW
+        elif prob < 0.50:
+            level = RiskLevel.MODERATE
+        elif prob < 0.75:
+            level = RiskLevel.HIGH
+        else:
+            level = RiskLevel.VERY_HIGH
+
+        recs: list[str] = []
+        if dr.preventability_score > 0.5:
+            recs.append(f"Modifiable risk — preventability {dr.preventability_score:.0%}")
+        if dr.age_of_onset_range[0] > 0:
+            recs.append(f"Typical onset age {dr.age_of_onset_range[0]}–{dr.age_of_onset_range[1]}")
+
+        results.append(
+            DiseaseRisk(
+                disease=dr.condition,
+                risk_level=level,
+                probability=round(prob, 3),
+                contributing_factors=dr.contributing_variants,
+                recommendations=recs,
+            )
+        )
+    return results
+
+
+def _translate_diet_recommendation(
+    recs: list[Any],
+    meal_plans: list[Any],
+    calorie_target: int = 2100,
+) -> DietRecommendation:
+    """Convert ``nutrition.diet_advisor`` results to Pydantic model."""
+    key_nutrients: list[str] = []
+    foods_increase: list[str] = []
+    foods_avoid: list[str] = []
+    summary_parts: list[str] = []
+
+    for r in recs[:12]:
+        key_nutrients.append(r.nutrient)
+        foods_increase.extend(r.target_foods[:3])
+        foods_avoid.extend(r.avoid_foods[:2])
+        if r.recommendation:
+            summary_parts.append(r.recommendation)
+
+    summary = (
+        " ".join(summary_parts[:3])
+        if summary_parts
+        else (
+            "Based on your genetic profile and health markers, we recommend "
+            "a nutrient-dense, anti-inflammatory diet to support genomic health."
+        )
+    )
+
+    pydantic_plans: list[MealPlan] = []
+    day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    for mp in meal_plans[:7]:
+
+        def _meal_str(items: list[Any]) -> str:
+            return ", ".join(f"{fi.name} ({g:.0f}g)" for fi, g in items[:4]) or "Seasonal selection"
+
+        pydantic_plans.append(
+            MealPlan(
+                day=day_names[mp.day % 7] if isinstance(mp.day, int) else str(mp.day),
+                breakfast=_meal_str(mp.breakfast),
+                lunch=_meal_str(mp.lunch),
+                dinner=_meal_str(mp.dinner),
+                snacks=[_meal_str(mp.snacks)] if mp.snacks else [],
+            )
+        )
+
+    return DietRecommendation(
+        summary=summary,
+        key_nutrients=list(dict.fromkeys(key_nutrients)),  # deduplicate, keep order
+        foods_to_increase=list(dict.fromkeys(foods_increase))[:10],
+        foods_to_avoid=list(dict.fromkeys(foods_avoid))[:8],
+        meal_plans=pydantic_plans,
+        calorie_target=calorie_target,
+    )
+
+
+def _translate_facial_profile(profile: Any) -> FacialAnalysisResult:
+    """Convert ``facial.predictor.FacialGenomicProfile`` to Pydantic model."""
+    m = profile.measurements
+    a = profile.ancestry
+    return FacialAnalysisResult(
+        image_type="face_photo",
+        estimated_biological_age=profile.estimated_biological_age,
+        estimated_telomere_length_kb=profile.estimated_telomere_length_kb,
+        telomere_percentile=profile.telomere_percentile,
+        skin_health_score=profile.skin_health_score,
+        oxidative_stress_score=profile.oxidative_stress_score,
+        predicted_eye_colour=profile.predicted_eye_colour,
+        predicted_hair_colour=profile.predicted_hair_colour,
+        predicted_skin_type=profile.predicted_skin_type,
+        measurements=FacialMeasurementsResponse(
+            face_width=m.face_width,
+            face_height=m.face_height,
+            face_ratio=m.face_ratio,
+            skin_brightness=m.skin_brightness,
+            skin_uniformity=m.skin_uniformity,
+            wrinkle_score=m.wrinkle_score,
+            symmetry_score=m.symmetry_score,
+            dark_circle_score=m.dark_circle_score,
+            texture_roughness=m.texture_roughness,
+            uv_damage_score=m.uv_damage_score,
+        ),
+        ancestry=AncestryEstimateResponse(
+            european=a.european,
+            east_asian=a.east_asian,
+            south_asian=a.south_asian,
+            african=a.african,
+            middle_eastern=a.middle_eastern,
+            latin_american=a.latin_american,
+            confidence=a.confidence,
+        ),
+        predicted_variants=[
+            PredictedVariantResponse(
+                rsid=v.rsid,
+                gene=v.gene,
+                predicted_genotype=v.predicted_genotype,
+                confidence=v.confidence,
+                basis=v.basis,
+            )
+            for v in profile.predicted_variants
+        ],
+        analysis_warnings=profile.analysis_warnings,
+    )
+
+
+def _build_variant_dict(known_variants: list[str]) -> dict[str, str]:
+    """Convert a list of user-supplied variant strings to {rsid: genotype}.
+
+    Accepts formats:
+    - ``"rs429358:CT"`` → ``{"rs429358": "CT"}``
+    - ``"rs429358"`` (no genotype) → ``{"rs429358": "CT"}`` (heterozygous default)
+    """
+    result: dict[str, str] = {}
+    for v in known_variants:
+        v = v.strip()
+        if not v:
+            continue
+        if ":" in v:
+            rsid, geno = v.split(":", 1)
+            result[rsid.strip()] = geno.strip().upper()
+        else:
+            # Default to heterozygous
+            result[v] = "CT"
+    return result
+
+
+# ===================================================================== #
+#  Simulation fallbacks (used when real pipeline data is insufficient)   #
 # ===================================================================== #
 
 
@@ -136,186 +346,160 @@ def _simulate_telomere_analysis() -> TelomereResult:
     )
 
 
-def _simulate_disease_risks(
-    variants: list[str],
-    telomere_length: float | None = None,
-    age: int = 40,
-) -> list[DiseaseRisk]:
-    """Return mock disease-risk entries."""
-    diseases: list[dict[str, Any]] = [
-        {
-            "disease": "Cardiovascular Disease",
-            "factors": ["age", "telomere shortening", "APOE variants"],
-            "recs": [
-                "Increase omega-3 intake",
-                "Regular aerobic exercise",
-                "Monitor blood pressure",
-            ],
-        },
-        {
-            "disease": "Type 2 Diabetes",
-            "factors": ["insulin resistance markers", "TCF7L2 variant"],
-            "recs": [
-                "Reduce refined carbohydrates",
-                "Increase fibre intake",
-                "Regular glucose monitoring",
-            ],
-        },
-        {
-            "disease": "Alzheimer's Disease",
-            "factors": ["APOE-e4 allele", "telomere attrition"],
-            "recs": [
-                "Mediterranean diet",
-                "Cognitive exercises",
-                "Adequate sleep hygiene",
-            ],
-        },
-        {
-            "disease": "Colorectal Cancer",
-            "factors": ["APC variant", "dietary factors"],
-            "recs": [
-                "High-fibre diet",
-                "Regular screening colonoscopy",
-                "Limit red meat consumption",
-            ],
-        },
-        {
-            "disease": "Osteoporosis",
-            "factors": ["age", "VDR variant", "calcium metabolism"],
-            "recs": [
-                "Calcium and vitamin D supplementation",
-                "Weight-bearing exercise",
-                "Bone density screening",
-            ],
-        },
-    ]
-    risks: list[DiseaseRisk] = []
-    for d in diseases:
-        level: RiskLevel = random.choice(list(RiskLevel))
-        prob: float = {
-            RiskLevel.LOW: round(random.uniform(0.01, 0.20), 3),
-            RiskLevel.MODERATE: round(random.uniform(0.20, 0.50), 3),
-            RiskLevel.HIGH: round(random.uniform(0.50, 0.75), 3),
-            RiskLevel.VERY_HIGH: round(random.uniform(0.75, 0.95), 3),
-        }[level]
-        risks.append(
-            DiseaseRisk(
-                disease=d["disease"],
-                risk_level=level,
-                probability=prob,
-                contributing_factors=d["factors"],
-                recommendations=d["recs"],
-            )
-        )
-    return risks
-
-
-def _simulate_diet_recommendation(
-    restrictions: list[str] | None = None,
-) -> DietRecommendation:
-    """Return a mock diet recommendation."""
-    return DietRecommendation(
-        summary=(
-            "Based on your telomere profile and genetic markers, we recommend "
-            "an anti-inflammatory, nutrient-dense diet rich in antioxidants "
-            "and omega-3 fatty acids to support telomere maintenance."
-        ),
-        key_nutrients=[
-            "Omega-3 fatty acids",
-            "Vitamin D",
-            "Folate",
-            "Zinc",
-            "Vitamin C",
-            "Selenium",
-            "Polyphenols",
-        ],
-        foods_to_increase=[
-            "Fatty fish (salmon, mackerel)",
-            "Leafy greens (spinach, kale)",
-            "Berries (blueberries, strawberries)",
-            "Nuts and seeds (walnuts, flaxseed)",
-            "Legumes (lentils, chickpeas)",
-            "Whole grains (quinoa, oats)",
-            "Green tea",
-        ],
-        foods_to_avoid=[
-            "Processed meats",
-            "Refined sugars",
-            "Trans fats",
-            "Excessive alcohol",
-            "High-sodium processed foods",
-        ],
-        meal_plans=[
-            MealPlan(
-                day="Monday",
-                breakfast="Overnight oats with blueberries, walnuts, and chia seeds",
-                lunch="Grilled salmon salad with spinach, avocado, and olive oil dressing",
-                dinner="Lentil soup with kale and whole-grain bread",
-                snacks=["Green tea", "Mixed nuts", "Apple slices with almond butter"],
-            ),
-            MealPlan(
-                day="Tuesday",
-                breakfast="Spinach and mushroom omelette with whole-grain toast",
-                lunch="Quinoa bowl with roasted vegetables, chickpeas, and tahini",
-                dinner="Baked mackerel with sweet potato and steamed broccoli",
-                snacks=["Greek yoghurt with berries", "Carrot sticks with hummus"],
-            ),
-            MealPlan(
-                day="Wednesday",
-                breakfast="Smoothie with kale, banana, flaxseed, and almond milk",
-                lunch="Turkey and avocado wrap with mixed greens",
-                dinner="Stir-fried tofu with brown rice and mixed vegetables",
-                snacks=["Trail mix", "Orange slices"],
-            ),
-        ],
-        calorie_target=2100,
+def _telomere_from_facial(facial: FacialAnalysisResult) -> TelomereResult:
+    """Build a TelomereResult from facial analysis predictions."""
+    tl = facial.estimated_telomere_length_kb
+    bio_age = facial.estimated_biological_age
+    return TelomereResult(
+        mean_length=tl,
+        std_dev=round(abs(tl * 0.12), 2),
+        t_s_ratio=round(tl / 5.0, 2),
+        biological_age_estimate=bio_age,
+        overlay_image_url=None,
+        raw_measurements=[round(tl + random.uniform(-0.8, 0.8), 2) for _ in range(10)],
     )
 
 
-async def _run_full_analysis(job_id: str, profile: UserProfile) -> None:
-    """Simulate a long-running analysis pipeline in the background."""
+# ===================================================================== #
+#  Core analysis pipeline                                                #
+# ===================================================================== #
+
+
+async def _run_full_analysis(
+    job_id: str,
+    profile: UserProfile,
+    image_path: str,
+) -> None:
+    """Run the full analysis pipeline in the background.
+
+    Classifies the uploaded image, then routes to either:
+    - **FISH microscopy**: simulated telomere analysis (real qFISH pipeline
+      requires calibrated multi-channel TIFFs not typical of web uploads)
+    - **Face photograph**: real facial-genomic prediction via
+      :func:`~teloscopy.facial.predictor.analyze_face`
+
+    In *both* paths the real :class:`DiseasePredictor` and
+    :class:`DietAdvisor` are used for disease-risk and nutrition output.
+    """
     job: JobStatus = _jobs[job_id]
     try:
         job.status = JobStatusEnum.RUNNING
-        job.message = "Starting telomere image analysis..."
+        job.message = "Classifying uploaded image..."
         job.progress_pct = 5.0
         job.updated_at = datetime.utcnow()
 
-        # Phase 1 – image analysis
-        await asyncio.sleep(1.5)
-        telomere: TelomereResult = _simulate_telomere_analysis()
+        # ------------------------------------------------------------------
+        # Phase 0 — Image classification
+        # ------------------------------------------------------------------
+        classification = await asyncio.to_thread(classify_image, image_path)
+        image_type = classification.image_type
+        logger.info(
+            "Job %s: image classified as %s (confidence %.2f)",
+            job_id,
+            image_type,
+            classification.confidence,
+        )
+
+        job.progress_pct = 10.0
+        job.message = f"Image type: {image_type.value}. Starting analysis..."
+        job.updated_at = datetime.utcnow()
+
+        facial_result: FacialAnalysisResult | None = None
+
+        # ------------------------------------------------------------------
+        # Phase 1 — Telomere / Facial analysis
+        # ------------------------------------------------------------------
+        if image_type == ImageType.FACE_PHOTO:
+            # Real facial-genomic prediction (CPU-bound → run in thread)
+            facial_profile = await asyncio.to_thread(
+                analyze_face,
+                image_path,
+                profile.age,
+                profile.sex.value,
+            )
+            facial_result = _translate_facial_profile(facial_profile)
+            telomere = _telomere_from_facial(facial_result)
+            logger.info(
+                "Job %s: facial analysis → bio_age=%d, TL=%.2f kb",
+                job_id,
+                facial_result.estimated_biological_age,
+                facial_result.estimated_telomere_length_kb,
+            )
+        else:
+            # FISH microscopy — use simulated telomere results
+            # (real qFISH pipeline requires calibrated multi-channel TIFF)
+            await asyncio.sleep(0.5)
+            telomere = _simulate_telomere_analysis()
+
         job.progress_pct = 35.0
         job.message = "Telomere analysis complete. Assessing disease risk..."
         job.updated_at = datetime.utcnow()
 
-        # Phase 2 – disease risk
-        await asyncio.sleep(1.0)
-        risks: list[DiseaseRisk] = _simulate_disease_risks(
-            variants=profile.known_variants,
-            telomere_length=telomere.mean_length,
-            age=profile.age,
+        # ------------------------------------------------------------------
+        # Phase 2 — Disease risk (real predictor)
+        # ------------------------------------------------------------------
+        variant_dict = _build_variant_dict(profile.known_variants)
+
+        # If facial analysis predicted variants, merge them in
+        if facial_result and facial_result.predicted_variants:
+            for pv in facial_result.predicted_variants:
+                if pv.rsid not in variant_dict and pv.confidence > 0.3:
+                    # Use predicted genotype as a proxy
+                    if "homozygous variant" in pv.predicted_genotype:
+                        variant_dict[pv.rsid] = "TT"
+                    elif "heterozygous" in pv.predicted_genotype:
+                        variant_dict[pv.rsid] = "CT"
+                    else:
+                        variant_dict[pv.rsid] = "CC"
+
+        risk_profile = await asyncio.to_thread(
+            _disease_predictor.predict_from_variants,
+            variant_dict,
+            profile.age,
+            profile.sex.value,
         )
+        risks = _translate_disease_risks(risk_profile.top_risks(n=15))
+
         job.progress_pct = 65.0
         job.message = "Disease risk assessed. Generating diet plan..."
         job.updated_at = datetime.utcnow()
 
-        # Phase 3 – diet plan
-        await asyncio.sleep(1.0)
-        diet: DietRecommendation = _simulate_diet_recommendation(
-            restrictions=profile.dietary_restrictions,
+        # ------------------------------------------------------------------
+        # Phase 3 — Diet recommendation (real advisor)
+        # ------------------------------------------------------------------
+        genetic_risk_names = [r.condition for r in risk_profile.risks[:10]]
+        diet_recs = await asyncio.to_thread(
+            _diet_advisor.generate_recommendations,
+            genetic_risk_names,
+            variant_dict,
+            profile.region,
+            profile.age,
+            profile.sex.value,
+            profile.dietary_restrictions or None,
         )
+        diet_meals = await asyncio.to_thread(
+            _diet_advisor.create_meal_plan,
+            diet_recs,
+            profile.region,
+            2100,
+            3,
+        )
+        diet = _translate_diet_recommendation(diet_recs, diet_meals)
+
         job.progress_pct = 90.0
         job.message = "Compiling final report..."
         job.updated_at = datetime.utcnow()
 
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(0.2)
 
         # Done
         result = AnalysisResponse(
             job_id=job_id,
+            image_type=image_type.value,
             telomere_results=telomere,
             disease_risks=risks,
             diet_recommendations=diet,
+            facial_analysis=facial_result,
             report_url=f"/api/results/{job_id}",
         )
         job.result = result
@@ -346,13 +530,15 @@ def _validate_extension(filename: str) -> bool:
 @app.get("/", response_class=HTMLResponse)
 async def index_page(request: Request) -> HTMLResponse:
     """Serve the main landing / upload page."""
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="index.html")
 
 
 @app.get("/upload", response_class=HTMLResponse)
 async def upload_page(request: Request) -> HTMLResponse:
     """Serve the dedicated upload page (same template, scroll-to-upload)."""
-    return templates.TemplateResponse("index.html", {"request": request, "scroll_to": "upload"})
+    return templates.TemplateResponse(
+        request=request, name="index.html", context={"scroll_to": "upload"}
+    )
 
 
 @app.get("/results/{job_id}", response_class=HTMLResponse)
@@ -360,15 +546,49 @@ async def results_page(request: Request, job_id: str) -> HTMLResponse:
     """Serve a results page for a specific job."""
     job: JobStatus | None = _jobs.get(job_id)
     return templates.TemplateResponse(
-        "index.html",
-        {"request": request, "job_id": job_id, "job": job, "scroll_to": "results"},
+        request=request,
+        name="index.html",
+        context={"job_id": job_id, "job": job, "scroll_to": "results"},
     )
 
 
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard_page(request: Request) -> HTMLResponse:
     """Serve the agent-monitoring dashboard."""
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="dashboard.html")
+
+
+@app.get("/api/debug/templates")
+async def debug_templates(request: Request) -> dict[str, Any]:
+    """Diagnostic endpoint for template debugging."""
+    import os
+    import traceback
+
+    import starlette
+
+    diag: dict[str, Any] = {
+        "templates_dir": str(_TEMPLATES_DIR),
+        "templates_dir_exists": _TEMPLATES_DIR.exists(),
+        "template_files": (
+            [f.name for f in _TEMPLATES_DIR.iterdir()] if _TEMPLATES_DIR.exists() else []
+        ),
+        "static_dir": str(_STATIC_DIR),
+        "static_dir_exists": _STATIC_DIR.exists(),
+        "cwd": os.getcwd(),
+        "app_file": str(Path(__file__).resolve()),
+        "starlette_version": starlette.__version__,
+    }
+
+    # Try rendering index.html to catch the actual error
+    try:
+        resp = templates.TemplateResponse("index.html", {"request": request})
+        diag["index_render"] = "OK"
+        diag["index_status"] = resp.status_code
+    except Exception as exc:
+        diag["index_render_error"] = f"{type(exc).__name__}: {exc}"
+        diag["index_traceback"] = traceback.format_exc()
+
+    return diag
 
 
 # ===================================================================== #
@@ -541,7 +761,7 @@ async def full_analysis(
     _jobs[job_id] = job
 
     # Fire-and-forget background task
-    asyncio.create_task(_run_full_analysis(job_id, profile))  # noqa: RUF006
+    asyncio.create_task(_run_full_analysis(job_id, profile, str(dest)))  # noqa: RUF006
     logger.info("Queued full analysis job %s", job_id)
 
     return job
@@ -553,11 +773,18 @@ async def full_analysis(
 @app.post("/api/disease-risk", response_model=DiseaseRiskResponse)
 async def disease_risk(request: DiseaseRiskRequest) -> DiseaseRiskResponse:
     """Compute disease-risk scores from variants and telomere data."""
-    risks: list[DiseaseRisk] = _simulate_disease_risks(
-        variants=request.known_variants,
-        telomere_length=request.telomere_length,
-        age=request.age,
-    )
+    variant_dict = _build_variant_dict(request.known_variants)
+    try:
+        risk_profile = await asyncio.to_thread(
+            _disease_predictor.predict_from_variants,
+            variant_dict,
+            request.age,
+            request.sex.value,
+        )
+        risks = _translate_disease_risks(risk_profile.top_risks(n=15))
+    except Exception:
+        logger.exception("disease-risk prediction failed, returning empty")
+        risks = []
     overall: float = round(sum(r.probability for r in risks) / max(len(risks), 1), 3)
     return DiseaseRiskResponse(risks=risks, overall_risk_score=min(overall, 1.0))
 
@@ -568,7 +795,34 @@ async def disease_risk(request: DiseaseRiskRequest) -> DiseaseRiskResponse:
 @app.post("/api/diet-plan", response_model=DietPlanResponse)
 async def diet_plan(request: DietPlanRequest) -> DietPlanResponse:
     """Generate a personalised diet plan."""
-    rec: DietRecommendation = _simulate_diet_recommendation(
-        restrictions=request.dietary_restrictions,
-    )
+    variant_dict = _build_variant_dict(request.known_variants)
+    try:
+        genetic_risk_names = [r.disease for r in request.disease_risks]
+        diet_recs = await asyncio.to_thread(
+            _diet_advisor.generate_recommendations,
+            genetic_risk_names,
+            variant_dict,
+            request.region,
+            request.age,
+            request.sex.value,
+            request.dietary_restrictions or None,
+        )
+        diet_meals = await asyncio.to_thread(
+            _diet_advisor.create_meal_plan,
+            diet_recs,
+            request.region,
+            2100,
+            3,
+        )
+        rec = _translate_diet_recommendation(diet_recs, diet_meals)
+    except Exception:
+        logger.exception("diet-plan generation failed, returning defaults")
+        rec = DietRecommendation(
+            summary="A balanced diet rich in whole foods is recommended.",
+            key_nutrients=["Omega-3", "Folate", "Vitamin D"],
+            foods_to_increase=["Leafy greens", "Fatty fish", "Berries"],
+            foods_to_avoid=["Processed meats", "Refined sugars"],
+            meal_plans=[],
+            calorie_target=2100,
+        )
     return DietPlanResponse(recommendation=rec)

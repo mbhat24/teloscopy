@@ -631,7 +631,7 @@ Additional factors:
 │  │  Mexico: Black beans, nopales               │      │
 │  │  West Africa: Okra, cassava leaves           │      │
 │  │                                               │      │
-│  │  12 geographic regions × 100+ foods           │      │
+│  │  30 geographic regions × 297 foods             │      │
 │  └─────────────────────────────────────────────┘      │
 │                        │                               │
 │                        ▼                               │

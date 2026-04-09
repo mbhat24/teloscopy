@@ -13,6 +13,12 @@ __all__ = [
     "visualisation",
     "genomics",
     "nutrition",
+    "facial",
     "agents",
     "webapp",
+    "ml",
+    "integrations",
+    "clinical",
+    "tracking",
+    "platform",
 ]

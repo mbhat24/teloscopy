@@ -174,7 +174,7 @@ src/teloscopy/
 │   └── synthetic       # Synthetic test image generator
 │
 ├── genomics/           # Disease risk prediction
-│   └── disease_risk    # 63-SNP database, polygenic risk scores
+│   └── disease_risk    # 519-SNP database, polygenic risk scores
 │
 ├── nutrition/          # Diet recommendation engine
 │   └── diet_advisor    # Nutrigenomics + geographic food mapping
@@ -237,10 +237,10 @@ If you provide SNP genotypes (e.g., from 23andMe raw data), Teloscopy uses a bui
 
 Teloscopy generates personalized nutrition plans based on:
 
-1. **Genetic profile** — 25+ gene-nutrient interactions (MTHFR→folate, FTO→calories, LCT→lactose, CYP1A2→caffeine, etc.)
+1. **Genetic profile** — 120+ gene-nutrient interactions (MTHFR→folate, FTO→calories, LCT→lactose, CYP1A2→caffeine, etc.)
 2. **Disease risks** — Protective foods for identified conditions
 3. **Telomere health** — Antioxidant-rich foods that protect telomeres
-4. **Geographic region** — Locally available foods from 12+ regions:
+4. **Geographic region** — Locally available foods from 30 regions:
 
 | Region | Sub-Regions | Example Foods |
 |--------|------------|---------------|

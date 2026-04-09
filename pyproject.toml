@@ -79,6 +79,9 @@ Documentation = "https://github.com/Mahesh2023/teloscopy/blob/main/ARCHITECTURE.
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+"teloscopy.webapp" = ["templates/*.html", "static/**/*"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py311"

@@ -139,16 +139,10 @@ class DietRecommendation(BaseModel):
     calorie_target: int | None = None
 
 
-class AnalysisResponse(BaseModel):
-    """Full analysis response returned once all agents have completed."""
+class _AnalysisResponseBase(BaseModel):
+    """Deprecated — replaced by AnalysisResponse with facial_analysis field."""
 
-    job_id: str
-    telomere_results: TelomereResult
-    disease_risks: list[DiseaseRisk] = Field(default_factory=list)
-    diet_recommendations: DietRecommendation
-    report_url: str | None = None
-    csv_url: str | None = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    pass
 
 
 # ---------------------------------------------------------------------------
@@ -253,6 +247,80 @@ class UploadResponse(BaseModel):
     job_id: str
     filename: str
     message: str = "Image uploaded successfully"
+
+
+# ---------------------------------------------------------------------------
+# Facial Analysis
+# ---------------------------------------------------------------------------
+
+
+class FacialMeasurementsResponse(BaseModel):
+    """Facial feature measurements extracted from photograph."""
+
+    face_width: float = 0.0
+    face_height: float = 0.0
+    face_ratio: float = 0.0
+    skin_brightness: float = 0.0
+    skin_uniformity: float = 0.0
+    wrinkle_score: float = 0.0
+    symmetry_score: float = 0.0
+    dark_circle_score: float = 0.0
+    texture_roughness: float = 0.0
+    uv_damage_score: float = 0.0
+
+
+class AncestryEstimateResponse(BaseModel):
+    """Estimated ancestral composition from facial features."""
+
+    european: float = 0.0
+    east_asian: float = 0.0
+    south_asian: float = 0.0
+    african: float = 0.0
+    middle_eastern: float = 0.0
+    latin_american: float = 0.0
+    confidence: float = 0.0
+
+
+class PredictedVariantResponse(BaseModel):
+    """A predicted genetic variant from facial analysis."""
+
+    rsid: str
+    gene: str
+    predicted_genotype: str
+    confidence: float
+    basis: str
+
+
+class FacialAnalysisResult(BaseModel):
+    """Complete facial-genomic analysis result."""
+
+    image_type: str = "face_photo"
+    estimated_biological_age: int = 0
+    estimated_telomere_length_kb: float = 0.0
+    telomere_percentile: int = 50
+    skin_health_score: float = 0.0
+    oxidative_stress_score: float = 0.0
+    predicted_eye_colour: str = "unknown"
+    predicted_hair_colour: str = "unknown"
+    predicted_skin_type: str = "unknown"
+    measurements: FacialMeasurementsResponse = Field(default_factory=FacialMeasurementsResponse)
+    ancestry: AncestryEstimateResponse = Field(default_factory=AncestryEstimateResponse)
+    predicted_variants: list[PredictedVariantResponse] = Field(default_factory=list)
+    analysis_warnings: list[str] = Field(default_factory=list)
+
+
+class AnalysisResponse(BaseModel):
+    """Full analysis response returned once all agents have completed."""
+
+    job_id: str
+    image_type: str = Field(default="fish_microscopy", description="fish_microscopy or face_photo")
+    telomere_results: TelomereResult
+    disease_risks: list[DiseaseRisk] = Field(default_factory=list)
+    diet_recommendations: DietRecommendation
+    facial_analysis: FacialAnalysisResult | None = None
+    report_url: str | None = None
+    csv_url: str | None = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
 # ---------------------------------------------------------------------------
