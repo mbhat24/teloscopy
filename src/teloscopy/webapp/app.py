@@ -731,9 +731,10 @@ async def _run_full_analysis(
             profile.region,
             2000,
             7,
+            profile.dietary_restrictions or None,
         )
 
-        # Apply dietary restrictions to meal plans (fixes vegetarian/vegan bug)
+        # Safety net: adapt any remaining violations post-hoc.
         if profile.dietary_restrictions:
             diet_meals = await asyncio.to_thread(
                 _diet_advisor.adapt_to_restrictions,
@@ -1248,9 +1249,10 @@ async def diet_plan(request: DietPlanRequest) -> DietPlanResponse:
             request.region,
             request.calorie_target,
             request.meal_plan_days,
+            request.dietary_restrictions or None,
         )
 
-        # Apply dietary restrictions to meal plans
+        # Safety net: adapt any remaining violations post-hoc.
         if request.dietary_restrictions:
             diet_meals = await asyncio.to_thread(
                 _diet_advisor.adapt_to_restrictions,
@@ -1357,6 +1359,7 @@ async def profile_analysis(request: ProfileAnalysisRequest) -> ProfileAnalysisRe
                 request.region,
                 2000,
                 7,
+                request.dietary_restrictions or None,
             )
             if request.dietary_restrictions:
                 diet_meals = await asyncio.to_thread(
@@ -1413,6 +1416,7 @@ async def nutrition_plan(request: NutritionRequest) -> NutritionResponse:
             request.region,
             request.calorie_target,
             request.meal_plan_days,
+            request.dietary_restrictions or None,
         )
         if request.dietary_restrictions:
             diet_meals = await asyncio.to_thread(

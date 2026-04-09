@@ -8944,11 +8944,159 @@ _NUTRIENT_MICRO_KEYS: dict[str, list[str]] = {
 # ---------------------------------------------------------------------------
 
 _RESTRICTION_EXCLUDED_GROUPS: dict[str, set[str]] = {
-    "vegetarian": {"meat", "poultry", "fish"},
-    "vegan": {"meat", "poultry", "fish", "dairy", "eggs"},
+    "vegetarian": {"meat", "poultry", "fish", "seafood"},
+    "vegan": {"meat", "poultry", "fish", "seafood", "dairy", "eggs"},
     "pescatarian": {"meat", "poultry"},
     "gluten_free": set(),  # handled by name-based filtering
 }
+
+# Food groups where ALL items are inherently safe for the restriction,
+# so name-based keyword checks are skipped.  This prevents false positives
+# like "goat cheese" (dairy) being blocked by the "goat" keyword.
+_VEG_SAFE_GROUPS: set[str] = {
+    "grain",
+    "fruit",
+    "vegetable",
+    "legume",
+    "nut",
+    "seed",
+    "oil",
+    "spice",
+    "beverage",
+    "dairy",
+    "eggs",
+}
+_VEGAN_SAFE_GROUPS: set[str] = {
+    "grain",
+    "fruit",
+    "vegetable",
+    "legume",
+    "nut",
+    "seed",
+    "oil",
+    "spice",
+    "beverage",
+}
+
+# Keywords that indicate a dish contains animal products.
+# Applied only to food groups NOT in the safe-groups set above
+# (i.e. "prepared", "protein", "condiment", "snack", etc.).
+_NONVEG_KEYWORDS: set[str] = {
+    # --- direct animal protein names ---
+    "chicken",
+    "beef",
+    "pork",
+    "lamb",
+    "mutton",
+    "goat",
+    "duck",
+    "turkey",
+    "bacon",
+    "ham",
+    "sausage",
+    "steak",
+    "salami",
+    "pepperoni",
+    "prosciutto",
+    "chorizo",
+    "jerky",
+    # --- exotic / game meats ---
+    "bison",
+    "venison",
+    "kangaroo",
+    "ostrich",
+    "emu",
+    "quail",
+    "rabbit",
+    "reindeer",
+    "crocodile",
+    "llama",
+    "wild boar",
+    "guinea pig",
+    "cuy",
+    "frog",
+    "escargot",
+    "snail",
+    "cricket",
+    # --- fish & seafood names ---
+    "fish",
+    "tuna",
+    "salmon",
+    "shrimp",
+    "prawn",
+    "crab",
+    "lobster",
+    "anchov",
+    "sardine",
+    "mackerel",
+    "herring",
+    "squid",
+    "octopus",
+    "mussel",
+    "oyster",
+    "clam",
+    "scallop",
+    # --- dishes that are inherently non-vegetarian ---
+    "ceviche",
+    "rendang",
+    "shawarma",
+    "kebab",
+    "gyoza",
+    "larb",
+    "bolognese",
+    "shepherd",
+    "con carne",
+    "coq au vin",
+    "har gow",
+    "siu mai",
+    "goulash",
+    "massaman",
+    "jambalaya",
+    "moussaka",
+    "mapo",
+    "poke bowl",
+    "paella",
+    "pho",
+    "blt",
+    "lorraine",
+    "nasi goreng",
+    "pad thai",
+    "ramen",
+    "tom yum",
+    "caesar salad",
+}
+
+# Additional keywords for vegan filtering (catches dairy/egg in prepared items).
+_NONVEGAN_EXTRA_KEYWORDS: set[str] = {
+    "cheese",
+    "cream",
+    "yogurt",
+    "paneer",
+    "ghee",
+    "whey",
+    "casein",
+    # Prepared dishes traditionally containing dairy and/or eggs.
+    "kheer",
+    "brioche",
+    "croissant",
+    "french toast",
+    "pancake",
+    "waffle",
+    "spanakopita",
+    "pizza",
+    "shakshuka",
+    "risotto",
+    "scone",
+    "lasagna",
+    "pierogi",
+    "pupusa",
+    "greek salad",
+    "quiche",
+    # Note: "butter" and "egg" are NOT here because they cause
+    # false positives ("peanut butter", "eggplant").  Dairy/egg
+    # food groups are already excluded by group-based filtering.
+}
+_NONVEGAN_KEYWORDS: set[str] = _NONVEG_KEYWORDS | _NONVEGAN_EXTRA_KEYWORDS
 
 _GLUTEN_KEYWORDS: set[str] = {
     "wheat",
@@ -9264,6 +9412,7 @@ class DietAdvisor:
         region: str,
         calories: int = 2000,
         days: int = 7,
+        dietary_restrictions: list[str] | None = None,
     ) -> list[MealPlan]:
         """Create a multi-day meal plan aligned to recommendations and region.
 
@@ -9281,6 +9430,9 @@ class DietAdvisor:
             Daily calorie target (default 2 000).
         days : int
             Number of days to plan (default 7).
+        dietary_restrictions : list[str] | None
+            E.g. ``["vegetarian", "gluten_free"]``.  Foods violating these
+            restrictions are excluded from the candidate pools up-front.
 
         Returns
         -------
@@ -9290,6 +9442,14 @@ class DietAdvisor:
         regional_foods = self._region_index.get(region, self._food_db)
         if not regional_foods:
             regional_foods = self._food_db
+
+        # Pre-filter foods by dietary restrictions so non-veg items
+        # never enter the candidate pools for vegetarian plans, etc.
+        restrictions = dietary_restrictions or []
+        if restrictions:
+            regional_foods = [
+                fi for fi in regional_foods if self._food_passes_restrictions(fi, restrictions)
+            ]
 
         # Score foods by how well they cover recommended nutrients.
         target_nutrients = {r.nutrient for r in recommendations}
@@ -9854,6 +10014,21 @@ class DietAdvisor:
             if excluded_groups and fi.food_group in excluded_groups:
                 return False
 
+            # Name-based keyword check for vegetarian/vegan to catch
+            # non-veg "prepared" dishes (e.g. "butter chicken").
+            # Only applied to food groups NOT in the safe set to avoid
+            # false positives like "goat cheese" (dairy).
+            if restriction == "vegetarian":
+                if fi.food_group not in _VEG_SAFE_GROUPS:
+                    for kw in _NONVEG_KEYWORDS:
+                        if kw in name_lower:
+                            return False
+            elif restriction == "vegan":
+                if fi.food_group not in _VEGAN_SAFE_GROUPS:
+                    for kw in _NONVEGAN_KEYWORDS:
+                        if kw in name_lower:
+                            return False
+
             # Gluten-free: keyword check.
             if restriction == "gluten_free":
                 for kw in _GLUTEN_KEYWORDS:
@@ -9883,10 +10058,12 @@ class DietAdvisor:
         candidates = self._group_index.get(original.food_group, [])
         # Also check adjacent groups.
         fallback_groups = {
-            "meat": ["legume", "fish"],
-            "poultry": ["legume", "fish"],
+            "meat": ["legume", "prepared"],
+            "poultry": ["legume", "prepared"],
             "fish": ["legume"],
+            "seafood": ["legume"],
             "dairy": ["legume", "nut"],
+            "prepared": ["legume", "grain", "vegetable"],
         }
         all_candidates = list(candidates)
         for fg in fallback_groups.get(original.food_group, []):

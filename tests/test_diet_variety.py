@@ -331,3 +331,323 @@ class TestRegionalFoodAppropriateness:
         assert len(only_a) > 0 or len(only_b) > 0, (
             "South India and Northern Europe plans contain identical food sets"
         )
+
+
+# ---------------------------------------------------------------------------
+# Dietary restriction compliance tests
+# ---------------------------------------------------------------------------
+
+# Keywords that indicate non-vegetarian food items.
+# NOTE: The authoritative check is DietAdvisor._food_passes_restrictions().
+# These keywords are a secondary sanity check only.
+_MEAT_FISH_KEYWORDS = {
+    "chicken",
+    "beef",
+    "pork",
+    "lamb",
+    "mutton",
+    "goat",
+    "duck",
+    "turkey",
+    "bacon",
+    "ham",
+    "sausage",
+    "fish",
+    "tuna",
+    "salmon",
+    "shrimp",
+    "prawn",
+    "crab",
+    "lobster",
+    "anchov",
+    "sardine",
+    "mackerel",
+    "herring",
+    "squid",
+    "octopus",
+    "mussel",
+    "oyster",
+    "clam",
+    "scallop",
+    "ceviche",
+    "rendang",
+    "shawarma",
+    "kebab",
+    "gyoza",
+    "larb",
+}
+
+_NONVEG_FOOD_GROUPS = {"meat", "poultry", "fish", "seafood"}
+
+
+def _collect_all_foods(plans):
+    """Extract all (name, food_group) pairs from a list of MealPlans."""
+    items = []
+    for plan in plans:
+        for meal in (plan.breakfast, plan.lunch, plan.dinner, plan.snacks):
+            for food, _ in meal:
+                items.append((food.name, food.food_group))
+    return items
+
+
+class TestVegetarianCompliance:
+    """Vegetarian meal plans must contain zero animal-derived foods."""
+
+    @pytest.fixture(scope="class")
+    def veg_plans_north_india(self, advisor):
+        recs = advisor.generate_recommendations(
+            genetic_risks=["Type 2 diabetes"],
+            variants={"rs1801133": "CT"},
+            region="south_asia_north",
+            age=30,
+            sex="male",
+            dietary_restrictions=["vegetarian"],
+        )
+        return advisor.create_meal_plan(
+            recs,
+            region="south_asia_north",
+            calories=2000,
+            days=30,
+            dietary_restrictions=["vegetarian"],
+        )
+
+    @pytest.fixture(scope="class")
+    def veg_plans_south_india(self, advisor):
+        recs = advisor.generate_recommendations(
+            genetic_risks=["Type 2 diabetes"],
+            variants={},
+            region="south_asia_south",
+            age=25,
+            sex="female",
+            dietary_restrictions=["vegetarian"],
+        )
+        return advisor.create_meal_plan(
+            recs,
+            region="south_asia_south",
+            calories=1800,
+            days=30,
+            dietary_restrictions=["vegetarian"],
+        )
+
+    def test_no_nonveg_food_groups_north(self, veg_plans_north_india):
+        """No meat/poultry/fish/seafood food groups in vegetarian plan."""
+        items = _collect_all_foods(veg_plans_north_india)
+        violations = [(n, g) for n, g in items if g in _NONVEG_FOOD_GROUPS]
+        assert violations == [], f"Non-veg food groups found: {violations}"
+
+    def test_no_nonveg_food_groups_south(self, veg_plans_south_india):
+        items = _collect_all_foods(veg_plans_south_india)
+        violations = [(n, g) for n, g in items if g in _NONVEG_FOOD_GROUPS]
+        assert violations == [], f"Non-veg food groups found: {violations}"
+
+    def test_no_nonveg_keywords_in_names_north(self, veg_plans_north_india):
+        """No prepared dishes with meat/fish keywords (e.g. 'butter chicken')."""
+        items = _collect_all_foods(veg_plans_north_india)
+        violations = []
+        for name, group in items:
+            name_lower = name.lower()
+            for kw in _MEAT_FISH_KEYWORDS:
+                if kw in name_lower:
+                    violations.append(name)
+                    break
+        assert violations == [], f"Non-veg keywords in food names: {violations}"
+
+    def test_no_nonveg_keywords_in_names_south(self, veg_plans_south_india):
+        items = _collect_all_foods(veg_plans_south_india)
+        violations = []
+        for name, group in items:
+            name_lower = name.lower()
+            for kw in _MEAT_FISH_KEYWORDS:
+                if kw in name_lower:
+                    violations.append(name)
+                    break
+        assert violations == [], f"Non-veg keywords in food names: {violations}"
+
+    def test_butter_chicken_not_in_veg_plan(self, veg_plans_north_india):
+        """Specific regression test: butter chicken must never appear."""
+        items = _collect_all_foods(veg_plans_north_india)
+        names = {n.lower() for n, _ in items}
+        assert "butter chicken" not in names, "Butter chicken appeared in vegetarian plan!"
+
+    def test_veg_plan_still_has_variety(self, veg_plans_north_india):
+        """Vegetarian plan should still have reasonable food variety."""
+        items = _collect_all_foods(veg_plans_north_india)
+        unique_names = {n for n, _ in items}
+        assert len(unique_names) > 20, (
+            f"Vegetarian plan lacks variety: only {len(unique_names)} unique foods"
+        )
+
+    def test_veg_plan_reasonable_calories(self, veg_plans_north_india):
+        """Each day should still hit ~1600-2400 calorie range."""
+        for plan in veg_plans_north_india:
+            total = sum(
+                f.calories_per_100g * (g / 100.0)
+                for meal in (plan.breakfast, plan.lunch, plan.dinner, plan.snacks)
+                for f, g in meal
+            )
+            assert 1200 <= total <= 2800, (
+                f"Day {plan.day}: {total:.0f} cal outside acceptable range"
+            )
+
+
+class TestVeganCompliance:
+    """Vegan plans must also exclude dairy and eggs."""
+
+    @pytest.fixture(scope="class")
+    def vegan_plans(self, advisor):
+        recs = advisor.generate_recommendations(
+            genetic_risks=["Coronary heart disease"],
+            variants={},
+            region="northern_europe",
+            age=35,
+            sex="female",
+            dietary_restrictions=["vegan"],
+        )
+        return advisor.create_meal_plan(
+            recs,
+            region="northern_europe",
+            calories=2000,
+            days=14,
+            dietary_restrictions=["vegan"],
+        )
+
+    def test_no_animal_food_groups(self, vegan_plans):
+        items = _collect_all_foods(vegan_plans)
+        banned = _NONVEG_FOOD_GROUPS | {"dairy", "eggs"}
+        violations = [(n, g) for n, g in items if g in banned]
+        assert violations == [], f"Animal food groups in vegan plan: {violations}"
+
+    def test_no_animal_keywords(self, vegan_plans):
+        _vegan_kw = _MEAT_FISH_KEYWORDS | {
+            "cheese",
+            "cream",
+            "butter",
+            "yogurt",
+            "paneer",
+            "egg",
+            "ghee",
+            "whey",
+        }
+        items = _collect_all_foods(vegan_plans)
+        violations = []
+        for name, _ in items:
+            name_lower = name.lower()
+            for kw in _vegan_kw:
+                if kw in name_lower:
+                    violations.append(name)
+                    break
+        assert violations == [], f"Animal keywords in vegan plan: {violations}"
+
+
+class TestAdaptToRestrictions:
+    """Test the post-hoc adapt_to_restrictions safety net."""
+
+    def test_adapt_removes_chicken_from_existing_plan(self, advisor):
+        """If a plan was generated without restrictions, adapt should fix it."""
+        recs = advisor.generate_recommendations(
+            genetic_risks=["Type 2 diabetes"],
+            variants={},
+            region="south_asia_north",
+            age=30,
+            sex="male",
+        )
+        # Generate without restrictions.
+        plans = advisor.create_meal_plan(
+            recs,
+            region="south_asia_north",
+            calories=2000,
+            days=7,
+        )
+        # Now adapt to vegetarian.
+        adapted = advisor.adapt_to_restrictions(plans, ["vegetarian"])
+        items = _collect_all_foods(adapted)
+        violations = [(n, g) for n, g in items if g in _NONVEG_FOOD_GROUPS]
+        kw_violations = []
+        for name, _ in items:
+            name_lower = name.lower()
+            for kw in _MEAT_FISH_KEYWORDS:
+                if kw in name_lower:
+                    kw_violations.append(name)
+                    break
+        assert violations == [], f"Non-veg groups after adapt: {violations}"
+        assert kw_violations == [], f"Non-veg keywords after adapt: {kw_violations}"
+
+
+class TestMultipleRegionsVegetarian:
+    """Vegetarian compliance should hold across ALL 30 regions."""
+
+    REGIONS = [
+        "south_asia_north",
+        "south_asia_south",
+        "south_asia_east",
+        "south_asia_west",
+        "east_asia",
+        "southeast_asia",
+        "middle_east",
+        "mediterranean",
+        "northern_europe",
+        "sub_saharan_africa",
+        "latin_america",
+        "north_america",
+        "central_asia",
+        "west_africa",
+        "east_africa",
+        "southern_africa",
+        "north_africa",
+        "caribbean",
+        "south_america",
+        "pacific_islands",
+        "eastern_europe",
+        "western_europe",
+        "central_america",
+        "australian",
+        "nordic",
+        "balkans",
+        "caucasus",
+        "central_europe",
+        "andean",
+        "iberian",
+    ]
+
+    @pytest.fixture(scope="class", params=REGIONS)
+    def veg_plans_by_region(self, request, advisor):
+        region = request.param
+        recs = advisor.generate_recommendations(
+            genetic_risks=["Type 2 diabetes"],
+            variants={},
+            region=region,
+            age=30,
+            sex="male",
+            dietary_restrictions=["vegetarian"],
+        )
+        plans = advisor.create_meal_plan(
+            recs,
+            region=region,
+            calories=2000,
+            days=7,
+            dietary_restrictions=["vegetarian"],
+        )
+        return region, plans
+
+    def test_no_nonveg_items_any_region(self, veg_plans_by_region):
+        """Every food item must pass the actual vegetarian filter."""
+        region, plans = veg_plans_by_region
+        _advisor = DietAdvisor()
+        violations = []
+        for plan in plans:
+            for meal_name, meal in [
+                ("breakfast", plan.breakfast),
+                ("lunch", plan.lunch),
+                ("dinner", plan.dinner),
+                ("snacks", plan.snacks),
+            ]:
+                for food, _ in meal:
+                    if food.food_group in _NONVEG_FOOD_GROUPS:
+                        violations.append(
+                            f"Day {plan.day} {meal_name}: {food.name} (group={food.food_group})"
+                        )
+                    if not _advisor._food_passes_restrictions(food, ["vegetarian"]):
+                        violations.append(
+                            f"Day {plan.day} {meal_name}: {food.name} (filter_rejected)"
+                        )
+        assert violations == [], f"Region {region}: non-veg items found: {violations}"
