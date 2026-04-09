@@ -33,7 +33,7 @@ RUN apt-get update && \
 WORKDIR /build
 
 # Install Python dependencies first (layer caching optimisation)
-COPY requirements*.txt pyproject.toml setup.py setup.cfg* ./
+COPY requirements*.txt pyproject.toml ./
 COPY src/ ./src/
 
 # Build a wheel cache so the runtime stage can install without a compiler
@@ -47,7 +47,7 @@ FROM python:3.12-slim
 
 LABEL maintainer="Teloscopy Contributors" \
       description="Teloscopy gene-sequencing analysis platform" \
-      version="0.1.0"
+      version="2.0.0"
 
 # Prevent Python from writing .pyc files and enable unbuffered stdout/stderr
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -71,7 +71,7 @@ WORKDIR /app
 # Copy pre-built wheels from the builder stage and install them
 COPY --from=builder /build/wheels /tmp/wheels
 COPY --from=builder /build/src ./src
-COPY --from=builder /build/pyproject.toml /build/setup.py /build/setup.cfg* ./
+COPY --from=builder /build/pyproject.toml ./
 
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir --no-index --find-links /tmp/wheels /tmp/wheels/*.whl && \
