@@ -13,10 +13,13 @@ from __future__ import annotations
 
 import asyncio
 import collections
+import hashlib
+import hmac
 import logging
 import math
 import os
 import random
+import secrets
 import threading
 import time
 import traceback
@@ -26,12 +29,15 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import (
+    Cookie,
     Depends,
     FastAPI,
     File,
     Form,
+    Header,
     HTTPException,
     Request,
+    Response,
     UploadFile,
     status,
 )
@@ -268,6 +274,160 @@ def rate_limit(max_requests: int, window_seconds: int = 60):
 
 
 # ---------------------------------------------------------------------------
+# Server-side consent enforcement (DPDP Act 2023 Section 6)
+# ---------------------------------------------------------------------------
+
+# HMAC secret for signing consent tokens — generated once per process (or
+# loaded from env).  Tokens survive for the lifetime of the running server.
+_CONSENT_SECRET: bytes = os.getenv(
+    "TELOSCOPY_CONSENT_SECRET", secrets.token_hex(32)
+).encode()
+
+# In-memory consent store: token → {session_id, purposes, granted_at, withdrawn}
+_consent_store: dict[str, dict[str, Any]] = {}
+_consent_store_lock: threading.Lock = threading.Lock()
+
+# Tokens older than 24 hours require re-consent.
+_CONSENT_TOKEN_TTL: float = 86_400.0
+
+# Set of session_ids that have withdrawn consent — checked on every request.
+_withdrawn_sessions: set[str] = set()
+
+
+def _sign_consent_token(session_id: str, purposes: list[str]) -> str:
+    """Create an HMAC-signed consent token encoding session + purposes."""
+    timestamp = str(int(time.time()))
+    payload = f"{session_id}:{','.join(sorted(purposes))}:{timestamp}"
+    sig = hmac.new(_CONSENT_SECRET, payload.encode(), hashlib.sha256).hexdigest()[:32]
+    import base64
+    token = base64.urlsafe_b64encode(f"{payload}:{sig}".encode()).decode()
+    return token
+
+
+def _verify_consent_token(token: str) -> dict[str, Any] | None:
+    """Verify an HMAC-signed consent token.  Returns payload dict or None."""
+    import base64
+    try:
+        decoded = base64.urlsafe_b64decode(token.encode()).decode()
+        parts = decoded.rsplit(":", 1)
+        if len(parts) != 2:
+            return None
+        payload_str, sig = parts
+        expected_sig = hmac.new(
+            _CONSENT_SECRET, payload_str.encode(), hashlib.sha256
+        ).hexdigest()[:32]
+        if not hmac.compare_digest(sig, expected_sig):
+            return None
+        payload_parts = payload_str.split(":", 2)
+        if len(payload_parts) != 3:
+            return None
+        session_id, purposes_str, timestamp_str = payload_parts
+        timestamp = int(timestamp_str)
+        # Check token TTL
+        if time.time() - timestamp > _CONSENT_TOKEN_TTL:
+            return None
+        # Check if consent was withdrawn
+        if session_id in _withdrawn_sessions:
+            return None
+        return {
+            "session_id": session_id,
+            "purposes": purposes_str.split(",") if purposes_str else [],
+            "granted_at": timestamp,
+        }
+    except Exception:
+        return None
+
+
+def require_consent(*required_purposes: str):
+    """FastAPI dependency that enforces server-side consent verification.
+
+    Checks for a consent token in the ``X-Consent-Token`` header or
+    ``consent_token`` cookie.  The token must be a valid, non-expired,
+    non-withdrawn HMAC-signed token that includes all *required_purposes*.
+
+    Usage::
+
+        @app.post("/endpoint", dependencies=[Depends(require_consent("health_report"))])
+        async def my_endpoint(): ...
+
+    Raises :class:`~fastapi.HTTPException` with 403 if consent is missing
+    or insufficient.
+    """
+
+    async def _check_consent(
+        request: Request,
+        x_consent_token: str | None = Header(None),
+        consent_token: str | None = Cookie(None),
+    ) -> None:
+        token = x_consent_token or consent_token
+        if not token:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=(
+                    "Consent required.  Please accept the privacy notice and "
+                    "terms of service before using this endpoint.  Submit your "
+                    "consent via POST /api/legal/consent to obtain a consent token."
+                ),
+            )
+        payload = _verify_consent_token(token)
+        if payload is None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=(
+                    "Consent token is invalid, expired, or has been withdrawn.  "
+                    "Please re-submit consent via POST /api/legal/consent."
+                ),
+            )
+        # Check that all required purposes are covered
+        granted = set(payload.get("purposes", []))
+        missing = set(required_purposes) - granted
+        if missing:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=(
+                    f"Consent not granted for required purpose(s): "
+                    f"{', '.join(sorted(missing))}.  Please update your consent "
+                    f"via POST /api/legal/consent."
+                ),
+            )
+        # Attach consent info to request state for downstream use
+        request.state.consent_session_id = payload["session_id"]
+        request.state.consent_purposes = payload["purposes"]
+
+    return _check_consent
+
+
+# ---------------------------------------------------------------------------
+# CSRF protection
+# ---------------------------------------------------------------------------
+
+
+async def _check_csrf(request: Request) -> None:
+    """Verify that state-changing requests include X-Requested-With header.
+
+    This is a simple CSRF mitigation: browsers will not add custom headers
+    on cross-origin form submissions.  The frontend's ``fetch()`` calls
+    must include ``X-Requested-With: XMLHttpRequest``.
+    """
+    if request.method in ("GET", "HEAD", "OPTIONS"):
+        return
+    # Allow consent/legal endpoints without CSRF (they need to be accessible
+    # from the consent modal before JS is fully wired up)
+    if request.url.path.startswith("/api/legal/"):
+        return
+    xrw = request.headers.get("x-requested-with", "")
+    content_type = request.headers.get("content-type", "")
+    # Accept requests with X-Requested-With header, or JSON content type
+    # (custom content types cannot be set by cross-origin forms)
+    if xrw or "application/json" in content_type or "multipart/form-data" in content_type:
+        return
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="CSRF validation failed. Include X-Requested-With header.",
+    )
+
+
+# ---------------------------------------------------------------------------
 # FastAPI application
 # ---------------------------------------------------------------------------
 
@@ -327,7 +487,37 @@ async def security_headers_middleware(request: Request, call_next: Any) -> Any:
     response.headers["Content-Security-Policy"] = _CSP_POLICY
     if request.url.scheme == "https" or request.headers.get("x-forwarded-proto") == "https":
         response.headers["Strict-Transport-Security"] = "max-age=63072000; includeSubDomains"
-    # TODO: Add CSRF protection (e.g. X-Requested-With header check) when auth is added
+    return response
+
+
+@app.middleware("http")
+async def csrf_middleware(request: Request, call_next: Any) -> Any:
+    """Enforce CSRF protection on state-changing requests.
+
+    Rejects POST/PUT/DELETE/PATCH requests that lack a valid content-type
+    or X-Requested-With header, unless the path is exempt (e.g. legal
+    endpoints that must be accessible from the consent modal).
+    """
+    if request.method not in ("GET", "HEAD", "OPTIONS"):
+        path = request.url.path
+        # Exempt paths: legal/consent endpoints, OpenAPI docs
+        exempt = (
+            path.startswith("/api/legal/")
+            or path.startswith("/docs")
+            or path.startswith("/redoc")
+            or path.startswith("/openapi")
+        )
+        if not exempt:
+            xrw = request.headers.get("x-requested-with", "")
+            ct = request.headers.get("content-type", "")
+            # Custom headers/content-types can't be set by cross-origin HTML forms
+            if not (xrw or "application/json" in ct or "multipart/form-data" in ct):
+                from fastapi.responses import JSONResponse
+                return JSONResponse(
+                    status_code=403,
+                    content={"error": {"code": 403, "message": "CSRF validation failed. Include appropriate Content-Type or X-Requested-With header."}},
+                )
+    response = await call_next(request)
     return response
 
 
@@ -1222,19 +1412,46 @@ async def get_legal_notice():
 
 
 @app.post("/api/legal/consent", tags=["Legal"])
-async def record_consent(bundle: ConsentBundle, request: Request):
+async def record_consent(bundle: ConsentBundle, request: Request, response: Response):
     """Record explicit consent from the Data Principal.
     
     Per DPDP Act 2023 Section 6, consent must be free, specific, informed,
     unconditional, and unambiguous with a clear affirmative action.
+    
+    Returns a signed ``consent_token`` that must be included in subsequent
+    API requests (via ``X-Consent-Token`` header or ``consent_token`` cookie)
+    to prove that consent was obtained.
     """
-    import hashlib
+    # Validate that required consents are actually granted
+    granted_purposes = [c.purpose for c in bundle.consents if c.granted]
+    if not granted_purposes:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="At least one consent purpose must be granted.",
+        )
+    if not bundle.data_principal_age_confirmed:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Age confirmation is required (DPDP Act Section 9).",
+        )
     
     client_ip = request.client.host if request.client else "unknown"
     ip_hash = hashlib.sha256(client_ip.encode()).hexdigest()[:16]
     
     for consent in bundle.consents:
         consent.ip_hash = ip_hash
+    
+    # Generate signed consent token
+    consent_token = _sign_consent_token(bundle.session_id, granted_purposes)
+    
+    # Store in server-side consent store
+    with _consent_store_lock:
+        _consent_store[bundle.session_id] = {
+            "purposes": granted_purposes,
+            "granted_at": datetime.utcnow().isoformat(),
+            "ip_hash": ip_hash,
+            "token": consent_token,
+        }
     
     record = {
         "session_id": bundle.session_id,
@@ -1248,22 +1465,43 @@ async def record_consent(bundle: ConsentBundle, request: Request):
     _consent_log.append(record)
     logger.info("Consent recorded for session %s with %d purposes", bundle.session_id, len(bundle.consents))
     
+    # Set consent token as cookie (HttpOnly, Secure, SameSite=Strict)
+    response.set_cookie(
+        key="consent_token",
+        value=consent_token,
+        httponly=True,
+        secure=request.url.scheme == "https" or request.headers.get("x-forwarded-proto") == "https",
+        samesite="strict",
+        max_age=int(_CONSENT_TOKEN_TTL),
+        path="/api/",
+    )
+    
     return {
         "status": "recorded",
         "session_id": bundle.session_id,
-        "purposes_consented": [c.purpose for c in bundle.consents if c.granted],
-        "message": "Your consent has been recorded. You may withdraw consent at any time.",
+        "consent_token": consent_token,
+        "purposes_consented": granted_purposes,
+        "message": "Your consent has been recorded. Include the consent_token in subsequent API requests. You may withdraw consent at any time.",
     }
 
 
 @app.post("/api/legal/consent/withdraw", tags=["Legal"])
-async def withdraw_consent(session_id: str = "", purposes: list[str] = []):
+async def withdraw_consent(session_id: str = "", purposes: list[str] = [], response: Response = None):
     """Withdraw consent per DPDP Act 2023 Section 6(6).
     
     The Data Principal may withdraw consent at any time, with the same
     ease as it was given. Withdrawal does not affect lawfulness of
     processing done before withdrawal.
+    
+    This invalidates the consent token server-side, so subsequent API
+    calls using that session's token will be rejected with 403.
     """
+    # Invalidate the session's consent server-side
+    if session_id:
+        _withdrawn_sessions.add(session_id)
+        with _consent_store_lock:
+            _consent_store.pop(session_id, None)
+    
     record = {
         "session_id": session_id,
         "purposes_withdrawn": purposes,
@@ -1272,15 +1510,20 @@ async def withdraw_consent(session_id: str = "", purposes: list[str] = []):
     _consent_log.append(record)
     logger.info("Consent withdrawn for session %s, purposes: %s", session_id, purposes)
     
+    # Clear the consent cookie
+    if response is not None:
+        response.delete_cookie(key="consent_token", path="/api/")
+    
     return {
         "status": "withdrawn",
         "session_id": session_id,
         "purposes_withdrawn": purposes,
         "message": (
             "Your consent has been withdrawn. No further processing will occur "
-            "for the specified purposes. Note: withdrawal does not affect the "
-            "lawfulness of processing already completed. Since Teloscopy processes "
-            "data ephemerally, no persistent data needs to be deleted."
+            "for the specified purposes. Your consent token has been invalidated. "
+            "Note: withdrawal does not affect the lawfulness of processing already "
+            "completed. Since Teloscopy processes data ephemerally, no persistent "
+            "data needs to be deleted."
         ),
     }
 
@@ -1322,7 +1565,9 @@ async def submit_grievance(grievance: GrievanceRequest):
     The Grievance Officer will acknowledge and respond within 30 days.
     """
     _grievance_log.append(grievance.dict())
-    logger.info("Grievance %s received from %s", grievance.grievance_id, grievance.email)
+    # Redact email in logs to avoid PII leakage (log hash instead)
+    email_hash = hashlib.sha256(grievance.email.encode()).hexdigest()[:8] if grievance.email else "none"
+    logger.info("Grievance %s received from [email_hash=%s]", grievance.grievance_id, email_hash)
     
     return GrievanceResponse(grievance_id=grievance.grievance_id)
 
@@ -1901,7 +2146,7 @@ async def agents_status() -> AgentSystemStatus:
     tags=["Analysis"],
     summary="Upload microscopy image",
     description="Upload a microscopy or face photograph image and receive a job_id for tracking subsequent analysis.",
-    dependencies=[Depends(rate_limit(10, 60))],
+    dependencies=[Depends(rate_limit(10, 60)), Depends(require_consent("telomere_analysis", "facial_analysis"))],
 )
 async def upload_image(file: UploadFile = File(...)) -> UploadResponse:
     """Upload a microscopy image and receive a ``job_id``."""
@@ -1959,7 +2204,7 @@ async def get_job_status(job_id: str) -> JobStatus:
     tags=["Analysis"],
     summary="Get analysis results",
     description="Return the full analysis results (telomere, disease risk, nutrition) for a completed job.",
-    dependencies=[Depends(rate_limit(60, 60))],
+    dependencies=[Depends(rate_limit(60, 60)), Depends(require_consent("telomere_analysis"))],
 )
 async def get_job_results(job_id: str) -> AnalysisResponse:
     """Return the full results of a completed analysis job."""
@@ -1987,7 +2232,7 @@ async def get_job_results(job_id: str) -> AnalysisResponse:
     tags=["Analysis"],
     summary="Run full analysis pipeline",
     description="Upload an image with user profile data and run the complete analysis pipeline (telomere measurement, disease risk, nutrition plan).",
-    dependencies=[Depends(rate_limit(20, 60))],
+    dependencies=[Depends(rate_limit(20, 60)), Depends(require_consent("telomere_analysis", "disease_risk", "nutrition_plan"))],
 )
 async def full_analysis(
     file: UploadFile = File(...),
@@ -2056,7 +2301,7 @@ async def full_analysis(
     tags=["Disease Risk"],
     summary="Predict disease risks",
     description="Compute disease-risk scores from known genetic variants, age, sex, and region without requiring an image upload.",
-    dependencies=[Depends(rate_limit(20, 60))],
+    dependencies=[Depends(rate_limit(20, 60)), Depends(require_consent("disease_risk", "genetic_data"))],
 )
 async def disease_risk(request: DiseaseRiskRequest) -> DiseaseRiskResponse:
     """Compute disease-risk scores from variants and telomere data."""
@@ -2085,7 +2330,7 @@ async def disease_risk(request: DiseaseRiskRequest) -> DiseaseRiskResponse:
     tags=["Nutrition"],
     summary="Generate diet plan",
     description="Generate a personalised diet plan based on genetic risk profile, dietary restrictions, and regional food preferences.",
-    dependencies=[Depends(rate_limit(20, 60))],
+    dependencies=[Depends(rate_limit(20, 60)), Depends(require_consent("nutrition_plan"))],
 )
 async def diet_plan(request: DietPlanRequest) -> DietPlanResponse:
     """Generate a personalised diet plan."""
@@ -2146,7 +2391,7 @@ async def diet_plan(request: DietPlanRequest) -> DietPlanResponse:
     tags=["Analysis"],
     summary="Validate image",
     description="Validate an uploaded image before analysis — checks format, dimensions, and classifies as face photo or microscopy image.",
-    dependencies=[Depends(rate_limit(10, 60))],
+    dependencies=[Depends(rate_limit(10, 60)), Depends(require_consent("telomere_analysis"))],
 )
 async def validate_image(file: UploadFile = File(...)) -> ImageValidationResponse:
     """Validate an uploaded image before analysis.
@@ -2178,7 +2423,7 @@ async def validate_image(file: UploadFile = File(...)) -> ImageValidationRespons
     tags=["Analysis"],
     summary="Profile-only analysis",
     description="Run disease-risk and nutrition analysis using only user-provided details (no image upload required).",
-    dependencies=[Depends(rate_limit(20, 60))],
+    dependencies=[Depends(rate_limit(20, 60)), Depends(require_consent("disease_risk", "nutrition_plan", "profile_data"))],
 )
 async def profile_analysis(request: ProfileAnalysisRequest) -> ProfileAnalysisResponse:
     """Run disease-risk and nutrition analysis using only user-provided details.
@@ -2256,7 +2501,7 @@ async def profile_analysis(request: ProfileAnalysisRequest) -> ProfileAnalysisRe
     tags=["Nutrition"],
     summary="Personalised nutrition plan",
     description="Generate a personalised nutrition plan from user details including health conditions, dietary restrictions, and genetic variants.",
-    dependencies=[Depends(rate_limit(20, 60))],
+    dependencies=[Depends(rate_limit(20, 60)), Depends(require_consent("nutrition_plan"))],
 )
 async def nutrition_plan(request: NutritionRequest) -> NutritionResponse:
     """Generate a personalised nutrition plan from user details.
@@ -2324,7 +2569,7 @@ async def nutrition_plan(request: NutritionRequest) -> NutritionResponse:
         "get a personalised health analysis with condition detection, "
         "health scoring, and a diet plan tailored to your findings."
     ),
-    dependencies=[Depends(rate_limit(10, 60))],
+    dependencies=[Depends(rate_limit(10, 60)), Depends(require_consent("health_report"))],
 )
 async def health_checkup(request: HealthCheckupRequest) -> HealthCheckupResponse:
     """Analyse health checkup data and return personalised diet plan."""
@@ -2357,7 +2602,7 @@ _MAX_REPORT_BYTES: int = 20 * 1024 * 1024  # 20 MiB
         "of extracted lab values. Use this to review and correct values "
         "before running the full health checkup analysis."
     ),
-    dependencies=[Depends(rate_limit(10, 60))],
+    dependencies=[Depends(rate_limit(10, 60)), Depends(require_consent("health_report"))],
 )
 async def parse_report_preview(file: UploadFile = File(...)) -> ReportParsePreview:
     """Parse an uploaded lab report and return extracted values for review.
@@ -2450,7 +2695,7 @@ async def parse_report_preview(file: UploadFile = File(...)) -> ReportParsePrevi
         "automatically and values are used for condition detection, health "
         "scoring, and personalised diet planning."
     ),
-    dependencies=[Depends(rate_limit(10, 60))],
+    dependencies=[Depends(rate_limit(10, 60)), Depends(require_consent("health_report"))],
 )
 async def health_checkup_upload(
     file: UploadFile = File(...),

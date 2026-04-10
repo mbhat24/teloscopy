@@ -29,6 +29,7 @@ import json
 import logging
 import math
 import os
+import re
 import secrets as _secrets
 import time
 import uuid
@@ -403,7 +404,11 @@ class ImageUploadHandler:
         upload_id = uuid.uuid4().hex
         checksum = hashlib.sha256(data).hexdigest()
 
-        user_dir = os.path.join(self._upload_dir, user_id or "_anonymous")
+        # Sanitize user_id to prevent path traversal
+        safe_user_id = re.sub(r'[^a-zA-Z0-9_@.\-]', '_', user_id or "_anonymous")
+        if '..' in safe_user_id:
+            safe_user_id = safe_user_id.replace('..', '__')
+        user_dir = os.path.join(self._upload_dir, safe_user_id)
         os.makedirs(user_dir, exist_ok=True)
         path = os.path.join(user_dir, f"{upload_id}{ext}")
 
@@ -638,7 +643,7 @@ class MobileAPIController:
 
     Usage::
 
-        ctrl = MobileAPIController(secret="my-secret")
+        ctrl = MobileAPIController(secret=os.environ["TELOSCOPY_SECRET_KEY"])
         tokens = ctrl.login("user@example.com", "password123")
         result = ctrl.upload_image(tokens.access_token, image_bytes, "image/png")
         history = ctrl.get_analysis_history(tokens.access_token, page=1)

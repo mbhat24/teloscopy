@@ -5,6 +5,7 @@ from __future__ import annotations
 import io
 import os
 import sys
+import uuid
 
 import pytest
 
@@ -48,6 +49,29 @@ def _dummy_image_bytes(filename: str = "test.tif") -> tuple[str, io.BytesIO, str
     return (filename, io.BytesIO(content), "image/tiff")
 
 
+def _obtain_consent(client: TestClient) -> str:
+    """Submit full consent and return the consent token."""
+    purposes = [
+        "telomere_analysis", "disease_risk", "nutrition_plan",
+        "facial_analysis", "health_report", "genetic_data", "profile_data",
+    ]
+    bundle = {
+        "session_id": str(uuid.uuid4()),
+        "consents": [{"purpose": p, "granted": True, "notice_version": "1.0"} for p in purposes],
+        "data_principal_age_confirmed": True,
+        "privacy_policy_version": "1.0",
+        "terms_version": "1.0",
+    }
+    resp = client.post("/api/legal/consent", json=bundle)
+    assert resp.status_code == 200
+    return resp.json()["consent_token"]
+
+
+def _ch(token: str) -> dict[str, str]:
+    """Return consent headers dict."""
+    return {"X-Consent-Token": token}
+
+
 # ---------------------------------------------------------------------------
 # Health endpoint
 # ---------------------------------------------------------------------------
@@ -79,9 +103,11 @@ class TestUploadEndpoint:
 
     def test_upload_valid_image(self, client):
         """Uploading a .tif file should return 201 with job_id."""
+        token = _obtain_consent(client)
         resp = client.post(
             "/api/upload",
             files={"file": _dummy_image_bytes("sample.tif")},
+            headers=_ch(token),
         )
         assert resp.status_code == 201
         data = resp.json()
@@ -90,25 +116,31 @@ class TestUploadEndpoint:
 
     def test_upload_invalid_extension(self, client):
         """A disallowed extension should return 400."""
+        token = _obtain_consent(client)
         resp = client.post(
             "/api/upload",
             files={"file": ("bad.txt", io.BytesIO(b"hello"), "text/plain")},
+            headers=_ch(token),
         )
         assert resp.status_code == 400
 
     def test_upload_png(self, client):
         """PNG is an allowed extension."""
+        token = _obtain_consent(client)
         resp = client.post(
             "/api/upload",
             files={"file": _dummy_image_bytes("sample.png")},
+            headers=_ch(token),
         )
         assert resp.status_code == 201
 
     def test_upload_jpg(self, client):
         """JPG is an allowed extension."""
+        token = _obtain_consent(client)
         resp = client.post(
             "/api/upload",
             files={"file": _dummy_image_bytes("photo.jpg")},
+            headers=_ch(token),
         )
         assert resp.status_code == 201
 
@@ -128,9 +160,11 @@ class TestStatusEndpoint:
 
     def test_existing_job_returns_200(self, client):
         """After uploading, the job should be queryable."""
+        token = _obtain_consent(client)
         upload_resp = client.post(
             "/api/upload",
             files={"file": _dummy_image_bytes("test.tif")},
+            headers=_ch(token),
         )
         job_id = upload_resp.json()["job_id"]
 
@@ -151,6 +185,7 @@ class TestAnalyzeEndpoint:
 
     def test_analyze_valid_input(self, client):
         """A valid multipart form should return 202 (accepted)."""
+        token = _obtain_consent(client)
         resp = client.post(
             "/api/analyze",
             files={"file": _dummy_image_bytes("analysis.tif")},
@@ -161,6 +196,7 @@ class TestAnalyzeEndpoint:
                 "dietary_restrictions": "vegetarian,gluten_free",
                 "known_variants": "rs429358,rs7903146",
             },
+            headers=_ch(token),
         )
         assert resp.status_code == 202
         data = resp.json()
@@ -169,6 +205,7 @@ class TestAnalyzeEndpoint:
 
     def test_analyze_invalid_file(self, client):
         """An invalid file type should return 400."""
+        token = _obtain_consent(client)
         resp = client.post(
             "/api/analyze",
             files={"file": ("bad.pdf", io.BytesIO(b"pdf"), "application/pdf")},
@@ -177,6 +214,7 @@ class TestAnalyzeEndpoint:
                 "sex": "female",
                 "region": "East Asia",
             },
+            headers=_ch(token),
         )
         assert resp.status_code == 400
 
@@ -191,6 +229,7 @@ class TestDiseaseRiskEndpoint:
 
     def test_disease_risk_valid(self, client):
         """A valid request should return risk scores."""
+        token = _obtain_consent(client)
         payload = {
             "known_variants": ["rs429358", "rs7903146"],
             "telomere_length": 6.5,
@@ -198,7 +237,7 @@ class TestDiseaseRiskEndpoint:
             "sex": "male",
             "region": "Western Europe",
         }
-        resp = client.post("/api/disease-risk", json=payload)
+        resp = client.post("/api/disease-risk", json=payload, headers=_ch(token))
         assert resp.status_code == 200
         data = resp.json()
         assert "risks" in data
@@ -208,13 +247,14 @@ class TestDiseaseRiskEndpoint:
 
     def test_disease_risk_minimal(self, client):
         """Request with no variants should still succeed."""
+        token = _obtain_consent(client)
         payload = {
             "known_variants": [],
             "age": 30,
             "sex": "female",
             "region": "Global",
         }
-        resp = client.post("/api/disease-risk", json=payload)
+        resp = client.post("/api/disease-risk", json=payload, headers=_ch(token))
         assert resp.status_code == 200
 
 
@@ -228,6 +268,7 @@ class TestDietPlanEndpoint:
 
     def test_diet_plan_valid(self, client):
         """A valid request should return a diet recommendation."""
+        token = _obtain_consent(client)
         payload = {
             "age": 40,
             "sex": "female",
@@ -235,7 +276,7 @@ class TestDietPlanEndpoint:
             "dietary_restrictions": ["vegetarian"],
             "known_variants": [],
         }
-        resp = client.post("/api/diet-plan", json=payload)
+        resp = client.post("/api/diet-plan", json=payload, headers=_ch(token))
         assert resp.status_code == 200
         data = resp.json()
         assert "recommendation" in data
@@ -246,6 +287,7 @@ class TestDietPlanEndpoint:
 
     def test_diet_plan_with_risks(self, client):
         """A request including disease_risks should succeed."""
+        token = _obtain_consent(client)
         payload = {
             "age": 60,
             "sex": "male",
@@ -262,7 +304,7 @@ class TestDietPlanEndpoint:
                 }
             ],
         }
-        resp = client.post("/api/diet-plan", json=payload)
+        resp = client.post("/api/diet-plan", json=payload, headers=_ch(token))
         assert resp.status_code == 200
 
 
@@ -308,15 +350,18 @@ class TestResultsEndpoint:
 
     def test_results_nonexistent_returns_404(self, client):
         """A non-existent job should return 404."""
-        resp = client.get("/api/results/does-not-exist")
+        token = _obtain_consent(client)
+        resp = client.get("/api/results/does-not-exist", headers=_ch(token))
         assert resp.status_code == 404
 
     def test_results_pending_returns_409(self, client):
         """A pending (not completed) job should return 409."""
+        token = _obtain_consent(client)
         upload_resp = client.post(
             "/api/upload",
             files={"file": _dummy_image_bytes("test.tif")},
+            headers=_ch(token),
         )
         job_id = upload_resp.json()["job_id"]
-        resp = client.get(f"/api/results/{job_id}")
+        resp = client.get(f"/api/results/{job_id}", headers=_ch(token))
         assert resp.status_code == 409

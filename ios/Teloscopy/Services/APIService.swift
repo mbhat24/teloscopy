@@ -128,6 +128,18 @@ final class APIService: ObservableObject {
     private var refreshToken: String?
     private var cancellables = Set<AnyCancellable>()
     
+    /// Check if user has granted consent (DPDP Act compliance)
+    private var hasConsent: Bool {
+        UserDefaults.standard.bool(forKey: "consent_accepted")
+    }
+    
+    /// Verify consent before making data-processing API calls
+    private func requireConsent() throws {
+        guard hasConsent else {
+            throw URLError(.userAuthenticationRequired)
+        }
+    }
+    
     private let jsonDecoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .custom { decoder in
@@ -241,6 +253,9 @@ final class APIService: ObservableObject {
     // MARK: - Analysis Operations
     
     func fetchAnalyses(page: Int = 1, pageSize: Int = 20) -> AnyPublisher<[Analysis], TeloscopyAPIError> {
+        guard hasConsent else {
+            return Fail(error: TeloscopyAPIError.unauthorized).eraseToAnyPublisher()
+        }
         return request(endpoint: .analyses(page: page, pageSize: pageSize))
             .decode(type: AnalysisListResponse.self, decoder: jsonDecoder)
             .mapError { error -> TeloscopyAPIError in
@@ -254,6 +269,9 @@ final class APIService: ObservableObject {
     }
     
     func fetchAnalysisDetail(id: String) -> AnyPublisher<Analysis, TeloscopyAPIError> {
+        guard hasConsent else {
+            return Fail(error: TeloscopyAPIError.unauthorized).eraseToAnyPublisher()
+        }
         return request(endpoint: .analysisDetail(id: id))
             .decode(type: Analysis.self, decoder: jsonDecoder)
             .mapError { error -> TeloscopyAPIError in
@@ -266,6 +284,9 @@ final class APIService: ObservableObject {
     }
     
     func createAnalysis(name: String, type: AnalysisType, sampleId: String?, patientId: String?, notes: String?) -> AnyPublisher<Analysis, TeloscopyAPIError> {
+        guard hasConsent else {
+            return Fail(error: TeloscopyAPIError.unauthorized).eraseToAnyPublisher()
+        }
         var body: [String: Any] = [
             "name": name,
             "analysis_type": type.rawValue
@@ -286,6 +307,9 @@ final class APIService: ObservableObject {
     }
     
     func uploadImage(analysisId: String, imageData: Data, fileName: String) -> AnyPublisher<UploadResponse, TeloscopyAPIError> {
+        guard hasConsent else {
+            return Fail(error: TeloscopyAPIError.unauthorized).eraseToAnyPublisher()
+        }
         let urlString = "\(configuration.fullBaseURL)\(APIEndpoint.uploadImage(analysisId: analysisId).path)"
         
         guard let url = URL(string: urlString) else {
@@ -351,6 +375,9 @@ final class APIService: ObservableObject {
     }
     
     func startAnalysis(id: String) -> AnyPublisher<Analysis, TeloscopyAPIError> {
+        guard hasConsent else {
+            return Fail(error: TeloscopyAPIError.unauthorized).eraseToAnyPublisher()
+        }
         return request(endpoint: .startAnalysis(id: id), body: [:])
             .decode(type: Analysis.self, decoder: jsonDecoder)
             .mapError { error -> TeloscopyAPIError in
@@ -363,6 +390,9 @@ final class APIService: ObservableObject {
     }
     
     func fetchResult(analysisId: String) -> AnyPublisher<TelomereResult, TeloscopyAPIError> {
+        guard hasConsent else {
+            return Fail(error: TeloscopyAPIError.unauthorized).eraseToAnyPublisher()
+        }
         return request(endpoint: .analysisResult(id: analysisId))
             .decode(type: TelomereResult.self, decoder: jsonDecoder)
             .mapError { error -> TeloscopyAPIError in
@@ -377,6 +407,9 @@ final class APIService: ObservableObject {
     // MARK: - User & Profile
     
     func fetchProfile() -> AnyPublisher<UserProfile, TeloscopyAPIError> {
+        guard hasConsent else {
+            return Fail(error: TeloscopyAPIError.unauthorized).eraseToAnyPublisher()
+        }
         return request(endpoint: .profile)
             .decode(type: UserProfile.self, decoder: jsonDecoder)
             .mapError { error -> TeloscopyAPIError in
@@ -394,6 +427,9 @@ final class APIService: ObservableObject {
     }
     
     func fetchLongitudinalData() -> AnyPublisher<[LongitudinalDataPoint], TeloscopyAPIError> {
+        guard hasConsent else {
+            return Fail(error: TeloscopyAPIError.unauthorized).eraseToAnyPublisher()
+        }
         return request(endpoint: .longitudinalData)
             .decode(type: [LongitudinalDataPoint].self, decoder: jsonDecoder)
             .mapError { error -> TeloscopyAPIError in
@@ -528,6 +564,7 @@ final class APIService: ObservableObject {
     // MARK: - Async/Await Profile Analysis Methods
 
     func profileAnalysis(request: ProfileAnalysisRequest) async throws -> ProfileAnalysisResponse {
+        try requireConsent()
         let body = try jsonEncoder.encode(request)
         return try await performAsyncRequest(
             path: "/profile/analyze",
@@ -538,6 +575,7 @@ final class APIService: ObservableObject {
     }
 
     func diseaseRisk(request: DiseaseRiskRequest) async throws -> DiseaseRiskResponse {
+        try requireConsent()
         let body = try jsonEncoder.encode(request)
         return try await performAsyncRequest(
             path: "/profile/disease-risk",
@@ -548,6 +586,7 @@ final class APIService: ObservableObject {
     }
 
     func nutrition(request: NutritionRequest) async throws -> NutritionResponse {
+        try requireConsent()
         let body = try jsonEncoder.encode(request)
         return try await performAsyncRequest(
             path: "/profile/nutrition",
@@ -561,6 +600,7 @@ final class APIService: ObservableObject {
 
     /// Parse a health-checkup report (PDF/image) and return a preview of extracted lab values.
     func parseHealthReport(fileData: Data, fileName: String) async throws -> ReportParsePreview {
+        try requireConsent()
         let boundary = UUID().uuidString
         let mimeType = guessMimeType(for: fileName)
 
@@ -589,6 +629,7 @@ final class APIService: ObservableObject {
         calorieTarget: Int = 2000,
         mealPlanDays: Int = 7
     ) async throws -> HealthCheckupResponse {
+        try requireConsent()
         let boundary = UUID().uuidString
         let mimeType = guessMimeType(for: fileName)
 

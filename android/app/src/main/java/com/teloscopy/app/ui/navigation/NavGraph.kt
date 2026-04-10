@@ -30,6 +30,7 @@ import com.teloscopy.app.ui.screens.ConsentScreen
 import com.teloscopy.app.ui.screens.HealthCheckupScreen
 import com.teloscopy.app.ui.screens.HomeScreen
 import com.teloscopy.app.ui.screens.ProfileAnalysisScreen
+import com.teloscopy.app.ui.screens.RequireConsent
 import com.teloscopy.app.ui.screens.ResultsScreen
 import com.teloscopy.app.ui.screens.SettingsScreen
 import com.teloscopy.app.viewmodel.AnalysisViewModel
@@ -202,16 +203,25 @@ fun TeloscopyNavHost(
 
         // -- Analysis (image + profile) -------------------------------------
         composable(Screen.Analysis.route) {
-            val viewModel: AnalysisViewModel = hiltViewModel()
-            AnalysisScreen(
-                viewModel = viewModel,
-                onNavigateToResults = { jobId ->
-                    navController.navigate(Screen.Results.createRoute(jobId))
-                },
-                onBack = {
-                    navController.popBackStack()
+            RequireConsent(
+                dataStore = dataStore,
+                onConsentRequired = {
+                    navController.navigate(Screen.Consent.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
-            )
+            ) {
+                val viewModel: AnalysisViewModel = hiltViewModel()
+                AnalysisScreen(
+                    viewModel = viewModel,
+                    onNavigateToResults = { jobId ->
+                        navController.navigate(Screen.Results.createRoute(jobId))
+                    },
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
 
         // -- Results --------------------------------------------------------
@@ -221,37 +231,64 @@ fun TeloscopyNavHost(
                 navArgument("jobId") { type = NavType.StringType }
             )
         ) { backStackEntry ->
-            val jobId = backStackEntry.arguments?.getString("jobId") ?: ""
-            val viewModel: AnalysisViewModel = hiltViewModel()
-            ResultsScreen(
-                jobId = jobId,
-                viewModel = viewModel,
-                onBack = {
-                    navController.popBackStack()
+            RequireConsent(
+                dataStore = dataStore,
+                onConsentRequired = {
+                    navController.navigate(Screen.Consent.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
-            )
+            ) {
+                val jobId = backStackEntry.arguments?.getString("jobId") ?: ""
+                val viewModel: AnalysisViewModel = hiltViewModel()
+                ResultsScreen(
+                    jobId = jobId,
+                    viewModel = viewModel,
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
 
         // -- Profile Analysis (no image) ------------------------------------
         composable(Screen.ProfileAnalysis.route) {
-            val viewModel: ProfileViewModel = hiltViewModel()
-            ProfileAnalysisScreen(
-                viewModel = viewModel,
-                onBack = {
-                    navController.popBackStack()
+            RequireConsent(
+                dataStore = dataStore,
+                onConsentRequired = {
+                    navController.navigate(Screen.Consent.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
-            )
+            ) {
+                val viewModel: ProfileViewModel = hiltViewModel()
+                ProfileAnalysisScreen(
+                    viewModel = viewModel,
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
 
         // -- Health Checkup (lab report upload) ------------------------------
         composable(Screen.HealthCheckup.route) {
-            val viewModel: HealthCheckupViewModel = hiltViewModel()
-            HealthCheckupScreen(
-                viewModel = viewModel,
-                onBack = {
-                    navController.popBackStack()
+            RequireConsent(
+                dataStore = dataStore,
+                onConsentRequired = {
+                    navController.navigate(Screen.Consent.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
-            )
+            ) {
+                val viewModel: HealthCheckupViewModel = hiltViewModel()
+                HealthCheckupScreen(
+                    viewModel = viewModel,
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
 
         // -- Settings -------------------------------------------------------

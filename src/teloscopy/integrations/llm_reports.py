@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import textwrap
 import time
 import urllib.error
@@ -257,13 +258,13 @@ class OllamaClient:
         """Return model tags available on the server."""
         return [m.get("name", "?") for m in self._call("/api/tags").get("models", [])]
 
-    def generate(self, prompt: str, system: str = "", temperature: float = 0.3) -> str:
+    def generate(self, prompt: str, system: str = "", temperature: float = 0.3, max_tokens: int = 2048) -> str:
         """Generate a completion.  Raises ConnectionError / RuntimeError."""
         payload: dict[str, Any] = {
             "model": self.model,
             "prompt": prompt,
             "stream": False,
-            "options": {"temperature": temperature},
+            "options": {"temperature": temperature, "num_predict": max_tokens},
         }
         if system:
             payload["system"] = system
@@ -271,7 +272,12 @@ class OllamaClient:
         text = self._call("/api/generate", payload, "POST").get("response", "")
         if not text:
             raise RuntimeError("Ollama returned an empty response")
-        return text.strip()
+        result = text.strip()
+        # Sanitize LLM output — strip potentially dangerous HTML
+        result = re.sub(r'<script\b[^<]*(?:(?!</script>)<[^<]*)*</script>', '', result, flags=re.IGNORECASE)
+        result = re.sub(r'<iframe\b[^>]*>.*?</iframe>', '', result, flags=re.IGNORECASE | re.DOTALL)
+        result = re.sub(r'\bon\w+\s*=\s*["\'][^"\']*["\']', '', result, flags=re.IGNORECASE)
+        return result
 
 
 # ---------------------------------------------------------------------------
@@ -329,7 +335,7 @@ class OpenAIClient:
         """Return model identifiers from the server."""
         return [m.get("id", "?") for m in self._call("/models").get("data", [])]
 
-    def generate(self, prompt: str, system: str = "", temperature: float = 0.3) -> str:
+    def generate(self, prompt: str, system: str = "", temperature: float = 0.3, max_tokens: int = 2048) -> str:
         """Generate a chat completion.  Raises ConnectionError / RuntimeError."""
         msgs: list[dict[str, str]] = []
         if system:
@@ -338,7 +344,7 @@ class OpenAIClient:
         logger.info("OpenAI generate: model=%s len=%d", self.model, len(prompt))
         choices = self._call(
             "/chat/completions",
-            {"model": self.model, "messages": msgs, "temperature": temperature},
+            {"model": self.model, "messages": msgs, "temperature": temperature, "max_tokens": max_tokens},
             "POST",
         ).get("choices", [])
         if not choices:
@@ -346,7 +352,12 @@ class OpenAIClient:
         text = choices[0].get("message", {}).get("content", "")
         if not text:
             raise RuntimeError("OpenAI returned empty message")
-        return text.strip()
+        result = text.strip()
+        # Sanitize LLM output — strip potentially dangerous HTML
+        result = re.sub(r'<script\b[^<]*(?:(?!</script>)<[^<]*)*</script>', '', result, flags=re.IGNORECASE)
+        result = re.sub(r'<iframe\b[^>]*>.*?</iframe>', '', result, flags=re.IGNORECASE | re.DOTALL)
+        result = re.sub(r'\bon\w+\s*=\s*["\'][^"\']*["\']', '', result, flags=re.IGNORECASE)
+        return result
 
 
 # ---------------------------------------------------------------------------

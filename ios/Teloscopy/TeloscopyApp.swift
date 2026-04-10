@@ -46,13 +46,15 @@ struct TeloscopyApp: App {
     @AppStorage("appearance_mode") private var appearanceMode: String = "system"
     @AppStorage("consent_accepted") private var consentAccepted = false
     
+    private static let currentConsentVersion = "1.0"
+    
     init() {
         configureAppearance()
     }
     
     var body: some Scene {
         WindowGroup {
-            if consentAccepted {
+            if consentAccepted && UserDefaults.standard.string(forKey: "consent_version") == Self.currentConsentVersion {
                 MainTabView()
                     .environmentObject(apiService)
                     .environmentObject(syncManager)

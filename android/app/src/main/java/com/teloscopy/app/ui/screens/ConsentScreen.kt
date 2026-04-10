@@ -41,6 +41,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -73,6 +75,7 @@ import com.teloscopy.app.ui.theme.Primary
 import com.teloscopy.app.ui.theme.Secondary
 import com.teloscopy.app.ui.theme.Surface
 import com.teloscopy.app.ui.theme.Tertiary
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -780,6 +783,36 @@ private fun ConsentCheckbox(
                 color = OnBackground,
                 lineHeight = 20.sp
             )
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Consent Gate
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Consent gate that verifies consent is still valid before showing content.
+ * Redirects to consent screen if consent has been withdrawn or not granted.
+ */
+@Composable
+fun RequireConsent(
+    dataStore: DataStore<Preferences>,
+    onConsentRequired: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    val consentAccepted by dataStore.data
+        .map { prefs -> prefs[CONSENT_ACCEPTED_KEY] ?: false }
+        .collectAsState(initial = null)
+
+    when (consentAccepted) {
+        true -> content()
+        false -> {
+            LaunchedEffect(Unit) { onConsentRequired() }
+        }
+        null -> {
+            // Loading state — show nothing while checking
+            Box(modifier = Modifier.fillMaxSize())
         }
     }
 }

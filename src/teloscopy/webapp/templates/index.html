@@ -2532,7 +2532,7 @@
         };
         try { localStorage.setItem(CONSENT_KEY, JSON.stringify(consentData)); } catch (_) {}
 
-        /* Send consent to backend audit log */
+        /* Send consent to backend and obtain signed consent token */
         try {
             fetch('/api/legal/consent', {
                 method: 'POST',
@@ -2545,6 +2545,11 @@
                     privacy_policy_version: '1.0',
                     terms_version: '1.0'
                 })
+            }).then(function (r) { return r.json(); }).then(function (data) {
+                /* Store the server-issued consent token for subsequent API calls */
+                if (data.consent_token) {
+                    try { localStorage.setItem('teloscopy_consent_token', data.consent_token); } catch (_) {}
+                }
             }).catch(function () { /* non-blocking */ });
         } catch (_) {}
 
@@ -2576,7 +2581,8 @@
 
     window.withdrawConsent = function () {
         try { localStorage.removeItem(CONSENT_KEY); } catch (_) {}
-        /* Notify backend */
+        try { localStorage.removeItem('teloscopy_consent_token'); } catch (_) {}
+        /* Notify backend (invalidates consent token server-side) */
         try {
             fetch('/api/legal/consent/withdraw', {
                 method: 'POST',
@@ -2596,6 +2602,27 @@
         if (hasValidConsent()) return true;
         window.openConsentModal();
         return false;
+    };
+
+    /**
+     * Get consent token headers for API calls.
+     * Returns an object with the X-Consent-Token header set if a token exists.
+     */
+    window.getConsentHeaders = function () {
+        var token = '';
+        try { token = localStorage.getItem('teloscopy_consent_token') || ''; } catch (_) {}
+        var headers = {};
+        if (token) headers['X-Consent-Token'] = token;
+        return headers;
+    };
+
+    /**
+     * Merge consent headers into a headers object for fetch() calls.
+     */
+    window.withConsent = function (headers) {
+        var ch = window.getConsentHeaders();
+        for (var k in ch) { if (ch.hasOwnProperty(k)) headers[k] = ch[k]; }
+        return headers;
     };
 })();
 
@@ -2945,7 +2972,7 @@ function markdownToHtml(md) {
     });
 
     /* Inline code */
-    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+    html = html.replace(/`([^`]+)`/g, function(m, p1) { return '<code>' + escapeHtml(p1) + '</code>'; });
 
     /* Headers */
     html = html.replace(/^####\s+(.+)$/gm, '<h4>$1</h4>');
@@ -3584,7 +3611,7 @@ function escapeHtml(str) {
         try {
             var fd = new FormData();
             fd.append('file', file);
-            var res = await fetch('/api/validate-image', { method: 'POST', body: fd });
+            var res = await fetch('/api/validate-image', { method: 'POST', body: fd, headers: window.getConsentHeaders() });
             if (!res.ok) return;
             var v = await res.json();
 
@@ -3679,7 +3706,7 @@ function escapeHtml(str) {
         showSkeleton();
 
         try {
-            var res = await fetch('/api/analyze', { method: 'POST', body: fd });
+            var res = await fetch('/api/analyze', { method: 'POST', body: fd, headers: window.getConsentHeaders() });
             if (!res.ok) {
                 var err = await res.json();
                 throw new Error(err.detail || 'Upload failed');
@@ -3727,7 +3754,7 @@ function escapeHtml(str) {
         try {
             var res = await fetch('/api/profile-analysis', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: window.withConsent({ 'Content-Type': 'application/json' }),
                 body: JSON.stringify({
                     age: parseInt(age),
                     sex: sex,
@@ -3821,7 +3848,7 @@ function escapeHtml(str) {
     async function pollStatus() {
         if (!currentJobId) return;
         try {
-            var res  = await fetch('/api/status/' + currentJobId);
+            var res  = await fetch('/api/status/' + currentJobId, { headers: window.getConsentHeaders() });
             var data = await res.json();
             progressFill.style.width = data.progress_pct + '%';
             progressFill.setAttribute('aria-valuenow', Math.round(data.progress_pct));
@@ -3848,7 +3875,7 @@ function escapeHtml(str) {
 
     async function fetchResults() {
         try {
-            var res  = await fetch('/api/results/' + currentJobId);
+            var res  = await fetch('/api/results/' + currentJobId, { headers: window.getConsentHeaders() });
             var data = await res.json();
             lastResult = data;
             renderResults(data);
@@ -4309,6 +4336,7 @@ function escapeHtml(str) {
 
     /* ---- Standalone Nutrition ---- */
     window.startNutritionPlan = async function () {
+        if (!window.requireConsent()) return;
         var age    = document.getElementById('nut-age').value;
         var sex    = document.getElementById('nut-sex').value;
         var region = document.getElementById('nut-region').value;
@@ -4329,7 +4357,7 @@ function escapeHtml(str) {
         try {
             var res = await fetch('/api/nutrition', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: window.withConsent({ 'Content-Type': 'application/json' }),
                 body: JSON.stringify({
                     age: parseInt(age),
                     sex: sex,
@@ -4440,6 +4468,7 @@ function escapeHtml(str) {
     };
 
     window.parseUploadedReport = async function () {
+        if (!window.requireConsent()) return;
         if (!_reportFile) { toast('Please select a file first.', 'error'); return; }
 
         var parseBtn = document.getElementById('chk-parse-btn');
@@ -4452,7 +4481,8 @@ function escapeHtml(str) {
 
             var res = await fetch('/api/health-checkup/parse-report', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: window.getConsentHeaders()
             });
             if (!res.ok) {
                 var err = await res.json();
@@ -4613,7 +4643,8 @@ function escapeHtml(str) {
 
             var res = await fetch('/api/health-checkup/upload', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: window.getConsentHeaders()
             });
             if (!res.ok) {
                 var err = await res.json();
@@ -4696,7 +4727,7 @@ function escapeHtml(str) {
             };
             var res = await fetch('/api/health-checkup', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: window.withConsent({ 'Content-Type': 'application/json' }),
                 body: JSON.stringify(payload)
             });
             if (!res.ok) {
@@ -4730,7 +4761,7 @@ function escapeHtml(str) {
         for (var cat in (data.health_score_breakdown || {})) {
             var cs = data.health_score_breakdown[cat];
             var cc = cs >= 80 ? '#22c55e' : (cs >= 60 ? '#f59e0b' : '#ef4444');
-            bdHtml += '<span style="padding:.25rem .75rem;border-radius:20px;font-size:.8rem;background:' + cc + '20;color:' + cc + ';border:1px solid ' + cc + '40;">' + cat + ': ' + cs.toFixed(0) + '</span>';
+            bdHtml += '<span style="padding:.25rem .75rem;border-radius:20px;font-size:.8rem;background:' + cc + '20;color:' + cc + ';border:1px solid ' + cc + '40;">' + escapeHtml(cat) + ': ' + cs.toFixed(0) + '</span>';
         }
         bdHtml += '</div>';
         bdEl.innerHTML = bdHtml;
@@ -4748,9 +4779,9 @@ function escapeHtml(str) {
                 var statusColor = r.status === 'normal' ? '#22c55e' : (r.status.indexOf('critical') !== -1 ? '#ef4444' : '#f59e0b');
                 var statusLabel = r.status.replace('_', ' ').toUpperCase();
                 thtml += '<tr style="border-bottom:1px solid var(--border-solid);">' +
-                    '<td style="padding:.4rem .5rem;">' + r.display_name + '</td>' +
+                    '<td style="padding:.4rem .5rem;">' + escapeHtml(r.display_name) + '</td>' +
                     '<td style="padding:.4rem .5rem;font-weight:600;color:' + statusColor + ';">' + r.value + '</td>' +
-                    '<td style="padding:.4rem .5rem;color:var(--text-muted);">' + r.unit + '</td>' +
+                    '<td style="padding:.4rem .5rem;color:var(--text-muted);">' + escapeHtml(r.unit || '') + '</td>' +
                     '<td style="padding:.4rem .5rem;color:var(--text-muted);">' + r.reference_low + ' - ' + r.reference_high + '</td>' +
                     '<td style="padding:.4rem .5rem;"><span style="padding:.15rem .5rem;border-radius:12px;font-size:.75rem;background:' + statusColor + '20;color:' + statusColor + ';">' + statusLabel + '</span></td>' +
                     '</tr>';
@@ -4771,19 +4802,19 @@ function escapeHtml(str) {
                 var sevColor = f.severity === 'severe' ? '#ef4444' : (f.severity === 'moderate' ? '#f59e0b' : '#3b82f6');
                 fhtml += '<div style="border:1px solid ' + sevColor + '30;border-radius:8px;padding:1rem;margin-bottom:.75rem;background:' + sevColor + '08;">' +
                     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">' +
-                    '<strong style="color:var(--text);">' + f.display_name + '</strong>' +
+                    '<strong style="color:var(--text);">' + escapeHtml(f.display_name) + '</strong>' +
                     '<span style="padding:.15rem .5rem;border-radius:12px;font-size:.75rem;background:' + sevColor + '20;color:' + sevColor + ';text-transform:uppercase;">' + f.severity + '</span>' +
                     '</div>' +
-                    '<p style="font-size:.85rem;color:var(--text-muted);margin-bottom:.5rem;">' + f.dietary_impact + '</p>' +
+                    '<p style="font-size:.85rem;color:var(--text-muted);margin-bottom:.5rem;">' + escapeHtml(f.dietary_impact) + '</p>' +
                     '<div style="font-size:.8rem;color:var(--text-dim);">';
                 if (f.evidence && f.evidence.length) {
-                    fhtml += '<p><strong>Evidence:</strong> ' + f.evidence.join('; ') + '</p>';
+                    fhtml += '<p><strong>Evidence:</strong> ' + escapeHtml(f.evidence.join('; ')) + '</p>';
                 }
                 if (f.foods_to_increase && f.foods_to_increase.length) {
-                    fhtml += '<p style="color:#22c55e;">Increase: ' + f.foods_to_increase.join(', ') + '</p>';
+                    fhtml += '<p style="color:#22c55e;">Increase: ' + escapeHtml(f.foods_to_increase.join(', ')) + '</p>';
                 }
                 if (f.foods_to_avoid && f.foods_to_avoid.length) {
-                    fhtml += '<p style="color:#ef4444;">Avoid: ' + f.foods_to_avoid.join(', ') + '</p>';
+                    fhtml += '<p style="color:#ef4444;">Avoid: ' + escapeHtml(f.foods_to_avoid.join(', ')) + '</p>';
                 }
                 fhtml += '</div></div>';
             });
@@ -4801,9 +4832,9 @@ function escapeHtml(str) {
             data.abdomen_findings.forEach(function (af) {
                 var sevColor = af.severity === 'severe' ? '#ef4444' : (af.severity === 'moderate' ? '#f59e0b' : '#3b82f6');
                 ahtml += '<div style="border:1px solid ' + sevColor + '30;border-radius:8px;padding:1rem;margin-bottom:.75rem;">' +
-                    '<strong>' + af.organ.charAt(0).toUpperCase() + af.organ.slice(1) + ':</strong> ' + af.finding +
+                    '<strong>' + af.organ.charAt(0).toUpperCase() + af.organ.slice(1) + ':</strong> ' + escapeHtml(af.finding) +
                     ' <span style="padding:.15rem .5rem;border-radius:12px;font-size:.75rem;background:' + sevColor + '20;color:' + sevColor + ';">' + af.severity + '</span>' +
-                    '<p style="font-size:.85rem;color:var(--text-muted);margin-top:.25rem;">' + af.dietary_impact + '</p></div>';
+                    '<p style="font-size:.85rem;color:var(--text-muted);margin-top:.25rem;">' + escapeHtml(af.dietary_impact) + '</p></div>';
             });
             abdEl.innerHTML = ahtml;
         } else {
@@ -4814,37 +4845,37 @@ function escapeHtml(str) {
         var dietEl = document.getElementById('checkup-diet');
         var diet = data.diet_recommendation;
         if (diet) {
-            var dhtml = '<p class="diet-summary">' + diet.summary + '</p>';
+            var dhtml = '<p class="diet-summary">' + escapeHtml(diet.summary) + '</p>';
             if (data.dietary_modifications && data.dietary_modifications.length) {
                 dhtml += '<div style="margin:1rem 0;padding:.75rem;background:rgba(99,102,241,.06);border-radius:8px;border:1px solid rgba(99,102,241,.15);">' +
                     '<h4 style="margin-bottom:.5rem;font-size:.9rem;">Dietary Modifications Based on Findings</h4><ul style="font-size:.85rem;margin:0;padding-left:1.2rem;">';
-                data.dietary_modifications.forEach(function (m) { dhtml += '<li>' + m + '</li>'; });
+                data.dietary_modifications.forEach(function (m) { dhtml += '<li>' + escapeHtml(m) + '</li>'; });
                 dhtml += '</ul></div>';
             }
             if (data.calorie_adjustment) {
                 dhtml += '<p style="font-size:.9rem;color:var(--accent);margin:.5rem 0;">Calorie adjustment: ' + data.calorie_adjustment + ' kcal/day (target: ' + (diet.calorie_target || 'N/A') + ' kcal/day)</p>';
             }
             dhtml += '<div class="nutrient-tags">';
-            (diet.key_nutrients || []).forEach(function (n) { dhtml += '<span class="nutrient-tag">' + n + '</span>'; });
+            (diet.key_nutrients || []).forEach(function (n) { dhtml += '<span class="nutrient-tag">' + escapeHtml(n) + '</span>'; });
             dhtml += '</div>';
             dhtml += '<div class="food-columns">';
             dhtml += '<div class="food-col increase"><h4>Increase</h4><ul>';
-            (diet.foods_to_increase || []).forEach(function (f) { dhtml += '<li>' + f + '</li>'; });
+            (diet.foods_to_increase || []).forEach(function (f) { dhtml += '<li>' + escapeHtml(f) + '</li>'; });
             dhtml += '</ul></div>';
             dhtml += '<div class="food-col avoid"><h4>Avoid / Reduce</h4><ul>';
-            (diet.foods_to_avoid || []).forEach(function (f) { dhtml += '<li>' + f + '</li>'; });
+            (diet.foods_to_avoid || []).forEach(function (f) { dhtml += '<li>' + escapeHtml(f) + '</li>'; });
             dhtml += '</ul></div></div>';
             if (diet.meal_plans && diet.meal_plans.length) {
                 dhtml += '<h4 style="margin:1rem 0 .5rem;color:var(--text-dim);">Meal Plans</h4><div class="meal-plans">';
                 diet.meal_plans.forEach(function (mp, i) {
                     var mid = 'chkmeal-' + i;
                     dhtml += '<div class="meal-day" id="' + mid + '">' +
-                        '<div class="meal-day-header" onclick="var el=document.getElementById(\'' + mid + '\');el.classList.toggle(\'open\');this.setAttribute(\'aria-expanded\',el.classList.contains(\'open\'))" role="button" tabindex="0" aria-expanded="false">' + mp.day + ' <span aria-hidden="true">&#9660;</span></div>' +
+                        '<div class="meal-day-header" onclick="var el=document.getElementById(\'' + mid + '\');el.classList.toggle(\'open\');this.setAttribute(\'aria-expanded\',el.classList.contains(\'open\'))" role="button" tabindex="0" aria-expanded="false">' + escapeHtml(mp.day) + ' <span aria-hidden="true">&#9660;</span></div>' +
                         '<div class="meal-day-body">' +
-                        '<p><span class="meal-label">Breakfast:</span> ' + mp.breakfast + '</p>' +
-                        '<p><span class="meal-label">Lunch:</span> ' + mp.lunch + '</p>' +
-                        '<p><span class="meal-label">Dinner:</span> ' + mp.dinner + '</p>' +
-                        (mp.snacks && mp.snacks.length ? '<p><span class="meal-label">Snacks:</span> ' + mp.snacks.join(', ') + '</p>' : '') +
+                        '<p><span class="meal-label">Breakfast:</span> ' + escapeHtml(mp.breakfast) + '</p>' +
+                        '<p><span class="meal-label">Lunch:</span> ' + escapeHtml(mp.lunch) + '</p>' +
+                        '<p><span class="meal-label">Dinner:</span> ' + escapeHtml(mp.dinner) + '</p>' +
+                        (mp.snacks && mp.snacks.length ? '<p><span class="meal-label">Snacks:</span> ' + escapeHtml(mp.snacks.join(', ')) + '</p>' : '') +
                         '</div></div>';
                 });
                 dhtml += '</div>';
@@ -4868,7 +4899,7 @@ function escapeHtml(str) {
             if (ay.dosha_assessment) {
                 doshaEl.innerHTML = '<div style="padding:.75rem 1rem;background:rgba(217,119,6,.06);border:1px solid rgba(217,119,6,.15);border-radius:8px;">' +
                     '<strong style="color:#d97706;">Dosha Assessment:</strong> ' +
-                    '<span style="color:var(--text);">' + ay.dosha_assessment + '</span></div>';
+                    '<span style="color:var(--text);">' + escapeHtml(ay.dosha_assessment) + '</span></div>';
             }
 
             /* Remedies */
@@ -4877,25 +4908,25 @@ function escapeHtml(str) {
             ay.remedies.forEach(function(r, idx) {
                 rhtml += '<div style="border:1px solid rgba(217,119,6,.2);border-radius:8px;padding:1rem;margin-bottom:.75rem;background:rgba(217,119,6,.03);">' +
                     '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;">' +
-                    '<strong style="color:var(--text);font-size:.95rem;">' + (idx + 1) + '. ' + r.name + '</strong>' +
-                    '<span style="padding:.15rem .5rem;border-radius:12px;font-size:.7rem;background:rgba(217,119,6,.12);color:#d97706;white-space:nowrap;">' + r.source + '</span>' +
+                    '<strong style="color:var(--text);font-size:.95rem;">' + (idx + 1) + '. ' + escapeHtml(r.name) + '</strong>' +
+                    '<span style="padding:.15rem .5rem;border-radius:12px;font-size:.7rem;background:rgba(217,119,6,.12);color:#d97706;white-space:nowrap;">' + escapeHtml(r.source) + '</span>' +
                     '</div>';
                 if (r.ingredients && r.ingredients.length) {
-                    rhtml += '<p style="font-size:.85rem;margin-bottom:.3rem;"><strong style="color:var(--text-dim);">Ingredients:</strong> ' + r.ingredients.join(', ') + '</p>';
+                    rhtml += '<p style="font-size:.85rem;margin-bottom:.3rem;"><strong style="color:var(--text-dim);">Ingredients:</strong> ' + escapeHtml(r.ingredients.join(', ')) + '</p>';
                 }
                 if (r.preparation) {
-                    rhtml += '<p style="font-size:.85rem;margin-bottom:.3rem;"><strong style="color:var(--text-dim);">Preparation:</strong> ' + r.preparation + '</p>';
+                    rhtml += '<p style="font-size:.85rem;margin-bottom:.3rem;"><strong style="color:var(--text-dim);">Preparation:</strong> ' + escapeHtml(r.preparation) + '</p>';
                 }
                 if (r.dosage) {
-                    rhtml += '<p style="font-size:.85rem;margin-bottom:.3rem;"><strong style="color:var(--text-dim);">Dosage:</strong> ' + r.dosage + '</p>';
+                    rhtml += '<p style="font-size:.85rem;margin-bottom:.3rem;"><strong style="color:var(--text-dim);">Dosage:</strong> ' + escapeHtml(r.dosage) + '</p>';
                 }
                 if (r.mechanism) {
-                    rhtml += '<p style="font-size:.85rem;color:var(--text-muted);margin-bottom:.3rem;font-style:italic;">' + r.mechanism + '</p>';
+                    rhtml += '<p style="font-size:.85rem;color:var(--text-muted);margin-bottom:.3rem;font-style:italic;">' + escapeHtml(r.mechanism) + '</p>';
                 }
                 if (r.for_conditions && r.for_conditions.length) {
                     rhtml += '<div style="margin-top:.4rem;">';
                     r.for_conditions.forEach(function(c) {
-                        rhtml += '<span style="display:inline-block;padding:.1rem .4rem;margin:.1rem .2rem;border-radius:10px;font-size:.7rem;background:rgba(217,119,6,.1);color:#b45309;">' + c.replace(/_/g, ' ') + '</span>';
+                        rhtml += '<span style="display:inline-block;padding:.1rem .4rem;margin:.1rem .2rem;border-radius:10px;font-size:.7rem;background:rgba(217,119,6,.1);color:#b45309;">' + escapeHtml(c.replace(/_/g, ' ')) + '</span>';
                     });
                     rhtml += '</div>';
                 }
@@ -4909,13 +4940,13 @@ function escapeHtml(str) {
             if (ay.yoga_asanas && ay.yoga_asanas.length) {
                 yhtml += '<div style="display:inline-block;vertical-align:top;width:48%;margin-right:2%;">' +
                     '<h4 style="margin-bottom:.5rem;color:var(--text-dim);font-size:.9rem;">Yoga Asanas</h4><ul style="font-size:.85rem;padding-left:1.2rem;margin:0;">';
-                ay.yoga_asanas.forEach(function(a) { yhtml += '<li>' + a + '</li>'; });
+                ay.yoga_asanas.forEach(function(a) { yhtml += '<li>' + escapeHtml(a) + '</li>'; });
                 yhtml += '</ul></div>';
             }
             if (ay.pranayama && ay.pranayama.length) {
                 yhtml += '<div style="display:inline-block;vertical-align:top;width:48%;">' +
                     '<h4 style="margin-bottom:.5rem;color:var(--text-dim);font-size:.9rem;">Pranayama</h4><ul style="font-size:.85rem;padding-left:1.2rem;margin:0;">';
-                ay.pranayama.forEach(function(p) { yhtml += '<li>' + p + '</li>'; });
+                ay.pranayama.forEach(function(p) { yhtml += '<li>' + escapeHtml(p) + '</li>'; });
                 yhtml += '</ul></div>';
             }
             yogaEl.innerHTML = yhtml;
@@ -4924,7 +4955,7 @@ function escapeHtml(str) {
             var lifeEl = document.getElementById('checkup-ayurvedic-lifestyle');
             if (ay.lifestyle_recommendations && ay.lifestyle_recommendations.length) {
                 var lhtml = '<h4 style="margin-bottom:.5rem;color:var(--text-dim);font-size:.9rem;">Lifestyle (Dinacharya)</h4><ul style="font-size:.85rem;padding-left:1.2rem;margin:0;">';
-                ay.lifestyle_recommendations.forEach(function(l) { lhtml += '<li>' + l + '</li>'; });
+                ay.lifestyle_recommendations.forEach(function(l) { lhtml += '<li>' + escapeHtml(l) + '</li>'; });
                 lhtml += '</ul>';
                 lifeEl.innerHTML = lhtml;
             }
@@ -4933,7 +4964,7 @@ function escapeHtml(str) {
             var dpEl = document.getElementById('checkup-ayurvedic-diet-principles');
             if (ay.dietary_principles && ay.dietary_principles.length) {
                 var dphtml = '<h4 style="margin-bottom:.5rem;color:var(--text-dim);font-size:.9rem;">Ayurvedic Dietary Principles (Pathya-Apathya)</h4><ul style="font-size:.85rem;padding-left:1.2rem;margin:0;">';
-                ay.dietary_principles.forEach(function(d) { dphtml += '<li>' + d + '</li>'; });
+                ay.dietary_principles.forEach(function(d) { dphtml += '<li>' + escapeHtml(d) + '</li>'; });
                 dphtml += '</ul>';
                 dpEl.innerHTML = dphtml;
             }
@@ -4943,7 +4974,7 @@ function escapeHtml(str) {
             if (ay.contraindications && ay.contraindications.length) {
                 var cihtml = '<div style="padding:.5rem .75rem;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:6px;">' +
                     '<h4 style="margin-bottom:.3rem;color:#ef4444;font-size:.85rem;">Contraindications</h4><ul style="font-size:.8rem;padding-left:1.2rem;margin:0;color:var(--text-muted);">';
-                ay.contraindications.forEach(function(c) { cihtml += '<li>' + c + '</li>'; });
+                ay.contraindications.forEach(function(c) { cihtml += '<li>' + escapeHtml(c) + '</li>'; });
                 cihtml += '</ul></div>';
                 ciEl.innerHTML = cihtml;
             }
@@ -4951,7 +4982,7 @@ function escapeHtml(str) {
             /* Ayurvedic Disclaimer */
             var ayDiscEl = document.getElementById('checkup-ayurvedic-disclaimer');
             if (ay.disclaimer) {
-                ayDiscEl.innerHTML = '<strong>Note:</strong> ' + ay.disclaimer;
+                ayDiscEl.innerHTML = '<strong>Note:</strong> ' + escapeHtml(ay.disclaimer);
             }
         } else {
             ayCard.style.display = 'none';
@@ -4962,17 +4993,7 @@ function escapeHtml(str) {
         var llmEl = document.getElementById('checkup-llm-analysis');
         if (data.llm_analysis) {
             llmCard.style.display = 'block';
-            /* Simple markdown-to-HTML: headings, bold, lists, paragraphs */
-            var md = data.llm_analysis;
-            md = md.replace(/^### (.+)$/gm, '<h4 style="margin:1rem 0 .5rem;color:var(--text);">$1</h4>');
-            md = md.replace(/^## (.+)$/gm, '<h3 style="margin:1.2rem 0 .5rem;color:#8b5cf6;">$1</h3>');
-            md = md.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-            md = md.replace(/\*(.+?)\*/g, '<em>$1</em>');
-            md = md.replace(/^- (.+)$/gm, '<li style="margin-left:1.2rem;font-size:.85rem;">$1</li>');
-            md = md.replace(/(<li[^>]*>.*<\/li>\n?)+/g, function(m) { return '<ul style="margin:.5rem 0;padding:0;">' + m + '</ul>'; });
-            md = md.replace(/\n{2,}/g, '</p><p style="margin:.5rem 0;">');
-            md = '<p style="margin:.5rem 0;">' + md + '</p>';
-            llmEl.innerHTML = md;
+            llmEl.innerHTML = markdownToHtml(data.llm_analysis);
         } else {
             llmCard.style.display = 'none';
         }
@@ -5323,12 +5344,12 @@ function escapeHtml(str) {
             data.agents.forEach(function (a) {
                 grid.innerHTML +=
                     '<div class="agent-card">' +
-                    '<span class="agent-name">' + a.name + '</span>' +
+                    '<span class="agent-name">' + escapeHtml(a.name) + '</span>' +
                     '<span class="agent-status-badge ' + a.status + '">' +
                     '<span class="dot dot--' + (a.status === 'idle' ? 'green' : a.status === 'busy' ? 'blue' : 'yellow') + '" aria-hidden="true"></span> ' +
-                    a.status + '</span>' +
+                    escapeHtml(a.status) + '</span>' +
                     '<span class="agent-tasks">' + a.tasks_completed + ' tasks completed</span>' +
-                    (a.current_task ? '<span class="agent-tasks" style="color:var(--info);">Current: ' + a.current_task + '</span>' : '') +
+                    (a.current_task ? '<span class="agent-tasks" style="color:var(--info);">Current: ' + escapeHtml(a.current_task) + '</span>' : '') +
                     '</div>';
             });
         } catch (e) { /* silent */ }
