@@ -1292,6 +1292,7 @@ class DietAdvisor:
             "fish": ["legume"],
             "seafood": ["legume"],
             "dairy": ["legume", "nut"],
+            "eggs": ["legume", "dairy", "nut"],
             "prepared": ["legume", "grain", "vegetable"],
         }
         all_candidates = list(candidates)

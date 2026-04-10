@@ -36,7 +36,7 @@ from fastapi import (
     status,
 )
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
@@ -1125,6 +1125,41 @@ async def results_page(request: Request, job_id: str) -> HTMLResponse:
 async def dashboard_page(request: Request) -> HTMLResponse:
     """Serve the agent-monitoring dashboard."""
     return templates.TemplateResponse(request=request, name="dashboard.html")
+
+
+# ===================================================================== #
+#  Android APK download                                                  #
+# ===================================================================== #
+
+_APK_DIR = _BASE_DIR / "static"
+_APK_FILENAME = "teloscopy.apk"
+
+
+@app.get("/api/download/android")
+async def download_android_apk() -> FileResponse:
+    """Serve the Android APK for mobile users."""
+    apk_path = _APK_DIR / _APK_FILENAME
+    if not apk_path.exists():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Android APK not available yet. Please check back later.",
+        )
+    return FileResponse(
+        path=str(apk_path),
+        filename=_APK_FILENAME,
+        media_type="application/vnd.android.package-archive",
+    )
+
+
+@app.get("/api/download/android/status")
+async def android_apk_status() -> dict[str, Any]:
+    """Check whether the APK is available for download."""
+    apk_path = _APK_DIR / _APK_FILENAME
+    return {
+        "available": apk_path.exists(),
+        "filename": _APK_FILENAME,
+        "size_bytes": apk_path.stat().st_size if apk_path.exists() else None,
+    }
 
 
 @app.get("/api/debug/templates")

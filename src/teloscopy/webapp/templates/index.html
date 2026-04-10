@@ -786,6 +786,104 @@
         .mt-3 { margin-top: 1.5rem; }
 
         /* ============================================================
+           ANDROID APP BANNER
+           ============================================================ */
+        .app-banner {
+            display: none;
+            align-items: center;
+            gap: .75rem;
+            background: linear-gradient(135deg, #1a3a2a 0%, #0d1f17 100%);
+            border: 1px solid var(--accent);
+            border-radius: var(--radius);
+            padding: .75rem 1rem;
+            margin: 0 1rem 1rem;
+            position: relative;
+            z-index: 10;
+        }
+        .app-banner.visible { display: flex; }
+        .app-banner-icon {
+            flex-shrink: 0;
+            width: 40px; height: 40px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .app-banner-icon svg { width: 22px; height: 22px; color: var(--bg-primary); }
+        .app-banner-text { flex: 1; min-width: 0; }
+        .app-banner-title {
+            font-weight: 600; font-size: .9rem; color: var(--text-primary);
+        }
+        .app-banner-subtitle {
+            font-size: .78rem; color: var(--text-secondary); margin-top: 2px;
+        }
+        .app-banner-btn {
+            flex-shrink: 0;
+            background: var(--accent); color: var(--bg-primary);
+            border: none; border-radius: 8px;
+            padding: .5rem 1rem;
+            font-weight: 600; font-size: .82rem;
+            cursor: pointer; white-space: nowrap;
+            transition: opacity .2s;
+        }
+        .app-banner-btn:hover { opacity: .85; }
+        .app-banner-close {
+            position: absolute; top: 6px; right: 8px;
+            background: none; border: none; color: var(--text-muted);
+            cursor: pointer; padding: 2px; line-height: 1;
+            font-size: 1.1rem;
+        }
+        .app-banner-close:hover { color: var(--text-primary); }
+
+        /* Download modal overlay */
+        .download-modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,.6); backdrop-filter: blur(4px);
+            z-index: 1100; align-items: center; justify-content: center;
+        }
+        .download-modal-overlay.visible { display: flex; }
+        .download-modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem; max-width: 420px; width: 90%;
+            text-align: center; position: relative;
+        }
+        .download-modal h3 {
+            font-size: 1.25rem; color: var(--text-primary); margin-bottom: .75rem;
+        }
+        .download-modal p {
+            font-size: .9rem; color: var(--text-secondary); margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        .download-modal .btn-group {
+            display: flex; flex-direction: column; gap: .75rem;
+        }
+        .download-modal .dl-btn {
+            display: flex; align-items: center; justify-content: center; gap: .5rem;
+            padding: .75rem 1.25rem; border-radius: 10px;
+            font-weight: 600; font-size: .95rem; cursor: pointer;
+            border: none; transition: opacity .2s;
+        }
+        .download-modal .dl-btn:hover { opacity: .85; }
+        .download-modal .dl-btn svg { width: 20px; height: 20px; }
+        .dl-btn-android {
+            background: var(--accent); color: var(--bg-primary);
+        }
+        .dl-btn-cancel {
+            background: transparent; color: var(--text-secondary);
+            border: 1px solid var(--border) !important;
+        }
+        .download-modal-close {
+            position: absolute; top: 10px; right: 12px;
+            background: none; border: none; color: var(--text-muted);
+            cursor: pointer; font-size: 1.2rem; line-height: 1;
+        }
+        .download-modal-close:hover { color: var(--text-primary); }
+
+        /* Sidebar mobile-app nav item */
+        .nav-item-mobile-app { color: var(--accent) !important; }
+
+        /* ============================================================
            v2.0 FACIAL-GENOMIC EXPANSION SECTIONS
            ============================================================ */
         .pgx-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
@@ -956,6 +1054,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z"/></svg>
             <span class="nav-item-label">Dashboard</span>
         </a>
+        <a href="#" class="nav-item nav-item-mobile-app" id="nav-mobile-app" onclick="openDownloadModal(); return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
+            <span class="nav-item-label">Mobile App</span>
+        </a>
     </nav>
     <div class="sidebar-footer">
         <span class="sidebar-footer-text">Teloscopy v2.0</span>
@@ -970,6 +1072,19 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
     </button>
     <span class="mobile-brand">Telo<span>scopy</span></span>
+</div>
+
+<!-- Android app banner (shown to mobile/Android users) -->
+<div class="app-banner" id="app-banner" role="banner">
+    <div class="app-banner-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
+    </div>
+    <div class="app-banner-text">
+        <div class="app-banner-title">Teloscopy for Android</div>
+        <div class="app-banner-subtitle">Get the native app for a better mobile experience</div>
+    </div>
+    <button class="app-banner-btn" onclick="downloadApk()">Download APK</button>
+    <button class="app-banner-close" onclick="dismissAppBanner()" aria-label="Dismiss">&times;</button>
 </div>
 
 <div class="main-content">
@@ -1769,12 +1884,117 @@
     <p>&copy; 2024 Teloscopy &mdash; Multi-agent Telomere Analysis Platform &middot; v2.0.0</p>
 </footer>
 
+<!-- Android download modal -->
+<div class="download-modal-overlay" id="download-modal" role="dialog" aria-modal="true" aria-label="Download Android app">
+    <div class="download-modal">
+        <button class="download-modal-close" onclick="closeDownloadModal()" aria-label="Close">&times;</button>
+        <h3>Get Teloscopy for Android</h3>
+        <p>Download the native Android app for offline telomere analysis, camera capture, and push notifications.</p>
+        <div class="btn-group">
+            <button class="dl-btn dl-btn-android" onclick="downloadApk()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                Download APK
+            </button>
+            <button class="dl-btn dl-btn-cancel" onclick="closeDownloadModal()">Not now</button>
+        </div>
+    </div>
+</div>
+
 <!-- Toast container -->
 <div class="toast-container" id="toast-container" aria-live="polite" role="status"></div>
 
 <!-- ================================================================
      JAVASCRIPT
      ================================================================ -->
+<script>
+/* ==============================================================
+   MOBILE DETECTION & APK DOWNLOAD (global scope for onclick)
+   ============================================================== */
+(function detectMobile() {
+    var ua = navigator.userAgent || '';
+    var isAndroid = /Android/i.test(ua);
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) ||
+                   (navigator.maxTouchPoints > 1 && /Macintosh/i.test(ua));  /* iPad Safari */
+    var bannerDismissed = false;
+    try { bannerDismissed = sessionStorage.getItem('app_banner_dismissed') === '1'; } catch (_) {}
+
+    /* Expose detection flags globally */
+    window._teloscopy = window._teloscopy || {};
+    window._teloscopy.isAndroid = isAndroid;
+    window._teloscopy.isMobile = isMobile;
+
+    /* Show banner automatically for Android users (or any mobile) if not dismissed */
+    if (isMobile && !bannerDismissed) {
+        document.addEventListener('DOMContentLoaded', function () {
+            var banner = document.getElementById('app-banner');
+            if (banner) {
+                /* Small delay so page renders first */
+                setTimeout(function () { banner.classList.add('visible'); }, 800);
+            }
+        });
+    }
+})();
+
+function dismissAppBanner() {
+    var banner = document.getElementById('app-banner');
+    if (banner) banner.classList.remove('visible');
+    try { sessionStorage.setItem('app_banner_dismissed', '1'); } catch (_) {}
+}
+
+function openDownloadModal() {
+    var modal = document.getElementById('download-modal');
+    if (modal) modal.classList.add('visible');
+    /* Close mobile sidebar if open */
+    var sb = document.getElementById('sidebar');
+    var ov = document.getElementById('sidebar-overlay');
+    if (sb) sb.classList.remove('mobile-open');
+    if (ov) ov.classList.remove('visible');
+}
+
+function closeDownloadModal() {
+    var modal = document.getElementById('download-modal');
+    if (modal) modal.classList.remove('visible');
+}
+
+function downloadApk() {
+    /* Check APK availability first, then trigger download */
+    fetch('/api/download/android/status')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            if (data.available) {
+                window.location.href = '/api/download/android';
+                closeDownloadModal();
+                dismissAppBanner();
+            } else {
+                closeDownloadModal();
+                /* Use the toast function if available, else alert */
+                if (typeof toast === 'function') {
+                    toast('APK not available yet. The Android build is coming soon!', 'info');
+                } else {
+                    alert('APK not available yet. The Android build is coming soon!');
+                }
+            }
+        })
+        .catch(function () {
+            closeDownloadModal();
+            if (typeof toast === 'function') {
+                toast('Could not check APK availability. Please try again.', 'error');
+            } else {
+                alert('Could not check APK availability. Please try again.');
+            }
+        });
+}
+
+/* Close download modal on overlay click */
+document.addEventListener('DOMContentLoaded', function () {
+    var overlay = document.getElementById('download-modal');
+    if (overlay) {
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeDownloadModal();
+        });
+    }
+});
+</script>
 <script>
 (function () {
     'use strict';
@@ -2041,7 +2261,25 @@
             if (href && href.charAt(0) === '/') return;
             e.preventDefault();
             var target = document.querySelector(href);
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (target) {
+                /* Handle hidden sections like results-section */
+                if (window.getComputedStyle(target).display === 'none') {
+                    var hasContent = target.querySelector('.result-tabs .tab-btn') ||
+                                     target.querySelector('.results-content:not(:empty)');
+                    if (hasContent) {
+                        target.classList.add('visible');
+                    } else {
+                        toast('No results yet — run an analysis first.', 'info');
+                        /* Close mobile sidebar if open */
+                        if (sidebar.classList.contains('mobile-open')) {
+                            sidebar.classList.remove('mobile-open');
+                            sidebarOverlay.classList.remove('visible');
+                        }
+                        return;
+                    }
+                }
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
             /* Close mobile sidebar if open */
             if (sidebar.classList.contains('mobile-open')) {
                 sidebar.classList.remove('mobile-open');
