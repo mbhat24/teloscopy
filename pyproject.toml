@@ -81,6 +81,7 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "teloscopy.webapp" = ["templates/*.html", "static/**/*"]
+"teloscopy.data" = ["json/*.json"]
 
 [tool.ruff]
 line-length = 100

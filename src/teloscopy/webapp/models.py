@@ -384,6 +384,64 @@ class ReconstructedDNAResponse(BaseModel):
     )
 
 
+class PharmacogenomicPredictionResponse(BaseModel):
+    """A predicted pharmacogenomic interaction from facial-genomic analysis."""
+
+    gene: str
+    rsid: str
+    predicted_phenotype: str
+    confidence: float
+    affected_drugs: list[str] = []
+    clinical_recommendation: str = ""
+    basis: str = ""
+
+
+class FacialHealthScreeningResponse(BaseModel):
+    """Health screening indicators derived from facial analysis."""
+
+    estimated_bmi_category: str = "Unknown"
+    bmi_confidence: float = 0.0
+    anemia_risk_score: float = 0.0
+    cardiovascular_risk_indicators: list[str] = []
+    thyroid_indicators: list[str] = []
+    fatigue_stress_score: float = 0.0
+    hydration_score: float = 50.0
+
+
+class DermatologicalAnalysisResponse(BaseModel):
+    """Dermatological risk indicators from facial analysis."""
+
+    rosacea_risk_score: float = 0.0
+    melasma_risk_score: float = 0.0
+    photo_aging_gap: int = 0
+    acne_severity_score: float = 0.0
+    skin_cancer_risk_factors: list[str] = []
+    pigmentation_disorder_risk: float = 0.0
+    moisture_barrier_score: float = 50.0
+
+
+class ConditionScreeningResponse(BaseModel):
+    """A single condition screening result from facial-genomic analysis."""
+
+    condition: str
+    risk_score: float = 0.0
+    facial_markers: list[str] = []
+    confidence: float = 0.0
+    recommendation: str = ""
+
+
+class AncestryDerivedPredictionsResponse(BaseModel):
+    """Ancestry-derived metabolic and haplogroup predictions."""
+
+    predicted_mtdna_haplogroup: str = "Unknown"
+    haplogroup_confidence: float = 0.0
+    lactose_tolerance_probability: float = 0.5
+    alcohol_flush_probability: float = 0.0
+    caffeine_sensitivity: str = "Unknown"
+    bitter_taste_sensitivity: str = "Unknown"
+    population_specific_risks: list[str] = []
+
+
 class FacialAnalysisResult(BaseModel):
     """Complete facial-genomic analysis result."""
 
@@ -400,6 +458,11 @@ class FacialAnalysisResult(BaseModel):
     ancestry: AncestryEstimateResponse = Field(default_factory=AncestryEstimateResponse)
     predicted_variants: list[PredictedVariantResponse] = Field(default_factory=list)
     reconstructed_dna: ReconstructedDNAResponse | None = None
+    pharmacogenomic_predictions: list[PharmacogenomicPredictionResponse] = []
+    health_screening: FacialHealthScreeningResponse | None = None
+    dermatological_analysis: DermatologicalAnalysisResponse | None = None
+    condition_screenings: list[ConditionScreeningResponse] = []
+    ancestry_derived: AncestryDerivedPredictionsResponse | None = None
     analysis_warnings: list[str] = Field(default_factory=list)
 
 

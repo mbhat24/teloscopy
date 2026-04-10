@@ -151,6 +151,69 @@ class ReconstructedDNA:
 
 
 @dataclass
+class PharmacogenomicPrediction:
+    """Predicted drug metabolism and response profile for a single gene."""
+
+    gene: str  # e.g. "CYP2D6"
+    rsid: str  # key SNP tested
+    predicted_phenotype: str  # e.g. "Poor Metabolizer", "Intermediate", "Normal", "Ultra-rapid"
+    confidence: float  # 0-1
+    affected_drugs: list[str] = field(default_factory=list)
+    clinical_recommendation: str = ""
+    basis: str = ""
+
+
+@dataclass
+class FacialHealthScreening:
+    """Health indicators derived from facial analysis."""
+
+    estimated_bmi_category: str = "Unknown"  # Underweight/Normal/Overweight/Obese
+    bmi_confidence: float = 0.0
+    anemia_risk_score: float = 0.0  # 0-1
+    cardiovascular_risk_indicators: list[str] = field(default_factory=list)
+    thyroid_indicators: list[str] = field(default_factory=list)
+    fatigue_stress_score: float = 0.0  # 0-1 (higher = more fatigue/stress visible)
+    hydration_score: float = 50.0  # 0-100 (100 = well hydrated)
+
+
+@dataclass
+class DermatologicalAnalysis:
+    """Detailed skin analysis from facial imaging."""
+
+    rosacea_risk_score: float = 0.0  # 0-1
+    melasma_risk_score: float = 0.0  # 0-1
+    photo_aging_gap: int = 0  # years above/below expected skin age for chronological age
+    acne_severity_score: float = 0.0  # 0-1
+    skin_cancer_risk_factors: list[str] = field(default_factory=list)
+    pigmentation_disorder_risk: float = 0.0  # 0-1
+    moisture_barrier_score: float = 50.0  # 0-100
+
+
+@dataclass
+class ConditionScreening:
+    """Facial-feature-based screening result for a medical condition."""
+
+    condition: str  # e.g. "Acromegaly", "Cushing syndrome"
+    risk_score: float = 0.0  # 0-1
+    facial_markers: list[str] = field(default_factory=list)
+    confidence: float = 0.0
+    recommendation: str = ""
+
+
+@dataclass
+class AncestryDerivedPredictions:
+    """Ancestry-based genetic predictions beyond direct facial features."""
+
+    predicted_mtdna_haplogroup: str = "Unknown"
+    haplogroup_confidence: float = 0.0
+    lactose_tolerance_probability: float = 0.5
+    alcohol_flush_probability: float = 0.0
+    caffeine_sensitivity: str = "Unknown"  # "Fast" / "Slow"
+    bitter_taste_sensitivity: str = "Unknown"  # "Taster" / "Non-taster"
+    population_specific_risks: list[str] = field(default_factory=list)
+
+
+@dataclass
 class FacialGenomicProfile:
     """Complete facial-genomic prediction result."""
 
@@ -167,6 +230,12 @@ class FacialGenomicProfile:
     predicted_hair_colour: str = "unknown"
     predicted_skin_type: str = "unknown"  # Fitzpatrick scale
     analysis_warnings: list[str] = field(default_factory=list)
+    # --- v2.0 expansion ---
+    pharmacogenomic_predictions: list[PharmacogenomicPrediction] = field(default_factory=list)
+    health_screening: FacialHealthScreening = field(default_factory=FacialHealthScreening)
+    dermatological_analysis: DermatologicalAnalysis = field(default_factory=DermatologicalAnalysis)
+    condition_screenings: list[ConditionScreening] = field(default_factory=list)
+    ancestry_derived: AncestryDerivedPredictions = field(default_factory=AncestryDerivedPredictions)
 
 
 # ---------------------------------------------------------------------------
@@ -329,6 +398,336 @@ _POPULATION_SNP_FREQUENCIES: dict[str, dict[str, tuple[float, str, str]]] = {
         "latin_american": (0.50, "FADS1", "Reduced omega-3 conversion"),
         "middle_eastern": (0.40, "FADS1", "Reduced omega-3 conversion"),
     },
+    # ---- v2.0 expansion: HIrisPlex-S pigmentation SNPs ----
+    "rs1129038": {  # HERC2 — blue vs brown eye colour (LD with rs12913832)
+        "european": (0.25, "HERC2", "Blue eye colour"),
+        "east_asian": (0.01, "HERC2", "Blue eye colour"),
+        "african": (0.01, "HERC2", "Blue eye colour"),
+        "south_asian": (0.04, "HERC2", "Blue eye colour"),
+        "latin_american": (0.15, "HERC2", "Blue eye colour"),
+        "middle_eastern": (0.12, "HERC2", "Blue eye colour"),
+    },
+    "rs12896399": {  # SLC24A4 — eye/hair colour modifier
+        "european": (0.45, "SLC24A4", "Eye/hair colour"),
+        "east_asian": (0.05, "SLC24A4", "Eye/hair colour"),
+        "african": (0.10, "SLC24A4", "Eye/hair colour"),
+        "south_asian": (0.20, "SLC24A4", "Eye/hair colour"),
+        "latin_american": (0.30, "SLC24A4", "Eye/hair colour"),
+        "middle_eastern": (0.25, "SLC24A4", "Eye/hair colour"),
+    },
+    "rs1393350": {  # TYR — eye colour (green/hazel)
+        "european": (0.22, "TYR", "Green/hazel eye colour"),
+        "east_asian": (0.02, "TYR", "Green/hazel eye colour"),
+        "african": (0.01, "TYR", "Green/hazel eye colour"),
+        "south_asian": (0.08, "TYR", "Green/hazel eye colour"),
+        "latin_american": (0.12, "TYR", "Green/hazel eye colour"),
+        "middle_eastern": (0.10, "TYR", "Green/hazel eye colour"),
+    },
+    "rs1800407": {  # OCA2 — eye colour (R419Q)
+        "european": (0.06, "OCA2", "Eye colour modifier"),
+        "east_asian": (0.00, "OCA2", "Eye colour modifier"),
+        "african": (0.00, "OCA2", "Eye colour modifier"),
+        "south_asian": (0.02, "OCA2", "Eye colour modifier"),
+        "latin_american": (0.03, "OCA2", "Eye colour modifier"),
+        "middle_eastern": (0.03, "OCA2", "Eye colour modifier"),
+    },
+    "rs2402130": {  # SLC24A4 — eye and hair colour
+        "european": (0.48, "SLC24A4", "Eye and hair colour"),
+        "east_asian": (0.06, "SLC24A4", "Eye and hair colour"),
+        "african": (0.12, "SLC24A4", "Eye and hair colour"),
+        "south_asian": (0.22, "SLC24A4", "Eye and hair colour"),
+        "latin_american": (0.32, "SLC24A4", "Eye and hair colour"),
+        "middle_eastern": (0.28, "SLC24A4", "Eye and hair colour"),
+    },
+    # ---- v2.0: Additional MC1R / hair colour SNPs ----
+    "rs1805008": {  # MC1R R160W — red hair (strong effect)
+        "european": (0.09, "MC1R", "Red hair / fair skin (R160W)"),
+        "east_asian": (0.00, "MC1R", "Red hair / fair skin (R160W)"),
+        "african": (0.00, "MC1R", "Red hair / fair skin (R160W)"),
+        "south_asian": (0.01, "MC1R", "Red hair / fair skin (R160W)"),
+        "latin_american": (0.03, "MC1R", "Red hair / fair skin (R160W)"),
+        "middle_eastern": (0.02, "MC1R", "Red hair / fair skin (R160W)"),
+    },
+    "rs1805009": {  # MC1R D294H — red hair (very strong penetrance)
+        "european": (0.02, "MC1R", "Red hair (D294H)"),
+        "east_asian": (0.00, "MC1R", "Red hair (D294H)"),
+        "african": (0.00, "MC1R", "Red hair (D294H)"),
+        "south_asian": (0.00, "MC1R", "Red hair (D294H)"),
+        "latin_american": (0.01, "MC1R", "Red hair (D294H)"),
+        "middle_eastern": (0.01, "MC1R", "Red hair (D294H)"),
+    },
+    "rs2228479": {  # MC1R V92M — hair/eye colour; perceived age
+        "european": (0.10, "MC1R", "Hair/eye colour modifier (V92M)"),
+        "east_asian": (0.25, "MC1R", "Hair/eye colour modifier (V92M)"),
+        "african": (0.01, "MC1R", "Hair/eye colour modifier (V92M)"),
+        "south_asian": (0.08, "MC1R", "Hair/eye colour modifier (V92M)"),
+        "latin_american": (0.12, "MC1R", "Hair/eye colour modifier (V92M)"),
+        "middle_eastern": (0.06, "MC1R", "Hair/eye colour modifier (V92M)"),
+    },
+    "rs885479": {  # MC1R R163Q — hair colour modifier
+        "european": (0.06, "MC1R", "Hair colour modifier (R163Q)"),
+        "east_asian": (0.70, "MC1R", "Hair colour modifier (R163Q)"),
+        "african": (0.01, "MC1R", "Hair colour modifier (R163Q)"),
+        "south_asian": (0.15, "MC1R", "Hair colour modifier (R163Q)"),
+        "latin_american": (0.20, "MC1R", "Hair colour modifier (R163Q)"),
+        "middle_eastern": (0.05, "MC1R", "Hair colour modifier (R163Q)"),
+    },
+    "rs35264875": {  # TPCN2 — blond vs brown hair (M484L)
+        "european": (0.10, "TPCN2", "Blond hair colour"),
+        "east_asian": (0.01, "TPCN2", "Blond hair colour"),
+        "african": (0.01, "TPCN2", "Blond hair colour"),
+        "south_asian": (0.03, "TPCN2", "Blond hair colour"),
+        "latin_american": (0.06, "TPCN2", "Blond hair colour"),
+        "middle_eastern": (0.04, "TPCN2", "Blond hair colour"),
+    },
+    # ---- v2.0: Skin pigmentation / freckling ----
+    "rs1800414": {  # OCA2 H615R — skin lightening in East Asians
+        "european": (0.01, "OCA2", "East Asian skin lightening"),
+        "east_asian": (0.55, "OCA2", "East Asian skin lightening"),
+        "african": (0.00, "OCA2", "East Asian skin lightening"),
+        "south_asian": (0.05, "OCA2", "East Asian skin lightening"),
+        "latin_american": (0.08, "OCA2", "East Asian skin lightening"),
+        "middle_eastern": (0.01, "OCA2", "East Asian skin lightening"),
+    },
+    "rs10756819": {  # BNC2 — skin pigmentation, freckling
+        "european": (0.68, "BNC2", "Skin pigmentation / freckling"),
+        "east_asian": (0.25, "BNC2", "Skin pigmentation / freckling"),
+        "african": (0.80, "BNC2", "Skin pigmentation / freckling"),
+        "south_asian": (0.50, "BNC2", "Skin pigmentation / freckling"),
+        "latin_american": (0.55, "BNC2", "Skin pigmentation / freckling"),
+        "middle_eastern": (0.45, "BNC2", "Skin pigmentation / freckling"),
+    },
+    "rs6059655": {  # ASIP upstream — skin pigmentation
+        "european": (0.10, "ASIP", "Skin pigmentation"),
+        "east_asian": (0.02, "ASIP", "Skin pigmentation"),
+        "african": (0.05, "ASIP", "Skin pigmentation"),
+        "south_asian": (0.06, "ASIP", "Skin pigmentation"),
+        "latin_american": (0.08, "ASIP", "Skin pigmentation"),
+        "middle_eastern": (0.07, "ASIP", "Skin pigmentation"),
+    },
+    "rs1015362": {  # ASIP — skin/hair pigmentation, tanning
+        "european": (0.17, "ASIP", "Skin/hair pigmentation, tanning"),
+        "east_asian": (0.05, "ASIP", "Skin/hair pigmentation, tanning"),
+        "african": (0.08, "ASIP", "Skin/hair pigmentation, tanning"),
+        "south_asian": (0.10, "ASIP", "Skin/hair pigmentation, tanning"),
+        "latin_american": (0.12, "ASIP", "Skin/hair pigmentation, tanning"),
+        "middle_eastern": (0.10, "ASIP", "Skin/hair pigmentation, tanning"),
+    },
+    # ---- v2.0: Facial morphology SNPs ----
+    "rs7559271": {  # PAX3 — nasion position / nose bridge
+        "european": (0.48, "PAX3", "Nose bridge width / nasion position"),
+        "east_asian": (0.35, "PAX3", "Nose bridge width / nasion position"),
+        "african": (0.55, "PAX3", "Nose bridge width / nasion position"),
+        "south_asian": (0.42, "PAX3", "Nose bridge width / nasion position"),
+        "latin_american": (0.50, "PAX3", "Nose bridge width / nasion position"),
+        "middle_eastern": (0.45, "PAX3", "Nose bridge width / nasion position"),
+    },
+    "rs927833": {  # DCHS2 — nose shape / protrusion
+        "european": (0.38, "DCHS2", "Nose protrusion / wing breadth"),
+        "east_asian": (0.22, "DCHS2", "Nose protrusion / wing breadth"),
+        "african": (0.50, "DCHS2", "Nose protrusion / wing breadth"),
+        "south_asian": (0.40, "DCHS2", "Nose protrusion / wing breadth"),
+        "latin_american": (0.45, "DCHS2", "Nose protrusion / wing breadth"),
+        "middle_eastern": (0.35, "DCHS2", "Nose protrusion / wing breadth"),
+    },
+    "rs2045323": {  # RUNX2 — nose bridge width
+        "european": (0.41, "RUNX2", "Nose bridge width"),
+        "east_asian": (0.30, "RUNX2", "Nose bridge width"),
+        "african": (0.60, "RUNX2", "Nose bridge width"),
+        "south_asian": (0.45, "RUNX2", "Nose bridge width"),
+        "latin_american": (0.48, "RUNX2", "Nose bridge width"),
+        "middle_eastern": (0.42, "RUNX2", "Nose bridge width"),
+    },
+    "rs4648379": {  # SUPT3H — nose tip shape
+        "european": (0.32, "SUPT3H", "Nose tip shape / columella inclination"),
+        "east_asian": (0.20, "SUPT3H", "Nose tip shape / columella inclination"),
+        "african": (0.45, "SUPT3H", "Nose tip shape / columella inclination"),
+        "south_asian": (0.35, "SUPT3H", "Nose tip shape / columella inclination"),
+        "latin_american": (0.38, "SUPT3H", "Nose tip shape / columella inclination"),
+        "middle_eastern": (0.30, "SUPT3H", "Nose tip shape / columella inclination"),
+    },
+    # ---- v2.0: Chin, jaw, face shape ----
+    "rs3827760": {  # EDAR 370A — hair thickness, chin, ear morphology
+        "european": (0.01, "EDAR", "Hair thickness / chin / ear morphology"),
+        "east_asian": (0.90, "EDAR", "Hair thickness / chin / ear morphology"),
+        "african": (0.00, "EDAR", "Hair thickness / chin / ear morphology"),
+        "south_asian": (0.05, "EDAR", "Hair thickness / chin / ear morphology"),
+        "latin_american": (0.40, "EDAR", "Hair thickness / chin / ear morphology"),
+        "middle_eastern": (0.01, "EDAR", "Hair thickness / chin / ear morphology"),
+    },
+    "rs642961": {  # IRF6 — lip shape / thickness
+        "european": (0.19, "IRF6", "Lip shape / thickness"),
+        "east_asian": (0.12, "IRF6", "Lip shape / thickness"),
+        "african": (0.15, "IRF6", "Lip shape / thickness"),
+        "south_asian": (0.16, "IRF6", "Lip shape / thickness"),
+        "latin_american": (0.18, "IRF6", "Lip shape / thickness"),
+        "middle_eastern": (0.17, "IRF6", "Lip shape / thickness"),
+    },
+    "rs11684042": {  # TFAP2B region — chin cleft
+        "european": (0.43, "TFAP2B", "Chin cleft / dimple"),
+        "east_asian": (0.30, "TFAP2B", "Chin cleft / dimple"),
+        "african": (0.35, "TFAP2B", "Chin cleft / dimple"),
+        "south_asian": (0.38, "TFAP2B", "Chin cleft / dimple"),
+        "latin_american": (0.40, "TFAP2B", "Chin cleft / dimple"),
+        "middle_eastern": (0.37, "TFAP2B", "Chin cleft / dimple"),
+    },
+    "rs6740960": {  # TMEM163 — facial width (bizygomatic breadth)
+        "european": (0.25, "TMEM163", "Facial width"),
+        "east_asian": (0.40, "TMEM163", "Facial width"),
+        "african": (0.30, "TMEM163", "Facial width"),
+        "south_asian": (0.28, "TMEM163", "Facial width"),
+        "latin_american": (0.32, "TMEM163", "Facial width"),
+        "middle_eastern": (0.27, "TMEM163", "Facial width"),
+    },
+    # ---- v2.0: Hair traits (texture, baldness, graying) ----
+    "rs11803731": {  # TCHH — hair curliness in Europeans (L790M)
+        "european": (0.40, "TCHH", "Hair curliness (L790M)"),
+        "east_asian": (0.01, "TCHH", "Hair curliness (L790M)"),
+        "african": (0.05, "TCHH", "Hair curliness (L790M)"),
+        "south_asian": (0.10, "TCHH", "Hair curliness (L790M)"),
+        "latin_american": (0.20, "TCHH", "Hair curliness (L790M)"),
+        "middle_eastern": (0.15, "TCHH", "Hair curliness (L790M)"),
+    },
+    "rs2180439": {  # AR/EDA2R — male pattern baldness
+        "european": (0.56, "AR/EDA2R", "Male pattern baldness"),
+        "east_asian": (0.45, "AR/EDA2R", "Male pattern baldness"),
+        "african": (0.40, "AR/EDA2R", "Male pattern baldness"),
+        "south_asian": (0.50, "AR/EDA2R", "Male pattern baldness"),
+        "latin_american": (0.48, "AR/EDA2R", "Male pattern baldness"),
+        "middle_eastern": (0.52, "AR/EDA2R", "Male pattern baldness"),
+    },
+    "rs929626": {  # EBF1 — male pattern baldness (vertex)
+        "european": (0.43, "EBF1", "Male pattern baldness (vertex)"),
+        "east_asian": (0.35, "EBF1", "Male pattern baldness (vertex)"),
+        "african": (0.50, "EBF1", "Male pattern baldness (vertex)"),
+        "south_asian": (0.40, "EBF1", "Male pattern baldness (vertex)"),
+        "latin_american": (0.42, "EBF1", "Male pattern baldness (vertex)"),
+        "middle_eastern": (0.44, "EBF1", "Male pattern baldness (vertex)"),
+    },
+    # ---- v2.0: Aging / perceived age ----
+    "rs258322": {  # STXBP5L — perceived facial age
+        "european": (0.28, "STXBP5L", "Perceived facial age"),
+        "east_asian": (0.20, "STXBP5L", "Perceived facial age"),
+        "african": (0.35, "STXBP5L", "Perceived facial age"),
+        "south_asian": (0.25, "STXBP5L", "Perceived facial age"),
+        "latin_american": (0.30, "STXBP5L", "Perceived facial age"),
+        "middle_eastern": (0.26, "STXBP5L", "Perceived facial age"),
+    },
+    "rs2228145": {  # IL6R — inflammation / skin aging (Asp358Ala)
+        "european": (0.39, "IL6R", "Inflammation / skin aging"),
+        "east_asian": (0.25, "IL6R", "Inflammation / skin aging"),
+        "african": (0.05, "IL6R", "Inflammation / skin aging"),
+        "south_asian": (0.30, "IL6R", "Inflammation / skin aging"),
+        "latin_american": (0.28, "IL6R", "Inflammation / skin aging"),
+        "middle_eastern": (0.35, "IL6R", "Inflammation / skin aging"),
+    },
+    "rs1801260": {  # CLOCK — circadian rhythm / photoaging
+        "european": (0.22, "CLOCK", "Circadian rhythm / photoaging"),
+        "east_asian": (0.15, "CLOCK", "Circadian rhythm / photoaging"),
+        "african": (0.18, "CLOCK", "Circadian rhythm / photoaging"),
+        "south_asian": (0.20, "CLOCK", "Circadian rhythm / photoaging"),
+        "latin_american": (0.19, "CLOCK", "Circadian rhythm / photoaging"),
+        "middle_eastern": (0.21, "CLOCK", "Circadian rhythm / photoaging"),
+    },
+    # ---- v2.0: Pharmacogenomic SNPs ----
+    "rs4244285": {  # CYP2C19*2 — clopidogrel, PPIs, antidepressants
+        "european": (0.15, "CYP2C19", "Drug metabolism (clopidogrel, PPIs)"),
+        "east_asian": (0.30, "CYP2C19", "Drug metabolism (clopidogrel, PPIs)"),
+        "african": (0.15, "CYP2C19", "Drug metabolism (clopidogrel, PPIs)"),
+        "south_asian": (0.35, "CYP2C19", "Drug metabolism (clopidogrel, PPIs)"),
+        "latin_american": (0.12, "CYP2C19", "Drug metabolism (clopidogrel, PPIs)"),
+        "middle_eastern": (0.12, "CYP2C19", "Drug metabolism (clopidogrel, PPIs)"),
+    },
+    "rs12248560": {  # CYP2C19*17 — ultra-rapid metabolizer
+        "european": (0.21, "CYP2C19", "Ultra-rapid drug metabolism"),
+        "east_asian": (0.04, "CYP2C19", "Ultra-rapid drug metabolism"),
+        "african": (0.18, "CYP2C19", "Ultra-rapid drug metabolism"),
+        "south_asian": (0.15, "CYP2C19", "Ultra-rapid drug metabolism"),
+        "latin_american": (0.16, "CYP2C19", "Ultra-rapid drug metabolism"),
+        "middle_eastern": (0.20, "CYP2C19", "Ultra-rapid drug metabolism"),
+    },
+    "rs1065852": {  # CYP2D6*4 — codeine, tamoxifen, SSRIs
+        "european": (0.20, "CYP2D6", "Drug metabolism (codeine, tamoxifen)"),
+        "east_asian": (0.01, "CYP2D6", "Drug metabolism (codeine, tamoxifen)"),
+        "african": (0.02, "CYP2D6", "Drug metabolism (codeine, tamoxifen)"),
+        "south_asian": (0.08, "CYP2D6", "Drug metabolism (codeine, tamoxifen)"),
+        "latin_american": (0.10, "CYP2D6", "Drug metabolism (codeine, tamoxifen)"),
+        "middle_eastern": (0.10, "CYP2D6", "Drug metabolism (codeine, tamoxifen)"),
+    },
+    "rs776746": {  # CYP3A5*3 — tacrolimus, immunosuppressants
+        "european": (0.94, "CYP3A5", "Drug metabolism (tacrolimus)"),
+        "east_asian": (0.75, "CYP3A5", "Drug metabolism (tacrolimus)"),
+        "african": (0.30, "CYP3A5", "Drug metabolism (tacrolimus)"),
+        "south_asian": (0.65, "CYP3A5", "Drug metabolism (tacrolimus)"),
+        "latin_american": (0.75, "CYP3A5", "Drug metabolism (tacrolimus)"),
+        "middle_eastern": (0.85, "CYP3A5", "Drug metabolism (tacrolimus)"),
+    },
+    "rs9923231": {  # VKORC1 — warfarin dose sensitivity
+        "european": (0.40, "VKORC1", "Warfarin dose sensitivity"),
+        "east_asian": (0.92, "VKORC1", "Warfarin dose sensitivity"),
+        "african": (0.10, "VKORC1", "Warfarin dose sensitivity"),
+        "south_asian": (0.35, "VKORC1", "Warfarin dose sensitivity"),
+        "latin_american": (0.45, "VKORC1", "Warfarin dose sensitivity"),
+        "middle_eastern": (0.42, "VKORC1", "Warfarin dose sensitivity"),
+    },
+    "rs4149056": {  # SLCO1B1 — statin myopathy risk
+        "european": (0.15, "SLCO1B1", "Statin myopathy risk"),
+        "east_asian": (0.12, "SLCO1B1", "Statin myopathy risk"),
+        "african": (0.02, "SLCO1B1", "Statin myopathy risk"),
+        "south_asian": (0.05, "SLCO1B1", "Statin myopathy risk"),
+        "latin_american": (0.08, "SLCO1B1", "Statin myopathy risk"),
+        "middle_eastern": (0.10, "SLCO1B1", "Statin myopathy risk"),
+    },
+    "rs1045642": {  # ABCB1 (MDR1) — drug efflux / bioavailability
+        "european": (0.52, "ABCB1", "Drug efflux / bioavailability"),
+        "east_asian": (0.40, "ABCB1", "Drug efflux / bioavailability"),
+        "african": (0.10, "ABCB1", "Drug efflux / bioavailability"),
+        "south_asian": (0.45, "ABCB1", "Drug efflux / bioavailability"),
+        "latin_american": (0.42, "ABCB1", "Drug efflux / bioavailability"),
+        "middle_eastern": (0.50, "ABCB1", "Drug efflux / bioavailability"),
+    },
+    "rs3745274": {  # CYP2B6 — efavirenz, methadone, cyclophosphamide
+        "european": (0.28, "CYP2B6", "Drug metabolism (efavirenz, methadone)"),
+        "east_asian": (0.18, "CYP2B6", "Drug metabolism (efavirenz, methadone)"),
+        "african": (0.35, "CYP2B6", "Drug metabolism (efavirenz, methadone)"),
+        "south_asian": (0.25, "CYP2B6", "Drug metabolism (efavirenz, methadone)"),
+        "latin_american": (0.30, "CYP2B6", "Drug metabolism (efavirenz, methadone)"),
+        "middle_eastern": (0.25, "CYP2B6", "Drug metabolism (efavirenz, methadone)"),
+    },
+    # ---- v2.0: Telomere / longevity SNPs ----
+    "rs2736100": {  # TERT — telomerase reverse transcriptase
+        "european": (0.49, "TERT", "Telomere length / longevity"),
+        "east_asian": (0.60, "TERT", "Telomere length / longevity"),
+        "african": (0.30, "TERT", "Telomere length / longevity"),
+        "south_asian": (0.45, "TERT", "Telomere length / longevity"),
+        "latin_american": (0.50, "TERT", "Telomere length / longevity"),
+        "middle_eastern": (0.47, "TERT", "Telomere length / longevity"),
+    },
+    "rs10936599": {  # TERC — telomerase RNA component
+        "european": (0.25, "TERC", "Telomere length"),
+        "east_asian": (0.10, "TERC", "Telomere length"),
+        "african": (0.30, "TERC", "Telomere length"),
+        "south_asian": (0.20, "TERC", "Telomere length"),
+        "latin_american": (0.22, "TERC", "Telomere length"),
+        "middle_eastern": (0.23, "TERC", "Telomere length"),
+    },
+    # ---- v2.0: Additional health-relevant SNPs ----
+    "rs1801282": {  # PPARG Pro12Ala — insulin sensitivity
+        "european": (0.12, "PPARG", "Insulin sensitivity"),
+        "east_asian": (0.04, "PPARG", "Insulin sensitivity"),
+        "african": (0.01, "PPARG", "Insulin sensitivity"),
+        "south_asian": (0.08, "PPARG", "Insulin sensitivity"),
+        "latin_american": (0.10, "PPARG", "Insulin sensitivity"),
+        "middle_eastern": (0.09, "PPARG", "Insulin sensitivity"),
+    },
+    "rs1800795": {  # IL6 — inflammation marker
+        "european": (0.42, "IL6", "Systemic inflammation"),
+        "east_asian": (0.01, "IL6", "Systemic inflammation"),
+        "african": (0.05, "IL6", "Systemic inflammation"),
+        "south_asian": (0.20, "IL6", "Systemic inflammation"),
+        "latin_american": (0.25, "IL6", "Systemic inflammation"),
+        "middle_eastern": (0.30, "IL6", "Systemic inflammation"),
+    },
 }
 
 # Risk allele and reference allele for each SNP.
@@ -354,6 +753,47 @@ _SNP_ALLELES: dict[str, tuple[str, str]] = {
     "rs1333049": ("C", "G"),     # CDKN2B-AS1
     "rs4646994": ("D", "I"),     # ACE I/D
     "rs174546": ("T", "C"),      # FADS1
+    # ---- v2.0 expansion ----
+    "rs1129038": ("A", "G"),     # HERC2 (A = blue eye)
+    "rs12896399": ("T", "G"),    # SLC24A4 (T = lighter)
+    "rs1393350": ("A", "G"),     # TYR (A = lighter)
+    "rs1800407": ("T", "C"),     # OCA2 R419Q
+    "rs2402130": ("A", "G"),     # SLC24A4
+    "rs1805008": ("T", "C"),     # MC1R R160W
+    "rs1805009": ("C", "G"),     # MC1R D294H
+    "rs2228479": ("A", "G"),     # MC1R V92M
+    "rs885479": ("A", "G"),      # MC1R R163Q
+    "rs35264875": ("T", "C"),    # TPCN2
+    "rs1800414": ("A", "G"),     # OCA2 H615R
+    "rs10756819": ("G", "A"),    # BNC2
+    "rs6059655": ("A", "G"),     # ASIP
+    "rs1015362": ("G", "A"),     # ASIP
+    "rs7559271": ("T", "C"),     # PAX3
+    "rs927833": ("C", "T"),      # DCHS2
+    "rs2045323": ("G", "A"),     # RUNX2
+    "rs4648379": ("A", "G"),     # SUPT3H
+    "rs3827760": ("A", "G"),     # EDAR 370A
+    "rs642961": ("A", "G"),      # IRF6
+    "rs11684042": ("T", "C"),    # TFAP2B
+    "rs6740960": ("G", "A"),     # TMEM163
+    "rs11803731": ("A", "T"),    # TCHH L790M
+    "rs2180439": ("C", "T"),     # AR/EDA2R
+    "rs929626": ("A", "G"),      # EBF1
+    "rs258322": ("A", "G"),      # STXBP5L
+    "rs2228145": ("C", "A"),     # IL6R Asp358Ala
+    "rs1801260": ("G", "A"),     # CLOCK
+    "rs4244285": ("A", "G"),     # CYP2C19*2
+    "rs12248560": ("T", "C"),    # CYP2C19*17
+    "rs1065852": ("A", "G"),     # CYP2D6*4
+    "rs776746": ("G", "A"),      # CYP3A5*3
+    "rs9923231": ("A", "G"),     # VKORC1
+    "rs4149056": ("C", "T"),     # SLCO1B1
+    "rs1045642": ("T", "C"),     # ABCB1
+    "rs3745274": ("T", "G"),     # CYP2B6
+    "rs2736100": ("C", "A"),     # TERT
+    "rs10936599": ("C", "T"),    # TERC
+    "rs1801282": ("G", "C"),     # PPARG
+    "rs1800795": ("C", "G"),     # IL6
 }
 
 # Genomic coordinates (GRCh38) and 25 bp flanking reference sequences
@@ -474,6 +914,253 @@ _SNP_GENOMIC_CONTEXT: dict[str, tuple[str, int, str, str]] = {
         "11", 61797212,
         "CTTCAGGTCCCTCCTACCCCTAAGA",
         "AGGAATGCCATAACATCACCTGCCC",
+    ),
+    # ---- v2.0 expansion: HIrisPlex-S pigmentation ----
+    # HERC2 blue eye — chr15:28344238
+    "rs1129038": (
+        "15", 28344238,
+        "ATACTGGTCATTATCTAAGCCTCAG",
+        "TGTCCAAGGACCAAGTGGACAGATA",
+    ),
+    # SLC24A4 eye/hair — chr14:92801203
+    "rs12896399": (
+        "14", 92801203,
+        "AGGGCAAAGCCTCAACTTGGTCCTT",
+        "GTACAGCAAGTCTAGTGCAACTCAG",
+    ),
+    # TYR green/hazel eye — chr11:89178528
+    "rs1393350": (
+        "11", 89178528,
+        "CTCTGGGAATGCTGTTTCATGACGG",
+        "ACACATTTCAAGATATGGCCTTTGC",
+    ),
+    # OCA2 R419Q — chr15:28009534
+    "rs1800407": (
+        "15", 28009534,
+        "TGGTTCATCCAAGAAACAAATGATG",
+        "GTAGATGAAGCACAGAGGTATTCAC",
+    ),
+    # SLC24A4 eye/hair — chr14:92773663
+    "rs2402130": (
+        "14", 92773663,
+        "GCTCTGTAAGTGACTCAAGTCACTG",
+        "ACATGTACTCAGACATGTCCATCCC",
+    ),
+    # MC1R R160W — chr16:89919709
+    "rs1805008": (
+        "16", 89919709,
+        "CGACGCCATCGTGAACATCATCGAC",
+        "GGCTGCCTGGCCGTCTGGATGGCCA",
+    ),
+    # MC1R D294H — chr16:89920138
+    "rs1805009": (
+        "16", 89920138,
+        "GCCATCACCAAGAACCGCAACCTGC",
+        "CCACGAGCGTGCGCATCCTGGTGGA",
+    ),
+    # MC1R V92M — chr16:89919532
+    "rs2228479": (
+        "16", 89919532,
+        "GCCAGCAGCCCCTTCCTGGCCATCG",
+        "GGTCGTGCTGGAGACGGCCGTCATC",
+    ),
+    # MC1R R163Q — chr16:89919746
+    "rs885479": (
+        "16", 89919746,
+        "ATCGACGCCACCAGACGCCCCCTCA",
+        "CATCCTGAGCCAAGCAGGTGCCCAG",
+    ),
+    # TPCN2 blond hair — chr11:69025765
+    "rs35264875": (
+        "11", 69025765,
+        "CCTCCAGGAGGTGATCCAGAACTAC",
+        "TGGCCTCAGCAGCCTCTTCCTGGTC",
+    ),
+    # OCA2 H615R East Asian skin — chr15:28197037
+    "rs1800414": (
+        "15", 28197037,
+        "CTGGTGGTGGGCTTTGCCATCTTCA",
+        "TCACCAGCACCTCCATGATGGCCAG",
+    ),
+    # BNC2 freckling — chr9:16858084
+    "rs10756819": (
+        "9", 16858084,
+        "TGAGAGCAGCATTCCAGGGCTCTAG",
+        "AGCTCTCATTAGCACCAAAGCCATC",
+    ),
+    # ASIP skin pigment — chr20:34658752
+    "rs6059655": (
+        "20", 34658752,
+        "CAGTTCTGGAAGTCCAGCAGATCTG",
+        "TCTGAGGAGACCTTTCAGCTCAGCC",
+    ),
+    # ASIP tanning — chr20:34660002
+    "rs1015362": (
+        "20", 34660002,
+        "ATCTGCCTCAAGGGTGTCCTCTCCC",
+        "AGTCCAAGAGCTTGGAAATGCCTGG",
+    ),
+    # ---- v2.0: Facial morphology ----
+    # PAX3 nose bridge — chr2:222772455
+    "rs7559271": (
+        "2", 222772455,
+        "CTTTGTCAAATGTCTAGGCTCCCAG",
+        "CCATCTCCATCTGTCCTCACTTTGC",
+    ),
+    # DCHS2 nose shape — chr4:155508021
+    "rs927833": (
+        "4", 155508021,
+        "GAATCAGATTCTAAAGAGTCCAGAG",
+        "TCACTCCCAGCAATGTAGCTACAGG",
+    ),
+    # RUNX2 nose bridge — chr6:45411022
+    "rs2045323": (
+        "6", 45411022,
+        "TCTCTAGGACTCAGAAGCCACTGCA",
+        "CAGCAGTGGCTTTGATGACATTCCG",
+    ),
+    # SUPT3H nose tip — chr6:45178920
+    "rs4648379": (
+        "6", 45178920,
+        "AACAGCATTGCCTCAGCTCAGCCTG",
+        "GAGCCAGCCAGGATCTCCTCATAGG",
+    ),
+    # EDAR 370A — chr2:108962124
+    "rs3827760": (
+        "2", 108962124,
+        "AGCCCTCAGCCCCGATGGGCACCAC",
+        "GGCTTCAACCCCATCTTCAACTCCG",
+    ),
+    # IRF6 lip shape — chr1:209989270
+    "rs642961": (
+        "1", 209989270,
+        "CTTGCCTCCTAGTCCACTCCTTGAG",
+        "ACTCAGGTCCAGTCCTCCTGCCTTC",
+    ),
+    # TFAP2B chin cleft — chr6:50863080
+    "rs11684042": (
+        "6", 50863080,
+        "GCTCTGAAGCTGGCAATGCCACTGG",
+        "TCTCCACAGCAGGCAGGTTCAGTCC",
+    ),
+    # TMEM163 facial width — chr2:134981759
+    "rs6740960": (
+        "2", 134981759,
+        "AGGCAGATCACCTGAGGTCAGGAGT",
+        "TGAGCCAAGATTGCACCACTGCACT",
+    ),
+    # ---- v2.0: Hair traits ----
+    # TCHH curliness — chr1:152196195
+    "rs11803731": (
+        "1", 152196195,
+        "GAGCACAGCCCACAGCCTCCTCCAG",
+        "CAGCCCCAGCAGCACCATCTTCCTG",
+    ),
+    # AR/EDA2R baldness — chrX:67527747
+    "rs2180439": (
+        "X", 67527747,
+        "TTCTAGTCATGCTCACCAGGCTGCC",
+        "AGTGATCCACCCACCTTGGCCTCCC",
+    ),
+    # EBF1 baldness — chr5:158467199
+    "rs929626": (
+        "5", 158467199,
+        "GTGATCCTCCCACCTCAGCCTCCCA",
+        "AAGTGCTGGGATTAGAGGTGTGAGC",
+    ),
+    # ---- v2.0: Aging / perceived age ----
+    # STXBP5L perceived age — chr3:121316831
+    "rs258322": (
+        "3", 121316831,
+        "CTAACAGCTAGCCTCAGCCCCTTGC",
+        "AGCAAGGAGCCTGAGGCACTCATGT",
+    ),
+    # IL6R inflammation — chr1:154453788
+    "rs2228145": (
+        "1", 154453788,
+        "CCCATCCAGGCAGCCCACTGCTCAT",
+        "CAGAATCCAGGTGCCCTGGAGTTAG",
+    ),
+    # CLOCK circadian — chr4:56300440
+    "rs1801260": (
+        "4", 56300440,
+        "CAGGTCCCATCTTCAAACTGAGAAG",
+        "GCTTGCAACCAAATCTTCCAGTAAG",
+    ),
+    # ---- v2.0: Pharmacogenomic ----
+    # CYP2C19*2 — chr10:94781859
+    "rs4244285": (
+        "10", 94781859,
+        "TTCCCACTATCATTGATTATTTCCC",
+        "GGAACCCATAACAAATTACTTAAAA",
+    ),
+    # CYP2C19*17 — chr10:94761900
+    "rs12248560": (
+        "10", 94761900,
+        "AATATCTTAATAAATAATCAATAGG",
+        "TTGGATCCAGGGAAAGTATTTTTGT",
+    ),
+    # CYP2D6*4 — chr22:42130692
+    "rs1065852": (
+        "22", 42130692,
+        "CTCGTCCCCCAGCCATGTTCCCTGA",
+        "TCCACCAGGCCCCCTGCCACTGCCC",
+    ),
+    # CYP3A5*3 — chr7:99672916
+    "rs776746": (
+        "7", 99672916,
+        "GATGAACTTTGGCCTCAGTTTGTGG",
+        "AATACATCTCCTTCCAAAAGTAAAC",
+    ),
+    # VKORC1 warfarin — chr16:31096368
+    "rs9923231": (
+        "16", 31096368,
+        "CAGCAGCCTCCCAGAGGATGGCAGC",
+        "CACAGTCCAGGGGTCAGATACTCTG",
+    ),
+    # SLCO1B1 statin — chr12:21176804
+    "rs4149056": (
+        "12", 21176804,
+        "AACAGATGATAGACTACAGTGATGG",
+        "CATGAATCAAGCCATTTTCTTCTGC",
+    ),
+    # ABCB1 drug efflux — chr7:87509329
+    "rs1045642": (
+        "7", 87509329,
+        "ATCTGTGAACTCTTGTTTTCAGCAA",
+        "TTAATATTTTGAATGTTCTTTATAG",
+    ),
+    # CYP2B6 efavirenz — chr19:41006936
+    "rs3745274": (
+        "19", 41006936,
+        "TTCCTCCTTCCCATCCCCCAGGCTC",
+        "TGCAGATGATGTTGGCAAGCCATGC",
+    ),
+    # ---- v2.0: Telomere / longevity ----
+    # TERT — chr5:1279790
+    "rs2736100": (
+        "5", 1279790,
+        "CATCGTCAACCCCAAGCAGTGCCAG",
+        "AGAGCTGTCGCCGTGGAAGACATTG",
+    ),
+    # TERC — chr3:169764480
+    "rs10936599": (
+        "3", 169764480,
+        "TGGCTCAAACTCCTGGCCTCAAGTG",
+        "TCCCAAAGTGCTGGGATTACAGGCG",
+    ),
+    # ---- v2.0: Additional health ----
+    # PPARG — chr3:12351626
+    "rs1801282": (
+        "3", 12351626,
+        "TTCTGGAAGATATTCAGTACATGTT",
+        "CCAATTCAAGCCCAGTCCTTTCTGT",
+    ),
+    # IL6 inflammation — chr7:22726627
+    "rs1800795": (
+        "7", 22726627,
+        "CCAAGCTGCACTTTTCCCCCTAGTT",
+        "TAAACCTCATTCAAAGAGAGTTCTG",
     ),
 }
 
@@ -1131,8 +1818,620 @@ def _reconstruct_dna(variants: list[PredictedVariant]) -> ReconstructedDNA:
 
 
 # ---------------------------------------------------------------------------
-# Main analysis function
+# Pharmacogenomic prediction (v2.0)
 # ---------------------------------------------------------------------------
+
+# Pharmacogenomic variant → drug / phenotype mapping
+_PHARMACOGENOMIC_MAP: dict[str, dict] = {
+    "rs4244285": {
+        "gene": "CYP2C19",
+        "star": "*2",
+        "function": "no_function",
+        "drugs": ["clopidogrel", "omeprazole", "escitalopram", "voriconazole"],
+        "recommendation_het": "Intermediate metabolizer — consider alternative to clopidogrel; standard PPI dosing likely adequate.",
+        "recommendation_hom": "Poor metabolizer — clopidogrel contraindicated (use prasugrel/ticagrelor); consider PPI dose reduction.",
+    },
+    "rs12248560": {
+        "gene": "CYP2C19",
+        "star": "*17",
+        "function": "increased_function",
+        "drugs": ["clopidogrel", "escitalopram", "sertraline", "voriconazole"],
+        "recommendation_het": "Rapid metabolizer — enhanced clopidogrel activation; may need higher SSRI doses.",
+        "recommendation_hom": "Ultra-rapid metabolizer — increased clopidogrel effect; reduced voriconazole efficacy.",
+    },
+    "rs1065852": {
+        "gene": "CYP2D6",
+        "star": "*4",
+        "function": "no_function",
+        "drugs": ["codeine", "tramadol", "tamoxifen", "metoprolol", "fluoxetine"],
+        "recommendation_het": "Intermediate metabolizer — reduced codeine→morphine conversion; standard tamoxifen may suffice.",
+        "recommendation_hom": "Poor metabolizer — codeine/tramadol ineffective; tamoxifen activation impaired; use alternatives.",
+    },
+    "rs776746": {
+        "gene": "CYP3A5",
+        "star": "*3",
+        "function": "non_expressor",
+        "drugs": ["tacrolimus", "cyclosporine", "midazolam"],
+        "recommendation_het": "Intermediate expressor — may need standard tacrolimus dosing.",
+        "recommendation_hom": "CYP3A5 non-expressor — standard tacrolimus dosing; expressors need ~50% higher doses.",
+    },
+    "rs9923231": {
+        "gene": "VKORC1",
+        "star": "-1639G>A",
+        "function": "increased_sensitivity",
+        "drugs": ["warfarin", "acenocoumarol", "phenprocoumon"],
+        "recommendation_het": "Intermediate warfarin sensitivity — consider ~25% dose reduction from standard.",
+        "recommendation_hom": "High warfarin sensitivity — consider ~50% dose reduction; start low, monitor INR closely.",
+    },
+    "rs4149056": {
+        "gene": "SLCO1B1",
+        "star": "*5 (Val174Ala)",
+        "function": "decreased_transport",
+        "drugs": ["simvastatin", "atorvastatin", "rosuvastatin", "pravastatin"],
+        "recommendation_het": "Increased statin myopathy risk — avoid simvastatin >20mg; consider rosuvastatin.",
+        "recommendation_hom": "High statin myopathy risk — avoid simvastatin entirely; use low-dose rosuvastatin or pravastatin.",
+    },
+    "rs1045642": {
+        "gene": "ABCB1",
+        "star": "3435C>T",
+        "function": "reduced_efflux",
+        "drugs": ["digoxin", "cyclosporine", "tacrolimus", "fexofenadine"],
+        "recommendation_het": "Slightly altered drug bioavailability — monitor digoxin levels if prescribed.",
+        "recommendation_hom": "Reduced P-glycoprotein function — increased bioavailability of substrate drugs; dose adjustments may be needed.",
+    },
+    "rs3745274": {
+        "gene": "CYP2B6",
+        "star": "*6",
+        "function": "decreased_function",
+        "drugs": ["efavirenz", "methadone", "cyclophosphamide", "bupropion"],
+        "recommendation_het": "Intermediate metabolizer — consider efavirenz dose reduction to 400mg.",
+        "recommendation_hom": "Poor metabolizer — efavirenz 200-400mg recommended; higher methadone levels expected.",
+    },
+}
+
+
+def _predict_pharmacogenomics(
+    variants: list[PredictedVariant],
+    ancestry: AncestryEstimate,
+) -> list[PharmacogenomicPrediction]:
+    """Predict pharmacogenomic metabolizer phenotypes from predicted variants.
+
+    Uses predicted genotypes at pharmacogene loci combined with ancestry-based
+    population frequency priors to estimate drug metabolism phenotypes.
+    """
+    predictions: list[PharmacogenomicPrediction] = []
+    variant_map = {v.rsid: v for v in variants}
+
+    for rsid, pgx in _PHARMACOGENOMIC_MAP.items():
+        v = variant_map.get(rsid)
+        if v is None:
+            continue
+
+        geno = v.predicted_genotype.lower()
+        if "homozygous variant" in geno or "elevated risk" in geno:
+            phenotype = "Poor Metabolizer" if pgx["function"] == "no_function" else (
+                "Ultra-rapid Metabolizer" if pgx["function"] == "increased_function" else
+                "High Sensitivity" if pgx["function"] == "increased_sensitivity" else
+                "Non-expressor" if pgx["function"] == "non_expressor" else
+                "Reduced Function"
+            )
+            recommendation = pgx["recommendation_hom"]
+            conf = v.confidence
+        elif "heterozygous" in geno:
+            phenotype = "Intermediate Metabolizer" if pgx["function"] in ("no_function", "decreased_function") else (
+                "Rapid Metabolizer" if pgx["function"] == "increased_function" else
+                "Intermediate Sensitivity" if pgx["function"] == "increased_sensitivity" else
+                "Intermediate Expressor" if pgx["function"] == "non_expressor" else
+                "Carrier"
+            )
+            recommendation = pgx["recommendation_het"]
+            conf = v.confidence * 0.85
+        else:
+            phenotype = "Normal Metabolizer"
+            recommendation = f"Standard {pgx['gene']} function predicted — no pharmacogenomic dose adjustments anticipated."
+            conf = v.confidence * 0.7
+
+        predictions.append(
+            PharmacogenomicPrediction(
+                gene=pgx["gene"],
+                rsid=rsid,
+                predicted_phenotype=phenotype,
+                confidence=round(conf, 3),
+                affected_drugs=pgx["drugs"],
+                clinical_recommendation=recommendation,
+                basis=f"Ancestry-weighted allele frequency ({pgx['star']}); genotype: {v.predicted_genotype}",
+            )
+        )
+
+    return predictions
+
+
+# ---------------------------------------------------------------------------
+# Facial health screening (v2.0)
+# ---------------------------------------------------------------------------
+
+
+def _screen_facial_health(
+    measurements: FacialMeasurements,
+    bio_age: int,
+    chrono_age: int,
+    sex: str,
+    ancestry: AncestryEstimate,
+) -> FacialHealthScreening:
+    """Derive health screening indicators from facial measurements.
+
+    Based on published correlations between facial features and health
+    biomarkers (Coetzee et al., 2009; Whitehead et al., 2012; Sundelin
+    et al., 2013; Mannino et al., 2018).
+    """
+    # --- BMI estimation from facial adiposity ---
+    # Face ratio (width/height) correlates with BMI: wider = higher BMI
+    # Coetzee et al. (2009): facial adiposity is a valid cue to BMI
+    fr = measurements.face_ratio
+    if fr > 0.95:
+        bmi_cat, bmi_conf = "Obese (estimated)", 0.35
+    elif fr > 0.85:
+        bmi_cat, bmi_conf = "Overweight (estimated)", 0.40
+    elif fr > 0.70:
+        bmi_cat, bmi_conf = "Normal (estimated)", 0.45
+    else:
+        bmi_cat, bmi_conf = "Underweight (estimated)", 0.35
+
+    # --- Anemia risk from skin pallor ---
+    # Mannino et al. (2018): facial color analysis correlates with hemoglobin
+    # Low skin redness + low brightness (in lighter skin) suggests pallor
+    anemia_score = 0.0
+    brightness = measurements.skin_brightness
+    redness = measurements.skin_redness
+    if brightness > 140:
+        # Lighter skin — redness is a stronger pallor signal
+        if redness < 5:
+            anemia_score = 0.6
+        elif redness < 10:
+            anemia_score = 0.3
+        elif redness < 15:
+            anemia_score = 0.1
+    else:
+        # Darker skin — harder to detect pallor from photos
+        if redness < 3:
+            anemia_score = 0.4
+        elif redness < 8:
+            anemia_score = 0.2
+    # Dark circles also contribute to anemia screening
+    anemia_score += measurements.dark_circle_score * 0.15
+    anemia_score = min(1.0, anemia_score)
+
+    # --- Cardiovascular risk indicators ---
+    cv_indicators: list[str] = []
+    # Facial aging gap > 5 years: Christensen et al. (2009), Esquirol et al. (2018)
+    age_gap = bio_age - chrono_age
+    if age_gap > 5:
+        cv_indicators.append(f"Accelerated facial aging (+{age_gap}y) — associated with CV risk")
+    # High skin redness: persistent erythema correlates with hypertension
+    if redness > 25:
+        cv_indicators.append("Elevated facial redness — hypertension screening recommended")
+    # Skin yellowness: may indicate dyslipidemia
+    if measurements.skin_yellowness > 145:
+        cv_indicators.append("Elevated skin yellowness — lipid panel recommended")
+    # High UV damage: Esquirol (2018) deep wrinkles correlate with CV mortality
+    if measurements.wrinkle_score > 0.04:
+        cv_indicators.append("Deep wrinkle pattern — correlates with cardiovascular mortality (Esquirol 2018)")
+
+    # --- Thyroid indicators ---
+    thyroid_indicators: list[str] = []
+    # Skin dryness (high texture roughness) + puffiness + yellowish tint
+    if measurements.texture_roughness > 0.15 and measurements.skin_yellowness > 135:
+        thyroid_indicators.append("Dry skin with yellowish tinge — consider thyroid screening (carotenemia)")
+    # Very smooth/moist skin could indicate hyperthyroidism
+    if measurements.texture_roughness < 0.02 and redness > 20:
+        thyroid_indicators.append("Smooth, flushed skin — hyperthyroid features possible")
+
+    # --- Fatigue/stress score ---
+    # Sundelin et al. (2013): dark circles, skin pallor, texture changes
+    fatigue = (
+        measurements.dark_circle_score * 0.40
+        + measurements.wrinkle_score * 30  # wrinkles as stress indicator
+        + min(measurements.skin_uniformity / 30.0, 1.0) * 0.15
+        + max(measurements.texture_roughness - 0.05, 0) * 2.0
+    )
+    fatigue = max(0.0, min(1.0, fatigue))
+
+    # --- Hydration score ---
+    # Inverse of skin roughness + uniformity deviation
+    hydration = 80.0
+    hydration -= measurements.texture_roughness * 100
+    hydration -= max(measurements.skin_uniformity - 15, 0) * 1.0
+    hydration += (measurements.symmetry_score - 0.5) * 10
+    hydration = max(10.0, min(100.0, hydration))
+
+    return FacialHealthScreening(
+        estimated_bmi_category=bmi_cat,
+        bmi_confidence=bmi_conf,
+        anemia_risk_score=round(anemia_score, 3),
+        cardiovascular_risk_indicators=cv_indicators,
+        thyroid_indicators=thyroid_indicators,
+        fatigue_stress_score=round(fatigue, 3),
+        hydration_score=round(hydration, 1),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Dermatological analysis (v2.0)
+# ---------------------------------------------------------------------------
+
+
+def _analyze_dermatology(
+    measurements: FacialMeasurements,
+    bio_age: int,
+    chrono_age: int,
+    sex: str,
+    skin_type: str,
+) -> DermatologicalAnalysis:
+    """Perform dermatological analysis from facial measurements.
+
+    Based on clinical dermatology correlations and computational skin
+    analysis methods (Brinker et al., 2019; Kottner et al., 2013).
+    """
+    # --- Rosacea risk ---
+    # High redness + visible texture + lighter skin
+    rosacea = 0.0
+    if measurements.skin_redness > 20:
+        rosacea += 0.3
+    if measurements.skin_redness > 30:
+        rosacea += 0.2
+    if measurements.skin_brightness > 150:
+        rosacea += 0.15  # More common in fair skin
+    if measurements.uv_damage_score > 0.3:
+        rosacea += 0.1
+    rosacea = min(1.0, rosacea)
+
+    # --- Melasma risk ---
+    # High pigmentation irregularity + moderate skin tone
+    melasma = 0.0
+    if measurements.skin_uniformity > 20:
+        melasma += 0.25
+    if measurements.skin_uniformity > 30:
+        melasma += 0.15
+    if 110 < measurements.skin_brightness < 170:
+        melasma += 0.2  # More common in Fitzpatrick III-IV
+    if sex.lower() == "female":
+        melasma += 0.15
+    melasma = min(1.0, melasma)
+
+    # --- Photo-aging gap ---
+    # How much skin appears aged relative to chronological age
+    photo_aging_gap = bio_age - chrono_age
+
+    # --- Acne severity ---
+    # Proxy: texture roughness + redness + uniformity deviation in younger people
+    acne = 0.0
+    if chrono_age < 35:
+        if measurements.texture_roughness > 0.08:
+            acne += 0.3
+        if measurements.skin_redness > 15 and measurements.skin_uniformity > 20:
+            acne += 0.25
+        if measurements.skin_redness > 25:
+            acne += 0.2
+    else:
+        # Adult acne is less common but possible
+        if measurements.texture_roughness > 0.12 and measurements.skin_redness > 20:
+            acne += 0.2
+    acne = min(1.0, acne)
+
+    # --- Skin cancer risk factors ---
+    cancer_risks: list[str] = []
+    if "Type I" in skin_type or "Type II" in skin_type:
+        cancer_risks.append("Fair skin type (Fitzpatrick I-II) — elevated melanoma/NMSC risk")
+    if measurements.uv_damage_score > 0.4:
+        cancer_risks.append("Significant UV damage detected — dermatological screening recommended")
+    if measurements.uv_damage_score > 0.6:
+        cancer_risks.append("Severe photo-damage — high risk for actinic keratoses/NMSC")
+    if measurements.skin_redness > 25 and "Type I" in skin_type:
+        cancer_risks.append("Fair skin with chronic erythema — increased BCC risk")
+
+    # --- Pigmentation disorder risk ---
+    pigment_risk = 0.0
+    if measurements.skin_uniformity > 25:
+        pigment_risk += 0.3
+    if measurements.uv_damage_score > 0.4:
+        pigment_risk += 0.25
+    pigment_risk = min(1.0, pigment_risk)
+
+    # --- Moisture barrier score ---
+    moisture = 70.0
+    moisture -= measurements.texture_roughness * 80
+    moisture -= max(measurements.skin_uniformity - 15, 0) * 0.8
+    if measurements.skin_redness > 20:
+        moisture -= 10  # Barrier disruption often accompanies redness
+    moisture = max(10.0, min(100.0, moisture))
+
+    return DermatologicalAnalysis(
+        rosacea_risk_score=round(rosacea, 3),
+        melasma_risk_score=round(melasma, 3),
+        photo_aging_gap=photo_aging_gap,
+        acne_severity_score=round(acne, 3),
+        skin_cancer_risk_factors=cancer_risks,
+        pigmentation_disorder_risk=round(pigment_risk, 3),
+        moisture_barrier_score=round(moisture, 1),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Condition screening (v2.0)
+# ---------------------------------------------------------------------------
+
+
+def _screen_conditions(
+    measurements: FacialMeasurements,
+    bio_age: int,
+    chrono_age: int,
+    sex: str,
+) -> list[ConditionScreening]:
+    """Screen for medical conditions based on facial feature patterns.
+
+    Based on clinical literature for facial manifestations of endocrine
+    and other conditions (Kong et al., 2018; Kosilek et al., 2017;
+    Schneider et al., 2020; Boelaert et al., 2010).
+    """
+    screenings: list[ConditionScreening] = []
+
+    # --- Acromegaly screening ---
+    # Coarsened features: wide face, large nose, prominent jaw
+    # Kong et al. (2018): DL model achieved AUC 0.96
+    acro_score = 0.0
+    acro_markers: list[str] = []
+    if measurements.face_ratio > 0.90:
+        acro_score += 0.15
+        acro_markers.append("Wide facial proportions")
+    if measurements.texture_roughness > 0.15:
+        acro_score += 0.2
+        acro_markers.append("Coarsened skin texture")
+    if measurements.skin_redness > 20:
+        acro_score += 0.1
+        acro_markers.append("Facial plethora")
+    if acro_score > 0.1:
+        screenings.append(ConditionScreening(
+            condition="Acromegaly",
+            risk_score=round(min(acro_score, 1.0), 3),
+            facial_markers=acro_markers,
+            confidence=0.25,
+            recommendation="Consider IGF-1 level testing if clinical suspicion warrants.",
+        ))
+
+    # --- Cushing syndrome screening ---
+    # Moon face: high face ratio + plethora + skin changes
+    # Kosilek et al. (2017): 90% sensitivity, 90% specificity
+    cushing_score = 0.0
+    cushing_markers: list[str] = []
+    if measurements.face_ratio > 0.92:
+        cushing_score += 0.2
+        cushing_markers.append("Round face (moon facies)")
+    if measurements.skin_redness > 22:
+        cushing_score += 0.15
+        cushing_markers.append("Facial plethora/redness")
+    if measurements.texture_roughness < 0.03 and measurements.skin_brightness > 140:
+        cushing_score += 0.1
+        cushing_markers.append("Thin, atrophic skin appearance")
+    if cushing_score > 0.1:
+        screenings.append(ConditionScreening(
+            condition="Cushing syndrome",
+            risk_score=round(min(cushing_score, 1.0), 3),
+            facial_markers=cushing_markers,
+            confidence=0.20,
+            recommendation="Consider 24-hour urinary cortisol or overnight dexamethasone suppression test.",
+        ))
+
+    # --- Hypothyroidism screening ---
+    # Puffy face, dry skin, lateral eyebrow thinning
+    hypo_score = 0.0
+    hypo_markers: list[str] = []
+    if measurements.texture_roughness > 0.12:
+        hypo_score += 0.15
+        hypo_markers.append("Coarse/dry skin texture")
+    if measurements.skin_yellowness > 140 and measurements.skin_brightness > 130:
+        hypo_score += 0.15
+        hypo_markers.append("Yellowish skin tinge (possible carotenemia)")
+    if measurements.dark_circle_score > 0.3:
+        hypo_score += 0.1
+        hypo_markers.append("Periorbital puffiness/darkening")
+    if hypo_score > 0.1:
+        screenings.append(ConditionScreening(
+            condition="Hypothyroidism",
+            risk_score=round(min(hypo_score, 1.0), 3),
+            facial_markers=hypo_markers,
+            confidence=0.20,
+            recommendation="Consider TSH screening if symptoms present (fatigue, weight gain, cold intolerance).",
+        ))
+
+    # --- Hyperthyroidism / Graves' screening ---
+    hyper_score = 0.0
+    hyper_markers: list[str] = []
+    if measurements.texture_roughness < 0.02:
+        hyper_score += 0.1
+        hyper_markers.append("Very smooth skin texture (warm, moist skin)")
+    if measurements.skin_redness > 20:
+        hyper_score += 0.1
+        hyper_markers.append("Facial flushing")
+    if measurements.symmetry_score < 0.6:
+        hyper_score += 0.05
+        hyper_markers.append("Periorbital asymmetry")
+    if hyper_score > 0.1:
+        screenings.append(ConditionScreening(
+            condition="Hyperthyroidism/Graves' disease",
+            risk_score=round(min(hyper_score, 1.0), 3),
+            facial_markers=hyper_markers,
+            confidence=0.15,
+            recommendation="Consider TSH, free T4 screening if symptoms present (weight loss, palpitations, heat intolerance).",
+        ))
+
+    # --- Liver dysfunction indicators ---
+    liver_score = 0.0
+    liver_markers: list[str] = []
+    if measurements.skin_yellowness > 150:
+        liver_score += 0.25
+        liver_markers.append("Elevated skin yellowness (possible jaundice)")
+    if measurements.skin_redness > 30 and measurements.uv_damage_score > 0.3:
+        liver_score += 0.1
+        liver_markers.append("Telangiectasia pattern (spider angiomata)")
+    if liver_score > 0.1:
+        screenings.append(ConditionScreening(
+            condition="Hepatic dysfunction",
+            risk_score=round(min(liver_score, 1.0), 3),
+            facial_markers=liver_markers,
+            confidence=0.20,
+            recommendation="Consider liver function panel (bilirubin, ALT, AST, ALP) if jaundice suspected.",
+        ))
+
+    # --- Chronic fatigue / sleep disorder ---
+    fatigue_score = 0.0
+    fatigue_markers: list[str] = []
+    if measurements.dark_circle_score > 0.4:
+        fatigue_score += 0.25
+        fatigue_markers.append("Significant periorbital darkening")
+    if measurements.symmetry_score < 0.6:
+        fatigue_score += 0.1
+        fatigue_markers.append("Reduced facial symmetry (fatigue indicator)")
+    if measurements.wrinkle_score > 0.03 and chrono_age < 35:
+        fatigue_score += 0.15
+        fatigue_markers.append("Premature aging signs in young adult")
+    if fatigue_score > 0.1:
+        screenings.append(ConditionScreening(
+            condition="Chronic fatigue / sleep disorder",
+            risk_score=round(min(fatigue_score, 1.0), 3),
+            facial_markers=fatigue_markers,
+            confidence=0.25,
+            recommendation="Consider sleep quality assessment; rule out iron deficiency, thyroid dysfunction.",
+        ))
+
+    return screenings
+
+
+# ---------------------------------------------------------------------------
+# Ancestry-derived predictions (v2.0)
+# ---------------------------------------------------------------------------
+
+# mtDNA haplogroup priors by ancestry
+_MTDNA_HAPLOGROUP_PRIORS: dict[str, dict[str, float]] = {
+    "european": {"H": 0.44, "U": 0.12, "K": 0.07, "J": 0.09, "T": 0.08,
+                 "V": 0.04, "I": 0.03, "W": 0.02, "X": 0.02, "Other": 0.09},
+    "east_asian": {"D": 0.20, "B": 0.15, "A": 0.05, "F": 0.12, "M7": 0.10,
+                   "C": 0.08, "G": 0.06, "N9": 0.05, "Other": 0.19},
+    "african": {"L2": 0.25, "L3": 0.20, "L1": 0.15, "L0": 0.10, "L4": 0.03,
+                "Other_L": 0.15, "Other": 0.12},
+    "south_asian": {"M": 0.25, "U": 0.15, "R": 0.12, "W": 0.05, "N": 0.08,
+                    "H": 0.05, "Other": 0.30},
+    "latin_american": {"A": 0.20, "B": 0.18, "C": 0.15, "D": 0.15, "H": 0.10,
+                       "L": 0.08, "Other": 0.14},
+    "middle_eastern": {"H": 0.20, "J": 0.15, "T": 0.12, "U": 0.10, "K": 0.08,
+                       "R0": 0.08, "L": 0.05, "Other": 0.22},
+}
+
+
+def _predict_ancestry_derived(
+    ancestry: AncestryEstimate,
+    variants: list[PredictedVariant],
+) -> AncestryDerivedPredictions:
+    """Compute ancestry-based genetic predictions.
+
+    Uses estimated ancestry proportions to infer population-level genetic
+    traits including mtDNA haplogroup, lactose tolerance, alcohol flush
+    reaction, caffeine sensitivity, and population-specific disease risks.
+    """
+    # --- mtDNA haplogroup prediction ---
+    hg_probs: dict[str, float] = {}
+    pop_weights = {
+        "european": ancestry.european,
+        "east_asian": ancestry.east_asian,
+        "african": ancestry.african,
+        "south_asian": ancestry.south_asian,
+        "latin_american": ancestry.latin_american,
+        "middle_eastern": ancestry.middle_eastern,
+    }
+    for pop, weight in pop_weights.items():
+        for hg, freq in _MTDNA_HAPLOGROUP_PRIORS.get(pop, {}).items():
+            hg_probs[hg] = hg_probs.get(hg, 0.0) + weight * freq
+    total_hg = sum(hg_probs.values())
+    if total_hg > 0:
+        for k in hg_probs:
+            hg_probs[k] /= total_hg
+    top_hg = max(hg_probs, key=hg_probs.get) if hg_probs else "Unknown"
+    top_hg_conf = hg_probs.get(top_hg, 0.0)
+
+    # --- Lactose tolerance from variant data ---
+    variant_map = {v.rsid: v for v in variants}
+    lct_v = variant_map.get("rs4988235")
+    if lct_v:
+        geno = lct_v.predicted_genotype.lower()
+        if "homozygous variant" in geno or "elevated" in geno:
+            lactose_prob = 0.95  # Likely tolerant (T/T)
+        elif "heterozygous" in geno:
+            lactose_prob = 0.85  # Likely tolerant (C/T)
+        else:
+            lactose_prob = 0.20  # Likely intolerant (C/C)
+    else:
+        # Ancestry-based estimate
+        lactose_prob = (
+            ancestry.european * 0.85 + ancestry.middle_eastern * 0.60 +
+            ancestry.latin_american * 0.55 + ancestry.south_asian * 0.35 +
+            ancestry.african * 0.20 + ancestry.east_asian * 0.05
+        )
+
+    # --- Alcohol flush probability ---
+    aldh2_v = variant_map.get("rs671")
+    if aldh2_v:
+        geno = aldh2_v.predicted_genotype.lower()
+        if "homozygous variant" in geno or "elevated" in geno:
+            flush_prob = 0.95
+        elif "heterozygous" in geno:
+            flush_prob = 0.70
+        else:
+            flush_prob = 0.02
+    else:
+        flush_prob = ancestry.east_asian * 0.30
+
+    # --- Caffeine sensitivity ---
+    cyp1a2_v = variant_map.get("rs762551")
+    if cyp1a2_v:
+        geno = cyp1a2_v.predicted_genotype.lower()
+        caffeine = "Slow" if ("heterozygous" in geno or "homozygous variant" in geno) else "Fast"
+    else:
+        caffeine = "Unknown"
+
+    # --- Bitter taste sensitivity ---
+    # TAS2R38 not directly in our SNP panel, so use ancestry proxy
+    bitter = "Unknown"
+    if ancestry.african > 0.5:
+        bitter = "Taster (likely)"
+    elif ancestry.european > 0.5:
+        bitter = "Non-taster (likely)"
+
+    # --- Population-specific disease risks ---
+    pop_risks: list[str] = []
+    if ancestry.south_asian > 0.3:
+        pop_risks.append("South Asian ancestry — elevated Type 2 diabetes risk (2-4x baseline)")
+        pop_risks.append("South Asian ancestry — elevated coronary artery disease risk")
+    if ancestry.african > 0.3:
+        pop_risks.append("African ancestry — sickle cell trait screening recommended")
+        pop_risks.append("African ancestry — elevated prostate cancer risk (1.7x)")
+        pop_risks.append("African ancestry — G6PD deficiency screening recommended before oxidant drugs")
+    if ancestry.east_asian > 0.3:
+        pop_risks.append("East Asian ancestry — HLA-B*15:02 screening before carbamazepine (Stevens-Johnson risk)")
+        pop_risks.append("East Asian ancestry — ALDH2 deficiency common; alcohol cancer risk elevated")
+    if ancestry.european > 0.4:
+        pop_risks.append("European ancestry — HFE hemochromatosis screening may be warranted")
+        pop_risks.append("European ancestry — celiac disease risk (HLA-DQ2/DQ8 prevalence ~35%)")
+    if ancestry.middle_eastern > 0.3:
+        pop_risks.append("Middle Eastern ancestry — beta-thalassemia carrier screening recommended")
+
+    return AncestryDerivedPredictions(
+        predicted_mtdna_haplogroup=f"Haplogroup {top_hg}",
+        haplogroup_confidence=round(top_hg_conf, 3),
+        lactose_tolerance_probability=round(lactose_prob, 3),
+        alcohol_flush_probability=round(flush_prob, 3),
+        caffeine_sensitivity=caffeine,
+        bitter_taste_sensitivity=bitter,
+        population_specific_risks=pop_risks,
+    )
 
 
 def analyze_face(
@@ -1251,12 +2550,26 @@ def analyze_face(
     )
     ox_stress = min(1.0, max(0.0, ox_stress))
 
+    # --- v2.0 expansion modules ---
+    pharmacogenomics = _predict_pharmacogenomics(predicted_variants, ancestry)
+    health_screening = _screen_facial_health(
+        measurements, bio_age, chronological_age, sex, ancestry
+    )
+    dermatology = _analyze_dermatology(
+        measurements, bio_age, chronological_age, sex, skin_type
+    )
+    condition_screenings = _screen_conditions(
+        measurements, bio_age, chronological_age, sex
+    )
+    ancestry_derived = _predict_ancestry_derived(ancestry, predicted_variants)
+
     # Deterministic hash for reproducibility
     with open(image_path, "rb") as f:
         img_hash = hashlib.md5(f.read()[:4096]).hexdigest()  # noqa: S324
 
     logger.info(
-        "Facial analysis complete for image %s: bio_age=%d, tl=%.2f kb, ancestry_top=%s (%.1f%%)",
+        "Facial analysis complete for image %s: bio_age=%d, tl=%.2f kb, ancestry_top=%s (%.1f%%), "
+        "pgx_predictions=%d, condition_screenings=%d",
         img_hash[:8],
         bio_age,
         tl_kb,
@@ -1270,6 +2583,8 @@ def analyze_face(
             ancestry.latin_american,
         )
         * 100,
+        len(pharmacogenomics),
+        len(condition_screenings),
     )
 
     return FacialGenomicProfile(
@@ -1286,4 +2601,9 @@ def analyze_face(
         predicted_hair_colour=hair_colour,
         predicted_skin_type=skin_type,
         analysis_warnings=warnings,
+        pharmacogenomic_predictions=pharmacogenomics,
+        health_screening=health_screening,
+        dermatological_analysis=dermatology,
+        condition_screenings=condition_screenings,
+        ancestry_derived=ancestry_derived,
     )

@@ -55,7 +55,10 @@ from teloscopy.webapp.models import (
     AgentStatusEnum,
     AgentSystemStatus,
     AnalysisResponse,
+    AncestryDerivedPredictionsResponse,
     AncestryEstimateResponse,
+    ConditionScreeningResponse,
+    DermatologicalAnalysisResponse,
     DietPlanRequest,
     DietPlanResponse,
     DietRecommendation,
@@ -63,6 +66,7 @@ from teloscopy.webapp.models import (
     DiseaseRiskRequest,
     DiseaseRiskResponse,
     FacialAnalysisResult,
+    FacialHealthScreeningResponse,
     FacialMeasurementsResponse,
     HealthCheckupRequest,
     HealthCheckupResponse,
@@ -73,6 +77,7 @@ from teloscopy.webapp.models import (
     MealPlan,
     NutritionRequest,
     NutritionResponse,
+    PharmacogenomicPredictionResponse,
     PredictedVariantResponse,
     ProfileAnalysisRequest,
     ProfileAnalysisResponse,
@@ -554,6 +559,74 @@ def _translate_facial_profile(profile: Any) -> FacialAnalysisResult:
             disclaimer=rdna.disclaimer,
         )
 
+    # Translate pharmacogenomic predictions
+    pharma_resp = [
+        PharmacogenomicPredictionResponse(
+            gene=p.gene,
+            rsid=p.rsid,
+            predicted_phenotype=p.predicted_phenotype,
+            confidence=sf(p.confidence),
+            affected_drugs=list(p.affected_drugs),
+            clinical_recommendation=p.clinical_recommendation,
+            basis=p.basis,
+        )
+        for p in getattr(profile, "pharmacogenomic_predictions", [])
+    ]
+
+    # Translate health screening
+    hs = getattr(profile, "health_screening", None)
+    health_screening_resp = None
+    if hs is not None:
+        health_screening_resp = FacialHealthScreeningResponse(
+            estimated_bmi_category=hs.estimated_bmi_category,
+            bmi_confidence=sf(hs.bmi_confidence),
+            anemia_risk_score=sf(hs.anemia_risk_score),
+            cardiovascular_risk_indicators=list(hs.cardiovascular_risk_indicators),
+            thyroid_indicators=list(hs.thyroid_indicators),
+            fatigue_stress_score=sf(hs.fatigue_stress_score),
+            hydration_score=sf(hs.hydration_score, 50.0),
+        )
+
+    # Translate dermatological analysis
+    da = getattr(profile, "dermatological_analysis", None)
+    derm_resp = None
+    if da is not None:
+        derm_resp = DermatologicalAnalysisResponse(
+            rosacea_risk_score=sf(da.rosacea_risk_score),
+            melasma_risk_score=sf(da.melasma_risk_score),
+            photo_aging_gap=da.photo_aging_gap,
+            acne_severity_score=sf(da.acne_severity_score),
+            skin_cancer_risk_factors=list(da.skin_cancer_risk_factors),
+            pigmentation_disorder_risk=sf(da.pigmentation_disorder_risk),
+            moisture_barrier_score=sf(da.moisture_barrier_score, 50.0),
+        )
+
+    # Translate condition screenings
+    cond_resp = [
+        ConditionScreeningResponse(
+            condition=c.condition,
+            risk_score=sf(c.risk_score),
+            facial_markers=list(c.facial_markers),
+            confidence=sf(c.confidence),
+            recommendation=c.recommendation,
+        )
+        for c in getattr(profile, "condition_screenings", [])
+    ]
+
+    # Translate ancestry-derived predictions
+    ad = getattr(profile, "ancestry_derived", None)
+    ancestry_derived_resp = None
+    if ad is not None:
+        ancestry_derived_resp = AncestryDerivedPredictionsResponse(
+            predicted_mtdna_haplogroup=ad.predicted_mtdna_haplogroup,
+            haplogroup_confidence=sf(ad.haplogroup_confidence),
+            lactose_tolerance_probability=sf(ad.lactose_tolerance_probability, 0.5),
+            alcohol_flush_probability=sf(ad.alcohol_flush_probability),
+            caffeine_sensitivity=ad.caffeine_sensitivity,
+            bitter_taste_sensitivity=ad.bitter_taste_sensitivity,
+            population_specific_risks=list(ad.population_specific_risks),
+        )
+
     return FacialAnalysisResult(
         image_type="face_photo",
         estimated_biological_age=profile.estimated_biological_age,
@@ -596,6 +669,11 @@ def _translate_facial_profile(profile: Any) -> FacialAnalysisResult:
             for v in profile.predicted_variants
         ],
         reconstructed_dna=reconstructed_dna_resp,
+        pharmacogenomic_predictions=pharma_resp,
+        health_screening=health_screening_resp,
+        dermatological_analysis=derm_resp,
+        condition_screenings=cond_resp,
+        ancestry_derived=ancestry_derived_resp,
         analysis_warnings=profile.analysis_warnings,
     )
 

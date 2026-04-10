@@ -785,6 +785,106 @@
         .mt-2 { margin-top: 1rem; }
         .mt-3 { margin-top: 1.5rem; }
 
+        /* ============================================================
+           v2.0 FACIAL-GENOMIC EXPANSION SECTIONS
+           ============================================================ */
+        .pgx-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+        .pgx-table thead tr { border-bottom: 2px solid var(--border-solid); }
+        .pgx-table th {
+            padding: .5rem .6rem; text-align: left; color: var(--text-dim);
+            font-size: .75rem; text-transform: uppercase; letter-spacing: .5px;
+        }
+        .pgx-table td { padding: .45rem .6rem; border-bottom: 1px solid var(--glass-border); }
+        .pgx-table tr:hover { background: rgba(255,255,255,.02); }
+
+        .pheno-badge {
+            display: inline-block; padding: .15rem .55rem; border-radius: 999px;
+            font-size: .72rem; font-weight: 600; text-transform: capitalize;
+        }
+        .pheno-badge.normal       { background: rgba(0,212,170,.15); color: var(--accent); }
+        .pheno-badge.intermediate { background: rgba(255,179,71,.15); color: var(--warning); }
+        .pheno-badge.poor         { background: rgba(255,140,50,.18); color: #ff8c32; }
+        .pheno-badge.ultra-rapid  { background: rgba(255,77,106,.15); color: var(--danger); }
+
+        .risk-bar-container {
+            display: flex; align-items: center; gap: .75rem; margin-bottom: .6rem;
+        }
+        .risk-bar-label {
+            font-size: .82rem; color: var(--text-dim); min-width: 130px; flex-shrink: 0;
+        }
+        .risk-bar-track {
+            flex: 1; height: 8px; background: var(--bg-secondary); border-radius: 99px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,.03);
+        }
+        .risk-bar-fill-seg {
+            height: 100%; border-radius: 99px; transition: width .6s ease;
+        }
+        .risk-bar-value {
+            font-size: .8rem; font-weight: 600; min-width: 42px; text-align: right;
+        }
+
+        .health-dash-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;
+        }
+        .health-dash-item {
+            background: var(--bg-secondary); padding: .85rem 1rem; border-radius: var(--radius-sm);
+            border: 1px solid rgba(255,255,255,.03);
+        }
+        .health-dash-item h4 {
+            font-size: .8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: .5px;
+            margin-bottom: .6rem;
+        }
+
+        .derm-score-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;
+        }
+
+        .condition-screen-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;
+        }
+        .condition-screen-item {
+            background: var(--bg-secondary); padding: 1rem 1.15rem; border-radius: var(--radius-sm);
+            border-left: 4px solid var(--border); transition: transform .15s ease;
+        }
+        .condition-screen-item:hover { transform: translateX(2px); }
+        .condition-screen-item h4 { font-size: .95rem; font-weight: 600; margin-bottom: .6rem; }
+        .condition-screen-item .markers-list {
+            list-style: none; padding: 0; margin: .5rem 0; font-size: .82rem; color: var(--text-dim);
+        }
+        .condition-screen-item .markers-list li::before {
+            content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%;
+            background: var(--info); margin-right: .4rem; vertical-align: middle;
+        }
+        .condition-screen-item .recommendation-text {
+            font-size: .83rem; color: var(--text-dim); margin-top: .5rem;
+            padding-top: .5rem; border-top: 1px solid var(--glass-border);
+        }
+
+        .ancestry-trait-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .ancestry-trait-item {
+            background: var(--bg-secondary); padding: .85rem 1rem; border-radius: var(--radius-sm);
+            border: 1px solid rgba(255,255,255,.03);
+        }
+        .ancestry-trait-item .trait-label {
+            font-size: .75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: .5px;
+            margin-bottom: .3rem;
+        }
+        .ancestry-trait-item .trait-value {
+            font-size: 1.15rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--info));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .genomic-disclaimer {
+            margin-top: 1.25rem; padding: .75rem 1rem;
+            background: rgba(255,193,7,.08); border: 1px solid rgba(255,193,7,.2);
+            border-radius: var(--radius-sm); font-size: .8rem; color: var(--text-dim);
+        }
+
         /* Spinner */
         .spinner {
             display: inline-block; width: 18px; height: 18px;
@@ -1452,6 +1552,67 @@
             <h3><span class="icon">&#x1F9D1;</span> Facial Analysis</h3>
             <div id="facial-content"></div>
         </div>
+
+        <!-- Pharmacogenomic Profile (v2.0) -->
+        <div class="result-card glass-card mt-2" id="pharmacogenomic-card" style="display:none;">
+            <h3><span class="icon">&#x1F48A;</span> Pharmacogenomic Profile</h3>
+            <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:1rem;">
+                Predicted drug-metabolism phenotypes based on facial-genomic analysis of key pharmacogenes.
+            </p>
+            <div id="pharmacogenomic-content" style="overflow-x:auto;"></div>
+            <div class="genomic-disclaimer">
+                <strong>Disclaimer:</strong> These pharmacogenomic predictions are computational estimates derived from facial-genomic analysis and are NOT a substitute for clinical pharmacogenomic testing. Do not alter any medication without consulting your physician or pharmacist.
+            </div>
+        </div>
+
+        <!-- Health Screening Indicators (v2.0) -->
+        <div class="result-card glass-card mt-2" id="health-screening-card" style="display:none;">
+            <h3><span class="icon">&#x1FA7A;</span> Health Screening Indicators</h3>
+            <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:1rem;">
+                Estimated health markers derived from facial analysis patterns.
+            </p>
+            <div id="health-screening-content"></div>
+            <div class="genomic-disclaimer">
+                <strong>Disclaimer:</strong> These health screening indicators are AI-estimated from facial features and are not diagnostic. Please consult a healthcare provider for proper medical screening and diagnosis.
+            </div>
+        </div>
+
+        <!-- Dermatological Analysis (v2.0) -->
+        <div class="result-card glass-card mt-2" id="dermatological-card" style="display:none;">
+            <h3><span class="icon">&#x1F9B4;</span> Dermatological Analysis</h3>
+            <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:1rem;">
+                Skin-health risk scores and indicators derived from facial image analysis.
+            </p>
+            <div id="dermatological-content"></div>
+            <div class="genomic-disclaimer">
+                <strong>Disclaimer:</strong> Dermatological risk scores are estimates from facial image analysis. They are not clinical diagnoses. Consult a dermatologist for proper skin evaluation.
+            </div>
+        </div>
+
+        <!-- Condition Screening (v2.0) -->
+        <div class="result-card glass-card mt-2" id="condition-screening-card" style="display:none;">
+            <h3><span class="icon">&#x1F50D;</span> Condition Screening</h3>
+            <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:1rem;">
+                Potential conditions identified from facial markers with associated risk levels.
+            </p>
+            <div id="condition-screening-content"></div>
+            <div class="genomic-disclaimer">
+                <strong>Disclaimer:</strong> Condition screenings are computational predictions based on facial analysis patterns. They are NOT diagnoses. Always consult a qualified healthcare provider for proper evaluation and diagnosis.
+            </div>
+        </div>
+
+        <!-- Ancestry-Derived Predictions (v2.0) -->
+        <div class="result-card glass-card mt-2" id="ancestry-derived-card" style="display:none;">
+            <h3><span class="icon">&#x1F30D;</span> Ancestry-Derived Predictions</h3>
+            <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:1rem;">
+                Metabolic trait predictions and population-specific risk factors derived from ancestry estimation.
+            </p>
+            <div id="ancestry-derived-content"></div>
+            <div class="genomic-disclaimer">
+                <strong>Disclaimer:</strong> Ancestry-derived predictions are statistical estimates based on population genetics data and facial analysis. Individual variation is significant. Consult a genetic counsellor or healthcare provider for personalised advice.
+            </div>
+        </div>
+
     </div>
 
     <div class="result-tab-panel" id="tab-dna" role="tabpanel">
@@ -2239,6 +2400,7 @@
         document.getElementById('facial-tab-btn').style.display = 'none';
         document.getElementById('dna-card').style.display = 'none';
         document.getElementById('dna-tab-btn').style.display = 'none';
+        hideV2FacialCards();
 
         /* Disease risks */
         var rl = document.getElementById('risk-list');
@@ -2355,6 +2517,249 @@
         dc.innerHTML = html;
     }
 
+    /* ---- v2.0 Facial-Genomic expansion helpers ---- */
+    function riskBarColor(score) {
+        if (typeof score !== 'number') return 'var(--text-dim)';
+        if (score > 0.7) return '#ff4d6a';
+        if (score > 0.4) return '#ff8c32';
+        if (score > 0.2) return '#ffb347';
+        return '#00d4aa';
+    }
+
+    function riskBarHtml(score, invert) {
+        if (typeof score !== 'number') return '<div style="color:var(--text-dim);font-size:.85rem;">N/A</div>';
+        var pct = (score * 100);
+        var color;
+        if (invert) {
+            color = score > 0.7 ? '#00d4aa' : (score > 0.4 ? '#ffb347' : (score > 0.2 ? '#ff8c32' : '#ff4d6a'));
+        } else {
+            color = riskBarColor(score);
+        }
+        return '<div class="risk-bar-container">' +
+            '<div class="risk-bar-track"><div class="risk-bar-fill-seg" style="width:' + pct.toFixed(1) + '%;background:' + color + ';"></div></div>' +
+            '<span class="risk-bar-value" style="color:' + color + ';">' + pct.toFixed(0) + '%</span></div>';
+    }
+
+    function hideV2FacialCards() {
+        var v2Ids = ['pharmacogenomic-card', 'health-screening-card', 'dermatological-card', 'condition-screening-card', 'ancestry-derived-card'];
+        v2Ids.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        });
+    }
+
+    function renderPharmacogenomicSection(fa) {
+        var pgxCard = document.getElementById('pharmacogenomic-card');
+        if (fa.pharmacogenomic_predictions && fa.pharmacogenomic_predictions.length) {
+            pgxCard.style.display = '';
+            var pgxHtml = '<table class="pgx-table"><thead><tr>' +
+                '<th>Gene</th><th>Variant</th><th>Phenotype</th><th>Confidence</th><th>Affected Drugs</th><th>Recommendation</th>' +
+                '</tr></thead><tbody>';
+            fa.pharmacogenomic_predictions.forEach(function (p) {
+                var phenoClass = 'normal';
+                var phenoLower = (p.predicted_phenotype || '').toLowerCase();
+                if (phenoLower.indexOf('intermediate') !== -1) phenoClass = 'intermediate';
+                else if (phenoLower.indexOf('poor') !== -1 || phenoLower.indexOf('high sensitivity') !== -1) phenoClass = 'poor';
+                else if (phenoLower.indexOf('ultra') !== -1 || phenoLower.indexOf('rapid') !== -1) phenoClass = 'ultra-rapid';
+                pgxHtml += '<tr>' +
+                    '<td style="font-weight:600;">' + (p.gene || '') + '</td>' +
+                    '<td style="font-family:var(--mono);font-size:.78rem;">' + (p.rsid || '') + '</td>' +
+                    '<td><span class="pheno-badge ' + phenoClass + '">' + (p.predicted_phenotype || '') + '</span></td>' +
+                    '<td>' + ((p.confidence || 0) * 100).toFixed(0) + '%</td>' +
+                    '<td style="font-size:.8rem;">' + (p.affected_drugs || []).join(', ') + '</td>' +
+                    '<td style="font-size:.8rem;color:var(--text-dim);">' + (p.clinical_recommendation || '') + '</td>' +
+                    '</tr>';
+            });
+            pgxHtml += '</tbody></table>';
+            document.getElementById('pharmacogenomic-content').innerHTML = pgxHtml;
+        } else {
+            pgxCard.style.display = 'none';
+        }
+    }
+
+    function renderHealthScreeningSection(fa) {
+        var hsCard = document.getElementById('health-screening-card');
+        if (fa.health_screening) {
+            hsCard.style.display = '';
+            var hs = fa.health_screening;
+            var hsHtml = '<div class="health-dash-grid">';
+
+            /* BMI Category */
+            hsHtml += '<div class="health-dash-item"><h4>Estimated BMI Category</h4>' +
+                '<div style="font-size:1.2rem;font-weight:700;color:var(--text);">' + (hs.estimated_bmi_category || 'N/A') + '</div>' +
+                '<div style="font-size:.78rem;color:var(--text-dim);margin-top:.25rem;">Confidence: ' + ((hs.bmi_confidence || 0) * 100).toFixed(0) + '%</div></div>';
+
+            /* Anemia Risk */
+            hsHtml += '<div class="health-dash-item"><h4>Anemia Risk</h4>' + riskBarHtml(hs.anemia_risk_score) + '</div>';
+
+            /* Fatigue & Stress */
+            hsHtml += '<div class="health-dash-item"><h4>Fatigue &amp; Stress</h4>' + riskBarHtml(hs.fatigue_stress_score) + '</div>';
+
+            /* Hydration Score (higher = better) */
+            hsHtml += '<div class="health-dash-item"><h4>Hydration Score</h4>' + riskBarHtml(hs.hydration_score, true) + '</div>';
+
+            hsHtml += '</div>';
+
+            /* Cardiovascular Indicators */
+            if (hs.cardiovascular_risk_indicators && hs.cardiovascular_risk_indicators.length) {
+                hsHtml += '<div class="health-dash-item mt-2"><h4>Cardiovascular Risk Indicators</h4><ul style="list-style:none;padding:0;margin:0;">';
+                hs.cardiovascular_risk_indicators.forEach(function (ind) {
+                    hsHtml += '<li style="padding:.2rem 0;font-size:.85rem;color:var(--text-dim);"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--danger);margin-right:.5rem;vertical-align:middle;"></span>' + ind + '</li>';
+                });
+                hsHtml += '</ul></div>';
+            }
+
+            /* Thyroid Indicators */
+            if (hs.thyroid_indicators && hs.thyroid_indicators.length) {
+                hsHtml += '<div class="health-dash-item mt-2"><h4>Thyroid Indicators</h4><ul style="list-style:none;padding:0;margin:0;">';
+                hs.thyroid_indicators.forEach(function (ind) {
+                    hsHtml += '<li style="padding:.2rem 0;font-size:.85rem;color:var(--text-dim);"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--warning);margin-right:.5rem;vertical-align:middle;"></span>' + ind + '</li>';
+                });
+                hsHtml += '</ul></div>';
+            }
+
+            document.getElementById('health-screening-content').innerHTML = hsHtml;
+        } else {
+            hsCard.style.display = 'none';
+        }
+    }
+
+    function renderDermatologicalSection(fa) {
+        var dermCard = document.getElementById('dermatological-card');
+        if (fa.dermatological_analysis) {
+            dermCard.style.display = '';
+            var derm = fa.dermatological_analysis;
+            var dermHtml = '<div class="derm-score-grid">';
+
+            /* Risk score bars */
+            var dermScores = [
+                { label: 'Rosacea Risk', value: derm.rosacea_risk_score },
+                { label: 'Melasma Risk', value: derm.melasma_risk_score },
+                { label: 'Acne Severity', value: derm.acne_severity_score },
+                { label: 'Pigmentation Disorder Risk', value: derm.pigmentation_disorder_risk },
+                { label: 'Moisture Barrier', value: derm.moisture_barrier_score, invert: true }
+            ];
+            dermScores.forEach(function (s) {
+                if (typeof s.value === 'number') {
+                    dermHtml += '<div class="health-dash-item"><h4>' + s.label + '</h4>' + riskBarHtml(s.value, s.invert) + '</div>';
+                }
+            });
+
+            /* Photo-aging gap */
+            if (typeof derm.photo_aging_gap === 'number') {
+                var gapSign = derm.photo_aging_gap >= 0 ? '+' : '';
+                var gapColor = Math.abs(derm.photo_aging_gap) > 3 ? 'var(--danger)' : (Math.abs(derm.photo_aging_gap) > 1 ? 'var(--warning)' : 'var(--accent)');
+                dermHtml += '<div class="health-dash-item"><h4>Photo-Aging Gap</h4>' +
+                    '<div style="font-size:1.4rem;font-weight:700;color:' + gapColor + ';">' + gapSign + derm.photo_aging_gap.toFixed(1) + ' years</div>' +
+                    '<div style="font-size:.78rem;color:var(--text-dim);margin-top:.2rem;">Positive = skin appears older than chronological age</div></div>';
+            }
+
+            dermHtml += '</div>';
+
+            /* Skin cancer risk factors */
+            if (derm.skin_cancer_risk_factors && derm.skin_cancer_risk_factors.length) {
+                dermHtml += '<div class="health-dash-item mt-2"><h4>Skin Cancer Risk Factors</h4><ul style="list-style:none;padding:0;margin:0;">';
+                derm.skin_cancer_risk_factors.forEach(function (f) {
+                    dermHtml += '<li style="padding:.2rem 0;font-size:.85rem;color:var(--text-dim);"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--danger);margin-right:.5rem;vertical-align:middle;"></span>' + f + '</li>';
+                });
+                dermHtml += '</ul></div>';
+            }
+
+            document.getElementById('dermatological-content').innerHTML = dermHtml;
+        } else {
+            dermCard.style.display = 'none';
+        }
+    }
+
+    function renderConditionScreeningSection(fa) {
+        var csCard = document.getElementById('condition-screening-card');
+        if (fa.condition_screenings && fa.condition_screenings.length) {
+            csCard.style.display = '';
+            var csHtml = '<div class="condition-screen-cards">';
+            fa.condition_screenings.forEach(function (cs) {
+                var riskPct = ((cs.risk_score || 0) * 100);
+                var borderColor = riskPct > 60 ? 'var(--danger)' : (riskPct > 30 ? 'var(--warning)' : 'var(--accent)');
+                csHtml += '<div class="condition-screen-item" style="border-left-color:' + borderColor + ';">' +
+                    '<h4>' + (cs.condition || '') + '</h4>' +
+                    '<div class="risk-bar-container">' +
+                    '<span class="risk-bar-label">Risk Score</span>' +
+                    '<div class="risk-bar-track"><div class="risk-bar-fill-seg" style="width:' + riskPct.toFixed(1) + '%;background:' + riskBarColor(cs.risk_score) + ';"></div></div>' +
+                    '<span class="risk-bar-value" style="color:' + riskBarColor(cs.risk_score) + ';">' + riskPct.toFixed(0) + '%</span>' +
+                    '</div>';
+                if (cs.confidence != null) {
+                    csHtml += '<div style="font-size:.78rem;color:var(--text-dim);margin-bottom:.5rem;">Confidence: ' + ((cs.confidence || 0) * 100).toFixed(0) + '%</div>';
+                }
+                if (cs.facial_markers && cs.facial_markers.length) {
+                    csHtml += '<ul class="markers-list">';
+                    cs.facial_markers.forEach(function (m) { csHtml += '<li>' + m + '</li>'; });
+                    csHtml += '</ul>';
+                }
+                if (cs.recommendation) {
+                    csHtml += '<div class="recommendation-text">' + cs.recommendation + '</div>';
+                }
+                csHtml += '</div>';
+            });
+            csHtml += '</div>';
+            document.getElementById('condition-screening-content').innerHTML = csHtml;
+        } else {
+            csCard.style.display = 'none';
+        }
+    }
+
+    function renderAncestryDerivedSection(fa) {
+        var adCard = document.getElementById('ancestry-derived-card');
+        if (fa.ancestry_derived) {
+            adCard.style.display = '';
+            var ad = fa.ancestry_derived;
+            var adHtml = '<div class="ancestry-trait-grid">';
+
+            /* mtDNA Haplogroup */
+            if (ad.predicted_mtdna_haplogroup) {
+                adHtml += '<div class="ancestry-trait-item"><div class="trait-label">mtDNA Haplogroup</div>' +
+                    '<div class="trait-value">' + ad.predicted_mtdna_haplogroup + '</div>' +
+                    '<div style="font-size:.75rem;color:var(--text-dim);margin-top:.2rem;">Confidence: ' + ((ad.haplogroup_confidence || 0) * 100).toFixed(0) + '%</div></div>';
+            }
+
+            /* Bitter taste sensitivity */
+            if (ad.bitter_taste_sensitivity != null) {
+                adHtml += '<div class="ancestry-trait-item"><div class="trait-label">Bitter Taste Sensitivity</div>' +
+                    '<div class="trait-value">' + ad.bitter_taste_sensitivity + '</div></div>';
+            }
+
+            adHtml += '</div>';
+
+            /* Tolerance / sensitivity bars */
+            var toleranceTraits = [
+                { label: 'Lactose Tolerance', value: ad.lactose_tolerance_probability },
+                { label: 'Alcohol Flush Probability', value: ad.alcohol_flush_probability },
+                { label: 'Caffeine Sensitivity', value: ad.caffeine_sensitivity }
+            ];
+            toleranceTraits.forEach(function (t) {
+                if (typeof t.value === 'number') {
+                    var pct = (t.value * 100);
+                    adHtml += '<div class="risk-bar-container">' +
+                        '<span class="risk-bar-label">' + t.label + '</span>' +
+                        '<div class="risk-bar-track"><div class="risk-bar-fill-seg" style="width:' + pct.toFixed(1) + '%;background:' + riskBarColor(t.value) + ';"></div></div>' +
+                        '<span class="risk-bar-value" style="color:' + riskBarColor(t.value) + ';">' + pct.toFixed(0) + '%</span>' +
+                        '</div>';
+                }
+            });
+
+            /* Population-specific risks */
+            if (ad.population_specific_risks && ad.population_specific_risks.length) {
+                adHtml += '<div class="health-dash-item mt-2"><h4>Population-Specific Risks</h4><ul style="list-style:none;padding:0;margin:0;">';
+                ad.population_specific_risks.forEach(function (r) {
+                    adHtml += '<li style="padding:.25rem 0;font-size:.85rem;color:var(--text-dim);"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--warning);margin-right:.5rem;vertical-align:middle;"></span>' + r + '</li>';
+                });
+                adHtml += '</ul></div>';
+            }
+
+            document.getElementById('ancestry-derived-content').innerHTML = adHtml;
+        } else {
+            adCard.style.display = 'none';
+        }
+    }
+
     /* ---- Render full results ---- */
     function renderResults(r) {
         hideSkeleton();
@@ -2408,9 +2813,17 @@
                 fhtml += '</div>';
             }
             document.getElementById('facial-content').innerHTML = fhtml;
+
+            /* v2.0 Facial-Genomic expansion sections */
+            renderPharmacogenomicSection(fa);
+            renderHealthScreeningSection(fa);
+            renderDermatologicalSection(fa);
+            renderConditionScreeningSection(fa);
+            renderAncestryDerivedSection(fa);
         } else {
             facialCard.style.display = 'none';
             document.getElementById('facial-tab-btn').style.display = 'none';
+            hideV2FacialCards();
         }
 
         /* Reconstructed DNA (if present from facial analysis) */
