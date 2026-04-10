@@ -2,7 +2,6 @@
   "veg_safe_groups": [
     "beverage",
     "dairy",
-    "eggs",
     "fruit",
     "grain",
     "legume",
@@ -42,6 +41,7 @@
     "crocodile",
     "cuy",
     "duck",
+    "egg",
     "emu",
     "escargot",
     "fish",
@@ -347,5 +347,9 @@
     "doughnut",
     "nutmeg",
     "water chestnut"
+  ],
+  "nonveg_safe_names": [
+    "eggplant",
+    "garden egg"
   ]
 }

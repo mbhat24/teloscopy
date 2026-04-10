@@ -56,10 +56,10 @@ def _collect_all_foods(plans):
 # Keyword / group sets for auditing
 # ---------------------------------------------------------------------------
 
-_NONVEG_GROUPS = {"meat", "poultry", "fish", "seafood"}
+_NONVEG_GROUPS = {"meat", "poultry", "fish", "seafood", "eggs"}
 _VEG_SAFE_GROUPS = {
     "grain", "fruit", "vegetable", "legume", "nut", "seed",
-    "oil", "spice", "beverage", "dairy", "eggs",
+    "oil", "spice", "beverage", "dairy",
 }
 _MEAT_KEYWORDS = {
     "chicken", "beef", "pork", "lamb", "mutton", "goat", "duck", "turkey",
@@ -97,6 +97,7 @@ _NUT_KEYWORDS = {
     "macadamia", "brazil nut", "pine nut", "chestnut", "peanut", "groundnut",
 }
 _NUT_SAFE_NAMES = {"nutmeg", "coconut", "butternut", "water chestnut", "doughnut", "donut"}
+_NONVEG_SAFE_NAMES = {"eggplant", "garden egg"}
 _PESCATARIAN_SAFE_GROUPS = {
     "grain", "fruit", "vegetable", "legume", "nut", "seed",
     "oil", "spice", "beverage", "dairy", "eggs", "fish", "seafood",
@@ -152,6 +153,20 @@ class TestVegetarianRestriction:
             and _kw_in_name(f.name.lower(), _MEAT_KEYWORDS)
         ]
         assert violations == [], f"[{region}] Meat keywords: {violations}"
+
+    def test_no_egg_items(self, plans):
+        """Vegetarian plans must exclude egg-based foods."""
+        region, meal_plans = plans
+        foods = _collect_all_foods(meal_plans)
+        violations = [
+            f.name for f in foods
+            if f.food_group == "eggs"
+            or (
+                "egg" in f.name.lower()
+                and not any(s in f.name.lower() for s in _NONVEG_SAFE_NAMES)
+            )
+        ]
+        assert violations == [], f"[{region}] Egg items in vegetarian plan: {violations}"
 
 
 # ---------------------------------------------------------------------------

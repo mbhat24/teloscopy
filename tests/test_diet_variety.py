@@ -377,7 +377,7 @@ _MEAT_FISH_KEYWORDS = {
     "larb",
 }
 
-_NONVEG_FOOD_GROUPS = {"meat", "poultry", "fish", "seafood"}
+_NONVEG_FOOD_GROUPS = {"meat", "poultry", "fish", "seafood", "eggs"}
 
 
 def _collect_all_foods(plans):
@@ -468,6 +468,28 @@ class TestVegetarianCompliance:
         items = _collect_all_foods(veg_plans_north_india)
         names = {n.lower() for n, _ in items}
         assert "butter chicken" not in names, "Butter chicken appeared in vegetarian plan!"
+
+    def test_no_egg_items_north(self, veg_plans_north_india):
+        """Vegetarian plans must not contain egg-based foods."""
+        items = _collect_all_foods(veg_plans_north_india)
+        _egg_safe = {"eggplant", "garden egg"}
+        violations = [
+            n for n, g in items
+            if g == "eggs"
+            or ("egg" in n.lower() and not any(s in n.lower() for s in _egg_safe))
+        ]
+        assert violations == [], f"Egg items in vegetarian plan: {violations}"
+
+    def test_no_egg_items_south(self, veg_plans_south_india):
+        """Vegetarian plans must not contain egg-based foods."""
+        items = _collect_all_foods(veg_plans_south_india)
+        _egg_safe = {"eggplant", "garden egg"}
+        violations = [
+            n for n, g in items
+            if g == "eggs"
+            or ("egg" in n.lower() and not any(s in n.lower() for s in _egg_safe))
+        ]
+        assert violations == [], f"Egg items in vegetarian plan: {violations}"
 
     def test_veg_plan_still_has_variety(self, veg_plans_north_india):
         """Vegetarian plan should still have reasonable food variety."""

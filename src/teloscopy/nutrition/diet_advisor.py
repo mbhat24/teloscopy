@@ -366,6 +366,7 @@ _DAIRY_KEYWORDS: set[str] = set(_dietary_kw["dairy_keywords"])
 _DAIRY_SAFE_NAMES: set[str] = set(_dietary_kw["dairy_safe_names"])
 _NUT_KEYWORDS: set[str] = set(_dietary_kw["nut_keywords"])
 _NUT_SAFE_NAMES: set[str] = set(_dietary_kw["nut_safe_names"])
+_NONVEG_SAFE_NAMES: set[str] = set(_dietary_kw["nonveg_safe_names"])
 _PESCATARIAN_MEAT_KEYWORDS: set[str] = set(_dietary_kw["pescatarian_meat_keywords"])
 _PESCATARIAN_SAFE_GROUPS: set[str] = set(_dietary_kw["pescatarian_safe_groups"])
 _VEGAN_DAIRY_KEYWORDS: set[str] = set(_dietary_kw["vegan_dairy_keywords"])
@@ -1216,12 +1217,14 @@ class DietAdvisor:
                 if fi.food_group not in _VEG_SAFE_GROUPS:
                     for kw in _NONVEG_KEYWORDS:
                         if kw in name_lower:
-                            return False
+                            if not any(s in name_lower for s in _NONVEG_SAFE_NAMES):
+                                return False
             elif restriction == "vegan":
                 if fi.food_group not in _VEGAN_SAFE_GROUPS:
                     for kw in _NONVEGAN_KEYWORDS:
                         if kw in name_lower:
-                            return False
+                            if not any(s in name_lower for s in _NONVEG_SAFE_NAMES):
+                                return False
                 # Also check for dairy in snack/prepared items.
                 for kw in _VEGAN_DAIRY_KEYWORDS:
                     if kw in name_lower:
