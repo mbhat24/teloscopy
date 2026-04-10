@@ -1652,10 +1652,47 @@ async def dashboard_page(request: Request) -> HTMLResponse:
 #  Legal document routes (Privacy Policy & Terms of Service)             #
 # ===================================================================== #
 
-# Legal docs live inside the package at teloscopy/data/legal/ so they
-# survive pip-install.  Fall back to the project-root docs/ for dev.
-_LEGAL_DIR: Path = Path(__file__).resolve().parent.parent / "data" / "legal"
-_DOCS_DIR: Path = _LEGAL_DIR if _LEGAL_DIR.exists() else _BASE_DIR.parent.parent.parent / "docs"
+# Legal docs are shipped inside the package at teloscopy/data/legal/ so
+# they survive pip-install.  _load_legal_doc() tries multiple strategies
+# at request time so it works regardless of build caches or install mode.
+
+
+def _load_legal_doc(filename: str) -> str | None:
+    """Return the text of a legal Markdown file, or *None* if not found.
+
+    Lookup order:
+    1. ``importlib.resources`` — the standard way to access package data,
+       works even when the package is installed as a zipped wheel.
+    2. Path relative to *this* file (``teloscopy/data/legal/``).
+    3. Project-root ``docs/`` via CWD (Render clones the repo and runs
+       ``pip install`` inside the checkout, so CWD is the repo root).
+    4. Project-root ``docs/`` computed from ``__file__`` (dev checkout).
+    """
+    # Strategy 1: importlib.resources  (Python ≥ 3.9)
+    try:
+        from importlib.resources import files as _res_files  # noqa: F811
+
+        ref = _res_files("teloscopy.data").joinpath("legal", filename)
+        return ref.read_text(encoding="utf-8")
+    except Exception:  # FileNotFoundError, ModuleNotFoundError, TypeError …
+        pass
+
+    # Strategy 2: filesystem path relative to this module
+    _pkg_legal = Path(__file__).resolve().parent.parent / "data" / "legal" / filename
+    if _pkg_legal.is_file():
+        return _pkg_legal.read_text(encoding="utf-8")
+
+    # Strategy 3: CWD / docs  (Render working directory = repo root)
+    _cwd_docs = Path.cwd() / "docs" / filename
+    if _cwd_docs.is_file():
+        return _cwd_docs.read_text(encoding="utf-8")
+
+    # Strategy 4: project root inferred from __file__
+    _proj_docs = Path(__file__).resolve().parent.parent.parent.parent / "docs" / filename
+    if _proj_docs.is_file():
+        return _proj_docs.read_text(encoding="utf-8")
+
+    return None
 
 
 @app.get("/docs/privacy-policy", response_class=HTMLResponse)
@@ -1672,11 +1709,9 @@ async def terms_of_service_page() -> HTMLResponse:
 
 def _render_legal_doc(filename: str, title: str) -> HTMLResponse:
     """Render a Markdown legal document as a styled HTML page."""
-    doc_path = _DOCS_DIR / filename
-    if not doc_path.exists():
+    md_content = _load_legal_doc(filename)
+    if md_content is None:
         raise HTTPException(status_code=404, detail=f"{title} document not found")
-
-    md_content = doc_path.read_text(encoding="utf-8")
 
     # Simple Markdown-to-HTML conversion for legal docs
     import html as _html
