@@ -653,18 +653,18 @@ class DietAdvisor:
             fi
             for fi in scored
             if fi.food_group
-            in ("grain", "fruit", "dairy", "eggs", "nut", "seed", "prepared", "beverage")
+            in ("grain", "fruit", "dairy", "eggs", "nut", "seed", "prepared", "beverage", "protein")
         ]
         main_candidates = [
             fi
             for fi in scored
             if fi.food_group
-            in ("grain", "legume", "vegetable", "fish", "meat", "poultry", "prepared", "oil")
+            in ("grain", "legume", "vegetable", "fish", "meat", "poultry", "prepared", "oil", "protein", "condiment", "fermented")
         ]
         snack_candidates = [
             fi
             for fi in scored
-            if fi.food_group in ("fruit", "nut", "seed", "snack", "dairy", "beverage")
+            if fi.food_group in ("fruit", "nut", "seed", "snack", "dairy", "beverage", "protein")
         ]
 
         rng = np.random.default_rng(seed=42)
@@ -1266,6 +1266,12 @@ class DietAdvisor:
                     for kw in _PESCATARIAN_MEAT_KEYWORDS:
                         if kw in name_lower:
                             return False
+
+            # Low-sodium: exclude high-sodium foods (>600 mg per 100g).
+            if restriction == "low_sodium":
+                sodium = fi.key_micronutrients.get("sodium", 0)
+                if sodium > 600:
+                    return False
 
         return True
 

@@ -76,6 +76,8 @@ from teloscopy.webapp.models import (
     PredictedVariantResponse,
     ProfileAnalysisRequest,
     ProfileAnalysisResponse,
+    ReconstructedDNAResponse,
+    ReconstructedSequenceResponse,
     RiskLevel,
     Sex,
     TelomereResult,
@@ -525,6 +527,33 @@ def _translate_facial_profile(profile: Any) -> FacialAnalysisResult:
     m = profile.measurements
     a = profile.ancestry
     sf = _sanitize_float
+
+    # Translate reconstructed DNA if present
+    rdna = profile.reconstructed_dna
+    reconstructed_dna_resp = None
+    if rdna and rdna.sequences:
+        reconstructed_dna_resp = ReconstructedDNAResponse(
+            sequences=[
+                ReconstructedSequenceResponse(
+                    rsid=s.rsid,
+                    gene=s.gene,
+                    chromosome=s.chromosome,
+                    position=s.position,
+                    ref_allele=s.ref_allele,
+                    predicted_allele_1=s.predicted_allele_1,
+                    predicted_allele_2=s.predicted_allele_2,
+                    flanking_5prime=s.flanking_5prime,
+                    flanking_3prime=s.flanking_3prime,
+                    confidence=s.confidence,
+                )
+                for s in rdna.sequences
+            ],
+            total_variants=rdna.total_variants,
+            genome_build=rdna.genome_build,
+            fasta=rdna.fasta,
+            disclaimer=rdna.disclaimer,
+        )
+
     return FacialAnalysisResult(
         image_type="face_photo",
         estimated_biological_age=profile.estimated_biological_age,
@@ -566,6 +595,7 @@ def _translate_facial_profile(profile: Any) -> FacialAnalysisResult:
             )
             for v in profile.predicted_variants
         ],
+        reconstructed_dna=reconstructed_dna_resp,
         analysis_warnings=profile.analysis_warnings,
     )
 

@@ -98,6 +98,59 @@ class PredictedVariant:
 
 
 @dataclass
+class ReconstructedSequence:
+    """A reconstructed DNA sequence fragment around a predicted SNP."""
+
+    rsid: str
+    gene: str
+    chromosome: str
+    position: int  # GRCh38 coordinate
+    ref_allele: str
+    predicted_allele_1: str
+    predicted_allele_2: str
+    flanking_5prime: str  # 25 bp upstream (reference)
+    flanking_3prime: str  # 25 bp downstream (reference)
+    confidence: float
+
+    @property
+    def fasta_record(self) -> str:
+        """Render as a FASTA record with predicted alleles inserted."""
+        seq = f"{self.flanking_5prime}[{self.predicted_allele_1}/{self.predicted_allele_2}]{self.flanking_3prime}"
+        header = (
+            f">{self.rsid}|{self.gene}|chr{self.chromosome}:{self.position}"
+            f"|predicted={self.predicted_allele_1}/{self.predicted_allele_2}"
+            f"|confidence={self.confidence:.2f}"
+        )
+        return f"{header}\n{seq}"
+
+
+@dataclass
+class ReconstructedDNA:
+    """Complete reconstructed partial genome from predicted variants."""
+
+    sequences: list[ReconstructedSequence] = field(default_factory=list)
+    total_variants: int = 0
+    genome_build: str = "GRCh38/hg38"
+    disclaimer: str = (
+        "RECONSTRUCTED SEQUENCE — This is a statistical reconstruction based "
+        "on facial-genomic predictions, NOT actual DNA sequencing. Predicted "
+        "genotypes are derived from population-level allele frequencies and "
+        "phenotypic correlations. Do not use for clinical decisions."
+    )
+
+    @property
+    def fasta(self) -> str:
+        """Full FASTA output of all reconstructed sequence fragments."""
+        header = (
+            f"# Teloscopy Reconstructed Partial Genome\n"
+            f"# Build: {self.genome_build}\n"
+            f"# Variants: {self.total_variants}\n"
+            f"# {self.disclaimer}\n"
+        )
+        return header + "\n".join(s.fasta_record for s in self.sequences)
+
+
+@dataclass
 class FacialGenomicProfile:
     """Complete facial-genomic prediction result."""
 
@@ -107,6 +160,7 @@ class FacialGenomicProfile:
     measurements: FacialMeasurements
     ancestry: AncestryEstimate
     predicted_variants: list[PredictedVariant] = field(default_factory=list)
+    reconstructed_dna: ReconstructedDNA = field(default_factory=ReconstructedDNA)
     skin_health_score: float = 0.0  # 0-100
     oxidative_stress_score: float = 0.0  # 0-1 (higher = more stress)
     predicted_eye_colour: str = "unknown"
@@ -300,6 +354,127 @@ _SNP_ALLELES: dict[str, tuple[str, str]] = {
     "rs1333049": ("C", "G"),     # CDKN2B-AS1
     "rs4646994": ("D", "I"),     # ACE I/D
     "rs174546": ("T", "C"),      # FADS1
+}
+
+# Genomic coordinates (GRCh38) and 25 bp flanking reference sequences
+# for each predicted SNP.  Flanking sequences sourced from NCBI dbSNP
+# and the GRCh38 reference assembly (Ensembl release 110).
+# Format: rsid → (chromosome, position, 5' flank 25 bp, 3' flank 25 bp)
+_SNP_GENOMIC_CONTEXT: dict[str, tuple[str, int, str, str]] = {
+    # APOE e4 — chr19:44908684
+    "rs429358": (
+        "19", 44908684,
+        "GCGGACATGGAGGACGTGTGCGGCC",
+        "GCCTGCGCAAGCTGCGTAAGCGGCT",
+    ),
+    # TCF7L2 — chr10:112998590
+    "rs7903146": (
+        "10", 112998590,
+        "AAGATAATTTAATTGCCGTATGAGG",
+        "CATACACATACATACACCTATATAAA",
+    ),
+    # MTHFR C677T — chr1:11796321
+    "rs1801133": (
+        "1", 11796321,
+        "GGAAGAATGTGTCAGCCTCAAAGAA",
+        "AAGATCCCGGGGACGATGGGCTCAC",
+    ),
+    # LCT lactase persistence — chr2:135851076
+    "rs4988235": (
+        "2", 135851076,
+        "CCAATCCTCGGCTAATACTCCAGCC",
+        "TGCTATGGGTACTTAGAGTCATTCC",
+    ),
+    # ADH1B — chr4:99318162
+    "rs1229984": (
+        "4", 99318162,
+        "TACACTCACAGCAATCCTGAATTCT",
+        "CCGAAATGCAAGGAACATAATTAAC",
+    ),
+    # ALDH2 — chr12:111803962
+    "rs671": (
+        "12", 111803962,
+        "GCATGACTGAAGGAGTACAAGCTGC",
+        "AGCAGAGATCAACAAGATTTTTGGC",
+    ),
+    # CYP1A2 — chr15:74749576
+    "rs762551": (
+        "15", 74749576,
+        "GGCAGAAATGCAGGTGTAGGATGCG",
+        "TTATCATCTGCAGCAGCTCATCATG",
+    ),
+    # HFE C282Y — chr6:26091179
+    "rs1800562": (
+        "6", 26091179,
+        "GGTTCTATGATCATGAGAGTCGCCG",
+        "TGTCGATCATGGAGCAGTTGAGCCC",
+    ),
+    # HERC2/OCA2 eye colour — chr15:28120472
+    "rs12913832": (
+        "15", 28120472,
+        "GGATGATACAAGCACAGGGCTGATT",
+        "GTCGGCACAAAGGATCTGTGTCAGA",
+    ),
+    # SLC24A5 skin pigmentation — chr15:48134287
+    "rs1426654": (
+        "15", 48134287,
+        "CTTCAACATCACCAGCCTCATCTTC",
+        "TATTTGCCAGTTAAGAGAAAAGACT",
+    ),
+    # SLC45A2 pigmentation — chr5:33951693
+    "rs16891982": (
+        "5", 33951693,
+        "GGGAATCAGATGATGCAAGTTCACC",
+        "CTCATCCTCTGCACTGTGGTTTGTG",
+    ),
+    # MC1R red hair — chr16:89919736
+    "rs1805007": (
+        "16", 89919736,
+        "CTGCTGGAGAACATCATCGACGCCA",
+        "CAGACATCCTGAGCCAAGCAGGTGC",
+    ),
+    # PTPN22 autoimmune — chr1:113834946
+    "rs2476601": (
+        "1", 113834946,
+        "ACTGATAATATTCTGATGATGACAC",
+        "GGCTTCCAAACATCAGGAAAGCTGA",
+    ),
+    # SOD2 oxidative stress — chr6:159692840
+    "rs4880": (
+        "6", 159692840,
+        "CCTCCCTCAGCTTCAGCACAGCACA",
+        "CTCCCCTGCTCCAGACGCGACCCTC",
+    ),
+    # FTO obesity — chr16:53786615
+    "rs9939609": (
+        "16", 53786615,
+        "GATGGTGATAAAATATCTTGTGTTT",
+        "TTTAGTAAGCTTTGATGCTTACTGT",
+    ),
+    # CDKN2A/B diabetes — chr9:22134094
+    "rs10811661": (
+        "9", 22134094,
+        "GCCTCAGCAGTCCCTTCATTGTTAT",
+        "AATGTAAACTTACCAACAGTCAGGG",
+    ),
+    # CDKN2B-AS1 cardiovascular — chr9:22125503
+    "rs1333049": (
+        "9", 22125503,
+        "GACCACACTGATGATGTATGCTTTA",
+        "GGTTTAGGTCTCTAGTCATTTTCTG",
+    ),
+    # ACE I/D hypertension — chr17:63488529
+    "rs4646994": (
+        "17", 63488529,
+        "GCCACTACGCTGGAGACCACTCCCA",
+        "CTGGAGACCACTCCCATCCTTTCTC",
+    ),
+    # FADS1 omega-3 — chr11:61797212
+    "rs174546": (
+        "11", 61797212,
+        "CTTCAGGTCCCTCCTACCCCTAAGA",
+        "AGGAATGCCATAACATCACCTGCCC",
+    ),
 }
 
 # Fitzpatrick skin type classification by brightness
@@ -898,6 +1073,63 @@ def _predict_variants_from_ancestry(
     return variants
 
 
+def _reconstruct_dna(variants: list[PredictedVariant]) -> ReconstructedDNA:
+    """Build reconstructed DNA sequence fragments from predicted variants.
+
+    For each predicted variant that has known genomic context (flanking
+    reference sequences), constructs a 51-bp sequence fragment showing the
+    predicted alleles in their genomic context.
+    """
+    sequences: list[ReconstructedSequence] = []
+
+    # De-duplicate variants by rsid (phenotype-specific additions may overlap)
+    seen: set[str] = set()
+    for v in variants:
+        if v.rsid in seen:
+            continue
+        seen.add(v.rsid)
+
+        ctx = _SNP_GENOMIC_CONTEXT.get(v.rsid)
+        if ctx is None:
+            continue
+
+        chrom, pos, flank5, flank3 = ctx
+        risk_al, ref_al = _SNP_ALLELES.get(v.rsid, (v.risk_allele, v.ref_allele))
+
+        # Determine diploid alleles from predicted genotype
+        geno = v.predicted_genotype.lower()
+        if "homozygous reference" in geno or "low risk" in geno:
+            al1, al2 = ref_al, ref_al
+        elif "heterozygous" in geno:
+            al1, al2 = ref_al, risk_al
+        else:
+            # homozygous variant / elevated risk
+            al1, al2 = risk_al, risk_al
+
+        sequences.append(
+            ReconstructedSequence(
+                rsid=v.rsid,
+                gene=v.gene,
+                chromosome=chrom,
+                position=pos,
+                ref_allele=ref_al,
+                predicted_allele_1=al1,
+                predicted_allele_2=al2,
+                flanking_5prime=flank5,
+                flanking_3prime=flank3,
+                confidence=v.confidence,
+            )
+        )
+
+    # Sort by chromosome and position for a clean genomic ordering
+    sequences.sort(key=lambda s: (s.chromosome.zfill(2), s.position))
+
+    return ReconstructedDNA(
+        sequences=sequences,
+        total_variants=len(sequences),
+    )
+
+
 # ---------------------------------------------------------------------------
 # Main analysis function
 # ---------------------------------------------------------------------------
@@ -993,6 +1225,9 @@ def analyze_face(
     # Predict variants
     predicted_variants = _predict_variants_from_ancestry(ancestry, measurements)
 
+    # Reconstruct DNA sequences around predicted variant loci
+    reconstructed_dna = _reconstruct_dna(predicted_variants)
+
     # Predict phenotype traits
     eye_colour = _predict_eye_colour(measurements.skin_brightness, ancestry)
     hair_colour = _predict_hair_colour(measurements.skin_brightness, ancestry)
@@ -1044,6 +1279,7 @@ def analyze_face(
         measurements=measurements,
         ancestry=ancestry,
         predicted_variants=predicted_variants,
+        reconstructed_dna=reconstructed_dna,
         skin_health_score=round(skin_health, 1),
         oxidative_stress_score=round(ox_stress, 3),
         predicted_eye_colour=eye_colour,

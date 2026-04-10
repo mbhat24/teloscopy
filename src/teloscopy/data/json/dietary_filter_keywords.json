@@ -145,20 +145,31 @@
   "halal_excluded": [
     "bacon",
     "beer",
+    "chorizo",
     "ham",
     "lard",
+    "pepperoni",
     "pork",
+    "prosciutto",
+    "salami",
     "wine"
   ],
   "kosher_excluded": [
     "bacon",
+    "clam",
     "crab",
     "ham",
     "lard",
     "lobster",
+    "mussel",
+    "octopus",
+    "oyster",
     "pork",
+    "prawn",
+    "scallop",
     "shellfish",
-    "shrimp"
+    "shrimp",
+    "squid"
   ],
   "dairy_keywords": [
     "brie",

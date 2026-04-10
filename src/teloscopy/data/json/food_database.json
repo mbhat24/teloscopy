@@ -4508,7 +4508,7 @@
       "sodium": 370.0,
       "vitamin_a_iu": 334.0
     },
-    "food_group": "protein",
+    "food_group": "dairy",
     "regions": [
       "mediterranean",
       "middle_east"
@@ -4544,7 +4544,7 @@
       "zinc": 4.6,
       "vitamin_b12": 2.9
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "north_america"
     ]
@@ -4561,7 +4561,7 @@
       "zinc": 3.1,
       "vitamin_b12": 2.1
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "australian"
     ]
@@ -4578,7 +4578,7 @@
       "zinc": 2.0,
       "vitamin_b12": 2.0
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "andean"
     ]
@@ -4595,7 +4595,7 @@
       "zinc": 4.2,
       "vitamin_b12": 3.4
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "nordic"
     ]
@@ -4612,7 +4612,7 @@
       "zinc": 5.3,
       "vitamin_b12": 1.1
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "west_africa",
       "east_africa",
@@ -4633,7 +4633,7 @@
       "zinc": 2.0,
       "vitamin_b12": 7.2
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "western_europe",
       "mediterranean"
@@ -4651,7 +4651,7 @@
       "zinc": 2.1,
       "vitamin_b12": 1.3
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "australian",
       "sub_saharan_africa"
@@ -4687,7 +4687,7 @@
       "zinc": 9.6,
       "calcium": 104.0
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "southeast_asia",
       "east_africa"
@@ -5872,7 +5872,7 @@
       "zinc": 2.1,
       "vitamin_b12": 5.6
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "nordic",
       "north_america",
@@ -5891,7 +5891,7 @@
       "zinc": 3.0,
       "vitamin_b12": 2.5
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "australian"
     ]
@@ -5908,7 +5908,7 @@
       "zinc": 3.0,
       "vitamin_b12": 2.0
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "central_europe",
       "mediterranean"
@@ -5926,7 +5926,7 @@
       "zinc": 3.5,
       "vitamin_b6": 0.5
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "southern_africa",
       "australian"
@@ -5944,7 +5944,7 @@
       "zinc": 3.5,
       "vitamin_b12": 2.1
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "andean"
     ]
@@ -5961,7 +5961,7 @@
       "zinc": 2.7,
       "vitamin_b12": 0.5
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "east_asia",
       "middle_east",
@@ -5980,7 +5980,7 @@
       "phosphorus": 147.0,
       "selenium": 18.0
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "southeast_asia",
       "western_europe"
@@ -5998,7 +5998,7 @@
       "magnesium": 250.0,
       "selenium": 27.4
     },
-    "food_group": "protein",
+    "food_group": "meat",
     "regions": [
       "western_europe",
       "west_africa"

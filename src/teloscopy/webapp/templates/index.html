@@ -1432,6 +1432,7 @@
     <div class="result-tabs" id="result-tabs" role="tablist">
         <button class="result-tab active" data-tab="telomere" role="tab" aria-selected="true" aria-controls="tab-telomere">&#x1F9EC; Telomere</button>
         <button class="result-tab" data-tab="facial" role="tab" aria-selected="false" aria-controls="tab-facial" id="facial-tab-btn" style="display:none;">&#x1F9D1; Facial</button>
+        <button class="result-tab" data-tab="dna" role="tab" aria-selected="false" aria-controls="tab-dna" id="dna-tab-btn" style="display:none;">&#x1F9EC; DNA</button>
         <button class="result-tab" data-tab="risk" role="tab" aria-selected="false" aria-controls="tab-risk">&#x1F3E5; Risk</button>
         <button class="result-tab" data-tab="diet" role="tab" aria-selected="false" aria-controls="tab-diet">&#x1F957; Diet</button>
         <button class="result-tab" data-tab="charts" role="tab" aria-selected="false" aria-controls="tab-charts">&#x1F4CA; Charts</button>
@@ -1450,6 +1451,21 @@
         <div class="result-card glass-card" id="facial-card">
             <h3><span class="icon">&#x1F9D1;</span> Facial Analysis</h3>
             <div id="facial-content"></div>
+        </div>
+    </div>
+
+    <div class="result-tab-panel" id="tab-dna" role="tabpanel">
+        <div class="result-card glass-card" id="dna-card" style="display:none;">
+            <h3><span class="icon">&#x1F9EC;</span> Reconstructed Genetic Sequence</h3>
+            <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:1rem;">
+                Partial genome reconstruction from predicted SNP genotypes at key health-relevant loci.
+                Each fragment shows 25 bp flanking the predicted variant position (GRCh38/hg38).
+            </p>
+            <div id="dna-summary" class="stat-grid" style="margin-bottom:1rem;"></div>
+            <div id="dna-sequence-table" style="margin-bottom:1rem;"></div>
+            <div id="dna-fasta-block" style="margin-bottom:1rem;"></div>
+            <div id="dna-download-row" class="btn-row" style="margin-bottom:.5rem;"></div>
+            <div id="dna-disclaimer" style="font-size:.78rem;color:var(--warning);"></div>
         </div>
     </div>
 
@@ -1892,6 +1908,7 @@
         var tabCardMap = {
             'telomere': 'telomere-card',
             'facial': 'facial-card',
+            'dna': 'dna-card',
             'risk': 'risk-card',
             'diet': 'diet-card'
         };
@@ -2220,6 +2237,8 @@
         document.getElementById('telomere-card').style.display = 'none';
         document.getElementById('facial-card').style.display = 'none';
         document.getElementById('facial-tab-btn').style.display = 'none';
+        document.getElementById('dna-card').style.display = 'none';
+        document.getElementById('dna-tab-btn').style.display = 'none';
 
         /* Disease risks */
         var rl = document.getElementById('risk-list');
@@ -2392,6 +2411,71 @@
         } else {
             facialCard.style.display = 'none';
             document.getElementById('facial-tab-btn').style.display = 'none';
+        }
+
+        /* Reconstructed DNA (if present from facial analysis) */
+        var dnaCard = document.getElementById('dna-card');
+        var dnaTabBtn = document.getElementById('dna-tab-btn');
+        if (r.facial_analysis && r.facial_analysis.reconstructed_dna &&
+            r.facial_analysis.reconstructed_dna.total_variants > 0) {
+            var dna = r.facial_analysis.reconstructed_dna;
+            dnaCard.style.display = '';
+            dnaTabBtn.style.display = '';
+
+            /* Summary stats */
+            document.getElementById('dna-summary').innerHTML =
+                '<div class="stat-item"><div class="stat-label">Loci Reconstructed</div><div class="stat-value">' + dna.total_variants + '</div></div>' +
+                '<div class="stat-item"><div class="stat-label">Genome Build</div><div class="stat-value">' + dna.genome_build + '</div></div>' +
+                '<div class="stat-item"><div class="stat-label">Fragment Size</div><div class="stat-value">51 bp each</div></div>';
+
+            /* Variant table */
+            var tbl = '<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:.82rem;">' +
+                '<thead><tr style="border-bottom:1px solid var(--border);color:var(--text-dim);">' +
+                '<th style="padding:.4rem .6rem;text-align:left;">SNP</th>' +
+                '<th style="padding:.4rem .6rem;text-align:left;">Gene</th>' +
+                '<th style="padding:.4rem .6rem;text-align:left;">Chr:Position</th>' +
+                '<th style="padding:.4rem .6rem;text-align:left;">Ref</th>' +
+                '<th style="padding:.4rem .6rem;text-align:left;">Genotype</th>' +
+                '<th style="padding:.4rem .6rem;text-align:left;">Conf</th>' +
+                '</tr></thead><tbody>';
+            dna.sequences.forEach(function (s) {
+                var genoColor = (s.predicted_allele_1 === s.ref_allele && s.predicted_allele_2 === s.ref_allele) ? 'var(--accent)' :
+                    (s.predicted_allele_1 !== s.predicted_allele_2) ? 'var(--warning)' : '#e06c75';
+                tbl += '<tr style="border-bottom:1px solid var(--glass-border);">' +
+                    '<td style="padding:.4rem .6rem;font-family:monospace;">' + s.rsid + '</td>' +
+                    '<td style="padding:.4rem .6rem;font-weight:600;">' + s.gene + '</td>' +
+                    '<td style="padding:.4rem .6rem;font-family:monospace;">chr' + s.chromosome + ':' + s.position.toLocaleString() + '</td>' +
+                    '<td style="padding:.4rem .6rem;font-family:monospace;">' + s.ref_allele + '</td>' +
+                    '<td style="padding:.4rem .6rem;font-family:monospace;color:' + genoColor + ';font-weight:600;">' + s.predicted_allele_1 + '/' + s.predicted_allele_2 + '</td>' +
+                    '<td style="padding:.4rem .6rem;">' + (s.confidence * 100).toFixed(0) + '%</td></tr>';
+            });
+            tbl += '</tbody></table></div>';
+            document.getElementById('dna-sequence-table').innerHTML = tbl;
+
+            /* FASTA preview */
+            var fastaLines = dna.fasta.split('\n').slice(0, 24);
+            var moreLines = dna.fasta.split('\n').length - 24;
+            var fastaHtml = '<details><summary style="cursor:pointer;font-size:.85rem;color:var(--accent);margin-bottom:.5rem;">View FASTA sequences (' + dna.total_variants + ' fragments)</summary>' +
+                '<pre style="background:rgba(0,0,0,.3);padding:1rem;border-radius:var(--radius-sm);font-size:.75rem;overflow-x:auto;max-height:400px;overflow-y:auto;line-height:1.5;color:var(--text-dim);">';
+            dna.sequences.forEach(function (s) {
+                fastaHtml += '<span style="color:var(--accent);">&gt;' + s.rsid + '|' + s.gene + '|chr' + s.chromosome + ':' + s.position + '|predicted=' + s.predicted_allele_1 + '/' + s.predicted_allele_2 + '|confidence=' + s.confidence.toFixed(2) + '</span>\n';
+                fastaHtml += s.flanking_5prime + '<span style="color:#e06c75;font-weight:bold;">[' + s.predicted_allele_1 + '/' + s.predicted_allele_2 + ']</span>' + s.flanking_3prime + '\n';
+            });
+            fastaHtml += '</pre></details>';
+            document.getElementById('dna-fasta-block').innerHTML = fastaHtml;
+
+            /* Download button */
+            document.getElementById('dna-download-row').innerHTML =
+                '<button class="btn btn-outline" onclick="downloadDnaFasta()">Download FASTA</button>';
+
+            /* Disclaimer */
+            document.getElementById('dna-disclaimer').innerHTML = dna.disclaimer;
+
+            /* Store FASTA globally for download */
+            window._dnaFastaContent = dna.fasta;
+        } else {
+            dnaCard.style.display = 'none';
+            dnaTabBtn.style.display = 'none';
         }
 
         /* Disease risks */
@@ -2779,6 +2863,11 @@
             csv += '"' + d.disease + '",' + d.risk_level + ',' + d.probability + '\n';
         });
         downloadBlob(csv, 'teloscopy_results.csv', 'text/csv');
+    };
+
+    window.downloadDnaFasta = function () {
+        if (!window._dnaFastaContent) return;
+        downloadBlob(window._dnaFastaContent, 'teloscopy_reconstructed_dna.fasta', 'text/plain');
     };
 
     /* ==============================================================

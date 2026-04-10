@@ -354,6 +354,36 @@ class PredictedVariantResponse(BaseModel):
     ref_allele: str = ""
 
 
+class ReconstructedSequenceResponse(BaseModel):
+    """A single reconstructed DNA sequence fragment around a predicted SNP."""
+
+    rsid: str
+    gene: str
+    chromosome: str
+    position: int
+    ref_allele: str
+    predicted_allele_1: str
+    predicted_allele_2: str
+    flanking_5prime: str
+    flanking_3prime: str
+    confidence: float
+
+
+class ReconstructedDNAResponse(BaseModel):
+    """Reconstructed partial genome from predicted variants."""
+
+    sequences: list[ReconstructedSequenceResponse] = Field(default_factory=list)
+    total_variants: int = 0
+    genome_build: str = "GRCh38/hg38"
+    fasta: str = ""
+    disclaimer: str = (
+        "RECONSTRUCTED SEQUENCE — This is a statistical reconstruction based "
+        "on facial-genomic predictions, NOT actual DNA sequencing. Predicted "
+        "genotypes are derived from population-level allele frequencies and "
+        "phenotypic correlations. Do not use for clinical decisions."
+    )
+
+
 class FacialAnalysisResult(BaseModel):
     """Complete facial-genomic analysis result."""
 
@@ -369,6 +399,7 @@ class FacialAnalysisResult(BaseModel):
     measurements: FacialMeasurementsResponse = Field(default_factory=FacialMeasurementsResponse)
     ancestry: AncestryEstimateResponse = Field(default_factory=AncestryEstimateResponse)
     predicted_variants: list[PredictedVariantResponse] = Field(default_factory=list)
+    reconstructed_dna: ReconstructedDNAResponse | None = None
     analysis_warnings: list[str] = Field(default_factory=list)
 
 
