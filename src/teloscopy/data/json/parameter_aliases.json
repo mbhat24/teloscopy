@@ -59,7 +59,11 @@
     "chloride": ["chloride", "serum chloride", "s. chloride", "cl", "cl-"],
     "crp": ["crp", "c-reactive protein", "c reactive protein", "hs-crp", "hs crp", "high sensitivity crp", "high-sensitivity c-reactive protein"],
     "esr": ["esr", "erythrocyte sedimentation rate", "sed rate", "sedimentation rate"],
-    "homocysteine": ["homocysteine", "serum homocysteine", "hcy", "homocystine"]
+    "homocysteine": ["homocysteine", "serum homocysteine", "hcy", "homocystine"],
+    "vitamin_a": ["vitamin_a", "vitamin a", "vit a", "retinol", "serum retinol", "serum vitamin a"],
+    "vitamin_e": ["vitamin_e", "vitamin e", "vit e", "alpha tocopherol", "alpha-tocopherol", "tocopherol", "serum vitamin e"],
+    "zinc": ["zinc", "serum zinc", "s. zinc", "zn", "plasma zinc"],
+    "homa_ir": ["homa_ir", "homa-ir", "homa ir", "homeostatic model assessment", "insulin resistance index"]
   },
   "urine_test_aliases": {
     "ph": ["ph", "urine ph", "urinary ph"],

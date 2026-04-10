@@ -2640,6 +2640,21 @@ async def nutrition_plan(request: NutritionRequest) -> NutritionResponse:
 )
 async def health_checkup(request: HealthCheckupRequest) -> HealthCheckupResponse:
     """Analyse health checkup data and return personalised diet plan."""
+    # Reject if no lab data at all — a score of 0/100 with 0 parameters is misleading.
+    has_blood = request.blood_tests is not None and any(
+        v is not None for v in request.blood_tests.model_dump().values()
+    )
+    has_urine = request.urine_tests is not None and any(
+        v is not None for v in request.urine_tests.model_dump().values()
+    )
+    if not has_blood and not has_urine:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                "No lab values provided. Please enter at least one blood or urine "
+                "test value, or upload a lab report using the 'Upload Report' tab."
+            ),
+        )
     try:
         response = await asyncio.to_thread(_health_analyzer.analyze, request)
     except Exception:

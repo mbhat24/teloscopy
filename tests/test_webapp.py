@@ -467,6 +467,65 @@ class TestHealthCheckupParseReport:
         assert resp.status_code == 403
 
 
+class TestHealthCheckupManual:
+    """Tests for POST /api/health-checkup (manual JSON entry)."""
+
+    def test_rejects_empty_lab_data(self, client):
+        """Submitting with no blood or urine tests should return 422."""
+        token = _obtain_consent(client)
+        resp = client.post(
+            "/api/health-checkup",
+            json={
+                "age": 30,
+                "sex": "male",
+                "region": "Global",
+            },
+            headers={**_ch(token), "Content-Type": "application/json"},
+        )
+        assert resp.status_code == 422
+        body = resp.json()
+        msg = body.get("detail", "") or body.get("error", {}).get("message", "")
+        assert "No lab values" in msg
+
+    def test_rejects_all_none_blood_panel(self, client):
+        """BloodTestPanel with all None values should still be rejected."""
+        token = _obtain_consent(client)
+        resp = client.post(
+            "/api/health-checkup",
+            json={
+                "age": 30,
+                "sex": "male",
+                "region": "Global",
+                "blood_tests": {},
+                "urine_tests": {},
+            },
+            headers={**_ch(token), "Content-Type": "application/json"},
+        )
+        assert resp.status_code == 422
+
+    def test_accepts_valid_lab_data(self, client):
+        """Submitting with at least one lab value should succeed."""
+        token = _obtain_consent(client)
+        resp = client.post(
+            "/api/health-checkup",
+            json={
+                "age": 42,
+                "sex": "male",
+                "region": "South Asia",
+                "blood_tests": {
+                    "hemoglobin": 14.5,
+                    "fasting_glucose": 95,
+                    "total_cholesterol": 200,
+                },
+            },
+            headers={**_ch(token), "Content-Type": "application/json"},
+        )
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["total_tested"] >= 3
+        assert data["overall_health_score"] > 0
+
+
 class TestHealthCheckupUpload:
     """Tests for POST /api/health-checkup/upload."""
 

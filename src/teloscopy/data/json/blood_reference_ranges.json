@@ -451,5 +451,12 @@
     "unit": "\u00b5g/dL",
     "display_name": "Zinc",
     "category": "Minerals"
+  },
+  "homa_ir": {
+    "low": 0.5,
+    "high": 2.5,
+    "unit": "index",
+    "display_name": "HOMA-IR",
+    "category": "Diabetes"
   }
 }
