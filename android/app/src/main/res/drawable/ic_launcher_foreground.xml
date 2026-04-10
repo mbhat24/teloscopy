@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- DNA Double Helix Icon - stylized in cyan (#00E5FF) -->
+    <!-- 72dp safe zone centered in 108dp canvas (18dp inset on each side) -->
+
+    <!-- Left strand of the double helix -->
+    <path
+        android:pathData="M36,24 C36,24 54,32 54,42 C54,52 36,52 36,62 C36,72 54,72 54,84"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Right strand of the double helix -->
+    <path
+        android:pathData="M72,24 C72,24 54,32 54,42 C54,52 72,52 72,62 C72,72 54,72 54,84"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Base pair rungs connecting the two strands -->
+    <!-- Rung 1 -->
+    <path
+        android:pathData="M40,30 L68,30"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.7"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Rung 2 -->
+    <path
+        android:pathData="M46,37 L62,37"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.7"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Rung 3 - at crossover -->
+    <path
+        android:pathData="M50,42 L58,42"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.8"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Rung 4 -->
+    <path
+        android:pathData="M42,48 L66,48"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.7"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Rung 5 -->
+    <path
+        android:pathData="M38,54 L70,54"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.7"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Rung 6 -->
+    <path
+        android:pathData="M42,60 L66,60"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.7"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Rung 7 - at crossover -->
+    <path
+        android:pathData="M50,66 L58,66"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.8"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Rung 8 -->
+    <path
+        android:pathData="M46,72 L62,72"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.7"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Rung 9 -->
+    <path
+        android:pathData="M40,78 L68,78"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.7"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"/>
+
+    <!-- Small accent dots at strand terminals for a polished look -->
+    <path
+        android:pathData="M36,24 A1.5,1.5 0 1,1 36.01,24"
+        android:fillColor="#00E5FF"/>
+    <path
+        android:pathData="M72,24 A1.5,1.5 0 1,1 72.01,24"
+        android:fillColor="#00E5FF"/>
+    <path
+        android:pathData="M54,84 A2,2 0 1,1 54.01,84"
+        android:fillColor="#00E5FF"/>
+
+</vector>

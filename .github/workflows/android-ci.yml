@@ -1,0 +1,206 @@
+# =============================================================================
+# Teloscopy – Android CI / APK Build Pipeline
+# =============================================================================
+# Builds the Android app on every push / PR targeting main.
+# On tagged releases (v*), uploads the signed APK as a GitHub Release asset.
+# =============================================================================
+
+name: Android CI
+
+on:
+  push:
+    branches: [main, android-app]
+    paths:
+      - "android/**"
+      - ".github/workflows/android-ci.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "android/**"
+      - ".github/workflows/android-ci.yml"
+  # Allow manual trigger for on-demand APK builds
+  workflow_dispatch:
+
+concurrency:
+  group: android-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write   # needed for release uploads
+
+env:
+  JAVA_VERSION: "17"
+  JAVA_DISTRIBUTION: "temurin"
+
+jobs:
+  # ===========================================================================
+  # Android Lint
+  # ===========================================================================
+  lint:
+    name: Android Lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: android
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Run Android Lint
+        run: ./gradlew lint --no-daemon
+
+      - name: Upload lint results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-results
+          path: android/app/build/reports/lint-results*.html
+          retention-days: 7
+
+  # ===========================================================================
+  # Build Debug APK
+  # ===========================================================================
+  build-debug:
+    name: Build Debug APK
+    runs-on: ubuntu-latest
+    needs: lint
+    defaults:
+      run:
+        working-directory: android
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Rename APK
+        run: |
+          mkdir -p artifacts
+          cp app/build/outputs/apk/debug/app-debug.apk artifacts/teloscopy-debug.apk
+
+      - name: Upload debug APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: teloscopy-debug-apk
+          path: android/artifacts/teloscopy-debug.apk
+          retention-days: 30
+
+  # ===========================================================================
+  # Unit Tests
+  # ===========================================================================
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    defaults:
+      run:
+        working-directory: android
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Run unit tests
+        run: ./gradlew test --no-daemon
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: android/app/build/reports/tests/
+          retention-days: 7
+
+  # ===========================================================================
+  # Release APK (on tags only)
+  # ===========================================================================
+  release:
+    name: Release APK
+    runs-on: ubuntu-latest
+    needs: [build-debug, test]
+    if: startsWith(github.ref, 'refs/tags/v')
+    defaults:
+      run:
+        working-directory: android
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      # Debug APK for release (release signing requires keystore secrets)
+      - name: Build release-candidate APK
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Prepare release artifact
+        run: |
+          mkdir -p artifacts
+          VERSION_NAME=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')
+          cp app/build/outputs/apk/debug/app-debug.apk artifacts/teloscopy-${VERSION_NAME}.apk
+          echo "APK_NAME=teloscopy-${VERSION_NAME}.apk" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: android/artifacts/${{ env.APK_NAME }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
