@@ -514,6 +514,13 @@ class ImageValidationResponse(BaseModel):
     format_detected: str = "unknown"
     face_detected: bool = False
     issues: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Non-fatal observations (e.g. extension/content format mismatch) "
+            "that do not prevent the image from being used."
+        ),
+    )
 
 
 # ---------------------------------------------------------------------------

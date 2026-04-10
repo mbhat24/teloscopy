@@ -139,8 +139,11 @@ _IMAGE_MAGIC_BYTES: dict[str, list[bytes]] = {
     "jpeg": [b"\xff\xd8\xff"],
     "tiff": [b"II\x2a\x00", b"MM\x00\x2a"],  # little-endian / big-endian
     "bmp": [b"BM"],
-    "webp": [b"RIFF"],
+    "webp": [b"RIFF\x00\x00\x00\x00WEBP"],  # 4-byte gap is file-size (varies)
 }
+
+# WebP has the structure RIFF<size>WEBP — we only check bytes 0-3 and 8-11.
+_WEBP_MARKER = b"WEBP"
 
 _TELOSCOPY_ENV: str = os.getenv("TELOSCOPY_ENV", "production")
 _CORS_ORIGINS: list[str] = os.getenv(
@@ -959,7 +962,12 @@ def _validate_extension(filename: str) -> bool:
 
 def _detect_image_format(data: bytes) -> str:
     """Detect image format from magic bytes. Returns format name or 'unknown'."""
+    # Special handling for RIFF-based formats: WebP is RIFF<4-byte size>WEBP
+    if len(data) >= 12 and data[:4] == b"RIFF" and data[8:12] == _WEBP_MARKER:
+        return "webp"
     for fmt, signatures in _IMAGE_MAGIC_BYTES.items():
+        if fmt == "webp":
+            continue  # already handled above
         for sig in signatures:
             if data[: len(sig)] == sig:
                 return fmt
@@ -971,8 +979,11 @@ def _validate_image_content(contents: bytes, filename: str) -> ImageValidationRe
 
     Returns an :class:`ImageValidationResponse` with ``valid=True`` if the
     image passes all checks, or ``valid=False`` with a list of issues.
+    Extension/content format mismatches are reported as *warnings* (not
+    hard failures) when the image can still be decoded by OpenCV.
     """
     issues: list[str] = []
+    warnings: list[str] = []
     file_size = len(contents)
 
     # 1. Magic bytes check (informational — not a hard failure if cv2
@@ -990,10 +1001,11 @@ def _validate_image_content(contents: bytes, filename: str) -> ImageValidationRe
     }
     expected_format = ext_to_format.get(ext, "unknown")
     magic_mismatch = False
+    format_mismatch_msg = ""
     if detected_format == "unknown":
         magic_mismatch = True
     elif expected_format != "unknown" and detected_format != expected_format:
-        issues.append(
+        format_mismatch_msg = (
             f"Extension '{ext}' suggests {expected_format} but content is {detected_format}."
         )
 
@@ -1057,6 +1069,14 @@ def _validate_image_content(contents: bytes, filename: str) -> ImageValidationRe
             f"Expected {expected_format} based on extension '{ext}'."
         )
 
+    # Extension/content format mismatch: treat as a warning when the
+    # image decoded successfully, hard failure only when it didn't.
+    if format_mismatch_msg:
+        if decoded_ok:
+            warnings.append(format_mismatch_msg)
+        else:
+            issues.append(format_mismatch_msg)
+
     return ImageValidationResponse(
         valid=len(issues) == 0,
         image_type=image_type,
@@ -1067,6 +1087,7 @@ def _validate_image_content(contents: bytes, filename: str) -> ImageValidationRe
         format_detected=detected_format,
         face_detected=face_detected,
         issues=issues,
+        warnings=warnings,
     )
 
 
