@@ -14,6 +14,7 @@ from __future__ import annotations
 import asyncio
 import collections
 import logging
+import math
 import os
 import random
 import threading
@@ -507,40 +508,48 @@ def _translate_diet_recommendation(
     )
 
 
+def _sanitize_float(v: float, default: float = 0.0) -> float:
+    """Replace NaN / ±Inf with *default* to keep JSON valid."""
+    if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
+        return default
+    return v
+
+
 def _translate_facial_profile(profile: Any) -> FacialAnalysisResult:
     """Convert ``facial.predictor.FacialGenomicProfile`` to Pydantic model."""
     m = profile.measurements
     a = profile.ancestry
+    sf = _sanitize_float
     return FacialAnalysisResult(
         image_type="face_photo",
         estimated_biological_age=profile.estimated_biological_age,
-        estimated_telomere_length_kb=profile.estimated_telomere_length_kb,
+        estimated_telomere_length_kb=sf(profile.estimated_telomere_length_kb),
         telomere_percentile=profile.telomere_percentile,
-        skin_health_score=profile.skin_health_score,
-        oxidative_stress_score=profile.oxidative_stress_score,
+        skin_health_score=sf(profile.skin_health_score),
+        oxidative_stress_score=sf(profile.oxidative_stress_score),
         predicted_eye_colour=profile.predicted_eye_colour,
         predicted_hair_colour=profile.predicted_hair_colour,
         predicted_skin_type=profile.predicted_skin_type,
         measurements=FacialMeasurementsResponse(
-            face_width=m.face_width,
-            face_height=m.face_height,
-            face_ratio=m.face_ratio,
-            skin_brightness=m.skin_brightness,
-            skin_uniformity=m.skin_uniformity,
-            wrinkle_score=m.wrinkle_score,
-            symmetry_score=m.symmetry_score,
-            dark_circle_score=m.dark_circle_score,
-            texture_roughness=m.texture_roughness,
-            uv_damage_score=m.uv_damage_score,
+            face_width=sf(m.face_width),
+            face_height=sf(m.face_height),
+            face_ratio=sf(m.face_ratio),
+            skin_brightness=sf(m.skin_brightness),
+            skin_uniformity=sf(m.skin_uniformity),
+            wrinkle_score=sf(m.wrinkle_score),
+            symmetry_score=sf(m.symmetry_score, 0.5),
+            dark_circle_score=sf(m.dark_circle_score),
+            texture_roughness=sf(m.texture_roughness),
+            uv_damage_score=sf(m.uv_damage_score),
         ),
         ancestry=AncestryEstimateResponse(
-            european=a.european,
-            east_asian=a.east_asian,
-            south_asian=a.south_asian,
-            african=a.african,
-            middle_eastern=a.middle_eastern,
-            latin_american=a.latin_american,
-            confidence=a.confidence,
+            european=sf(a.european),
+            east_asian=sf(a.east_asian),
+            south_asian=sf(a.south_asian),
+            african=sf(a.african),
+            middle_eastern=sf(a.middle_eastern),
+            latin_american=sf(a.latin_american),
+            confidence=sf(a.confidence),
         ),
         predicted_variants=[
             PredictedVariantResponse(

@@ -318,14 +318,22 @@ _FITZPATRICK_THRESHOLDS = [
 # ---------------------------------------------------------------------------
 
 
+def _safe_float(v: float, default: float = 0.0) -> float:
+    """Return *default* if *v* is NaN or ±Inf."""
+    if math.isnan(v) or math.isinf(v):
+        return default
+    return v
+
+
 def _extract_facial_measurements(
     img: np.ndarray, face_box: tuple[int, int, int, int]
 ) -> FacialMeasurements:
     """Extract facial measurements from a detected face region.
 
-    Skin-texture and pigmentation metrics are computed on a central
-    cheek patch (avoiding eyes, mouth, eyebrows, and hair) so that
-    structural face features do not inflate age-related scores.
+    Skin-texture and pigmentation metrics are computed on blurred
+    cheek patches (avoiding eyes, mouth, eyebrows, and hair) so that
+    structural face features, camera noise, and JPEG compression
+    artefacts do not inflate age-related scores.
     """
     x, y, w, h = face_box
 
@@ -383,12 +391,12 @@ def _extract_facial_measurements(
     # Skin brightness (from L channel of LAB, or grayscale)
     if lab is not None:
         l_channel = lab[:, :, 0]
-        skin_brightness = float(np.mean(l_channel))
+        skin_brightness = _safe_float(float(np.mean(l_channel)))
     else:
-        skin_brightness = float(np.mean(gray))
+        skin_brightness = _safe_float(float(np.mean(gray)))
 
     # Skin uniformity (std of cheek skin patch)
-    skin_uniformity = float(np.std(skin_patch)) if skin_patch.size > 0 else 0.0
+    skin_uniformity = _safe_float(float(np.std(skin_patch))) if skin_patch.size > 0 else 0.0
 
     # Skin redness (inflammation proxy)
     skin_redness = 0.0
@@ -399,17 +407,18 @@ def _extract_facial_measurements(
             float(np.mean(face_roi[:, :, 1])),
             float(np.mean(face_roi[:, :, 2])),
         )
-        skin_redness = r - (b + g) / 2
+        skin_redness = _safe_float(r - (b + g) / 2)
         if lab is not None:
-            skin_yellowness = float(np.mean(lab[:, :, 2]))  # b* channel
+            skin_yellowness = _safe_float(float(np.mean(lab[:, :, 2])))
 
     # Wrinkle score (edge density in forehead region)
-    # Pre-blur to suppress noise/compression artefacts, then use
-    # moderately strict Canny thresholds to isolate real creases.
-    forehead = gray[0 : h // 4, w // 4 : 3 * w // 4]
+    # Skip the top 10% of the face box to avoid the hairline, which
+    # creates strong Canny edges that are not wrinkles.  Analyse
+    # rows 10%–25% (the actual forehead skin below the hairline).
+    forehead = gray[h * 10 // 100 : h * 25 // 100, w // 4 : 3 * w // 4]
     if forehead.size > 0:
-        forehead_blur = cv2.GaussianBlur(forehead, (5, 5), 0)
-        edges = cv2.Canny(forehead_blur, 60, 150)
+        forehead_blur = cv2.GaussianBlur(forehead, (7, 7), 0)
+        edges = cv2.Canny(forehead_blur, 80, 180)
         wrinkle_score = float(np.sum(edges > 0) / max(forehead.size, 1))
     else:
         wrinkle_score = 0.0
@@ -422,7 +431,7 @@ def _extract_facial_measurements(
         left_half = left_half[:, :min_w]
         right_half = right_half[:, :min_w]
         diff = np.abs(left_half.astype(float) - right_half.astype(float))
-        symmetry_score = 1.0 - float(np.mean(diff) / 255.0)
+        symmetry_score = _safe_float(1.0 - float(np.mean(diff) / 255.0), 0.5)
     else:
         symmetry_score = 0.5
 
@@ -434,32 +443,47 @@ def _extract_facial_measurements(
     cheek = gray[h // 2 : h // 2 + h // 8, w // 4 : 3 * w // 4]
     if under_eye.size > 0 and cheek.size > 0:
         raw_dc = (float(np.mean(cheek)) - float(np.mean(under_eye))) / 50.0
-        dark_circle_score = max(0.0, min(raw_dc - 0.05, 1.0))
+        dark_circle_score = max(0.0, min(_safe_float(raw_dc) - 0.05, 1.0))
     else:
         dark_circle_score = 0.0
 
-    # Texture roughness — Laplacian variance of *skin-only* cheek patches.
-    # Using the cheek region avoids inflated scores from eyes, nose,
-    # and mouth edges which are structural, not age-related.
-    # Compute on each 2-D cheek patch individually, then average.
+    # Texture roughness — Laplacian variance of *blurred* cheek patches.
+    # Pre-blur with GaussianBlur to suppress camera sensor noise, JPEG
+    # compression artefacts, and skin micro-texture (pores, peach fuzz)
+    # that are resolution-dependent, not age-related.  The /3000
+    # normaliser is calibrated for smartphone-resolution images where
+    # raw Laplacian variance on cheek skin is typically 200–1000.
     _lap_vars = []
     for _patch_2d in (lc, rc):
         if _patch_2d.size > 100:
-            _lp = cv2.Laplacian(_patch_2d, cv2.CV_64F)
+            _blurred = cv2.GaussianBlur(_patch_2d, (7, 7), 0)
+            _lp = cv2.Laplacian(_blurred, cv2.CV_64F)
             _lap_vars.append(float(np.var(_lp)))
     if _lap_vars:
-        texture_roughness = min(sum(_lap_vars) / len(_lap_vars) / 500.0, 1.0)
+        texture_roughness = min(sum(_lap_vars) / len(_lap_vars) / 3000.0, 1.0)
     else:
-        lap = cv2.Laplacian(gray, cv2.CV_64F)
-        texture_roughness = min(float(np.var(lap)) / 5000.0, 1.0)
+        blurred_gray = cv2.GaussianBlur(gray, (7, 7), 0)
+        lap = cv2.Laplacian(blurred_gray, cv2.CV_64F)
+        texture_roughness = min(float(np.var(lap)) / 10000.0, 1.0)
 
-    # UV damage score — pigmentation irregularity in *skin-only* patches.
-    # The full-face L-channel std is dominated by structural contrast
-    # (eyes, brows, hair), not real pigmentation irregularity.
-    if l_skin_patch.size > 0:
-        uv_damage_score = min(float(np.std(l_skin_patch.astype(float))) / 30.0, 1.0)
+    # UV damage score — pigmentation irregularity in *blurred* cheek
+    # patches.  A GaussianBlur removes high-frequency noise while
+    # preserving real pigmentation variation.  The /60 normaliser
+    # accounts for the fact that even uniform young skin has L-channel
+    # std of 5–15 from 3D face curvature and lighting gradients.
+    # Compute on each 2-D L-channel cheek patch, then average.
+    _l_stds = []
+    if lab is not None:
+        for _lp in (l_lc, l_rc):
+            if _lp.size > 50 and min(_lp.shape) >= 3:
+                _lb = cv2.GaussianBlur(_lp.astype(np.float32), (5, 5), 0)
+                _l_stds.append(float(np.std(_lb)))
+    if _l_stds:
+        uv_damage_score = min(sum(_l_stds) / len(_l_stds) / 60.0, 1.0)
+    elif l_skin_patch.size > 2:
+        uv_damage_score = min(_safe_float(float(np.std(l_skin_patch.astype(float)))) / 60.0, 1.0)
     else:
-        uv_damage_score = min(float(np.std(gray)) / 40.0, 1.0)
+        uv_damage_score = 0.0
 
     return FacialMeasurements(
         face_width=float(w),
@@ -489,34 +513,42 @@ def _estimate_biological_age(measurements: FacialMeasurements, chronological_age
     dark circles, texture roughness, and UV damage — calibrated
     against published perceived-age studies (Christensen et al., 2009).
 
-    Measurements are expected to come from skin-only cheek patches
-    (not the full face) so that structural features like eyes and
-    mouth do not inflate the age-related scores.
+    Measurements are expected from blurred cheek patches so that
+    camera noise, compression artefacts, and structural face features
+    do not inflate the scores.
+
+    Typical value ranges (post-blur, smartphone photos):
+    - wrinkle_score:     young 0.002–0.01,  aged 0.03–0.06
+    - texture_roughness: young 0.01–0.05,   aged 0.10–0.30
+    - uv_damage_score:   young 0.05–0.12,   aged 0.20–0.40
     """
     # Base: chronological age
     age_offset = 0.0
 
-    # Wrinkles add perceived age
-    # After pre-blur + stricter Canny, typical wrinkle_score is
-    # ~0.005–0.02 for young skin, ~0.04–0.07 for aged skin.
-    expected_wrinkle = 0.01 + max(chronological_age - 25, 0) * 0.0008
-    wrinkle_diff = measurements.wrinkle_score - max(expected_wrinkle, 0.005)
-    age_offset += wrinkle_diff * 120  # ~+12 years per 0.1 excess
+    # Wrinkles add perceived age.
+    # The forehead region now excludes the hairline (10%–25% of face
+    # height), and uses Blur(7,7) + Canny(80,180) to isolate real
+    # creases.  Young skin with no wrinkles should be near 0.005.
+    expected_wrinkle = 0.005 + max(chronological_age - 25, 0) * 0.0005
+    wrinkle_diff = measurements.wrinkle_score - max(expected_wrinkle, 0.003)
+    age_offset += wrinkle_diff * 100  # ~+10 years per 0.1 excess
 
-    # Skin texture roughness (cheek Laplacian, /500 normalised)
-    # Typical range: 0.05–0.15 young, 0.2–0.5 aged.
-    expected_texture = 0.05 + max(chronological_age - 20, 0) * 0.004
+    # Skin texture roughness (blurred cheek Laplacian, /3000 normalised).
+    # Pre-blur removes camera noise / JPEG artefacts.  Young skin is
+    # typically 0.01–0.05, visibly aged skin 0.10–0.30.
+    expected_texture = 0.02 + max(chronological_age - 20, 0) * 0.002
     texture_diff = measurements.texture_roughness - expected_texture
-    age_offset += texture_diff * 25
+    age_offset += texture_diff * 30
 
     # Dark circles add perceived age (baseline already subtracted)
-    age_offset += measurements.dark_circle_score * 6
+    age_offset += measurements.dark_circle_score * 5
 
-    # UV damage (cheek-only L-std, /30 normalised)
-    # Typical range 0.1–0.3 for uniform skin, 0.4–0.7 for sun-damaged.
-    expected_uv = 0.1 + max(chronological_age - 25, 0) * 0.003
+    # UV damage (blurred cheek L-std, /60 normalised).
+    # The blur suppresses high-frequency noise; /60 accounts for the
+    # natural L-channel variation from 3D face curvature and lighting.
+    expected_uv = 0.05 + max(chronological_age - 25, 0) * 0.002
     uv_diff = measurements.uv_damage_score - expected_uv
-    age_offset += uv_diff * 8
+    age_offset += uv_diff * 10
 
     # Good symmetry reduces perceived age
     age_offset -= (measurements.symmetry_score - 0.7) * 8
@@ -526,8 +558,8 @@ def _estimate_biological_age(measurements: FacialMeasurements, chronological_age
         age_offset += (measurements.skin_uniformity - 20) * 0.2
 
     # Clamp the total offset so a single bad metric can't wildly
-    # skew the result: max ±20 years from chronological.
-    age_offset = max(-20.0, min(20.0, age_offset))
+    # skew the result: max ±15 years from chronological.
+    age_offset = max(-15.0, min(15.0, age_offset))
 
     bio_age = chronological_age + age_offset
     bio_age = max(15, min(110, bio_age))
