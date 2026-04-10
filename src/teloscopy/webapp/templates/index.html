@@ -1083,7 +1083,7 @@
         <div class="app-banner-title">Teloscopy for Android</div>
         <div class="app-banner-subtitle">Get the native app for a better mobile experience</div>
     </div>
-    <button class="app-banner-btn" onclick="downloadApk()">Download APK</button>
+    <button class="app-banner-btn" onclick="openDownloadModal()">Download App</button>
     <button class="app-banner-close" onclick="dismissAppBanner()" aria-label="Dismiss">&times;</button>
 </div>
 
@@ -1889,9 +1889,12 @@
     <div class="download-modal">
         <button class="download-modal-close" onclick="closeDownloadModal()" aria-label="Close">&times;</button>
         <h3>Get Teloscopy for Android</h3>
-        <p>Download the native Android app for offline telomere analysis, camera capture, and push notifications.</p>
+        <p id="download-modal-desc">Download the native Android app for offline telomere analysis, camera capture, and push notifications.</p>
+        <div id="download-modal-status" style="display:none; margin-bottom:1rem; padding:0.75rem 1rem; border-radius:8px; background:rgba(255,193,7,0.12); border:1px solid rgba(255,193,7,0.3); color:#ffc107; font-size:0.9rem; text-align:center;">
+            The Android APK is not available for download yet &mdash; the build is coming soon. Check back later!
+        </div>
         <div class="btn-group">
-            <button class="dl-btn dl-btn-android" onclick="downloadApk()">
+            <button class="dl-btn dl-btn-android" id="download-modal-btn" onclick="downloadApk()">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                 Download APK
             </button>
@@ -1949,6 +1952,24 @@ function openDownloadModal() {
     var ov = document.getElementById('sidebar-overlay');
     if (sb) sb.classList.remove('mobile-open');
     if (ov) ov.classList.remove('visible');
+    /* Check APK availability and update modal state */
+    var statusEl = document.getElementById('download-modal-status');
+    var btnEl = document.getElementById('download-modal-btn');
+    fetch('/api/download/android/status')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            if (data.available) {
+                if (statusEl) statusEl.style.display = 'none';
+                if (btnEl) { btnEl.disabled = false; btnEl.style.opacity = '1'; }
+            } else {
+                if (statusEl) statusEl.style.display = 'block';
+                if (btnEl) { btnEl.disabled = true; btnEl.style.opacity = '0.5'; }
+            }
+        })
+        .catch(function () {
+            if (statusEl) { statusEl.style.display = 'block'; statusEl.textContent = 'Could not check APK availability. Please try again later.'; }
+            if (btnEl) { btnEl.disabled = true; btnEl.style.opacity = '0.5'; }
+        });
 }
 
 function closeDownloadModal() {
