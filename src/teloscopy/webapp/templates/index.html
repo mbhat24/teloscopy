@@ -869,6 +869,9 @@
         .dl-btn-android {
             background: var(--accent); color: var(--bg-primary);
         }
+        .dl-btn-ios {
+            background: #007AFF; color: #fff;
+        }
         .dl-btn-cancel {
             background: transparent; color: var(--text-secondary);
             border: 1px solid var(--border) !important;
@@ -1244,7 +1247,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
     </div>
     <div class="app-banner-text">
-        <div class="app-banner-title">Teloscopy for Android</div>
+        <div class="app-banner-title">Teloscopy Mobile</div>
         <div class="app-banner-subtitle">Get the native app for a better mobile experience</div>
     </div>
     <button class="app-banner-btn" onclick="openDownloadModal()">Download App</button>
@@ -2076,19 +2079,26 @@
     </div>
 </div>
 
-<!-- Android download modal -->
-<div class="download-modal-overlay" id="download-modal" role="dialog" aria-modal="true" aria-label="Download Android app">
+<!-- Mobile app download modal -->
+<div class="download-modal-overlay" id="download-modal" role="dialog" aria-modal="true" aria-label="Download Teloscopy app">
     <div class="download-modal">
         <button class="download-modal-close" onclick="closeDownloadModal()" aria-label="Close">&times;</button>
-        <h3>Get Teloscopy for Android</h3>
-        <p id="download-modal-desc">Download the native Android app for offline telomere analysis, camera capture, and push notifications.</p>
-        <div id="download-modal-status" style="display:none; margin-bottom:1rem; padding:0.75rem 1rem; border-radius:8px; background:rgba(255,193,7,0.12); border:1px solid rgba(255,193,7,0.3); color:#ffc107; font-size:0.9rem; text-align:center;">
-            The Android APK is not available for download yet &mdash; the build is coming soon. Check back later!
+        <h3>Get Teloscopy</h3>
+        <p id="download-modal-desc">Download the native app for offline telomere analysis, camera capture, and push notifications.</p>
+        <div id="download-modal-status-android" style="display:none; margin-bottom:.6rem; padding:0.6rem .85rem; border-radius:8px; background:rgba(255,193,7,0.12); border:1px solid rgba(255,193,7,0.3); color:#ffc107; font-size:0.82rem; text-align:center;">
+            Android APK is not available yet &mdash; build coming soon.
+        </div>
+        <div id="download-modal-status-ios" style="display:none; margin-bottom:.6rem; padding:0.6rem .85rem; border-radius:8px; background:rgba(255,193,7,0.12); border:1px solid rgba(255,193,7,0.3); color:#ffc107; font-size:0.82rem; text-align:center;">
+            iOS IPA is not available yet &mdash; build coming soon.
         </div>
         <div class="btn-group">
-            <button class="dl-btn dl-btn-android" id="download-modal-btn" onclick="downloadApk()">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
-                Download APK
+            <button class="dl-btn dl-btn-android" id="download-modal-btn-android" onclick="downloadApp('android')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                Download for Android
+            </button>
+            <button class="dl-btn dl-btn-ios" id="download-modal-btn-ios" onclick="downloadApp('ios')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                Download for iOS
             </button>
             <button class="dl-btn dl-btn-cancel" onclick="closeDownloadModal()">Not now</button>
         </div>
@@ -2144,10 +2154,15 @@ function openDownloadModal() {
     var ov = document.getElementById('sidebar-overlay');
     if (sb) sb.classList.remove('mobile-open');
     if (ov) ov.classList.remove('visible');
-    /* Check APK availability and update modal state */
-    var statusEl = document.getElementById('download-modal-status');
-    var btnEl = document.getElementById('download-modal-btn');
-    fetch('/api/download/android/status')
+    /* Check availability for both platforms */
+    checkAppAvailability('android');
+    checkAppAvailability('ios');
+}
+
+function checkAppAvailability(platform) {
+    var statusEl = document.getElementById('download-modal-status-' + platform);
+    var btnEl = document.getElementById('download-modal-btn-' + platform);
+    fetch('/api/download/' + platform + '/status')
         .then(function (r) { return r.json(); })
         .then(function (data) {
             if (data.available) {
@@ -2159,7 +2174,7 @@ function openDownloadModal() {
             }
         })
         .catch(function () {
-            if (statusEl) { statusEl.style.display = 'block'; statusEl.textContent = 'Could not check APK availability. Please try again later.'; }
+            if (statusEl) statusEl.style.display = 'block';
             if (btnEl) { btnEl.disabled = true; btnEl.style.opacity = '0.5'; }
         });
 }
@@ -2169,31 +2184,29 @@ function closeDownloadModal() {
     if (modal) modal.classList.remove('visible');
 }
 
-function downloadApk() {
-    /* Check APK availability first, then trigger download */
-    fetch('/api/download/android/status')
+function downloadApp(platform) {
+    fetch('/api/download/' + platform + '/status')
         .then(function (r) { return r.json(); })
         .then(function (data) {
             if (data.available) {
-                window.location.href = '/api/download/android';
+                window.location.href = '/api/download/' + platform;
                 closeDownloadModal();
                 dismissAppBanner();
             } else {
-                closeDownloadModal();
-                /* Use the toast function if available, else alert */
+                var label = platform === 'ios' ? 'iOS IPA' : 'Android APK';
                 if (typeof toast === 'function') {
-                    toast('APK not available yet. The Android build is coming soon!', 'info');
+                    toast(label + ' not available yet. The build is coming soon!', 'info');
                 } else {
-                    alert('APK not available yet. The Android build is coming soon!');
+                    alert(label + ' not available yet. The build is coming soon!');
                 }
             }
         })
         .catch(function () {
             closeDownloadModal();
             if (typeof toast === 'function') {
-                toast('Could not check APK availability. Please try again.', 'error');
+                toast('Could not check availability. Please try again.', 'error');
             } else {
-                alert('Could not check APK availability. Please try again.');
+                alert('Could not check availability. Please try again.');
             }
         });
 }

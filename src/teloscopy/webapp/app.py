@@ -1128,17 +1128,18 @@ async def dashboard_page(request: Request) -> HTMLResponse:
 
 
 # ===================================================================== #
-#  Android APK download                                                  #
+#  Mobile app downloads (Android APK + iOS IPA)                          #
 # ===================================================================== #
 
-_APK_DIR = _BASE_DIR / "static"
+_DOWNLOAD_DIR = _BASE_DIR / "static"
 _APK_FILENAME = "teloscopy.apk"
+_IPA_FILENAME = "teloscopy.ipa"
 
 
 @app.get("/api/download/android")
 async def download_android_apk() -> FileResponse:
     """Serve the Android APK for mobile users."""
-    apk_path = _APK_DIR / _APK_FILENAME
+    apk_path = _DOWNLOAD_DIR / _APK_FILENAME
     if not apk_path.exists():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -1153,12 +1154,39 @@ async def download_android_apk() -> FileResponse:
 
 @app.get("/api/download/android/status")
 async def android_apk_status() -> dict[str, Any]:
-    """Check whether the APK is available for download."""
-    apk_path = _APK_DIR / _APK_FILENAME
+    """Check whether the Android APK is available for download."""
+    apk_path = _DOWNLOAD_DIR / _APK_FILENAME
     return {
         "available": apk_path.exists(),
         "filename": _APK_FILENAME,
         "size_bytes": apk_path.stat().st_size if apk_path.exists() else None,
+    }
+
+
+@app.get("/api/download/ios")
+async def download_ios_ipa() -> FileResponse:
+    """Serve the iOS IPA for mobile users."""
+    ipa_path = _DOWNLOAD_DIR / _IPA_FILENAME
+    if not ipa_path.exists():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="iOS IPA not available yet. Please check back later.",
+        )
+    return FileResponse(
+        path=str(ipa_path),
+        filename=_IPA_FILENAME,
+        media_type="application/octet-stream",
+    )
+
+
+@app.get("/api/download/ios/status")
+async def ios_ipa_status() -> dict[str, Any]:
+    """Check whether the iOS IPA is available for download."""
+    ipa_path = _DOWNLOAD_DIR / _IPA_FILENAME
+    return {
+        "available": ipa_path.exists(),
+        "filename": _IPA_FILENAME,
+        "size_bytes": ipa_path.stat().st_size if ipa_path.exists() else None,
     }
 
 
