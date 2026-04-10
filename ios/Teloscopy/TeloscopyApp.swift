@@ -41,8 +41,8 @@ final class AppCancellables {
 
 @main
 struct TeloscopyApp: App {
-    @StateObject private var apiService = APIService.shared
-    @StateObject private var syncManager = SyncManager.shared
+    @ObservedObject private var apiService = APIService.shared
+    @ObservedObject private var syncManager = SyncManager.shared
     @AppStorage("appearance_mode") private var appearanceMode: String = "system"
     
     init() {

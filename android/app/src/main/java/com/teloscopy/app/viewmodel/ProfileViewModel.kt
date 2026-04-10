@@ -88,7 +88,27 @@ class ProfileViewModel @Inject constructor(
                 includeDiseaseRisk = includeDiseaseRisk
             ).onSuccess { response ->
                 _uiState.update {
-                    it.copy(isLoading = false, result = response)
+                    it.copy(
+                        isLoading = false,
+                        result = response,
+                        // Populate standalone result fields from combined response
+                        // so the UI results section can display them
+                        diseaseRiskResult = if (response.diseaseRisks.isNotEmpty()) {
+                            DiseaseRiskResponse(
+                                risks = response.diseaseRisks,
+                                overallRiskScore = response.overallRiskScore,
+                                assessedAt = response.assessedAt,
+                                disclaimer = response.disclaimer
+                            )
+                        } else null,
+                        nutritionResult = response.dietRecommendations?.let { diet ->
+                            NutritionResponse(
+                                recommendation = diet,
+                                generatedAt = response.assessedAt,
+                                disclaimer = response.disclaimer
+                            )
+                        }
+                    )
                 }
             }.onFailure { throwable ->
                 _uiState.update {

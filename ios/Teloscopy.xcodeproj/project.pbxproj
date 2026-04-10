@@ -22,6 +22,9 @@
 		AA00000D /* MealPlanCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000D /* MealPlanCard.swift */; };
 		AA00000E /* ShimmerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00000E /* ShimmerEffect.swift */; };
 		AA00000F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB00000F /* Assets.xcassets */; };
+		AA000011 /* Analysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000011 /* Analysis.swift */; };
+		AA000012 /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000012 /* SyncManager.swift */; };
+		AA000013 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000013 /* ProfileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +44,9 @@
 		AB00000E /* ShimmerEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerEffect.swift; sourceTree = "<group>"; };
 		AB00000F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB000010 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB000011 /* Analysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analysis.swift; sourceTree = "<group>"; };
+		AB000012 /* SyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
+		AB000013 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		AB000020 /* Teloscopy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Teloscopy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -82,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				AB000003 /* APIModels.swift */,
+				AB000011 /* Analysis.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -91,6 +98,7 @@
 			children = (
 				AB000004 /* APIService.swift */,
 				AB000005 /* SettingsStore.swift */,
+				AB000012 /* SyncManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -103,6 +111,7 @@
 				AB000008 /* ProfileAnalysisView.swift */,
 				AB000009 /* ResultsView.swift */,
 				AB00000A /* SettingsView.swift */,
+				AB000013 /* ProfileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -209,6 +218,9 @@
 				AA00000C /* DiseaseRiskCard.swift in Sources */,
 				AA00000D /* MealPlanCard.swift in Sources */,
 				AA00000E /* ShimmerEffect.swift in Sources */,
+				AA000011 /* Analysis.swift in Sources */,
+				AA000012 /* SyncManager.swift in Sources */,
+				AA000013 /* ProfileView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

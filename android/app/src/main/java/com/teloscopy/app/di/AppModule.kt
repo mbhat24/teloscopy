@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.teloscopy.app.data.api.TeloscopyApi
 import dagger.Module
 import dagger.Provides
@@ -32,7 +31,6 @@ object AppModule {
     @Singleton
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
-            .addLast(KotlinJsonAdapterFactory())
             .build()
     }
 

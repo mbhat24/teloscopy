@@ -2617,17 +2617,50 @@ function markdownToHtml(md) {
         return out;
     });
 
-    /* Ordered lists */
-    html = html.replace(/((?:^\d+[\.\)]\s+.+$\n?)+)/gm, function (block) {
-        var items = block.trim().split('\n');
-        var out = '<ol>';
-        items.forEach(function (item) {
-            var text = item.replace(/^\d+[\.\)]\s+/, '');
-            out += '<li>' + text + '</li>';
-        });
-        out += '</ol>';
-        return out;
-    });
+    /* Ordered lists — handles multi-line items (e.g. references) and preserves numbering */
+    html = (function(text) {
+        var lines = text.split('\n');
+        var result = [];
+        var inList = false;
+        var items = [];
+        var currentItem = '';
+        var startNum = null;
+
+        function flushList() {
+            if (currentItem) items.push(currentItem);
+            if (items.length > 0) {
+                var ol = '<ol' + (startNum > 1 ? ' start="' + startNum + '"' : '') + '>';
+                items.forEach(function(item) { ol += '<li>' + item + '</li>'; });
+                ol += '</ol>';
+                result.push(ol);
+            }
+            items = [];
+            currentItem = '';
+            startNum = null;
+            inList = false;
+        }
+
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            var m = line.match(/^(\d+)[\.\)]\s+(.*)/);
+            if (m) {
+                if (!inList) inList = true;
+                if (currentItem) items.push(currentItem);
+                if (startNum === null) startNum = parseInt(m[1], 10);
+                currentItem = m[2];
+            } else if (inList && /^\s{2,}\S/.test(line)) {
+                /* Indented continuation of current item */
+                currentItem += ' ' + line.trim();
+            } else if (inList && line.trim() === '') {
+                /* Blank line within list — tolerate */
+            } else {
+                if (inList) flushList();
+                result.push(line);
+            }
+        }
+        if (inList) flushList();
+        return result.join('\n');
+    })(html);
 
     /* Paragraphs: wrap remaining loose lines */
     html = html.replace(/^(?!<[a-z]|$)(.+)$/gm, '<p>$1</p>');

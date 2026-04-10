@@ -31,6 +31,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
@@ -263,7 +264,7 @@ fun ProfileAnalysisScreen(
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .menuAnchor(),
+                                    .menuAnchor(MenuAnchorType.PrimaryNotEditable),
                                 colors = OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                                     unfocusedBorderColor = MaterialTheme.colorScheme.outline,
@@ -562,7 +563,7 @@ fun ProfileAnalysisScreen(
                         }
 
                         // Disclaimer
-                        if (!diseaseRisks.disclaimer.isNullOrBlank()) {
+                        if (diseaseRisks.disclaimer.isNotBlank()) {
                             Spacer(modifier = Modifier.height(8.dp))
                             DisclaimerRow(text = diseaseRisks.disclaimer)
                         }
@@ -609,7 +610,7 @@ fun ProfileAnalysisScreen(
                         }
 
                         // Key nutrients
-                        if (!recommendation.keyNutrients.isNullOrEmpty()) {
+                        if (recommendation.keyNutrients.isNotEmpty()) {
                             Text(
                                 text = "Key Nutrients",
                                 style = MaterialTheme.typography.titleSmall.copy(
@@ -640,7 +641,7 @@ fun ProfileAnalysisScreen(
                         }
 
                         // Foods to increase
-                        if (!recommendation.foodsToIncrease.isNullOrEmpty()) {
+                        if (recommendation.foodsToIncrease.isNotEmpty()) {
                             Text(
                                 text = "Foods to Increase",
                                 style = MaterialTheme.typography.titleSmall.copy(
@@ -673,7 +674,7 @@ fun ProfileAnalysisScreen(
                         }
 
                         // Foods to avoid
-                        if (!recommendation.foodsToAvoid.isNullOrEmpty()) {
+                        if (recommendation.foodsToAvoid.isNotEmpty()) {
                             Text(
                                 text = "Foods to Avoid",
                                 style = MaterialTheme.typography.titleSmall.copy(
@@ -706,7 +707,7 @@ fun ProfileAnalysisScreen(
                         }
 
                         // Meal plans
-                        if (!recommendation.mealPlans.isNullOrEmpty()) {
+                        if (recommendation.mealPlans.isNotEmpty()) {
                             Text(
                                 text = "Meal Plans",
                                 style = MaterialTheme.typography.titleSmall.copy(
@@ -724,14 +725,14 @@ fun ProfileAnalysisScreen(
                         }
 
                         // Disclaimer
-                        if (!nutrition.disclaimer.isNullOrBlank()) {
+                        if (nutrition.disclaimer.isNotBlank()) {
                             Spacer(modifier = Modifier.height(8.dp))
                             DisclaimerRow(text = nutrition.disclaimer)
                         }
                     }
 
                     // Overall disclaimer from the response
-                    if (!result.disclaimer.isNullOrBlank()) {
+                    if (result.disclaimer.isNotBlank()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         DisclaimerRow(text = result.disclaimer)
                     }

@@ -19,6 +19,13 @@ Clocks Implemented
 Without Illumina 450K/EPIC data, proxy estimates leverage published
 correlations between epigenetic age acceleration and observable phenotypic
 markers.  The ``confidence`` field quantifies this uncertainty.
+
+**IMPORTANT**: All proxy estimation formulas (weighted facial/chrono/lifestyle
+blends), sex-adjustment constants, and inter-clock derivation coefficients
+in this module are heuristic approximations — not from any single published
+model.  They are designed to produce plausible biological-age estimates when
+no methylation data is available.  For clinical-grade results, use direct
+methylation-based computation via ``estimate_from_methylation_data()``.
 """
 
 from __future__ import annotations
@@ -32,6 +39,9 @@ logger = logging.getLogger(__name__)
 
 # -- Top-20 most informative CpG sites from Horvath (2013). ----------------
 # Full clock uses 353 sites; these carry the largest absolute coefficients.
+# NOTE: Coefficient values below are representative approximations of the
+# published Horvath (2013) Supplementary Table S20 values, not exact copies.
+# For the full 353-site model, use estimate_from_methylation_data().
 HORVATH_TOP_CPG_SITES: dict[str, float] = {
     "cg16867657": 0.0166, "cg22736354": 0.0143, "cg06493994": -0.0131,
     "cg12830694": 0.0119, "cg24724428": -0.0114, "cg02085507": 0.0109,
@@ -46,6 +56,9 @@ _HORVATH_ADULT_AGE_THRESHOLD: float = 20.0
 _HORVATH_INTERCEPT: float = 0.695
 
 # Expected standard errors (years) for inverse-variance weighting.
+# Values are heuristic estimates based on published MAE ranges for each clock
+# (Horvath MAE~3.6, Hannum MAE~4.0, PhenoAge/GrimAge somewhat larger).
+# TelomereAge and FacialAge SE are broader due to higher intrinsic variability.
 CLOCK_EXPECTED_SE: dict[str, float] = {
     "Horvath": 4.9, "Hannum": 4.7, "PhenoAge": 5.5,
     "GrimAge": 5.8, "TelomereAge": 7.2, "FacialAge": 5.0,
@@ -126,7 +139,8 @@ def _lifestyle_adjustment(measurements: dict[str, Any], sex: str) -> tuple[float
     """Compute lifestyle adjustment from facial measurements.
 
     Components: wrinkle_acceleration × 2 + bmi_offset × 0.5 + smoking_proxy × 1.5,
-    with a sex-based correction (~+0.8 male, −0.3 female per Horvath 2014).
+    with a heuristic sex-based correction (+0.8 male, −0.3 female;
+    males tend to show slightly accelerated epigenetic aging).
     """
     wrinkle_accel = _get(measurements, "wrinkle_acceleration")
     bmi_offset = _get(measurements, "bmi_offset")
@@ -174,6 +188,9 @@ def estimate_horvath(
 
     Horvath (2013): 353 CpG sites, r=0.96 with chronological age, MAE 3.6 yr.
     Residuals correlate with BMI (r≈0.10), smoking (r≈0.05), alcohol (r≈0.03).
+
+    NOTE: Without methylation data, this is a heuristic proxy.  The formula
+    and sex-adjustment constants are model estimates, not published values.
 
     Formula: horvath = 0.7×facial_bio + 0.2×chrono + 0.1×lifestyle_adj
 
@@ -516,21 +533,37 @@ def compute_from_methylation(
         if beta is not None:
             raw_score += coeff * _clamp(float(beta), 0.0, 1.0)
 
-    # Scale to compensate for missing sites (top-20 ≈ 35% of variance).
+    # Scale to compensate for missing sites.  The top-20 sites carry
+    # large coefficients but the exact fraction of total variance they
+    # explain is model-dependent; scaling here is a rough heuristic.
     coverage = n_matched / 353.0
     scale = 1.0 + (min(1.0 / max(coverage, 0.01), 10.0) - 1.0) * 0.35
 
-    # Anti-log transformation (Horvath 2013 Supplementary Methods).
-    horvath_age = _clamp(
-        _HORVATH_ADULT_AGE_THRESHOLD
-        + math.expm1(raw_score * scale) * (_HORVATH_ADULT_AGE_THRESHOLD + 1),
-        0.0, 130.0)
+    # Horvath (2013) anti-log transformation.
+    # The Horvath clock maps age via: f(age) = log(age+1)-log(21) for age<=20,
+    #                                  f(age) = (age-20)/21        for age>20.
+    # Inverse: if predicted < 0  → age = 21·exp(predicted) − 1
+    #          if predicted >= 0 → age = 21·predicted + 20
+    predicted = raw_score * scale
+    if predicted < 0:
+        horvath_age = _clamp(
+            (_HORVATH_ADULT_AGE_THRESHOLD + 1) * math.exp(predicted) - 1,
+            0.0, 130.0)
+    else:
+        horvath_age = _clamp(
+            (_HORVATH_ADULT_AGE_THRESHOLD + 1) * predicted + _HORVATH_ADULT_AGE_THRESHOLD,
+            0.0, 130.0)
 
-    # -- Derive other clocks via published inter-clock correlations --
-    # Horvath↔Hannum r≈0.95, Horvath↔PhenoAge r≈0.88, Horvath↔GrimAge r≈0.82
+    # -- Derive other clocks as heuristic linear blends --
+    # NOTE: Published inter-clock correlations (Horvath↔Hannum r≈0.95,
+    # Horvath↔PhenoAge r≈0.88, Horvath↔GrimAge r≈0.82) inform but do NOT
+    # directly serve as regression coefficients.  The blending weights below
+    # are heuristic approximations; true independent computation requires
+    # each clock's own CpG coefficient set.
     hannum_age = 0.95 * horvath_age + 0.05 * chronological_age
     phenoage_val = 0.88 * horvath_age + 0.12 * chronological_age
     grimage_val = 0.82 * horvath_age + 0.18 * chronological_age
+    # Heuristic sex adjustment — males tend to show higher GrimAge
     if sex.lower() in ("m", "male"):
         grimage_val += 1.0
     elif sex.lower() in ("f", "female"):

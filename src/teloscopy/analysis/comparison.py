@@ -289,7 +289,7 @@ def compute_effect_size(
         raise ValueError(f"Unknown method: {method!r}")
 
     # Approximate SE (Hedges & Olkin 1985)
-    se = math.sqrt((n1 + n2) / (n1 * n2) + d ** 2 / (2.0 * (n1 + n2)))
+    se = math.sqrt((n1 + n2) / (n1 * n2) + d ** 2 / (2.0 * (n1 + n2 - 2)))
     return round(d, 6), (round(d - 1.96 * se, 6), round(d + 1.96 * se, 6))
 
 
@@ -564,7 +564,6 @@ def _f_survival(f: float, df1: int, df2: int) -> float:
 # ---------------------------------------------------------------------------
 # Internal helpers — interpretation
 # ---------------------------------------------------------------------------
-
 
 def _interpret_result(
     test_name: str, p_value: float, effect_size: float, alpha: float,

@@ -2,15 +2,15 @@
 
 Implements a computational model of STELA, originally a PCR-based technique
 for measuring telomere lengths on individual chromosome arms (Baird et al.,
-2003, *Human Molecular Genetics* 12(13):1661-1671).  Rather than requiring
+2003, *Nature Genetics* 33(2):203-207).  Rather than requiring
 actual gel electrophoresis data, this module generates realistic
 chromosome-specific telomere length distributions from an overall mean
 telomere length estimate, applying published inter-arm variation data.
 
 Chromosome-specific relative lengths are derived from:
 
-- Martens, U.M. et al. (2000). Short telomeres on human chromosome 17p.
-  *Human Molecular Genetics* 9(18):2685-2690.
+- Martens, U.M. et al. (1998). Short telomeres on human chromosome 17p.
+  *Nature Genetics* 18(1):76-80.
 - Graakjaer, J. et al. (2006). Allele-specific relative telomere lengths
   are inherited. *Human Genetics* 119(3):344-350.
 
@@ -607,9 +607,9 @@ def estimate_attrition_rates(
 
     sex_norm = sex.lower().strip()
     if sex_norm == "male":
-        base_rate_bp += 2.0
+        base_rate_bp += 8.0   # ~15 bp/yr sex gap (Gardner et al. 2014)
     elif sex_norm == "female":
-        base_rate_bp -= 1.0
+        base_rate_bp -= 7.0
     # 'unknown' keeps the population average.
 
     expected_tl = _expected_tl_for_age_sex(

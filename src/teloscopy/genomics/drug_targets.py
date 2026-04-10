@@ -323,7 +323,7 @@ _KNOWN_DRUGS: dict[str, dict[str, Any]] = {
     "imetelstat": {
         "targets": ["TERT", "TERC"], "class": "telomerase inhibitor",
         "mechanism": "13-mer thiophosphoramidate (GRN163L) blocking TERC template.",
-        "status": "Phase III", "indications": ["MDS", "myelofibrosis"],
+        "status": "FDA approved (MDS, 2024; brand name Rytelo)", "indications": ["MDS", "myelofibrosis"],
         "refs": [_REFS["dikmen_2005"], _REFS["shay_2019"]]},
     "BIBR1532": {
         "targets": ["TERT"], "class": "telomerase inhibitor",
@@ -331,7 +331,7 @@ _KNOWN_DRUGS: dict[str, dict[str, Any]] = {
         "status": "preclinical", "indications": ["various cancers (preclinical)"],
         "refs": [_REFS["shay_2019"]]},
     "dasatinib": {
-        "targets": ["BCL2", "BCLXL"],
+        "targets": ["SRC", "ABL"],
         "class": "senolytic (TKI, repurposed)",
         "mechanism": "Multi-kinase inhibitor (SRC/ABL); FDA-approved for CML, "
                      "repurposed as senolytic targeting SRC/PI3K/AKT.",
@@ -349,14 +349,14 @@ _KNOWN_DRUGS: dict[str, dict[str, Any]] = {
     "fisetin": {
         "targets": ["BCL2", "BCLXL", "TP53"],
         "class": "senolytic (flavonoid)",
-        "mechanism": "Natural flavonoid senolytic; AFFIRMM Phase II trial for frailty.",
+        "mechanism": "Natural flavonoid senolytic; AFFIRM-LITE Phase II trial for frailty.",
         "status": "Phase II", "indications": ["frailty", "age-related decline"],
         "refs": [_REFS["xu_2018"], _REFS["childs_2017"]]},
     "navitoclax": {
         "targets": ["BCL2", "BCLXL"], "class": "senolytic (BH3 mimetic)",
         "mechanism": "ABT-263; BCL-2/BCL-XL/BCL-W inhibitor.  Dose-limiting "
                      "thrombocytopaenia from platelet BCL-XL inhibition.",
-        "status": "Phase II", "indications": ["myelofibrosis", "senescence"],
+        "status": "Phase III (navitoclax+ruxolitinib; TRANSFORM trials)", "indications": ["myelofibrosis", "senescence"],
         "refs": [_REFS["childs_2017"]]},
     "ceralasertib": {
         "targets": ["ATR"], "class": "ATR kinase inhibitor",

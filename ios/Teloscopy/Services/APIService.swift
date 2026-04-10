@@ -525,6 +525,84 @@ final class APIService: ObservableObject {
         }
     }
     
+    // MARK: - Async/Await Profile Analysis Methods
+
+    func profileAnalysis(request: ProfileAnalysisRequest) async throws -> ProfileAnalysisResponse {
+        let body = try jsonEncoder.encode(request)
+        return try await performAsyncRequest(
+            path: "/profile/analyze",
+            method: "POST",
+            body: body,
+            responseType: ProfileAnalysisResponse.self
+        )
+    }
+
+    func diseaseRisk(request: DiseaseRiskRequest) async throws -> DiseaseRiskResponse {
+        let body = try jsonEncoder.encode(request)
+        return try await performAsyncRequest(
+            path: "/profile/disease-risk",
+            method: "POST",
+            body: body,
+            responseType: DiseaseRiskResponse.self
+        )
+    }
+
+    func nutrition(request: NutritionRequest) async throws -> NutritionResponse {
+        let body = try jsonEncoder.encode(request)
+        return try await performAsyncRequest(
+            path: "/profile/nutrition",
+            method: "POST",
+            body: body,
+            responseType: NutritionResponse.self
+        )
+    }
+
+    private func performAsyncRequest<T: Decodable>(
+        path: String,
+        method: String,
+        body: Data?,
+        responseType: T.Type
+    ) async throws -> T {
+        let urlString = "\(configuration.fullBaseURL)\(path)"
+        guard let url = URL(string: urlString) else {
+            throw TeloscopyAPIError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = method
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("Teloscopy-iOS/1.0.0", forHTTPHeaderField: "User-Agent")
+
+        if let token = authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
+        request.httpBody = body
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw TeloscopyAPIError.invalidResponse
+        }
+
+        switch httpResponse.statusCode {
+        case 200...299:
+            return try jsonDecoder.decode(T.self, from: data)
+        case 401:
+            handleUnauthorized()
+            throw TeloscopyAPIError.unauthorized
+        case 400...499:
+            let message = String(data: data, encoding: .utf8) ?? "Client error"
+            throw TeloscopyAPIError.httpError(statusCode: httpResponse.statusCode, message: message)
+        case 500...599:
+            let message = String(data: data, encoding: .utf8) ?? "Server error"
+            throw TeloscopyAPIError.serverError(message)
+        default:
+            throw TeloscopyAPIError.httpError(statusCode: httpResponse.statusCode, message: "Unexpected status")
+        }
+    }
+
     private func handleUnauthorized() {
         DispatchQueue.main.async { [weak self] in
             self?.isAuthenticated = false

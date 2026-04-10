@@ -211,21 +211,21 @@ struct HomeView: View {
                 .foregroundColor(TeloscopyTheme.textPrimary)
             
             HStack(spacing: 12) {
-                StatCard(
+                HomeStatCard(
                     value: "\(recentAnalyses.count)",
                     label: "Total Analyses",
                     icon: "doc.text.magnifyingglass",
                     color: TeloscopyTheme.primaryBlue
                 )
                 
-                StatCard(
+                HomeStatCard(
                     value: "\(recentAnalyses.filter { $0.status == .completed }.count)",
                     label: "Completed",
                     icon: "checkmark.circle",
                     color: TeloscopyTheme.successGreen
                 )
                 
-                StatCard(
+                HomeStatCard(
                     value: "\(recentAnalyses.filter { $0.status == .processing }.count)",
                     label: "In Progress",
                     icon: "hourglass",
@@ -357,9 +357,9 @@ struct QuickActionCard: View {
     }
 }
 
-// MARK: - Stat Card
+// MARK: - Stat Card (Home-specific)
 
-struct StatCard: View {
+struct HomeStatCard: View {
     let value: String
     let label: String
     let icon: String

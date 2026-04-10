@@ -75,7 +75,9 @@ RESEARCH_ONLY_DISCLAIMER: str = (
 
 _TERRA_REFERENCE_LEVELS: Dict[str, float] = {
     # Expected TERRA expression (arbitrary normalised units).
-    # 17p is the highest producer (Azzalin et al., 2007).
+    # 17p is among the highest producers (Azzalin et al., 2007;
+    # Nergadze et al., 2009, RNA).  Exact per-arm quantification
+    # is approximate and varies by cell type and study.
     "1p": 1.0, "1q": 0.8, "2p": 0.7, "2q": 0.6, "3p": 0.5, "4p": 0.6,
     "5p": 0.5, "6p": 0.7, "7p": 0.8, "7q": 0.6, "9p": 0.9, "10q": 0.7,
     "11p": 0.5, "12q": 0.6, "13q": 0.4, "15q": 0.5, "16p": 0.8,
@@ -90,8 +92,10 @@ _SHELTERIN_REFERENCE_EXPRESSION: Dict[str, Tuple[float, float]] = {
 }
 
 _SASP_MARKERS: Dict[str, Tuple[float, float]] = {
-    # Reference concentration ranges (pg/mL) for key SASP factors
-    # (Coppe et al., 2010).
+    # Reference concentration ranges for key SASP factors (Coppe et al., 2010).
+    # Ranges are in pg/mL (conditioned-medium / high-sensitivity assay scale).
+    # NOTE: serum MMP3/MMP9/PAI1 are typically measured in ng/mL; these values
+    # apply to ultra-sensitive or cell-culture supernatant assays.
     "IL6": (0.5, 5.0), "IL8": (2.0, 15.0), "IL1beta": (0.1, 1.5),
     "TNFalpha": (0.5, 3.0), "MMP3": (5.0, 30.0), "MMP9": (20.0, 100.0),
     "CCL2": (50.0, 300.0), "PAI1": (5.0, 40.0),
@@ -116,7 +120,9 @@ _INFLAMMATION_MARKERS: Dict[str, Tuple[float, float]] = {
 
 _MICROBIOME_AGING_ASSOCIATIONS: Dict[str, float] = {
     # Standardised beta for gut microbiome → telomere length.
-    # Positive = longer telomeres (Claesson et al., 2012).
+    # Directions informed by Claesson et al. (2012) and microbiome-aging
+    # literature; specific beta values are model estimates, not from a
+    # single publication.  Positive = longer telomeres.
     "diversity_index": 0.15, "firmicutes_bacteroidetes_ratio": -0.10,
     "butyrate_producers": 0.20, "inflammation_score": -0.25,
     "bifidobacterium_abundance": 0.12, "akkermansia_abundance": 0.08,

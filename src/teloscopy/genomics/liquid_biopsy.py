@@ -227,7 +227,7 @@ def _generate_interpretation(
     mean_tl_kb: float, age: int, tumor_fraction: float, cancer_type: str | None,
 ) -> str:
     """Produce a concise clinical interpretation string."""
-    expected_tl = max(7.0 - (age * _NORMAL_ATTRITION_BP_PER_YEAR / 1000.0), 3.0)
+    expected_tl = max(11.0 - (age * _NORMAL_ATTRITION_BP_PER_YEAR / 1000.0), 3.0)
     delta = mean_tl_kb - expected_tl
     if delta > 0.8:
         tl_part = (f"cfDNA-estimated mean TL ({mean_tl_kb:.2f} kb) is above the "

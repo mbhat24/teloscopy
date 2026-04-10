@@ -28,9 +28,11 @@ enum TeloscopyColors {
     static let riskVeryHigh = "#DC2626"
 }
 
-// MARK: - Telomere Analysis Result
+// MARK: - Telomere Analysis Result (API Response DTO)
+// NOTE: The canonical TelomereResult is defined in Analysis.swift.
+// This lightweight version maps the /api/analyze endpoint response.
 
-struct TelomereResult: Codable, Equatable {
+struct TelomereAPIResult: Codable, Equatable {
     let meanLengthBp: Double?
     let medianLengthBp: Double?
     let stdDev: Double?
@@ -387,7 +389,7 @@ struct FacialAnalysisResult: Codable, Equatable {
 struct AnalysisResponse: Codable, Equatable {
     let jobId: String?
     let imageType: String?
-    let telomereResults: TelomereResult?
+    let telomereResults: TelomereAPIResult?
     let diseaseRisks: [DiseaseRisk]?
     let dietRecommendations: DietRecommendation?
     let facialAnalysis: FacialAnalysisResult?
@@ -477,7 +479,7 @@ struct ProfileAnalysisRequest: Codable {
 struct ProfileAnalysisResponse: Codable, Equatable {
     let diseaseRisks: [DiseaseRisk]?
     let dietRecommendations: DietRecommendation?
-    let telomereEstimate: TelomereResult?
+    let telomereEstimate: TelomereAPIResult?
     let summary: String?
 
     enum CodingKeys: String, CodingKey {
@@ -539,7 +541,10 @@ struct DiseaseRiskResponse: Codable, Equatable {
     }
 }
 
-struct UserProfile: Codable {
+// NOTE: The canonical UserProfile is defined in Analysis.swift.
+// This lightweight version is used for request payloads (profile-based analysis).
+
+struct UserProfileRequest: Codable {
     let age: Int
     let sex: String
     let region: String
@@ -596,7 +601,7 @@ struct UrineTestPanel: Codable {
 }
 
 struct HealthCheckupRequest: Codable {
-    let profile: UserProfile
+    let profile: UserProfileRequest
     let bloodTests: BloodTestPanel?
     let urineTests: UrineTestPanel?
 
@@ -650,7 +655,7 @@ struct APIErrorResponse: Codable {
     }
 }
 
-enum APIError: LocalizedError {
+enum AppNetworkError: LocalizedError {
     case invalidURL
     case networkError(Error)
     case httpError(Int, String)

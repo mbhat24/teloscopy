@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.teloscopy.app">
+    >
 
     <!-- Network access for API communication -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -29,6 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Teloscopy"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         tools:targetApi="34">
 
         <activity

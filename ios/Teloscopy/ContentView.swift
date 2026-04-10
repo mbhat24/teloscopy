@@ -1,7 +1,7 @@
 // ContentView.swift
 // Teloscopy
 //
-// Root tab-based navigation.
+// Alternate root tab-based navigation (not used at runtime — see TeloscopyApp.swift).
 // Mirrors Android's NavGraph.kt + MainActivity.kt bottom navigation.
 
 import SwiftUI
@@ -29,26 +29,16 @@ enum AppTab: String, CaseIterable {
 }
 
 struct ContentView: View {
-    @EnvironmentObject var settings: SettingsStore
     @State private var selectedTab: AppTab = .home
-    @State private var resultsJobId: String?
-    @State private var showResults = false
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Tab content
             Group {
                 switch selectedTab {
                 case .home:
-                    HomeView(
-                        onNavigateToAnalysis: { selectedTab = .analysis },
-                        onNavigateToProfile: { navigateToProfile() }
-                    )
+                    HomeView()
                 case .analysis:
-                    AnalysisView(onNavigateToResults: { jobId in
-                        resultsJobId = jobId
-                        showResults = true
-                    })
+                    AnalysisView()
                 case .settings:
                     SettingsView()
                 }
@@ -59,17 +49,6 @@ struct ContentView: View {
             customTabBar
         }
         .ignoresSafeArea(.keyboard)
-        .sheet(isPresented: $showResults) {
-            if let jobId = resultsJobId {
-                ResultsView(jobId: jobId)
-            }
-        }
-    }
-
-    @State private var showProfileSheet = false
-
-    private func navigateToProfile() {
-        showProfileSheet = true
     }
 
     // MARK: - Custom Tab Bar
@@ -81,11 +60,11 @@ struct ContentView: View {
                     VStack(spacing: 4) {
                         Image(systemName: selectedTab == tab ? tab.icon : tab.iconOutline)
                             .font(.system(size: 20, weight: selectedTab == tab ? .semibold : .regular))
-                            .foregroundColor(selectedTab == tab ? .tsAccent : .tsTextSecondary)
+                            .foregroundColor(selectedTab == tab ? .accentColor : .secondary)
 
                         Text(tab.rawValue)
                             .font(.system(size: 10, weight: selectedTab == tab ? .semibold : .regular))
-                            .foregroundColor(selectedTab == tab ? .tsAccent : .tsTextSecondary)
+                            .foregroundColor(selectedTab == tab ? .accentColor : .secondary)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 8)
@@ -97,21 +76,9 @@ struct ContentView: View {
         .padding(.bottom, 20)
         .background(
             Rectangle()
-                .fill(Color(hex: 0x111528))
+                .fill(Color(red: 0.067, green: 0.082, blue: 0.157))
                 .shadow(color: .black.opacity(0.3), radius: 8, y: -4)
                 .ignoresSafeArea(edges: .bottom)
         )
-        .sheet(isPresented: $showProfileSheet) {
-            ProfileAnalysisView(onNavigateToResults: { jobId in
-                showProfileSheet = false
-                resultsJobId = jobId
-                showResults = true
-            })
-        }
     }
-}
-
-#Preview {
-    ContentView()
-        .environmentObject(SettingsStore.shared)
 }

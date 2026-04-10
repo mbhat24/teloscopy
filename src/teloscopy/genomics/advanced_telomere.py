@@ -22,7 +22,7 @@ References
 Aubert, G. & Lansdorp, P.M. (2008). Telomeres and aging.
     *Physiol. Rev.* 88, 557-579.
 Factor-Litvak, P. et al. (2016). Leukocyte telomere length in newborns.
-    *JAMA* 315, 1110.
+    *JAMA* 315(12), 1273-1274.
 Müezzinler, A. et al. (2013). A systematic review of leukocyte telomere
     length and age in adults. *Ageing Res. Rev.* 12, 509-519.
 """

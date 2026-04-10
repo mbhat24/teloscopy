@@ -112,20 +112,10 @@ dependencies {
 
     // Moshi - JSON parsing
     implementation(libs.moshi)
-    implementation(libs.moshi.kotlin)
     ksp(libs.moshi.kotlin.codegen)
-
-    // CameraX - barcode/sample scanning
-    implementation(libs.camerax.core)
-    implementation(libs.camerax.camera2)
-    implementation(libs.camerax.lifecycle)
-    implementation(libs.camerax.view)
 
     // Coil - image loading
     implementation(libs.coil.compose)
-
-    // Accompanist - permissions handling
-    implementation(libs.accompanist.permissions)
 
     // Lifecycle
     implementation(libs.lifecycle.viewmodel.compose)
@@ -137,11 +127,6 @@ dependencies {
     // Core Android
     implementation(libs.core.ktx)
     implementation(libs.activity.compose)
-
-    // Vico Charts - telomere & genomic data visualization
-    implementation(libs.vico.compose)
-    implementation(libs.vico.compose.m3)
-    implementation(libs.vico.core)
 
     // Testing
     testImplementation(libs.junit)

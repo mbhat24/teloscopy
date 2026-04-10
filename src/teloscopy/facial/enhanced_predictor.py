@@ -39,7 +39,7 @@ Walsh S, Chaitanya L, Breslin K, et al. (2017).
 
 Chaitanya L, Breslin K, Zuniga S, et al. (2018).
     The HIrisPlex-S system for eye, hair and skin colour prediction
-    from DNA.  *Forensic Sci Int Genet* 33:113-124.  PMID:29753263.
+    from DNA.  *Forensic Sci Int Genet* 35:123-135.  PMID:29753263.
 
 Claes P, Liberton DK, Daniels K, et al. (2014).
     Modeling 3D facial shape from DNA.
@@ -271,7 +271,9 @@ _HIRISPLEX_S_SNPS: List[Tuple[str, str, str, int, str, str]] = [
 ]
 
 # Deduplicate (rs12203592 appears twice in the original system for
-# both eye and hair; keep both roles but unique SNP count = 41).
+# both eye and hair; keep both roles but unique SNP count = 40).
+# Note: The full HIrisPlex-S panel has 41 markers; rs1805006 (MC1R D84E)
+# is excluded here as it is very rare outside Northern European populations.
 _HIRISPLEX_S_UNIQUE_RSIDS: set = {snp[0] for snp in _HIRISPLEX_S_SNPS}
 
 # ---------------------------------------------------------------------------

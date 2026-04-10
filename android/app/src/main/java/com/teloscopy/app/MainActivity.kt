@@ -45,7 +45,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.teloscopy.app.ui.navigation.Screen
 import com.teloscopy.app.ui.navigation.TeloscopyNavHost
-import com.teloscopy.app.ui.navigation.bottomNavItems
 import com.teloscopy.app.ui.theme.Background
 import com.teloscopy.app.ui.theme.DrawerSurface
 import com.teloscopy.app.ui.theme.NavBarSurface

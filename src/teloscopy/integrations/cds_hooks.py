@@ -26,8 +26,8 @@ SNOMED_SYSTEM = "http://snomed.info/sct"
 RXNORM_SYSTEM = "http://www.nlm.nih.gov/research/umls/rxnorm"
 FHIR_OBS_CAT = "http://terminology.hl7.org/CodeSystem/observation-category"
 LOINC_TELOMERE_LENGTH = "93592-1"
-LOINC_BIOLOGICAL_AGE = "30525-0"
-LOINC_GENETIC_VARIANT = "81247-9"
+LOINC_AGE = "30525-0"  # Chronological age; no standard LOINC for biological age
+LOINC_GENETIC_VARIANT = "69548-6"  # Individual variant assessment
 
 def _gen_id() -> str:
     return uuid.uuid4().hex[:24]
@@ -58,11 +58,11 @@ _TELOSCOPY_CDS_SERVICES = [
         prefetch={"patient": "Patient/{{context.patientId}}", "observations": "Observation?patient={{context.patientId}}&code=telomere-length"},
     ),
     CDSHookService(
-        hook="medication-prescribe",
+        hook="order-sign",
         title="Teloscopy Pharmacogenomic Alert",
         description="Alerts prescribers when a medication interacts with the patient's predicted pharmacogenomic profile.",
         id="teloscopy-pgx-alert",
-        prefetch={"patient": "Patient/{{context.patientId}}", "medication": "MedicationRequest/{{context.draftOrders.MedicationRequest[0]}}"},
+        prefetch={"patient": "Patient/{{context.patientId}}", "medication": "MedicationRequest/{{context.draftOrders.MedicationRequest.0}}"},
     ),
     CDSHookService(
         hook="order-select",
@@ -191,7 +191,7 @@ def process_patient_view_hook(
 # ============================================================================
 _DRUG_PGX_INTERACTIONS: dict[str, dict[str, str]] = {
     # RxNorm ingredient-level CUI → {gene, drug, interaction, pm_action, um_action}
-    "2670": {"gene": "CYP2D6", "drug": "codeine", "interaction": "Prodrug — CYP2D6 converts to morphine. Poor metabolizers: no analgesic effect. Ultra-rapid: toxicity risk.", "pm_action": "Use alternative analgesic (morphine, oxycodone)", "um_action": "Reduce dose 50% or use alternative"},
+    "2670": {"gene": "CYP2D6", "drug": "codeine", "interaction": "Prodrug — CYP2D6 converts to morphine. Poor metabolizers: no analgesic effect. Ultra-rapid: toxicity risk (FDA black-box warning).", "pm_action": "Use alternative analgesic (morphine, oxycodone)", "um_action": "Avoid codeine; use alternative analgesic (CPIC guideline)"},
     "32968": {"gene": "CYP2C19", "drug": "clopidogrel", "interaction": "CYP2C19 converts to active metabolite. Poor metabolizers: reduced antiplatelet effect.", "pm_action": "Use prasugrel or ticagrelor instead", "um_action": "Standard dosing"},
     "11289": {"gene": "VKORC1", "drug": "warfarin", "interaction": "VKORC1 -1639G>A increases sensitivity. Requires INR-guided dose reduction.", "pm_action": "Reduce initial dose to 2-3 mg/day", "um_action": "Standard dosing"},
     "10324": {"gene": "CYP2D6", "drug": "tamoxifen", "interaction": "CYP2D6 converts to endoxifen (active). Poor metabolizers: reduced efficacy.", "pm_action": "Consider aromatase inhibitor alternative", "um_action": "Standard dosing"},
@@ -204,9 +204,9 @@ _DRUG_PGX_INTERACTIONS: dict[str, dict[str, str]] = {
 # High-risk drug set — critical rather than warning for poor metabolizers
 _HIGH_RISK_PGX_DRUGS = {"codeine", "clopidogrel", "warfarin", "tacrolimus"}
 
-# -- 2b. medication-prescribe -----------------------------------------------
+# -- 2b. order-sign (PGx alerting) ------------------------------------------
 
-def process_medication_prescribe_hook(
+def process_order_sign_hook(
     patient_id: str,
     medication_code: str,  # RxNorm code
     pharmacogenomic_predictions: list[dict],
@@ -421,12 +421,12 @@ def build_longitudinal_bundle(records: list[LongitudinalTelomereRecord]) -> dict
         components: list[dict[str, Any]] = []
         if rec.biological_age is not None:
             components.append({
-                "code": {"coding": [{"system": LOINC_SYSTEM, "code": LOINC_BIOLOGICAL_AGE, "display": "Age"}], "text": "Biological Age"},
+                "code": {"coding": [{"system": LOINC_SYSTEM, "code": LOINC_AGE, "display": "Chronological Age"}], "text": "Biological Age (estimated)"},
                 "valueQuantity": {"value": rec.biological_age, "unit": "years", "system": "http://unitsofmeasure.org", "code": "a"},
             })
         if rec.percentile is not None:
             components.append({
-                "code": {"coding": [{"system": SNOMED_SYSTEM, "code": "246205007", "display": "Quantity"}], "text": "TL percentile"},
+                "code": {"coding": [{"system": SNOMED_SYSTEM, "code": "415068004", "display": "Percentile"}], "text": "TL percentile"},
                 "valueQuantity": {"value": rec.percentile, "unit": "%ile", "system": "http://unitsofmeasure.org", "code": "{percentile}"},
             })
 
