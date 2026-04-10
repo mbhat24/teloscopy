@@ -1,0 +1,4878 @@
+{
+  "hemoglobin": {
+    "male_25": {
+      "low": 13.5,
+      "high": 17.5,
+      "unit": "g/dL",
+      "display_name": "Hemoglobin",
+      "category": "cbc",
+      "critical_low": 7.0,
+      "critical_high": 20.0
+    },
+    "female_25": {
+      "low": 12.0,
+      "high": 16.0,
+      "unit": "g/dL",
+      "display_name": "Hemoglobin",
+      "category": "cbc",
+      "critical_low": 7.0,
+      "critical_high": 20.0
+    },
+    "male_50": {
+      "low": 13.5,
+      "high": 17.5,
+      "unit": "g/dL",
+      "display_name": "Hemoglobin",
+      "category": "cbc",
+      "critical_low": 7.0,
+      "critical_high": 20.0
+    },
+    "female_50": {
+      "low": 12.0,
+      "high": 16.0,
+      "unit": "g/dL",
+      "display_name": "Hemoglobin",
+      "category": "cbc",
+      "critical_low": 7.0,
+      "critical_high": 20.0
+    },
+    "male_70": {
+      "low": 12.5,
+      "high": 16.5,
+      "unit": "g/dL",
+      "display_name": "Hemoglobin",
+      "category": "cbc",
+      "critical_low": 7.0,
+      "critical_high": 20.0
+    },
+    "female_70": {
+      "low": 11.0,
+      "high": 15.0,
+      "unit": "g/dL",
+      "display_name": "Hemoglobin",
+      "category": "cbc",
+      "critical_low": 7.0,
+      "critical_high": 20.0
+    },
+    "male_10": {
+      "low": 11.5,
+      "high": 15.5,
+      "unit": "g/dL",
+      "display_name": "Hemoglobin",
+      "category": "cbc",
+      "critical_low": 7.0,
+      "critical_high": 20.0
+    },
+    "female_10": {
+      "low": 11.5,
+      "high": 15.5,
+      "unit": "g/dL",
+      "display_name": "Hemoglobin",
+      "category": "cbc",
+      "critical_low": 7.0,
+      "critical_high": 20.0
+    }
+  },
+  "rbc_count": {
+    "male_25": {
+      "low": 4.5,
+      "high": 5.9,
+      "unit": "million/uL",
+      "display_name": "RBC Count",
+      "category": "cbc",
+      "critical_low": 2.5,
+      "critical_high": 7.5
+    },
+    "female_25": {
+      "low": 4.0,
+      "high": 5.2,
+      "unit": "million/uL",
+      "display_name": "RBC Count",
+      "category": "cbc",
+      "critical_low": 2.5,
+      "critical_high": 7.5
+    },
+    "male_50": {
+      "low": 4.5,
+      "high": 5.9,
+      "unit": "million/uL",
+      "display_name": "RBC Count",
+      "category": "cbc",
+      "critical_low": 2.5,
+      "critical_high": 7.5
+    },
+    "female_50": {
+      "low": 4.0,
+      "high": 5.2,
+      "unit": "million/uL",
+      "display_name": "RBC Count",
+      "category": "cbc",
+      "critical_low": 2.5,
+      "critical_high": 7.5
+    },
+    "male_70": {
+      "low": 4.2,
+      "high": 5.7,
+      "unit": "million/uL",
+      "display_name": "RBC Count",
+      "category": "cbc",
+      "critical_low": 2.5,
+      "critical_high": 7.5
+    },
+    "female_70": {
+      "low": 3.8,
+      "high": 5.0,
+      "unit": "million/uL",
+      "display_name": "RBC Count",
+      "category": "cbc",
+      "critical_low": 2.5,
+      "critical_high": 7.5
+    },
+    "male_10": {
+      "low": 4.0,
+      "high": 5.5,
+      "unit": "million/uL",
+      "display_name": "RBC Count",
+      "category": "cbc",
+      "critical_low": 2.5,
+      "critical_high": 7.5
+    },
+    "female_10": {
+      "low": 4.0,
+      "high": 5.5,
+      "unit": "million/uL",
+      "display_name": "RBC Count",
+      "category": "cbc",
+      "critical_low": 2.5,
+      "critical_high": 7.5
+    }
+  },
+  "wbc_count": {
+    "male_25": {
+      "low": 4.0,
+      "high": 11.0,
+      "unit": "x10^3/uL",
+      "display_name": "WBC Count",
+      "category": "cbc",
+      "critical_low": 2.0,
+      "critical_high": 30.0
+    },
+    "female_25": {
+      "low": 4.0,
+      "high": 11.0,
+      "unit": "x10^3/uL",
+      "display_name": "WBC Count",
+      "category": "cbc",
+      "critical_low": 2.0,
+      "critical_high": 30.0
+    },
+    "male_50": {
+      "low": 4.0,
+      "high": 11.0,
+      "unit": "x10^3/uL",
+      "display_name": "WBC Count",
+      "category": "cbc",
+      "critical_low": 2.0,
+      "critical_high": 30.0
+    },
+    "female_50": {
+      "low": 4.0,
+      "high": 11.0,
+      "unit": "x10^3/uL",
+      "display_name": "WBC Count",
+      "category": "cbc",
+      "critical_low": 2.0,
+      "critical_high": 30.0
+    },
+    "male_70": {
+      "low": 4.0,
+      "high": 11.0,
+      "unit": "x10^3/uL",
+      "display_name": "WBC Count",
+      "category": "cbc",
+      "critical_low": 2.0,
+      "critical_high": 30.0
+    },
+    "female_70": {
+      "low": 4.0,
+      "high": 11.0,
+      "unit": "x10^3/uL",
+      "display_name": "WBC Count",
+      "category": "cbc",
+      "critical_low": 2.0,
+      "critical_high": 30.0
+    },
+    "male_10": {
+      "low": 4.5,
+      "high": 13.5,
+      "unit": "x10^3/uL",
+      "display_name": "WBC Count",
+      "category": "cbc",
+      "critical_low": 2.0,
+      "critical_high": 30.0
+    },
+    "female_10": {
+      "low": 4.5,
+      "high": 13.5,
+      "unit": "x10^3/uL",
+      "display_name": "WBC Count",
+      "category": "cbc",
+      "critical_low": 2.0,
+      "critical_high": 30.0
+    }
+  },
+  "platelet_count": {
+    "male_25": {
+      "low": 150.0,
+      "high": 400.0,
+      "unit": "x10^3/uL",
+      "display_name": "Platelet Count",
+      "category": "cbc",
+      "critical_low": 50.0,
+      "critical_high": 1000.0
+    },
+    "female_25": {
+      "low": 150.0,
+      "high": 400.0,
+      "unit": "x10^3/uL",
+      "display_name": "Platelet Count",
+      "category": "cbc",
+      "critical_low": 50.0,
+      "critical_high": 1000.0
+    },
+    "male_50": {
+      "low": 150.0,
+      "high": 400.0,
+      "unit": "x10^3/uL",
+      "display_name": "Platelet Count",
+      "category": "cbc",
+      "critical_low": 50.0,
+      "critical_high": 1000.0
+    },
+    "female_50": {
+      "low": 150.0,
+      "high": 400.0,
+      "unit": "x10^3/uL",
+      "display_name": "Platelet Count",
+      "category": "cbc",
+      "critical_low": 50.0,
+      "critical_high": 1000.0
+    },
+    "male_70": {
+      "low": 150.0,
+      "high": 400.0,
+      "unit": "x10^3/uL",
+      "display_name": "Platelet Count",
+      "category": "cbc",
+      "critical_low": 50.0,
+      "critical_high": 1000.0
+    },
+    "female_70": {
+      "low": 150.0,
+      "high": 400.0,
+      "unit": "x10^3/uL",
+      "display_name": "Platelet Count",
+      "category": "cbc",
+      "critical_low": 50.0,
+      "critical_high": 1000.0
+    },
+    "male_10": {
+      "low": 150.0,
+      "high": 400.0,
+      "unit": "x10^3/uL",
+      "display_name": "Platelet Count",
+      "category": "cbc",
+      "critical_low": 50.0,
+      "critical_high": 1000.0
+    },
+    "female_10": {
+      "low": 150.0,
+      "high": 400.0,
+      "unit": "x10^3/uL",
+      "display_name": "Platelet Count",
+      "category": "cbc",
+      "critical_low": 50.0,
+      "critical_high": 1000.0
+    }
+  },
+  "hematocrit": {
+    "male_25": {
+      "low": 40.0,
+      "high": 54.0,
+      "unit": "%",
+      "display_name": "Hematocrit",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 60.0
+    },
+    "female_25": {
+      "low": 36.0,
+      "high": 48.0,
+      "unit": "%",
+      "display_name": "Hematocrit",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 60.0
+    },
+    "male_50": {
+      "low": 40.0,
+      "high": 54.0,
+      "unit": "%",
+      "display_name": "Hematocrit",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 60.0
+    },
+    "female_50": {
+      "low": 36.0,
+      "high": 48.0,
+      "unit": "%",
+      "display_name": "Hematocrit",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 60.0
+    },
+    "male_70": {
+      "low": 37.0,
+      "high": 51.0,
+      "unit": "%",
+      "display_name": "Hematocrit",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 60.0
+    },
+    "female_70": {
+      "low": 34.0,
+      "high": 46.0,
+      "unit": "%",
+      "display_name": "Hematocrit",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 60.0
+    },
+    "male_10": {
+      "low": 33.0,
+      "high": 43.0,
+      "unit": "%",
+      "display_name": "Hematocrit",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 60.0
+    },
+    "female_10": {
+      "low": 33.0,
+      "high": 43.0,
+      "unit": "%",
+      "display_name": "Hematocrit",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 60.0
+    }
+  },
+  "mcv": {
+    "male_25": {
+      "low": 80.0,
+      "high": 100.0,
+      "unit": "fL",
+      "display_name": "MCV",
+      "category": "cbc",
+      "critical_low": 60.0,
+      "critical_high": 120.0
+    },
+    "female_25": {
+      "low": 80.0,
+      "high": 100.0,
+      "unit": "fL",
+      "display_name": "MCV",
+      "category": "cbc",
+      "critical_low": 60.0,
+      "critical_high": 120.0
+    },
+    "male_50": {
+      "low": 80.0,
+      "high": 100.0,
+      "unit": "fL",
+      "display_name": "MCV",
+      "category": "cbc",
+      "critical_low": 60.0,
+      "critical_high": 120.0
+    },
+    "female_50": {
+      "low": 80.0,
+      "high": 100.0,
+      "unit": "fL",
+      "display_name": "MCV",
+      "category": "cbc",
+      "critical_low": 60.0,
+      "critical_high": 120.0
+    },
+    "male_70": {
+      "low": 80.0,
+      "high": 100.0,
+      "unit": "fL",
+      "display_name": "MCV",
+      "category": "cbc",
+      "critical_low": 60.0,
+      "critical_high": 120.0
+    },
+    "female_70": {
+      "low": 80.0,
+      "high": 100.0,
+      "unit": "fL",
+      "display_name": "MCV",
+      "category": "cbc",
+      "critical_low": 60.0,
+      "critical_high": 120.0
+    },
+    "male_10": {
+      "low": 76.0,
+      "high": 90.0,
+      "unit": "fL",
+      "display_name": "MCV",
+      "category": "cbc",
+      "critical_low": 60.0,
+      "critical_high": 120.0
+    },
+    "female_10": {
+      "low": 76.0,
+      "high": 90.0,
+      "unit": "fL",
+      "display_name": "MCV",
+      "category": "cbc",
+      "critical_low": 60.0,
+      "critical_high": 120.0
+    }
+  },
+  "mch": {
+    "male_25": {
+      "low": 27.0,
+      "high": 33.0,
+      "unit": "pg",
+      "display_name": "MCH",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 40.0
+    },
+    "female_25": {
+      "low": 27.0,
+      "high": 33.0,
+      "unit": "pg",
+      "display_name": "MCH",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 40.0
+    },
+    "male_50": {
+      "low": 27.0,
+      "high": 33.0,
+      "unit": "pg",
+      "display_name": "MCH",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 40.0
+    },
+    "female_50": {
+      "low": 27.0,
+      "high": 33.0,
+      "unit": "pg",
+      "display_name": "MCH",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 40.0
+    },
+    "male_70": {
+      "low": 27.0,
+      "high": 33.0,
+      "unit": "pg",
+      "display_name": "MCH",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 40.0
+    },
+    "female_70": {
+      "low": 27.0,
+      "high": 33.0,
+      "unit": "pg",
+      "display_name": "MCH",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 40.0
+    },
+    "male_10": {
+      "low": 27.0,
+      "high": 33.0,
+      "unit": "pg",
+      "display_name": "MCH",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 40.0
+    },
+    "female_10": {
+      "low": 27.0,
+      "high": 33.0,
+      "unit": "pg",
+      "display_name": "MCH",
+      "category": "cbc",
+      "critical_low": 20.0,
+      "critical_high": 40.0
+    }
+  },
+  "mchc": {
+    "male_25": {
+      "low": 32.0,
+      "high": 36.0,
+      "unit": "g/dL",
+      "display_name": "MCHC",
+      "category": "cbc",
+      "critical_low": 28.0,
+      "critical_high": 40.0
+    },
+    "female_25": {
+      "low": 32.0,
+      "high": 36.0,
+      "unit": "g/dL",
+      "display_name": "MCHC",
+      "category": "cbc",
+      "critical_low": 28.0,
+      "critical_high": 40.0
+    },
+    "male_50": {
+      "low": 32.0,
+      "high": 36.0,
+      "unit": "g/dL",
+      "display_name": "MCHC",
+      "category": "cbc",
+      "critical_low": 28.0,
+      "critical_high": 40.0
+    },
+    "female_50": {
+      "low": 32.0,
+      "high": 36.0,
+      "unit": "g/dL",
+      "display_name": "MCHC",
+      "category": "cbc",
+      "critical_low": 28.0,
+      "critical_high": 40.0
+    },
+    "male_70": {
+      "low": 32.0,
+      "high": 36.0,
+      "unit": "g/dL",
+      "display_name": "MCHC",
+      "category": "cbc",
+      "critical_low": 28.0,
+      "critical_high": 40.0
+    },
+    "female_70": {
+      "low": 32.0,
+      "high": 36.0,
+      "unit": "g/dL",
+      "display_name": "MCHC",
+      "category": "cbc",
+      "critical_low": 28.0,
+      "critical_high": 40.0
+    },
+    "male_10": {
+      "low": 32.0,
+      "high": 36.0,
+      "unit": "g/dL",
+      "display_name": "MCHC",
+      "category": "cbc",
+      "critical_low": 28.0,
+      "critical_high": 40.0
+    },
+    "female_10": {
+      "low": 32.0,
+      "high": 36.0,
+      "unit": "g/dL",
+      "display_name": "MCHC",
+      "category": "cbc",
+      "critical_low": 28.0,
+      "critical_high": 40.0
+    }
+  },
+  "rdw": {
+    "male_25": {
+      "low": 11.5,
+      "high": 14.5,
+      "unit": "%",
+      "display_name": "RDW",
+      "category": "cbc",
+      "critical_high": 20.0
+    },
+    "female_25": {
+      "low": 11.5,
+      "high": 14.5,
+      "unit": "%",
+      "display_name": "RDW",
+      "category": "cbc",
+      "critical_high": 20.0
+    },
+    "male_50": {
+      "low": 11.5,
+      "high": 14.5,
+      "unit": "%",
+      "display_name": "RDW",
+      "category": "cbc",
+      "critical_high": 20.0
+    },
+    "female_50": {
+      "low": 11.5,
+      "high": 14.5,
+      "unit": "%",
+      "display_name": "RDW",
+      "category": "cbc",
+      "critical_high": 20.0
+    },
+    "male_70": {
+      "low": 11.5,
+      "high": 14.5,
+      "unit": "%",
+      "display_name": "RDW",
+      "category": "cbc",
+      "critical_high": 20.0
+    },
+    "female_70": {
+      "low": 11.5,
+      "high": 14.5,
+      "unit": "%",
+      "display_name": "RDW",
+      "category": "cbc",
+      "critical_high": 20.0
+    },
+    "male_10": {
+      "low": 11.5,
+      "high": 14.5,
+      "unit": "%",
+      "display_name": "RDW",
+      "category": "cbc",
+      "critical_high": 20.0
+    },
+    "female_10": {
+      "low": 11.5,
+      "high": 14.5,
+      "unit": "%",
+      "display_name": "RDW",
+      "category": "cbc",
+      "critical_high": 20.0
+    }
+  },
+  "neutrophils": {
+    "male_25": {
+      "low": 40.0,
+      "high": 70.0,
+      "unit": "%",
+      "display_name": "Neutrophils",
+      "category": "cbc",
+      "critical_low": 10.0,
+      "critical_high": 90.0
+    },
+    "female_25": {
+      "low": 40.0,
+      "high": 70.0,
+      "unit": "%",
+      "display_name": "Neutrophils",
+      "category": "cbc",
+      "critical_low": 10.0,
+      "critical_high": 90.0
+    },
+    "male_50": {
+      "low": 40.0,
+      "high": 70.0,
+      "unit": "%",
+      "display_name": "Neutrophils",
+      "category": "cbc",
+      "critical_low": 10.0,
+      "critical_high": 90.0
+    },
+    "female_50": {
+      "low": 40.0,
+      "high": 70.0,
+      "unit": "%",
+      "display_name": "Neutrophils",
+      "category": "cbc",
+      "critical_low": 10.0,
+      "critical_high": 90.0
+    },
+    "male_70": {
+      "low": 40.0,
+      "high": 70.0,
+      "unit": "%",
+      "display_name": "Neutrophils",
+      "category": "cbc",
+      "critical_low": 10.0,
+      "critical_high": 90.0
+    },
+    "female_70": {
+      "low": 40.0,
+      "high": 70.0,
+      "unit": "%",
+      "display_name": "Neutrophils",
+      "category": "cbc",
+      "critical_low": 10.0,
+      "critical_high": 90.0
+    },
+    "male_10": {
+      "low": 30.0,
+      "high": 60.0,
+      "unit": "%",
+      "display_name": "Neutrophils",
+      "category": "cbc",
+      "critical_low": 10.0,
+      "critical_high": 90.0
+    },
+    "female_10": {
+      "low": 30.0,
+      "high": 60.0,
+      "unit": "%",
+      "display_name": "Neutrophils",
+      "category": "cbc",
+      "critical_low": 10.0,
+      "critical_high": 90.0
+    }
+  },
+  "lymphocytes": {
+    "male_25": {
+      "low": 20.0,
+      "high": 40.0,
+      "unit": "%",
+      "display_name": "Lymphocytes",
+      "category": "cbc",
+      "critical_low": 5.0,
+      "critical_high": 80.0
+    },
+    "female_25": {
+      "low": 20.0,
+      "high": 40.0,
+      "unit": "%",
+      "display_name": "Lymphocytes",
+      "category": "cbc",
+      "critical_low": 5.0,
+      "critical_high": 80.0
+    },
+    "male_50": {
+      "low": 20.0,
+      "high": 40.0,
+      "unit": "%",
+      "display_name": "Lymphocytes",
+      "category": "cbc",
+      "critical_low": 5.0,
+      "critical_high": 80.0
+    },
+    "female_50": {
+      "low": 20.0,
+      "high": 40.0,
+      "unit": "%",
+      "display_name": "Lymphocytes",
+      "category": "cbc",
+      "critical_low": 5.0,
+      "critical_high": 80.0
+    },
+    "male_70": {
+      "low": 20.0,
+      "high": 40.0,
+      "unit": "%",
+      "display_name": "Lymphocytes",
+      "category": "cbc",
+      "critical_low": 5.0,
+      "critical_high": 80.0
+    },
+    "female_70": {
+      "low": 20.0,
+      "high": 40.0,
+      "unit": "%",
+      "display_name": "Lymphocytes",
+      "category": "cbc",
+      "critical_low": 5.0,
+      "critical_high": 80.0
+    },
+    "male_10": {
+      "low": 30.0,
+      "high": 50.0,
+      "unit": "%",
+      "display_name": "Lymphocytes",
+      "category": "cbc",
+      "critical_low": 5.0,
+      "critical_high": 80.0
+    },
+    "female_10": {
+      "low": 30.0,
+      "high": 50.0,
+      "unit": "%",
+      "display_name": "Lymphocytes",
+      "category": "cbc",
+      "critical_low": 5.0,
+      "critical_high": 80.0
+    }
+  },
+  "monocytes": {
+    "male_25": {
+      "low": 2.0,
+      "high": 8.0,
+      "unit": "%",
+      "display_name": "Monocytes",
+      "category": "cbc"
+    },
+    "female_25": {
+      "low": 2.0,
+      "high": 8.0,
+      "unit": "%",
+      "display_name": "Monocytes",
+      "category": "cbc"
+    },
+    "male_50": {
+      "low": 2.0,
+      "high": 8.0,
+      "unit": "%",
+      "display_name": "Monocytes",
+      "category": "cbc"
+    },
+    "female_50": {
+      "low": 2.0,
+      "high": 8.0,
+      "unit": "%",
+      "display_name": "Monocytes",
+      "category": "cbc"
+    },
+    "male_70": {
+      "low": 2.0,
+      "high": 8.0,
+      "unit": "%",
+      "display_name": "Monocytes",
+      "category": "cbc"
+    },
+    "female_70": {
+      "low": 2.0,
+      "high": 8.0,
+      "unit": "%",
+      "display_name": "Monocytes",
+      "category": "cbc"
+    },
+    "male_10": {
+      "low": 2.0,
+      "high": 8.0,
+      "unit": "%",
+      "display_name": "Monocytes",
+      "category": "cbc"
+    },
+    "female_10": {
+      "low": 2.0,
+      "high": 8.0,
+      "unit": "%",
+      "display_name": "Monocytes",
+      "category": "cbc"
+    }
+  },
+  "eosinophils": {
+    "male_25": {
+      "low": 1.0,
+      "high": 4.0,
+      "unit": "%",
+      "display_name": "Eosinophils",
+      "category": "cbc",
+      "critical_high": 15.0
+    },
+    "female_25": {
+      "low": 1.0,
+      "high": 4.0,
+      "unit": "%",
+      "display_name": "Eosinophils",
+      "category": "cbc",
+      "critical_high": 15.0
+    },
+    "male_50": {
+      "low": 1.0,
+      "high": 4.0,
+      "unit": "%",
+      "display_name": "Eosinophils",
+      "category": "cbc",
+      "critical_high": 15.0
+    },
+    "female_50": {
+      "low": 1.0,
+      "high": 4.0,
+      "unit": "%",
+      "display_name": "Eosinophils",
+      "category": "cbc",
+      "critical_high": 15.0
+    },
+    "male_70": {
+      "low": 1.0,
+      "high": 4.0,
+      "unit": "%",
+      "display_name": "Eosinophils",
+      "category": "cbc",
+      "critical_high": 15.0
+    },
+    "female_70": {
+      "low": 1.0,
+      "high": 4.0,
+      "unit": "%",
+      "display_name": "Eosinophils",
+      "category": "cbc",
+      "critical_high": 15.0
+    },
+    "male_10": {
+      "low": 1.0,
+      "high": 4.0,
+      "unit": "%",
+      "display_name": "Eosinophils",
+      "category": "cbc",
+      "critical_high": 15.0
+    },
+    "female_10": {
+      "low": 1.0,
+      "high": 4.0,
+      "unit": "%",
+      "display_name": "Eosinophils",
+      "category": "cbc",
+      "critical_high": 15.0
+    }
+  },
+  "basophils": {
+    "male_25": {
+      "low": 0.0,
+      "high": 1.0,
+      "unit": "%",
+      "display_name": "Basophils",
+      "category": "cbc",
+      "critical_high": 5.0
+    },
+    "female_25": {
+      "low": 0.0,
+      "high": 1.0,
+      "unit": "%",
+      "display_name": "Basophils",
+      "category": "cbc",
+      "critical_high": 5.0
+    },
+    "male_50": {
+      "low": 0.0,
+      "high": 1.0,
+      "unit": "%",
+      "display_name": "Basophils",
+      "category": "cbc",
+      "critical_high": 5.0
+    },
+    "female_50": {
+      "low": 0.0,
+      "high": 1.0,
+      "unit": "%",
+      "display_name": "Basophils",
+      "category": "cbc",
+      "critical_high": 5.0
+    },
+    "male_70": {
+      "low": 0.0,
+      "high": 1.0,
+      "unit": "%",
+      "display_name": "Basophils",
+      "category": "cbc",
+      "critical_high": 5.0
+    },
+    "female_70": {
+      "low": 0.0,
+      "high": 1.0,
+      "unit": "%",
+      "display_name": "Basophils",
+      "category": "cbc",
+      "critical_high": 5.0
+    },
+    "male_10": {
+      "low": 0.0,
+      "high": 1.0,
+      "unit": "%",
+      "display_name": "Basophils",
+      "category": "cbc",
+      "critical_high": 5.0
+    },
+    "female_10": {
+      "low": 0.0,
+      "high": 1.0,
+      "unit": "%",
+      "display_name": "Basophils",
+      "category": "cbc",
+      "critical_high": 5.0
+    }
+  },
+  "total_cholesterol": {
+    "male_25": {
+      "low": 125.0,
+      "high": 200.0,
+      "unit": "mg/dL",
+      "display_name": "Total Cholesterol",
+      "category": "lipid",
+      "critical_high": 300.0
+    },
+    "female_25": {
+      "low": 125.0,
+      "high": 200.0,
+      "unit": "mg/dL",
+      "display_name": "Total Cholesterol",
+      "category": "lipid",
+      "critical_high": 300.0
+    },
+    "male_50": {
+      "low": 130.0,
+      "high": 200.0,
+      "unit": "mg/dL",
+      "display_name": "Total Cholesterol",
+      "category": "lipid",
+      "critical_high": 300.0
+    },
+    "female_50": {
+      "low": 130.0,
+      "high": 200.0,
+      "unit": "mg/dL",
+      "display_name": "Total Cholesterol",
+      "category": "lipid",
+      "critical_high": 300.0
+    },
+    "male_70": {
+      "low": 130.0,
+      "high": 220.0,
+      "unit": "mg/dL",
+      "display_name": "Total Cholesterol",
+      "category": "lipid",
+      "critical_high": 300.0
+    },
+    "female_70": {
+      "low": 130.0,
+      "high": 220.0,
+      "unit": "mg/dL",
+      "display_name": "Total Cholesterol",
+      "category": "lipid",
+      "critical_high": 300.0
+    },
+    "male_10": {
+      "low": 120.0,
+      "high": 200.0,
+      "unit": "mg/dL",
+      "display_name": "Total Cholesterol",
+      "category": "lipid",
+      "critical_high": 300.0
+    },
+    "female_10": {
+      "low": 120.0,
+      "high": 200.0,
+      "unit": "mg/dL",
+      "display_name": "Total Cholesterol",
+      "category": "lipid",
+      "critical_high": 300.0
+    }
+  },
+  "ldl_cholesterol": {
+    "male_25": {
+      "low": 50.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "LDL Cholesterol",
+      "category": "lipid",
+      "critical_high": 190.0
+    },
+    "female_25": {
+      "low": 50.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "LDL Cholesterol",
+      "category": "lipid",
+      "critical_high": 190.0
+    },
+    "male_50": {
+      "low": 50.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "LDL Cholesterol",
+      "category": "lipid",
+      "critical_high": 190.0
+    },
+    "female_50": {
+      "low": 50.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "LDL Cholesterol",
+      "category": "lipid",
+      "critical_high": 190.0
+    },
+    "male_70": {
+      "low": 50.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "LDL Cholesterol",
+      "category": "lipid",
+      "critical_high": 190.0
+    },
+    "female_70": {
+      "low": 50.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "LDL Cholesterol",
+      "category": "lipid",
+      "critical_high": 190.0
+    },
+    "male_10": {
+      "low": 50.0,
+      "high": 110.0,
+      "unit": "mg/dL",
+      "display_name": "LDL Cholesterol",
+      "category": "lipid",
+      "critical_high": 190.0
+    },
+    "female_10": {
+      "low": 50.0,
+      "high": 110.0,
+      "unit": "mg/dL",
+      "display_name": "LDL Cholesterol",
+      "category": "lipid",
+      "critical_high": 190.0
+    }
+  },
+  "hdl_cholesterol": {
+    "male_25": {
+      "low": 40.0,
+      "high": 60.0,
+      "unit": "mg/dL",
+      "display_name": "HDL Cholesterol",
+      "category": "lipid",
+      "critical_low": 20.0
+    },
+    "female_25": {
+      "low": 50.0,
+      "high": 70.0,
+      "unit": "mg/dL",
+      "display_name": "HDL Cholesterol",
+      "category": "lipid",
+      "critical_low": 20.0
+    },
+    "male_50": {
+      "low": 40.0,
+      "high": 60.0,
+      "unit": "mg/dL",
+      "display_name": "HDL Cholesterol",
+      "category": "lipid",
+      "critical_low": 20.0
+    },
+    "female_50": {
+      "low": 50.0,
+      "high": 70.0,
+      "unit": "mg/dL",
+      "display_name": "HDL Cholesterol",
+      "category": "lipid",
+      "critical_low": 20.0
+    },
+    "male_70": {
+      "low": 40.0,
+      "high": 60.0,
+      "unit": "mg/dL",
+      "display_name": "HDL Cholesterol",
+      "category": "lipid",
+      "critical_low": 20.0
+    },
+    "female_70": {
+      "low": 50.0,
+      "high": 70.0,
+      "unit": "mg/dL",
+      "display_name": "HDL Cholesterol",
+      "category": "lipid",
+      "critical_low": 20.0
+    },
+    "male_10": {
+      "low": 40.0,
+      "high": 60.0,
+      "unit": "mg/dL",
+      "display_name": "HDL Cholesterol",
+      "category": "lipid",
+      "critical_low": 20.0
+    },
+    "female_10": {
+      "low": 50.0,
+      "high": 70.0,
+      "unit": "mg/dL",
+      "display_name": "HDL Cholesterol",
+      "category": "lipid",
+      "critical_low": 20.0
+    }
+  },
+  "triglycerides": {
+    "male_25": {
+      "low": 40.0,
+      "high": 150.0,
+      "unit": "mg/dL",
+      "display_name": "Triglycerides",
+      "category": "lipid",
+      "critical_high": 500.0
+    },
+    "female_25": {
+      "low": 40.0,
+      "high": 150.0,
+      "unit": "mg/dL",
+      "display_name": "Triglycerides",
+      "category": "lipid",
+      "critical_high": 500.0
+    },
+    "male_50": {
+      "low": 40.0,
+      "high": 150.0,
+      "unit": "mg/dL",
+      "display_name": "Triglycerides",
+      "category": "lipid",
+      "critical_high": 500.0
+    },
+    "female_50": {
+      "low": 40.0,
+      "high": 150.0,
+      "unit": "mg/dL",
+      "display_name": "Triglycerides",
+      "category": "lipid",
+      "critical_high": 500.0
+    },
+    "male_70": {
+      "low": 40.0,
+      "high": 150.0,
+      "unit": "mg/dL",
+      "display_name": "Triglycerides",
+      "category": "lipid",
+      "critical_high": 500.0
+    },
+    "female_70": {
+      "low": 40.0,
+      "high": 150.0,
+      "unit": "mg/dL",
+      "display_name": "Triglycerides",
+      "category": "lipid",
+      "critical_high": 500.0
+    },
+    "male_10": {
+      "low": 30.0,
+      "high": 130.0,
+      "unit": "mg/dL",
+      "display_name": "Triglycerides",
+      "category": "lipid",
+      "critical_high": 500.0
+    },
+    "female_10": {
+      "low": 30.0,
+      "high": 130.0,
+      "unit": "mg/dL",
+      "display_name": "Triglycerides",
+      "category": "lipid",
+      "critical_high": 500.0
+    }
+  },
+  "vldl": {
+    "male_25": {
+      "low": 5.0,
+      "high": 40.0,
+      "unit": "mg/dL",
+      "display_name": "VLDL",
+      "category": "lipid",
+      "critical_high": 80.0
+    },
+    "female_25": {
+      "low": 5.0,
+      "high": 40.0,
+      "unit": "mg/dL",
+      "display_name": "VLDL",
+      "category": "lipid",
+      "critical_high": 80.0
+    },
+    "male_50": {
+      "low": 5.0,
+      "high": 40.0,
+      "unit": "mg/dL",
+      "display_name": "VLDL",
+      "category": "lipid",
+      "critical_high": 80.0
+    },
+    "female_50": {
+      "low": 5.0,
+      "high": 40.0,
+      "unit": "mg/dL",
+      "display_name": "VLDL",
+      "category": "lipid",
+      "critical_high": 80.0
+    },
+    "male_70": {
+      "low": 5.0,
+      "high": 40.0,
+      "unit": "mg/dL",
+      "display_name": "VLDL",
+      "category": "lipid",
+      "critical_high": 80.0
+    },
+    "female_70": {
+      "low": 5.0,
+      "high": 40.0,
+      "unit": "mg/dL",
+      "display_name": "VLDL",
+      "category": "lipid",
+      "critical_high": 80.0
+    },
+    "male_10": {
+      "low": 5.0,
+      "high": 40.0,
+      "unit": "mg/dL",
+      "display_name": "VLDL",
+      "category": "lipid",
+      "critical_high": 80.0
+    },
+    "female_10": {
+      "low": 5.0,
+      "high": 40.0,
+      "unit": "mg/dL",
+      "display_name": "VLDL",
+      "category": "lipid",
+      "critical_high": 80.0
+    }
+  },
+  "total_cholesterol_hdl_ratio": {
+    "male_25": {
+      "low": 3.0,
+      "high": 5.0,
+      "unit": "ratio",
+      "display_name": "TC/HDL Ratio",
+      "category": "lipid",
+      "critical_high": 7.0
+    },
+    "female_25": {
+      "low": 2.5,
+      "high": 4.5,
+      "unit": "ratio",
+      "display_name": "TC/HDL Ratio",
+      "category": "lipid",
+      "critical_high": 7.0
+    },
+    "male_50": {
+      "low": 3.0,
+      "high": 5.0,
+      "unit": "ratio",
+      "display_name": "TC/HDL Ratio",
+      "category": "lipid",
+      "critical_high": 7.0
+    },
+    "female_50": {
+      "low": 2.5,
+      "high": 4.5,
+      "unit": "ratio",
+      "display_name": "TC/HDL Ratio",
+      "category": "lipid",
+      "critical_high": 7.0
+    },
+    "male_70": {
+      "low": 3.0,
+      "high": 5.0,
+      "unit": "ratio",
+      "display_name": "TC/HDL Ratio",
+      "category": "lipid",
+      "critical_high": 7.0
+    },
+    "female_70": {
+      "low": 2.5,
+      "high": 4.5,
+      "unit": "ratio",
+      "display_name": "TC/HDL Ratio",
+      "category": "lipid",
+      "critical_high": 7.0
+    },
+    "male_10": {
+      "low": 3.0,
+      "high": 5.0,
+      "unit": "ratio",
+      "display_name": "TC/HDL Ratio",
+      "category": "lipid",
+      "critical_high": 7.0
+    },
+    "female_10": {
+      "low": 2.5,
+      "high": 4.5,
+      "unit": "ratio",
+      "display_name": "TC/HDL Ratio",
+      "category": "lipid",
+      "critical_high": 7.0
+    }
+  },
+  "sgot_ast": {
+    "male_25": {
+      "low": 10.0,
+      "high": 40.0,
+      "unit": "U/L",
+      "display_name": "SGOT (AST)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "female_25": {
+      "low": 9.0,
+      "high": 32.0,
+      "unit": "U/L",
+      "display_name": "SGOT (AST)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "male_50": {
+      "low": 10.0,
+      "high": 40.0,
+      "unit": "U/L",
+      "display_name": "SGOT (AST)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "female_50": {
+      "low": 9.0,
+      "high": 32.0,
+      "unit": "U/L",
+      "display_name": "SGOT (AST)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "male_70": {
+      "low": 10.0,
+      "high": 45.0,
+      "unit": "U/L",
+      "display_name": "SGOT (AST)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "female_70": {
+      "low": 10.0,
+      "high": 35.0,
+      "unit": "U/L",
+      "display_name": "SGOT (AST)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "male_10": {
+      "low": 10.0,
+      "high": 40.0,
+      "unit": "U/L",
+      "display_name": "SGOT (AST)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "female_10": {
+      "low": 10.0,
+      "high": 40.0,
+      "unit": "U/L",
+      "display_name": "SGOT (AST)",
+      "category": "liver",
+      "critical_high": 1000.0
+    }
+  },
+  "sgpt_alt": {
+    "male_25": {
+      "low": 7.0,
+      "high": 56.0,
+      "unit": "U/L",
+      "display_name": "SGPT (ALT)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "female_25": {
+      "low": 7.0,
+      "high": 45.0,
+      "unit": "U/L",
+      "display_name": "SGPT (ALT)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "male_50": {
+      "low": 7.0,
+      "high": 56.0,
+      "unit": "U/L",
+      "display_name": "SGPT (ALT)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "female_50": {
+      "low": 7.0,
+      "high": 45.0,
+      "unit": "U/L",
+      "display_name": "SGPT (ALT)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "male_70": {
+      "low": 7.0,
+      "high": 50.0,
+      "unit": "U/L",
+      "display_name": "SGPT (ALT)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "female_70": {
+      "low": 7.0,
+      "high": 40.0,
+      "unit": "U/L",
+      "display_name": "SGPT (ALT)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "male_10": {
+      "low": 7.0,
+      "high": 35.0,
+      "unit": "U/L",
+      "display_name": "SGPT (ALT)",
+      "category": "liver",
+      "critical_high": 1000.0
+    },
+    "female_10": {
+      "low": 7.0,
+      "high": 35.0,
+      "unit": "U/L",
+      "display_name": "SGPT (ALT)",
+      "category": "liver",
+      "critical_high": 1000.0
+    }
+  },
+  "alkaline_phosphatase": {
+    "male_25": {
+      "low": 44.0,
+      "high": 147.0,
+      "unit": "U/L",
+      "display_name": "Alkaline Phosphatase",
+      "category": "liver",
+      "critical_high": 800.0
+    },
+    "female_25": {
+      "low": 44.0,
+      "high": 147.0,
+      "unit": "U/L",
+      "display_name": "Alkaline Phosphatase",
+      "category": "liver",
+      "critical_high": 800.0
+    },
+    "male_50": {
+      "low": 44.0,
+      "high": 147.0,
+      "unit": "U/L",
+      "display_name": "Alkaline Phosphatase",
+      "category": "liver",
+      "critical_high": 800.0
+    },
+    "female_50": {
+      "low": 44.0,
+      "high": 147.0,
+      "unit": "U/L",
+      "display_name": "Alkaline Phosphatase",
+      "category": "liver",
+      "critical_high": 800.0
+    },
+    "male_70": {
+      "low": 55.0,
+      "high": 170.0,
+      "unit": "U/L",
+      "display_name": "Alkaline Phosphatase",
+      "category": "liver",
+      "critical_high": 800.0
+    },
+    "female_70": {
+      "low": 55.0,
+      "high": 170.0,
+      "unit": "U/L",
+      "display_name": "Alkaline Phosphatase",
+      "category": "liver",
+      "critical_high": 800.0
+    },
+    "male_10": {
+      "low": 100.0,
+      "high": 350.0,
+      "unit": "U/L",
+      "display_name": "Alkaline Phosphatase",
+      "category": "liver",
+      "critical_high": 800.0
+    },
+    "female_10": {
+      "low": 100.0,
+      "high": 350.0,
+      "unit": "U/L",
+      "display_name": "Alkaline Phosphatase",
+      "category": "liver",
+      "critical_high": 800.0
+    }
+  },
+  "total_bilirubin": {
+    "male_25": {
+      "low": 0.1,
+      "high": 1.2,
+      "unit": "mg/dL",
+      "display_name": "Total Bilirubin",
+      "category": "liver",
+      "critical_high": 15.0
+    },
+    "female_25": {
+      "low": 0.1,
+      "high": 1.2,
+      "unit": "mg/dL",
+      "display_name": "Total Bilirubin",
+      "category": "liver",
+      "critical_high": 15.0
+    },
+    "male_50": {
+      "low": 0.1,
+      "high": 1.2,
+      "unit": "mg/dL",
+      "display_name": "Total Bilirubin",
+      "category": "liver",
+      "critical_high": 15.0
+    },
+    "female_50": {
+      "low": 0.1,
+      "high": 1.2,
+      "unit": "mg/dL",
+      "display_name": "Total Bilirubin",
+      "category": "liver",
+      "critical_high": 15.0
+    },
+    "male_70": {
+      "low": 0.1,
+      "high": 1.2,
+      "unit": "mg/dL",
+      "display_name": "Total Bilirubin",
+      "category": "liver",
+      "critical_high": 15.0
+    },
+    "female_70": {
+      "low": 0.1,
+      "high": 1.2,
+      "unit": "mg/dL",
+      "display_name": "Total Bilirubin",
+      "category": "liver",
+      "critical_high": 15.0
+    },
+    "male_10": {
+      "low": 0.1,
+      "high": 1.2,
+      "unit": "mg/dL",
+      "display_name": "Total Bilirubin",
+      "category": "liver",
+      "critical_high": 15.0
+    },
+    "female_10": {
+      "low": 0.1,
+      "high": 1.2,
+      "unit": "mg/dL",
+      "display_name": "Total Bilirubin",
+      "category": "liver",
+      "critical_high": 15.0
+    }
+  },
+  "direct_bilirubin": {
+    "male_25": {
+      "low": 0.0,
+      "high": 0.3,
+      "unit": "mg/dL",
+      "display_name": "Direct Bilirubin",
+      "category": "liver",
+      "critical_high": 5.0
+    },
+    "female_25": {
+      "low": 0.0,
+      "high": 0.3,
+      "unit": "mg/dL",
+      "display_name": "Direct Bilirubin",
+      "category": "liver",
+      "critical_high": 5.0
+    },
+    "male_50": {
+      "low": 0.0,
+      "high": 0.3,
+      "unit": "mg/dL",
+      "display_name": "Direct Bilirubin",
+      "category": "liver",
+      "critical_high": 5.0
+    },
+    "female_50": {
+      "low": 0.0,
+      "high": 0.3,
+      "unit": "mg/dL",
+      "display_name": "Direct Bilirubin",
+      "category": "liver",
+      "critical_high": 5.0
+    },
+    "male_70": {
+      "low": 0.0,
+      "high": 0.3,
+      "unit": "mg/dL",
+      "display_name": "Direct Bilirubin",
+      "category": "liver",
+      "critical_high": 5.0
+    },
+    "female_70": {
+      "low": 0.0,
+      "high": 0.3,
+      "unit": "mg/dL",
+      "display_name": "Direct Bilirubin",
+      "category": "liver",
+      "critical_high": 5.0
+    },
+    "male_10": {
+      "low": 0.0,
+      "high": 0.3,
+      "unit": "mg/dL",
+      "display_name": "Direct Bilirubin",
+      "category": "liver",
+      "critical_high": 5.0
+    },
+    "female_10": {
+      "low": 0.0,
+      "high": 0.3,
+      "unit": "mg/dL",
+      "display_name": "Direct Bilirubin",
+      "category": "liver",
+      "critical_high": 5.0
+    }
+  },
+  "ggt": {
+    "male_25": {
+      "low": 8.0,
+      "high": 61.0,
+      "unit": "U/L",
+      "display_name": "GGT",
+      "category": "liver",
+      "critical_high": 500.0
+    },
+    "female_25": {
+      "low": 5.0,
+      "high": 36.0,
+      "unit": "U/L",
+      "display_name": "GGT",
+      "category": "liver",
+      "critical_high": 500.0
+    },
+    "male_50": {
+      "low": 8.0,
+      "high": 61.0,
+      "unit": "U/L",
+      "display_name": "GGT",
+      "category": "liver",
+      "critical_high": 500.0
+    },
+    "female_50": {
+      "low": 5.0,
+      "high": 36.0,
+      "unit": "U/L",
+      "display_name": "GGT",
+      "category": "liver",
+      "critical_high": 500.0
+    },
+    "male_70": {
+      "low": 8.0,
+      "high": 61.0,
+      "unit": "U/L",
+      "display_name": "GGT",
+      "category": "liver",
+      "critical_high": 500.0
+    },
+    "female_70": {
+      "low": 5.0,
+      "high": 36.0,
+      "unit": "U/L",
+      "display_name": "GGT",
+      "category": "liver",
+      "critical_high": 500.0
+    },
+    "male_10": {
+      "low": 8.0,
+      "high": 61.0,
+      "unit": "U/L",
+      "display_name": "GGT",
+      "category": "liver",
+      "critical_high": 500.0
+    },
+    "female_10": {
+      "low": 5.0,
+      "high": 36.0,
+      "unit": "U/L",
+      "display_name": "GGT",
+      "category": "liver",
+      "critical_high": 500.0
+    }
+  },
+  "total_protein": {
+    "male_25": {
+      "low": 6.0,
+      "high": 8.3,
+      "unit": "g/dL",
+      "display_name": "Total Protein",
+      "category": "liver",
+      "critical_low": 4.0,
+      "critical_high": 12.0
+    },
+    "female_25": {
+      "low": 6.0,
+      "high": 8.3,
+      "unit": "g/dL",
+      "display_name": "Total Protein",
+      "category": "liver",
+      "critical_low": 4.0,
+      "critical_high": 12.0
+    },
+    "male_50": {
+      "low": 6.0,
+      "high": 8.3,
+      "unit": "g/dL",
+      "display_name": "Total Protein",
+      "category": "liver",
+      "critical_low": 4.0,
+      "critical_high": 12.0
+    },
+    "female_50": {
+      "low": 6.0,
+      "high": 8.3,
+      "unit": "g/dL",
+      "display_name": "Total Protein",
+      "category": "liver",
+      "critical_low": 4.0,
+      "critical_high": 12.0
+    },
+    "male_70": {
+      "low": 6.0,
+      "high": 8.3,
+      "unit": "g/dL",
+      "display_name": "Total Protein",
+      "category": "liver",
+      "critical_low": 4.0,
+      "critical_high": 12.0
+    },
+    "female_70": {
+      "low": 6.0,
+      "high": 8.3,
+      "unit": "g/dL",
+      "display_name": "Total Protein",
+      "category": "liver",
+      "critical_low": 4.0,
+      "critical_high": 12.0
+    },
+    "male_10": {
+      "low": 5.7,
+      "high": 8.0,
+      "unit": "g/dL",
+      "display_name": "Total Protein",
+      "category": "liver",
+      "critical_low": 4.0,
+      "critical_high": 12.0
+    },
+    "female_10": {
+      "low": 5.7,
+      "high": 8.0,
+      "unit": "g/dL",
+      "display_name": "Total Protein",
+      "category": "liver",
+      "critical_low": 4.0,
+      "critical_high": 12.0
+    }
+  },
+  "albumin": {
+    "male_25": {
+      "low": 3.5,
+      "high": 5.5,
+      "unit": "g/dL",
+      "display_name": "Albumin",
+      "category": "liver",
+      "critical_low": 2.0
+    },
+    "female_25": {
+      "low": 3.5,
+      "high": 5.5,
+      "unit": "g/dL",
+      "display_name": "Albumin",
+      "category": "liver",
+      "critical_low": 2.0
+    },
+    "male_50": {
+      "low": 3.5,
+      "high": 5.5,
+      "unit": "g/dL",
+      "display_name": "Albumin",
+      "category": "liver",
+      "critical_low": 2.0
+    },
+    "female_50": {
+      "low": 3.5,
+      "high": 5.5,
+      "unit": "g/dL",
+      "display_name": "Albumin",
+      "category": "liver",
+      "critical_low": 2.0
+    },
+    "male_70": {
+      "low": 3.2,
+      "high": 5.0,
+      "unit": "g/dL",
+      "display_name": "Albumin",
+      "category": "liver",
+      "critical_low": 2.0
+    },
+    "female_70": {
+      "low": 3.2,
+      "high": 5.0,
+      "unit": "g/dL",
+      "display_name": "Albumin",
+      "category": "liver",
+      "critical_low": 2.0
+    },
+    "male_10": {
+      "low": 3.5,
+      "high": 5.0,
+      "unit": "g/dL",
+      "display_name": "Albumin",
+      "category": "liver",
+      "critical_low": 2.0
+    },
+    "female_10": {
+      "low": 3.5,
+      "high": 5.0,
+      "unit": "g/dL",
+      "display_name": "Albumin",
+      "category": "liver",
+      "critical_low": 2.0
+    }
+  },
+  "globulin": {
+    "male_25": {
+      "low": 2.0,
+      "high": 3.5,
+      "unit": "g/dL",
+      "display_name": "Globulin",
+      "category": "liver",
+      "critical_low": 1.0,
+      "critical_high": 5.5
+    },
+    "female_25": {
+      "low": 2.0,
+      "high": 3.5,
+      "unit": "g/dL",
+      "display_name": "Globulin",
+      "category": "liver",
+      "critical_low": 1.0,
+      "critical_high": 5.5
+    },
+    "male_50": {
+      "low": 2.0,
+      "high": 3.5,
+      "unit": "g/dL",
+      "display_name": "Globulin",
+      "category": "liver",
+      "critical_low": 1.0,
+      "critical_high": 5.5
+    },
+    "female_50": {
+      "low": 2.0,
+      "high": 3.5,
+      "unit": "g/dL",
+      "display_name": "Globulin",
+      "category": "liver",
+      "critical_low": 1.0,
+      "critical_high": 5.5
+    },
+    "male_70": {
+      "low": 2.0,
+      "high": 3.5,
+      "unit": "g/dL",
+      "display_name": "Globulin",
+      "category": "liver",
+      "critical_low": 1.0,
+      "critical_high": 5.5
+    },
+    "female_70": {
+      "low": 2.0,
+      "high": 3.5,
+      "unit": "g/dL",
+      "display_name": "Globulin",
+      "category": "liver",
+      "critical_low": 1.0,
+      "critical_high": 5.5
+    },
+    "male_10": {
+      "low": 2.0,
+      "high": 3.5,
+      "unit": "g/dL",
+      "display_name": "Globulin",
+      "category": "liver",
+      "critical_low": 1.0,
+      "critical_high": 5.5
+    },
+    "female_10": {
+      "low": 2.0,
+      "high": 3.5,
+      "unit": "g/dL",
+      "display_name": "Globulin",
+      "category": "liver",
+      "critical_low": 1.0,
+      "critical_high": 5.5
+    }
+  },
+  "ag_ratio": {
+    "male_25": {
+      "low": 1.0,
+      "high": 2.2,
+      "unit": "ratio",
+      "display_name": "A/G Ratio",
+      "category": "liver",
+      "critical_low": 0.5
+    },
+    "female_25": {
+      "low": 1.0,
+      "high": 2.2,
+      "unit": "ratio",
+      "display_name": "A/G Ratio",
+      "category": "liver",
+      "critical_low": 0.5
+    },
+    "male_50": {
+      "low": 1.0,
+      "high": 2.2,
+      "unit": "ratio",
+      "display_name": "A/G Ratio",
+      "category": "liver",
+      "critical_low": 0.5
+    },
+    "female_50": {
+      "low": 1.0,
+      "high": 2.2,
+      "unit": "ratio",
+      "display_name": "A/G Ratio",
+      "category": "liver",
+      "critical_low": 0.5
+    },
+    "male_70": {
+      "low": 1.0,
+      "high": 2.2,
+      "unit": "ratio",
+      "display_name": "A/G Ratio",
+      "category": "liver",
+      "critical_low": 0.5
+    },
+    "female_70": {
+      "low": 1.0,
+      "high": 2.2,
+      "unit": "ratio",
+      "display_name": "A/G Ratio",
+      "category": "liver",
+      "critical_low": 0.5
+    },
+    "male_10": {
+      "low": 1.0,
+      "high": 2.2,
+      "unit": "ratio",
+      "display_name": "A/G Ratio",
+      "category": "liver",
+      "critical_low": 0.5
+    },
+    "female_10": {
+      "low": 1.0,
+      "high": 2.2,
+      "unit": "ratio",
+      "display_name": "A/G Ratio",
+      "category": "liver",
+      "critical_low": 0.5
+    }
+  },
+  "blood_urea": {
+    "male_25": {
+      "low": 13.0,
+      "high": 43.0,
+      "unit": "mg/dL",
+      "display_name": "Blood Urea",
+      "category": "kidney",
+      "critical_high": 100.0
+    },
+    "female_25": {
+      "low": 13.0,
+      "high": 43.0,
+      "unit": "mg/dL",
+      "display_name": "Blood Urea",
+      "category": "kidney",
+      "critical_high": 100.0
+    },
+    "male_50": {
+      "low": 13.0,
+      "high": 43.0,
+      "unit": "mg/dL",
+      "display_name": "Blood Urea",
+      "category": "kidney",
+      "critical_high": 100.0
+    },
+    "female_50": {
+      "low": 13.0,
+      "high": 43.0,
+      "unit": "mg/dL",
+      "display_name": "Blood Urea",
+      "category": "kidney",
+      "critical_high": 100.0
+    },
+    "male_70": {
+      "low": 15.0,
+      "high": 50.0,
+      "unit": "mg/dL",
+      "display_name": "Blood Urea",
+      "category": "kidney",
+      "critical_high": 100.0
+    },
+    "female_70": {
+      "low": 15.0,
+      "high": 50.0,
+      "unit": "mg/dL",
+      "display_name": "Blood Urea",
+      "category": "kidney",
+      "critical_high": 100.0
+    },
+    "male_10": {
+      "low": 10.0,
+      "high": 36.0,
+      "unit": "mg/dL",
+      "display_name": "Blood Urea",
+      "category": "kidney",
+      "critical_high": 100.0
+    },
+    "female_10": {
+      "low": 10.0,
+      "high": 36.0,
+      "unit": "mg/dL",
+      "display_name": "Blood Urea",
+      "category": "kidney",
+      "critical_high": 100.0
+    }
+  },
+  "serum_creatinine": {
+    "male_25": {
+      "low": 0.7,
+      "high": 1.3,
+      "unit": "mg/dL",
+      "display_name": "Serum Creatinine",
+      "category": "kidney",
+      "critical_high": 10.0
+    },
+    "female_25": {
+      "low": 0.6,
+      "high": 1.1,
+      "unit": "mg/dL",
+      "display_name": "Serum Creatinine",
+      "category": "kidney",
+      "critical_high": 10.0
+    },
+    "male_50": {
+      "low": 0.7,
+      "high": 1.3,
+      "unit": "mg/dL",
+      "display_name": "Serum Creatinine",
+      "category": "kidney",
+      "critical_high": 10.0
+    },
+    "female_50": {
+      "low": 0.6,
+      "high": 1.1,
+      "unit": "mg/dL",
+      "display_name": "Serum Creatinine",
+      "category": "kidney",
+      "critical_high": 10.0
+    },
+    "male_70": {
+      "low": 0.8,
+      "high": 1.4,
+      "unit": "mg/dL",
+      "display_name": "Serum Creatinine",
+      "category": "kidney",
+      "critical_high": 10.0
+    },
+    "female_70": {
+      "low": 0.7,
+      "high": 1.2,
+      "unit": "mg/dL",
+      "display_name": "Serum Creatinine",
+      "category": "kidney",
+      "critical_high": 10.0
+    },
+    "male_10": {
+      "low": 0.2,
+      "high": 0.6,
+      "unit": "mg/dL",
+      "display_name": "Serum Creatinine",
+      "category": "kidney",
+      "critical_high": 10.0
+    },
+    "female_10": {
+      "low": 0.2,
+      "high": 0.6,
+      "unit": "mg/dL",
+      "display_name": "Serum Creatinine",
+      "category": "kidney",
+      "critical_high": 10.0
+    }
+  },
+  "uric_acid": {
+    "male_25": {
+      "low": 3.5,
+      "high": 7.2,
+      "unit": "mg/dL",
+      "display_name": "Uric Acid",
+      "category": "kidney",
+      "critical_high": 12.0
+    },
+    "female_25": {
+      "low": 2.6,
+      "high": 6.0,
+      "unit": "mg/dL",
+      "display_name": "Uric Acid",
+      "category": "kidney",
+      "critical_high": 12.0
+    },
+    "male_50": {
+      "low": 3.5,
+      "high": 7.2,
+      "unit": "mg/dL",
+      "display_name": "Uric Acid",
+      "category": "kidney",
+      "critical_high": 12.0
+    },
+    "female_50": {
+      "low": 2.6,
+      "high": 6.0,
+      "unit": "mg/dL",
+      "display_name": "Uric Acid",
+      "category": "kidney",
+      "critical_high": 12.0
+    },
+    "male_70": {
+      "low": 3.5,
+      "high": 7.2,
+      "unit": "mg/dL",
+      "display_name": "Uric Acid",
+      "category": "kidney",
+      "critical_high": 12.0
+    },
+    "female_70": {
+      "low": 2.6,
+      "high": 6.0,
+      "unit": "mg/dL",
+      "display_name": "Uric Acid",
+      "category": "kidney",
+      "critical_high": 12.0
+    },
+    "male_10": {
+      "low": 3.5,
+      "high": 7.2,
+      "unit": "mg/dL",
+      "display_name": "Uric Acid",
+      "category": "kidney",
+      "critical_high": 12.0
+    },
+    "female_10": {
+      "low": 2.6,
+      "high": 6.0,
+      "unit": "mg/dL",
+      "display_name": "Uric Acid",
+      "category": "kidney",
+      "critical_high": 12.0
+    }
+  },
+  "bun": {
+    "male_25": {
+      "low": 7.0,
+      "high": 20.0,
+      "unit": "mg/dL",
+      "display_name": "BUN",
+      "category": "kidney",
+      "critical_high": 60.0
+    },
+    "female_25": {
+      "low": 7.0,
+      "high": 20.0,
+      "unit": "mg/dL",
+      "display_name": "BUN",
+      "category": "kidney",
+      "critical_high": 60.0
+    },
+    "male_50": {
+      "low": 7.0,
+      "high": 20.0,
+      "unit": "mg/dL",
+      "display_name": "BUN",
+      "category": "kidney",
+      "critical_high": 60.0
+    },
+    "female_50": {
+      "low": 7.0,
+      "high": 20.0,
+      "unit": "mg/dL",
+      "display_name": "BUN",
+      "category": "kidney",
+      "critical_high": 60.0
+    },
+    "male_70": {
+      "low": 8.0,
+      "high": 23.0,
+      "unit": "mg/dL",
+      "display_name": "BUN",
+      "category": "kidney",
+      "critical_high": 60.0
+    },
+    "female_70": {
+      "low": 8.0,
+      "high": 23.0,
+      "unit": "mg/dL",
+      "display_name": "BUN",
+      "category": "kidney",
+      "critical_high": 60.0
+    },
+    "male_10": {
+      "low": 5.0,
+      "high": 18.0,
+      "unit": "mg/dL",
+      "display_name": "BUN",
+      "category": "kidney",
+      "critical_high": 60.0
+    },
+    "female_10": {
+      "low": 5.0,
+      "high": 18.0,
+      "unit": "mg/dL",
+      "display_name": "BUN",
+      "category": "kidney",
+      "critical_high": 60.0
+    }
+  },
+  "egfr": {
+    "male_25": {
+      "low": 90.0,
+      "high": 130.0,
+      "unit": "mL/min/1.73m2",
+      "display_name": "eGFR",
+      "category": "kidney",
+      "critical_low": 15.0
+    },
+    "female_25": {
+      "low": 90.0,
+      "high": 130.0,
+      "unit": "mL/min/1.73m2",
+      "display_name": "eGFR",
+      "category": "kidney",
+      "critical_low": 15.0
+    },
+    "male_50": {
+      "low": 80.0,
+      "high": 120.0,
+      "unit": "mL/min/1.73m2",
+      "display_name": "eGFR",
+      "category": "kidney",
+      "critical_low": 15.0
+    },
+    "female_50": {
+      "low": 80.0,
+      "high": 120.0,
+      "unit": "mL/min/1.73m2",
+      "display_name": "eGFR",
+      "category": "kidney",
+      "critical_low": 15.0
+    },
+    "male_70": {
+      "low": 60.0,
+      "high": 110.0,
+      "unit": "mL/min/1.73m2",
+      "display_name": "eGFR",
+      "category": "kidney",
+      "critical_low": 15.0
+    },
+    "female_70": {
+      "low": 60.0,
+      "high": 110.0,
+      "unit": "mL/min/1.73m2",
+      "display_name": "eGFR",
+      "category": "kidney",
+      "critical_low": 15.0
+    },
+    "male_10": {
+      "low": 90.0,
+      "high": 150.0,
+      "unit": "mL/min/1.73m2",
+      "display_name": "eGFR",
+      "category": "kidney",
+      "critical_low": 15.0
+    },
+    "female_10": {
+      "low": 90.0,
+      "high": 150.0,
+      "unit": "mL/min/1.73m2",
+      "display_name": "eGFR",
+      "category": "kidney",
+      "critical_low": 15.0
+    }
+  },
+  "bun_creatinine_ratio": {
+    "male_25": {
+      "low": 10.0,
+      "high": 20.0,
+      "unit": "ratio",
+      "display_name": "BUN/Creatinine Ratio",
+      "category": "kidney",
+      "critical_low": 5.0,
+      "critical_high": 35.0
+    },
+    "female_25": {
+      "low": 10.0,
+      "high": 20.0,
+      "unit": "ratio",
+      "display_name": "BUN/Creatinine Ratio",
+      "category": "kidney",
+      "critical_low": 5.0,
+      "critical_high": 35.0
+    },
+    "male_50": {
+      "low": 10.0,
+      "high": 20.0,
+      "unit": "ratio",
+      "display_name": "BUN/Creatinine Ratio",
+      "category": "kidney",
+      "critical_low": 5.0,
+      "critical_high": 35.0
+    },
+    "female_50": {
+      "low": 10.0,
+      "high": 20.0,
+      "unit": "ratio",
+      "display_name": "BUN/Creatinine Ratio",
+      "category": "kidney",
+      "critical_low": 5.0,
+      "critical_high": 35.0
+    },
+    "male_70": {
+      "low": 10.0,
+      "high": 20.0,
+      "unit": "ratio",
+      "display_name": "BUN/Creatinine Ratio",
+      "category": "kidney",
+      "critical_low": 5.0,
+      "critical_high": 35.0
+    },
+    "female_70": {
+      "low": 10.0,
+      "high": 20.0,
+      "unit": "ratio",
+      "display_name": "BUN/Creatinine Ratio",
+      "category": "kidney",
+      "critical_low": 5.0,
+      "critical_high": 35.0
+    },
+    "male_10": {
+      "low": 10.0,
+      "high": 20.0,
+      "unit": "ratio",
+      "display_name": "BUN/Creatinine Ratio",
+      "category": "kidney",
+      "critical_low": 5.0,
+      "critical_high": 35.0
+    },
+    "female_10": {
+      "low": 10.0,
+      "high": 20.0,
+      "unit": "ratio",
+      "display_name": "BUN/Creatinine Ratio",
+      "category": "kidney",
+      "critical_low": 5.0,
+      "critical_high": 35.0
+    }
+  },
+  "fasting_glucose": {
+    "male_25": {
+      "low": 70.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "Fasting Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "female_25": {
+      "low": 70.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "Fasting Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "male_50": {
+      "low": 70.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "Fasting Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "female_50": {
+      "low": 70.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "Fasting Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "male_70": {
+      "low": 70.0,
+      "high": 110.0,
+      "unit": "mg/dL",
+      "display_name": "Fasting Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "female_70": {
+      "low": 70.0,
+      "high": 110.0,
+      "unit": "mg/dL",
+      "display_name": "Fasting Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "male_10": {
+      "low": 60.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "Fasting Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "female_10": {
+      "low": 60.0,
+      "high": 100.0,
+      "unit": "mg/dL",
+      "display_name": "Fasting Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    }
+  },
+  "hba1c": {
+    "male_25": {
+      "low": 4.0,
+      "high": 5.6,
+      "unit": "%",
+      "display_name": "HbA1c",
+      "category": "diabetes",
+      "critical_high": 14.0
+    },
+    "female_25": {
+      "low": 4.0,
+      "high": 5.6,
+      "unit": "%",
+      "display_name": "HbA1c",
+      "category": "diabetes",
+      "critical_high": 14.0
+    },
+    "male_50": {
+      "low": 4.0,
+      "high": 5.6,
+      "unit": "%",
+      "display_name": "HbA1c",
+      "category": "diabetes",
+      "critical_high": 14.0
+    },
+    "female_50": {
+      "low": 4.0,
+      "high": 5.6,
+      "unit": "%",
+      "display_name": "HbA1c",
+      "category": "diabetes",
+      "critical_high": 14.0
+    },
+    "male_70": {
+      "low": 4.0,
+      "high": 5.6,
+      "unit": "%",
+      "display_name": "HbA1c",
+      "category": "diabetes",
+      "critical_high": 14.0
+    },
+    "female_70": {
+      "low": 4.0,
+      "high": 5.6,
+      "unit": "%",
+      "display_name": "HbA1c",
+      "category": "diabetes",
+      "critical_high": 14.0
+    },
+    "male_10": {
+      "low": 4.0,
+      "high": 5.6,
+      "unit": "%",
+      "display_name": "HbA1c",
+      "category": "diabetes",
+      "critical_high": 14.0
+    },
+    "female_10": {
+      "low": 4.0,
+      "high": 5.6,
+      "unit": "%",
+      "display_name": "HbA1c",
+      "category": "diabetes",
+      "critical_high": 14.0
+    }
+  },
+  "postprandial_glucose": {
+    "male_25": {
+      "low": 70.0,
+      "high": 140.0,
+      "unit": "mg/dL",
+      "display_name": "Postprandial Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 500.0
+    },
+    "female_25": {
+      "low": 70.0,
+      "high": 140.0,
+      "unit": "mg/dL",
+      "display_name": "Postprandial Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 500.0
+    },
+    "male_50": {
+      "low": 70.0,
+      "high": 140.0,
+      "unit": "mg/dL",
+      "display_name": "Postprandial Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 500.0
+    },
+    "female_50": {
+      "low": 70.0,
+      "high": 140.0,
+      "unit": "mg/dL",
+      "display_name": "Postprandial Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 500.0
+    },
+    "male_70": {
+      "low": 70.0,
+      "high": 150.0,
+      "unit": "mg/dL",
+      "display_name": "Postprandial Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 500.0
+    },
+    "female_70": {
+      "low": 70.0,
+      "high": 150.0,
+      "unit": "mg/dL",
+      "display_name": "Postprandial Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 500.0
+    },
+    "male_10": {
+      "low": 70.0,
+      "high": 120.0,
+      "unit": "mg/dL",
+      "display_name": "Postprandial Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 500.0
+    },
+    "female_10": {
+      "low": 70.0,
+      "high": 120.0,
+      "unit": "mg/dL",
+      "display_name": "Postprandial Glucose",
+      "category": "diabetes",
+      "critical_low": 40.0,
+      "critical_high": 500.0
+    }
+  },
+  "fasting_insulin": {
+    "male_25": {
+      "low": 2.6,
+      "high": 24.9,
+      "unit": "uIU/mL",
+      "display_name": "Fasting Insulin",
+      "category": "diabetes",
+      "critical_high": 100.0
+    },
+    "female_25": {
+      "low": 2.6,
+      "high": 24.9,
+      "unit": "uIU/mL",
+      "display_name": "Fasting Insulin",
+      "category": "diabetes",
+      "critical_high": 100.0
+    },
+    "male_50": {
+      "low": 2.6,
+      "high": 24.9,
+      "unit": "uIU/mL",
+      "display_name": "Fasting Insulin",
+      "category": "diabetes",
+      "critical_high": 100.0
+    },
+    "female_50": {
+      "low": 2.6,
+      "high": 24.9,
+      "unit": "uIU/mL",
+      "display_name": "Fasting Insulin",
+      "category": "diabetes",
+      "critical_high": 100.0
+    },
+    "male_70": {
+      "low": 2.6,
+      "high": 24.9,
+      "unit": "uIU/mL",
+      "display_name": "Fasting Insulin",
+      "category": "diabetes",
+      "critical_high": 100.0
+    },
+    "female_70": {
+      "low": 2.6,
+      "high": 24.9,
+      "unit": "uIU/mL",
+      "display_name": "Fasting Insulin",
+      "category": "diabetes",
+      "critical_high": 100.0
+    },
+    "male_10": {
+      "low": 2.6,
+      "high": 24.9,
+      "unit": "uIU/mL",
+      "display_name": "Fasting Insulin",
+      "category": "diabetes",
+      "critical_high": 100.0
+    },
+    "female_10": {
+      "low": 2.6,
+      "high": 24.9,
+      "unit": "uIU/mL",
+      "display_name": "Fasting Insulin",
+      "category": "diabetes",
+      "critical_high": 100.0
+    }
+  },
+  "homa_ir": {
+    "male_25": {
+      "low": 0.5,
+      "high": 2.5,
+      "unit": "index",
+      "display_name": "HOMA-IR",
+      "category": "diabetes",
+      "critical_high": 10.0
+    },
+    "female_25": {
+      "low": 0.5,
+      "high": 2.5,
+      "unit": "index",
+      "display_name": "HOMA-IR",
+      "category": "diabetes",
+      "critical_high": 10.0
+    },
+    "male_50": {
+      "low": 0.5,
+      "high": 2.5,
+      "unit": "index",
+      "display_name": "HOMA-IR",
+      "category": "diabetes",
+      "critical_high": 10.0
+    },
+    "female_50": {
+      "low": 0.5,
+      "high": 2.5,
+      "unit": "index",
+      "display_name": "HOMA-IR",
+      "category": "diabetes",
+      "critical_high": 10.0
+    },
+    "male_70": {
+      "low": 0.5,
+      "high": 2.5,
+      "unit": "index",
+      "display_name": "HOMA-IR",
+      "category": "diabetes",
+      "critical_high": 10.0
+    },
+    "female_70": {
+      "low": 0.5,
+      "high": 2.5,
+      "unit": "index",
+      "display_name": "HOMA-IR",
+      "category": "diabetes",
+      "critical_high": 10.0
+    },
+    "male_10": {
+      "low": 0.5,
+      "high": 2.5,
+      "unit": "index",
+      "display_name": "HOMA-IR",
+      "category": "diabetes",
+      "critical_high": 10.0
+    },
+    "female_10": {
+      "low": 0.5,
+      "high": 2.5,
+      "unit": "index",
+      "display_name": "HOMA-IR",
+      "category": "diabetes",
+      "critical_high": 10.0
+    }
+  },
+  "tsh": {
+    "male_25": {
+      "low": 0.4,
+      "high": 4.0,
+      "unit": "mIU/L",
+      "display_name": "TSH",
+      "category": "thyroid",
+      "critical_low": 0.01,
+      "critical_high": 50.0
+    },
+    "female_25": {
+      "low": 0.4,
+      "high": 4.0,
+      "unit": "mIU/L",
+      "display_name": "TSH",
+      "category": "thyroid",
+      "critical_low": 0.01,
+      "critical_high": 50.0
+    },
+    "male_50": {
+      "low": 0.4,
+      "high": 4.0,
+      "unit": "mIU/L",
+      "display_name": "TSH",
+      "category": "thyroid",
+      "critical_low": 0.01,
+      "critical_high": 50.0
+    },
+    "female_50": {
+      "low": 0.4,
+      "high": 4.0,
+      "unit": "mIU/L",
+      "display_name": "TSH",
+      "category": "thyroid",
+      "critical_low": 0.01,
+      "critical_high": 50.0
+    },
+    "male_70": {
+      "low": 0.4,
+      "high": 4.5,
+      "unit": "mIU/L",
+      "display_name": "TSH",
+      "category": "thyroid",
+      "critical_low": 0.01,
+      "critical_high": 50.0
+    },
+    "female_70": {
+      "low": 0.4,
+      "high": 4.5,
+      "unit": "mIU/L",
+      "display_name": "TSH",
+      "category": "thyroid",
+      "critical_low": 0.01,
+      "critical_high": 50.0
+    },
+    "male_10": {
+      "low": 0.6,
+      "high": 5.0,
+      "unit": "mIU/L",
+      "display_name": "TSH",
+      "category": "thyroid",
+      "critical_low": 0.01,
+      "critical_high": 50.0
+    },
+    "female_10": {
+      "low": 0.6,
+      "high": 5.0,
+      "unit": "mIU/L",
+      "display_name": "TSH",
+      "category": "thyroid",
+      "critical_low": 0.01,
+      "critical_high": 50.0
+    }
+  },
+  "t3": {
+    "male_25": {
+      "low": 80.0,
+      "high": 200.0,
+      "unit": "ng/dL",
+      "display_name": "T3",
+      "category": "thyroid",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "female_25": {
+      "low": 80.0,
+      "high": 200.0,
+      "unit": "ng/dL",
+      "display_name": "T3",
+      "category": "thyroid",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "male_50": {
+      "low": 80.0,
+      "high": 200.0,
+      "unit": "ng/dL",
+      "display_name": "T3",
+      "category": "thyroid",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "female_50": {
+      "low": 80.0,
+      "high": 200.0,
+      "unit": "ng/dL",
+      "display_name": "T3",
+      "category": "thyroid",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "male_70": {
+      "low": 80.0,
+      "high": 200.0,
+      "unit": "ng/dL",
+      "display_name": "T3",
+      "category": "thyroid",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "female_70": {
+      "low": 80.0,
+      "high": 200.0,
+      "unit": "ng/dL",
+      "display_name": "T3",
+      "category": "thyroid",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "male_10": {
+      "low": 80.0,
+      "high": 200.0,
+      "unit": "ng/dL",
+      "display_name": "T3",
+      "category": "thyroid",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    },
+    "female_10": {
+      "low": 80.0,
+      "high": 200.0,
+      "unit": "ng/dL",
+      "display_name": "T3",
+      "category": "thyroid",
+      "critical_low": 40.0,
+      "critical_high": 400.0
+    }
+  },
+  "t4": {
+    "male_25": {
+      "low": 5.0,
+      "high": 12.0,
+      "unit": "ug/dL",
+      "display_name": "T4",
+      "category": "thyroid",
+      "critical_low": 2.0,
+      "critical_high": 20.0
+    },
+    "female_25": {
+      "low": 5.0,
+      "high": 12.0,
+      "unit": "ug/dL",
+      "display_name": "T4",
+      "category": "thyroid",
+      "critical_low": 2.0,
+      "critical_high": 20.0
+    },
+    "male_50": {
+      "low": 5.0,
+      "high": 12.0,
+      "unit": "ug/dL",
+      "display_name": "T4",
+      "category": "thyroid",
+      "critical_low": 2.0,
+      "critical_high": 20.0
+    },
+    "female_50": {
+      "low": 5.0,
+      "high": 12.0,
+      "unit": "ug/dL",
+      "display_name": "T4",
+      "category": "thyroid",
+      "critical_low": 2.0,
+      "critical_high": 20.0
+    },
+    "male_70": {
+      "low": 5.0,
+      "high": 12.0,
+      "unit": "ug/dL",
+      "display_name": "T4",
+      "category": "thyroid",
+      "critical_low": 2.0,
+      "critical_high": 20.0
+    },
+    "female_70": {
+      "low": 5.0,
+      "high": 12.0,
+      "unit": "ug/dL",
+      "display_name": "T4",
+      "category": "thyroid",
+      "critical_low": 2.0,
+      "critical_high": 20.0
+    },
+    "male_10": {
+      "low": 5.0,
+      "high": 12.0,
+      "unit": "ug/dL",
+      "display_name": "T4",
+      "category": "thyroid",
+      "critical_low": 2.0,
+      "critical_high": 20.0
+    },
+    "female_10": {
+      "low": 5.0,
+      "high": 12.0,
+      "unit": "ug/dL",
+      "display_name": "T4",
+      "category": "thyroid",
+      "critical_low": 2.0,
+      "critical_high": 20.0
+    }
+  },
+  "free_t3": {
+    "male_25": {
+      "low": 2.3,
+      "high": 4.2,
+      "unit": "pg/mL",
+      "display_name": "Free T3",
+      "category": "thyroid",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "female_25": {
+      "low": 2.3,
+      "high": 4.2,
+      "unit": "pg/mL",
+      "display_name": "Free T3",
+      "category": "thyroid",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "male_50": {
+      "low": 2.3,
+      "high": 4.2,
+      "unit": "pg/mL",
+      "display_name": "Free T3",
+      "category": "thyroid",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "female_50": {
+      "low": 2.3,
+      "high": 4.2,
+      "unit": "pg/mL",
+      "display_name": "Free T3",
+      "category": "thyroid",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "male_70": {
+      "low": 2.3,
+      "high": 4.2,
+      "unit": "pg/mL",
+      "display_name": "Free T3",
+      "category": "thyroid",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "female_70": {
+      "low": 2.3,
+      "high": 4.2,
+      "unit": "pg/mL",
+      "display_name": "Free T3",
+      "category": "thyroid",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "male_10": {
+      "low": 2.3,
+      "high": 4.2,
+      "unit": "pg/mL",
+      "display_name": "Free T3",
+      "category": "thyroid",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "female_10": {
+      "low": 2.3,
+      "high": 4.2,
+      "unit": "pg/mL",
+      "display_name": "Free T3",
+      "category": "thyroid",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    }
+  },
+  "free_t4": {
+    "male_25": {
+      "low": 0.8,
+      "high": 1.8,
+      "unit": "ng/dL",
+      "display_name": "Free T4",
+      "category": "thyroid",
+      "critical_low": 0.4,
+      "critical_high": 5.0
+    },
+    "female_25": {
+      "low": 0.8,
+      "high": 1.8,
+      "unit": "ng/dL",
+      "display_name": "Free T4",
+      "category": "thyroid",
+      "critical_low": 0.4,
+      "critical_high": 5.0
+    },
+    "male_50": {
+      "low": 0.8,
+      "high": 1.8,
+      "unit": "ng/dL",
+      "display_name": "Free T4",
+      "category": "thyroid",
+      "critical_low": 0.4,
+      "critical_high": 5.0
+    },
+    "female_50": {
+      "low": 0.8,
+      "high": 1.8,
+      "unit": "ng/dL",
+      "display_name": "Free T4",
+      "category": "thyroid",
+      "critical_low": 0.4,
+      "critical_high": 5.0
+    },
+    "male_70": {
+      "low": 0.8,
+      "high": 1.8,
+      "unit": "ng/dL",
+      "display_name": "Free T4",
+      "category": "thyroid",
+      "critical_low": 0.4,
+      "critical_high": 5.0
+    },
+    "female_70": {
+      "low": 0.8,
+      "high": 1.8,
+      "unit": "ng/dL",
+      "display_name": "Free T4",
+      "category": "thyroid",
+      "critical_low": 0.4,
+      "critical_high": 5.0
+    },
+    "male_10": {
+      "low": 0.8,
+      "high": 1.8,
+      "unit": "ng/dL",
+      "display_name": "Free T4",
+      "category": "thyroid",
+      "critical_low": 0.4,
+      "critical_high": 5.0
+    },
+    "female_10": {
+      "low": 0.8,
+      "high": 1.8,
+      "unit": "ng/dL",
+      "display_name": "Free T4",
+      "category": "thyroid",
+      "critical_low": 0.4,
+      "critical_high": 5.0
+    }
+  },
+  "vitamin_d": {
+    "male_25": {
+      "low": 30.0,
+      "high": 100.0,
+      "unit": "ng/mL",
+      "display_name": "Vitamin D (25-OH)",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 150.0
+    },
+    "female_25": {
+      "low": 30.0,
+      "high": 100.0,
+      "unit": "ng/mL",
+      "display_name": "Vitamin D (25-OH)",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 150.0
+    },
+    "male_50": {
+      "low": 30.0,
+      "high": 100.0,
+      "unit": "ng/mL",
+      "display_name": "Vitamin D (25-OH)",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 150.0
+    },
+    "female_50": {
+      "low": 30.0,
+      "high": 100.0,
+      "unit": "ng/mL",
+      "display_name": "Vitamin D (25-OH)",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 150.0
+    },
+    "male_70": {
+      "low": 30.0,
+      "high": 80.0,
+      "unit": "ng/mL",
+      "display_name": "Vitamin D (25-OH)",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 150.0
+    },
+    "female_70": {
+      "low": 30.0,
+      "high": 80.0,
+      "unit": "ng/mL",
+      "display_name": "Vitamin D (25-OH)",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 150.0
+    },
+    "male_10": {
+      "low": 20.0,
+      "high": 70.0,
+      "unit": "ng/mL",
+      "display_name": "Vitamin D (25-OH)",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 150.0
+    },
+    "female_10": {
+      "low": 20.0,
+      "high": 70.0,
+      "unit": "ng/mL",
+      "display_name": "Vitamin D (25-OH)",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 150.0
+    }
+  },
+  "vitamin_b12": {
+    "male_25": {
+      "low": 200.0,
+      "high": 900.0,
+      "unit": "pg/mL",
+      "display_name": "Vitamin B12",
+      "category": "vitamin",
+      "critical_low": 100.0
+    },
+    "female_25": {
+      "low": 200.0,
+      "high": 900.0,
+      "unit": "pg/mL",
+      "display_name": "Vitamin B12",
+      "category": "vitamin",
+      "critical_low": 100.0
+    },
+    "male_50": {
+      "low": 200.0,
+      "high": 900.0,
+      "unit": "pg/mL",
+      "display_name": "Vitamin B12",
+      "category": "vitamin",
+      "critical_low": 100.0
+    },
+    "female_50": {
+      "low": 200.0,
+      "high": 900.0,
+      "unit": "pg/mL",
+      "display_name": "Vitamin B12",
+      "category": "vitamin",
+      "critical_low": 100.0
+    },
+    "male_70": {
+      "low": 250.0,
+      "high": 900.0,
+      "unit": "pg/mL",
+      "display_name": "Vitamin B12",
+      "category": "vitamin",
+      "critical_low": 100.0
+    },
+    "female_70": {
+      "low": 250.0,
+      "high": 900.0,
+      "unit": "pg/mL",
+      "display_name": "Vitamin B12",
+      "category": "vitamin",
+      "critical_low": 100.0
+    },
+    "male_10": {
+      "low": 200.0,
+      "high": 900.0,
+      "unit": "pg/mL",
+      "display_name": "Vitamin B12",
+      "category": "vitamin",
+      "critical_low": 100.0
+    },
+    "female_10": {
+      "low": 200.0,
+      "high": 900.0,
+      "unit": "pg/mL",
+      "display_name": "Vitamin B12",
+      "category": "vitamin",
+      "critical_low": 100.0
+    }
+  },
+  "folate": {
+    "male_25": {
+      "low": 3.0,
+      "high": 17.0,
+      "unit": "ng/mL",
+      "display_name": "Folate",
+      "category": "vitamin",
+      "critical_low": 1.5
+    },
+    "female_25": {
+      "low": 3.0,
+      "high": 17.0,
+      "unit": "ng/mL",
+      "display_name": "Folate",
+      "category": "vitamin",
+      "critical_low": 1.5
+    },
+    "male_50": {
+      "low": 3.0,
+      "high": 17.0,
+      "unit": "ng/mL",
+      "display_name": "Folate",
+      "category": "vitamin",
+      "critical_low": 1.5
+    },
+    "female_50": {
+      "low": 3.0,
+      "high": 17.0,
+      "unit": "ng/mL",
+      "display_name": "Folate",
+      "category": "vitamin",
+      "critical_low": 1.5
+    },
+    "male_70": {
+      "low": 3.0,
+      "high": 17.0,
+      "unit": "ng/mL",
+      "display_name": "Folate",
+      "category": "vitamin",
+      "critical_low": 1.5
+    },
+    "female_70": {
+      "low": 3.0,
+      "high": 17.0,
+      "unit": "ng/mL",
+      "display_name": "Folate",
+      "category": "vitamin",
+      "critical_low": 1.5
+    },
+    "male_10": {
+      "low": 3.0,
+      "high": 17.0,
+      "unit": "ng/mL",
+      "display_name": "Folate",
+      "category": "vitamin",
+      "critical_low": 1.5
+    },
+    "female_10": {
+      "low": 3.0,
+      "high": 17.0,
+      "unit": "ng/mL",
+      "display_name": "Folate",
+      "category": "vitamin",
+      "critical_low": 1.5
+    }
+  },
+  "vitamin_a": {
+    "male_25": {
+      "low": 20.0,
+      "high": 80.0,
+      "unit": "ug/dL",
+      "display_name": "Vitamin A",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 120.0
+    },
+    "female_25": {
+      "low": 20.0,
+      "high": 80.0,
+      "unit": "ug/dL",
+      "display_name": "Vitamin A",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 120.0
+    },
+    "male_50": {
+      "low": 20.0,
+      "high": 80.0,
+      "unit": "ug/dL",
+      "display_name": "Vitamin A",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 120.0
+    },
+    "female_50": {
+      "low": 20.0,
+      "high": 80.0,
+      "unit": "ug/dL",
+      "display_name": "Vitamin A",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 120.0
+    },
+    "male_70": {
+      "low": 20.0,
+      "high": 80.0,
+      "unit": "ug/dL",
+      "display_name": "Vitamin A",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 120.0
+    },
+    "female_70": {
+      "low": 20.0,
+      "high": 80.0,
+      "unit": "ug/dL",
+      "display_name": "Vitamin A",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 120.0
+    },
+    "male_10": {
+      "low": 20.0,
+      "high": 80.0,
+      "unit": "ug/dL",
+      "display_name": "Vitamin A",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 120.0
+    },
+    "female_10": {
+      "low": 20.0,
+      "high": 80.0,
+      "unit": "ug/dL",
+      "display_name": "Vitamin A",
+      "category": "vitamin",
+      "critical_low": 10.0,
+      "critical_high": 120.0
+    }
+  },
+  "vitamin_e": {
+    "male_25": {
+      "low": 5.0,
+      "high": 18.0,
+      "unit": "mg/L",
+      "display_name": "Vitamin E",
+      "category": "vitamin",
+      "critical_low": 3.0,
+      "critical_high": 40.0
+    },
+    "female_25": {
+      "low": 5.0,
+      "high": 18.0,
+      "unit": "mg/L",
+      "display_name": "Vitamin E",
+      "category": "vitamin",
+      "critical_low": 3.0,
+      "critical_high": 40.0
+    },
+    "male_50": {
+      "low": 5.0,
+      "high": 18.0,
+      "unit": "mg/L",
+      "display_name": "Vitamin E",
+      "category": "vitamin",
+      "critical_low": 3.0,
+      "critical_high": 40.0
+    },
+    "female_50": {
+      "low": 5.0,
+      "high": 18.0,
+      "unit": "mg/L",
+      "display_name": "Vitamin E",
+      "category": "vitamin",
+      "critical_low": 3.0,
+      "critical_high": 40.0
+    },
+    "male_70": {
+      "low": 5.0,
+      "high": 18.0,
+      "unit": "mg/L",
+      "display_name": "Vitamin E",
+      "category": "vitamin",
+      "critical_low": 3.0,
+      "critical_high": 40.0
+    },
+    "female_70": {
+      "low": 5.0,
+      "high": 18.0,
+      "unit": "mg/L",
+      "display_name": "Vitamin E",
+      "category": "vitamin",
+      "critical_low": 3.0,
+      "critical_high": 40.0
+    },
+    "male_10": {
+      "low": 5.0,
+      "high": 18.0,
+      "unit": "mg/L",
+      "display_name": "Vitamin E",
+      "category": "vitamin",
+      "critical_low": 3.0,
+      "critical_high": 40.0
+    },
+    "female_10": {
+      "low": 5.0,
+      "high": 18.0,
+      "unit": "mg/L",
+      "display_name": "Vitamin E",
+      "category": "vitamin",
+      "critical_low": 3.0,
+      "critical_high": 40.0
+    }
+  },
+  "vitamin_k": {
+    "male_25": {
+      "low": 0.1,
+      "high": 2.2,
+      "unit": "ng/mL",
+      "display_name": "Vitamin K",
+      "category": "vitamin"
+    },
+    "female_25": {
+      "low": 0.1,
+      "high": 2.2,
+      "unit": "ng/mL",
+      "display_name": "Vitamin K",
+      "category": "vitamin"
+    },
+    "male_50": {
+      "low": 0.1,
+      "high": 2.2,
+      "unit": "ng/mL",
+      "display_name": "Vitamin K",
+      "category": "vitamin"
+    },
+    "female_50": {
+      "low": 0.1,
+      "high": 2.2,
+      "unit": "ng/mL",
+      "display_name": "Vitamin K",
+      "category": "vitamin"
+    },
+    "male_70": {
+      "low": 0.1,
+      "high": 2.2,
+      "unit": "ng/mL",
+      "display_name": "Vitamin K",
+      "category": "vitamin"
+    },
+    "female_70": {
+      "low": 0.1,
+      "high": 2.2,
+      "unit": "ng/mL",
+      "display_name": "Vitamin K",
+      "category": "vitamin"
+    },
+    "male_10": {
+      "low": 0.1,
+      "high": 2.2,
+      "unit": "ng/mL",
+      "display_name": "Vitamin K",
+      "category": "vitamin"
+    },
+    "female_10": {
+      "low": 0.1,
+      "high": 2.2,
+      "unit": "ng/mL",
+      "display_name": "Vitamin K",
+      "category": "vitamin"
+    }
+  },
+  "iron": {
+    "male_25": {
+      "low": 65.0,
+      "high": 175.0,
+      "unit": "ug/dL",
+      "display_name": "Serum Iron",
+      "category": "mineral",
+      "critical_low": 20.0,
+      "critical_high": 300.0
+    },
+    "female_25": {
+      "low": 50.0,
+      "high": 170.0,
+      "unit": "ug/dL",
+      "display_name": "Serum Iron",
+      "category": "mineral",
+      "critical_low": 20.0,
+      "critical_high": 300.0
+    },
+    "male_50": {
+      "low": 65.0,
+      "high": 175.0,
+      "unit": "ug/dL",
+      "display_name": "Serum Iron",
+      "category": "mineral",
+      "critical_low": 20.0,
+      "critical_high": 300.0
+    },
+    "female_50": {
+      "low": 50.0,
+      "high": 170.0,
+      "unit": "ug/dL",
+      "display_name": "Serum Iron",
+      "category": "mineral",
+      "critical_low": 20.0,
+      "critical_high": 300.0
+    },
+    "male_70": {
+      "low": 65.0,
+      "high": 175.0,
+      "unit": "ug/dL",
+      "display_name": "Serum Iron",
+      "category": "mineral",
+      "critical_low": 20.0,
+      "critical_high": 300.0
+    },
+    "female_70": {
+      "low": 50.0,
+      "high": 170.0,
+      "unit": "ug/dL",
+      "display_name": "Serum Iron",
+      "category": "mineral",
+      "critical_low": 20.0,
+      "critical_high": 300.0
+    },
+    "male_10": {
+      "low": 65.0,
+      "high": 175.0,
+      "unit": "ug/dL",
+      "display_name": "Serum Iron",
+      "category": "mineral",
+      "critical_low": 20.0,
+      "critical_high": 300.0
+    },
+    "female_10": {
+      "low": 50.0,
+      "high": 170.0,
+      "unit": "ug/dL",
+      "display_name": "Serum Iron",
+      "category": "mineral",
+      "critical_low": 20.0,
+      "critical_high": 300.0
+    }
+  },
+  "ferritin": {
+    "male_25": {
+      "low": 20.0,
+      "high": 300.0,
+      "unit": "ng/mL",
+      "display_name": "Ferritin",
+      "category": "mineral",
+      "critical_low": 5.0,
+      "critical_high": 1000.0
+    },
+    "female_25": {
+      "low": 12.0,
+      "high": 150.0,
+      "unit": "ng/mL",
+      "display_name": "Ferritin",
+      "category": "mineral",
+      "critical_low": 5.0,
+      "critical_high": 1000.0
+    },
+    "male_50": {
+      "low": 20.0,
+      "high": 300.0,
+      "unit": "ng/mL",
+      "display_name": "Ferritin",
+      "category": "mineral",
+      "critical_low": 5.0,
+      "critical_high": 1000.0
+    },
+    "female_50": {
+      "low": 12.0,
+      "high": 150.0,
+      "unit": "ng/mL",
+      "display_name": "Ferritin",
+      "category": "mineral",
+      "critical_low": 5.0,
+      "critical_high": 1000.0
+    },
+    "male_70": {
+      "low": 20.0,
+      "high": 350.0,
+      "unit": "ng/mL",
+      "display_name": "Ferritin",
+      "category": "mineral",
+      "critical_low": 5.0,
+      "critical_high": 1000.0
+    },
+    "female_70": {
+      "low": 20.0,
+      "high": 200.0,
+      "unit": "ng/mL",
+      "display_name": "Ferritin",
+      "category": "mineral",
+      "critical_low": 5.0,
+      "critical_high": 1000.0
+    },
+    "male_10": {
+      "low": 10.0,
+      "high": 120.0,
+      "unit": "ng/mL",
+      "display_name": "Ferritin",
+      "category": "mineral",
+      "critical_low": 5.0,
+      "critical_high": 1000.0
+    },
+    "female_10": {
+      "low": 10.0,
+      "high": 120.0,
+      "unit": "ng/mL",
+      "display_name": "Ferritin",
+      "category": "mineral",
+      "critical_low": 5.0,
+      "critical_high": 1000.0
+    }
+  },
+  "tibc": {
+    "male_25": {
+      "low": 250.0,
+      "high": 400.0,
+      "unit": "ug/dL",
+      "display_name": "TIBC",
+      "category": "mineral",
+      "critical_low": 150.0,
+      "critical_high": 600.0
+    },
+    "female_25": {
+      "low": 250.0,
+      "high": 400.0,
+      "unit": "ug/dL",
+      "display_name": "TIBC",
+      "category": "mineral",
+      "critical_low": 150.0,
+      "critical_high": 600.0
+    },
+    "male_50": {
+      "low": 250.0,
+      "high": 400.0,
+      "unit": "ug/dL",
+      "display_name": "TIBC",
+      "category": "mineral",
+      "critical_low": 150.0,
+      "critical_high": 600.0
+    },
+    "female_50": {
+      "low": 250.0,
+      "high": 400.0,
+      "unit": "ug/dL",
+      "display_name": "TIBC",
+      "category": "mineral",
+      "critical_low": 150.0,
+      "critical_high": 600.0
+    },
+    "male_70": {
+      "low": 250.0,
+      "high": 400.0,
+      "unit": "ug/dL",
+      "display_name": "TIBC",
+      "category": "mineral",
+      "critical_low": 150.0,
+      "critical_high": 600.0
+    },
+    "female_70": {
+      "low": 250.0,
+      "high": 400.0,
+      "unit": "ug/dL",
+      "display_name": "TIBC",
+      "category": "mineral",
+      "critical_low": 150.0,
+      "critical_high": 600.0
+    },
+    "male_10": {
+      "low": 250.0,
+      "high": 400.0,
+      "unit": "ug/dL",
+      "display_name": "TIBC",
+      "category": "mineral",
+      "critical_low": 150.0,
+      "critical_high": 600.0
+    },
+    "female_10": {
+      "low": 250.0,
+      "high": 400.0,
+      "unit": "ug/dL",
+      "display_name": "TIBC",
+      "category": "mineral",
+      "critical_low": 150.0,
+      "critical_high": 600.0
+    }
+  },
+  "transferrin_saturation": {
+    "male_25": {
+      "low": 20.0,
+      "high": 50.0,
+      "unit": "%",
+      "display_name": "Transferrin Saturation",
+      "category": "mineral",
+      "critical_low": 10.0,
+      "critical_high": 70.0
+    },
+    "female_25": {
+      "low": 15.0,
+      "high": 50.0,
+      "unit": "%",
+      "display_name": "Transferrin Saturation",
+      "category": "mineral",
+      "critical_low": 10.0,
+      "critical_high": 70.0
+    },
+    "male_50": {
+      "low": 20.0,
+      "high": 50.0,
+      "unit": "%",
+      "display_name": "Transferrin Saturation",
+      "category": "mineral",
+      "critical_low": 10.0,
+      "critical_high": 70.0
+    },
+    "female_50": {
+      "low": 15.0,
+      "high": 50.0,
+      "unit": "%",
+      "display_name": "Transferrin Saturation",
+      "category": "mineral",
+      "critical_low": 10.0,
+      "critical_high": 70.0
+    },
+    "male_70": {
+      "low": 20.0,
+      "high": 50.0,
+      "unit": "%",
+      "display_name": "Transferrin Saturation",
+      "category": "mineral",
+      "critical_low": 10.0,
+      "critical_high": 70.0
+    },
+    "female_70": {
+      "low": 15.0,
+      "high": 50.0,
+      "unit": "%",
+      "display_name": "Transferrin Saturation",
+      "category": "mineral",
+      "critical_low": 10.0,
+      "critical_high": 70.0
+    },
+    "male_10": {
+      "low": 20.0,
+      "high": 50.0,
+      "unit": "%",
+      "display_name": "Transferrin Saturation",
+      "category": "mineral",
+      "critical_low": 10.0,
+      "critical_high": 70.0
+    },
+    "female_10": {
+      "low": 15.0,
+      "high": 50.0,
+      "unit": "%",
+      "display_name": "Transferrin Saturation",
+      "category": "mineral",
+      "critical_low": 10.0,
+      "critical_high": 70.0
+    }
+  },
+  "calcium": {
+    "male_25": {
+      "low": 8.5,
+      "high": 10.5,
+      "unit": "mg/dL",
+      "display_name": "Calcium",
+      "category": "mineral",
+      "critical_low": 6.0,
+      "critical_high": 13.0
+    },
+    "female_25": {
+      "low": 8.5,
+      "high": 10.5,
+      "unit": "mg/dL",
+      "display_name": "Calcium",
+      "category": "mineral",
+      "critical_low": 6.0,
+      "critical_high": 13.0
+    },
+    "male_50": {
+      "low": 8.5,
+      "high": 10.5,
+      "unit": "mg/dL",
+      "display_name": "Calcium",
+      "category": "mineral",
+      "critical_low": 6.0,
+      "critical_high": 13.0
+    },
+    "female_50": {
+      "low": 8.5,
+      "high": 10.5,
+      "unit": "mg/dL",
+      "display_name": "Calcium",
+      "category": "mineral",
+      "critical_low": 6.0,
+      "critical_high": 13.0
+    },
+    "male_70": {
+      "low": 8.4,
+      "high": 10.2,
+      "unit": "mg/dL",
+      "display_name": "Calcium",
+      "category": "mineral",
+      "critical_low": 6.0,
+      "critical_high": 13.0
+    },
+    "female_70": {
+      "low": 8.4,
+      "high": 10.2,
+      "unit": "mg/dL",
+      "display_name": "Calcium",
+      "category": "mineral",
+      "critical_low": 6.0,
+      "critical_high": 13.0
+    },
+    "male_10": {
+      "low": 8.8,
+      "high": 10.8,
+      "unit": "mg/dL",
+      "display_name": "Calcium",
+      "category": "mineral",
+      "critical_low": 6.0,
+      "critical_high": 13.0
+    },
+    "female_10": {
+      "low": 8.8,
+      "high": 10.8,
+      "unit": "mg/dL",
+      "display_name": "Calcium",
+      "category": "mineral",
+      "critical_low": 6.0,
+      "critical_high": 13.0
+    }
+  },
+  "phosphorus": {
+    "male_25": {
+      "low": 2.5,
+      "high": 4.5,
+      "unit": "mg/dL",
+      "display_name": "Phosphorus",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "female_25": {
+      "low": 2.5,
+      "high": 4.5,
+      "unit": "mg/dL",
+      "display_name": "Phosphorus",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "male_50": {
+      "low": 2.5,
+      "high": 4.5,
+      "unit": "mg/dL",
+      "display_name": "Phosphorus",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "female_50": {
+      "low": 2.5,
+      "high": 4.5,
+      "unit": "mg/dL",
+      "display_name": "Phosphorus",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "male_70": {
+      "low": 2.5,
+      "high": 4.5,
+      "unit": "mg/dL",
+      "display_name": "Phosphorus",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "female_70": {
+      "low": 2.5,
+      "high": 4.5,
+      "unit": "mg/dL",
+      "display_name": "Phosphorus",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "male_10": {
+      "low": 3.7,
+      "high": 5.6,
+      "unit": "mg/dL",
+      "display_name": "Phosphorus",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    },
+    "female_10": {
+      "low": 3.7,
+      "high": 5.6,
+      "unit": "mg/dL",
+      "display_name": "Phosphorus",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 8.0
+    }
+  },
+  "magnesium": {
+    "male_25": {
+      "low": 1.7,
+      "high": 2.2,
+      "unit": "mg/dL",
+      "display_name": "Magnesium",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 4.0
+    },
+    "female_25": {
+      "low": 1.7,
+      "high": 2.2,
+      "unit": "mg/dL",
+      "display_name": "Magnesium",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 4.0
+    },
+    "male_50": {
+      "low": 1.7,
+      "high": 2.2,
+      "unit": "mg/dL",
+      "display_name": "Magnesium",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 4.0
+    },
+    "female_50": {
+      "low": 1.7,
+      "high": 2.2,
+      "unit": "mg/dL",
+      "display_name": "Magnesium",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 4.0
+    },
+    "male_70": {
+      "low": 1.7,
+      "high": 2.2,
+      "unit": "mg/dL",
+      "display_name": "Magnesium",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 4.0
+    },
+    "female_70": {
+      "low": 1.7,
+      "high": 2.2,
+      "unit": "mg/dL",
+      "display_name": "Magnesium",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 4.0
+    },
+    "male_10": {
+      "low": 1.7,
+      "high": 2.2,
+      "unit": "mg/dL",
+      "display_name": "Magnesium",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 4.0
+    },
+    "female_10": {
+      "low": 1.7,
+      "high": 2.2,
+      "unit": "mg/dL",
+      "display_name": "Magnesium",
+      "category": "mineral",
+      "critical_low": 1.0,
+      "critical_high": 4.0
+    }
+  },
+  "sodium": {
+    "male_25": {
+      "low": 136.0,
+      "high": 145.0,
+      "unit": "mEq/L",
+      "display_name": "Sodium",
+      "category": "mineral",
+      "critical_low": 120.0,
+      "critical_high": 160.0
+    },
+    "female_25": {
+      "low": 136.0,
+      "high": 145.0,
+      "unit": "mEq/L",
+      "display_name": "Sodium",
+      "category": "mineral",
+      "critical_low": 120.0,
+      "critical_high": 160.0
+    },
+    "male_50": {
+      "low": 136.0,
+      "high": 145.0,
+      "unit": "mEq/L",
+      "display_name": "Sodium",
+      "category": "mineral",
+      "critical_low": 120.0,
+      "critical_high": 160.0
+    },
+    "female_50": {
+      "low": 136.0,
+      "high": 145.0,
+      "unit": "mEq/L",
+      "display_name": "Sodium",
+      "category": "mineral",
+      "critical_low": 120.0,
+      "critical_high": 160.0
+    },
+    "male_70": {
+      "low": 136.0,
+      "high": 145.0,
+      "unit": "mEq/L",
+      "display_name": "Sodium",
+      "category": "mineral",
+      "critical_low": 120.0,
+      "critical_high": 160.0
+    },
+    "female_70": {
+      "low": 136.0,
+      "high": 145.0,
+      "unit": "mEq/L",
+      "display_name": "Sodium",
+      "category": "mineral",
+      "critical_low": 120.0,
+      "critical_high": 160.0
+    },
+    "male_10": {
+      "low": 135.0,
+      "high": 145.0,
+      "unit": "mEq/L",
+      "display_name": "Sodium",
+      "category": "mineral",
+      "critical_low": 120.0,
+      "critical_high": 160.0
+    },
+    "female_10": {
+      "low": 135.0,
+      "high": 145.0,
+      "unit": "mEq/L",
+      "display_name": "Sodium",
+      "category": "mineral",
+      "critical_low": 120.0,
+      "critical_high": 160.0
+    }
+  },
+  "potassium": {
+    "male_25": {
+      "low": 3.5,
+      "high": 5.0,
+      "unit": "mEq/L",
+      "display_name": "Potassium",
+      "category": "mineral",
+      "critical_low": 2.5,
+      "critical_high": 6.5
+    },
+    "female_25": {
+      "low": 3.5,
+      "high": 5.0,
+      "unit": "mEq/L",
+      "display_name": "Potassium",
+      "category": "mineral",
+      "critical_low": 2.5,
+      "critical_high": 6.5
+    },
+    "male_50": {
+      "low": 3.5,
+      "high": 5.0,
+      "unit": "mEq/L",
+      "display_name": "Potassium",
+      "category": "mineral",
+      "critical_low": 2.5,
+      "critical_high": 6.5
+    },
+    "female_50": {
+      "low": 3.5,
+      "high": 5.0,
+      "unit": "mEq/L",
+      "display_name": "Potassium",
+      "category": "mineral",
+      "critical_low": 2.5,
+      "critical_high": 6.5
+    },
+    "male_70": {
+      "low": 3.5,
+      "high": 5.0,
+      "unit": "mEq/L",
+      "display_name": "Potassium",
+      "category": "mineral",
+      "critical_low": 2.5,
+      "critical_high": 6.5
+    },
+    "female_70": {
+      "low": 3.5,
+      "high": 5.0,
+      "unit": "mEq/L",
+      "display_name": "Potassium",
+      "category": "mineral",
+      "critical_low": 2.5,
+      "critical_high": 6.5
+    },
+    "male_10": {
+      "low": 3.4,
+      "high": 4.7,
+      "unit": "mEq/L",
+      "display_name": "Potassium",
+      "category": "mineral",
+      "critical_low": 2.5,
+      "critical_high": 6.5
+    },
+    "female_10": {
+      "low": 3.4,
+      "high": 4.7,
+      "unit": "mEq/L",
+      "display_name": "Potassium",
+      "category": "mineral",
+      "critical_low": 2.5,
+      "critical_high": 6.5
+    }
+  },
+  "chloride": {
+    "male_25": {
+      "low": 98.0,
+      "high": 106.0,
+      "unit": "mEq/L",
+      "display_name": "Chloride",
+      "category": "mineral",
+      "critical_low": 80.0,
+      "critical_high": 120.0
+    },
+    "female_25": {
+      "low": 98.0,
+      "high": 106.0,
+      "unit": "mEq/L",
+      "display_name": "Chloride",
+      "category": "mineral",
+      "critical_low": 80.0,
+      "critical_high": 120.0
+    },
+    "male_50": {
+      "low": 98.0,
+      "high": 106.0,
+      "unit": "mEq/L",
+      "display_name": "Chloride",
+      "category": "mineral",
+      "critical_low": 80.0,
+      "critical_high": 120.0
+    },
+    "female_50": {
+      "low": 98.0,
+      "high": 106.0,
+      "unit": "mEq/L",
+      "display_name": "Chloride",
+      "category": "mineral",
+      "critical_low": 80.0,
+      "critical_high": 120.0
+    },
+    "male_70": {
+      "low": 98.0,
+      "high": 106.0,
+      "unit": "mEq/L",
+      "display_name": "Chloride",
+      "category": "mineral",
+      "critical_low": 80.0,
+      "critical_high": 120.0
+    },
+    "female_70": {
+      "low": 98.0,
+      "high": 106.0,
+      "unit": "mEq/L",
+      "display_name": "Chloride",
+      "category": "mineral",
+      "critical_low": 80.0,
+      "critical_high": 120.0
+    },
+    "male_10": {
+      "low": 98.0,
+      "high": 106.0,
+      "unit": "mEq/L",
+      "display_name": "Chloride",
+      "category": "mineral",
+      "critical_low": 80.0,
+      "critical_high": 120.0
+    },
+    "female_10": {
+      "low": 98.0,
+      "high": 106.0,
+      "unit": "mEq/L",
+      "display_name": "Chloride",
+      "category": "mineral",
+      "critical_low": 80.0,
+      "critical_high": 120.0
+    }
+  },
+  "zinc": {
+    "male_25": {
+      "low": 75.0,
+      "high": 120.0,
+      "unit": "ug/dL",
+      "display_name": "Zinc",
+      "category": "mineral",
+      "critical_low": 40.0
+    },
+    "female_25": {
+      "low": 65.0,
+      "high": 115.0,
+      "unit": "ug/dL",
+      "display_name": "Zinc",
+      "category": "mineral",
+      "critical_low": 40.0
+    },
+    "male_50": {
+      "low": 75.0,
+      "high": 120.0,
+      "unit": "ug/dL",
+      "display_name": "Zinc",
+      "category": "mineral",
+      "critical_low": 40.0
+    },
+    "female_50": {
+      "low": 65.0,
+      "high": 115.0,
+      "unit": "ug/dL",
+      "display_name": "Zinc",
+      "category": "mineral",
+      "critical_low": 40.0
+    },
+    "male_70": {
+      "low": 75.0,
+      "high": 120.0,
+      "unit": "ug/dL",
+      "display_name": "Zinc",
+      "category": "mineral",
+      "critical_low": 40.0
+    },
+    "female_70": {
+      "low": 65.0,
+      "high": 115.0,
+      "unit": "ug/dL",
+      "display_name": "Zinc",
+      "category": "mineral",
+      "critical_low": 40.0
+    },
+    "male_10": {
+      "low": 75.0,
+      "high": 120.0,
+      "unit": "ug/dL",
+      "display_name": "Zinc",
+      "category": "mineral",
+      "critical_low": 40.0
+    },
+    "female_10": {
+      "low": 65.0,
+      "high": 115.0,
+      "unit": "ug/dL",
+      "display_name": "Zinc",
+      "category": "mineral",
+      "critical_low": 40.0
+    }
+  },
+  "copper": {
+    "male_25": {
+      "low": 70.0,
+      "high": 140.0,
+      "unit": "ug/dL",
+      "display_name": "Copper",
+      "category": "mineral",
+      "critical_low": 30.0,
+      "critical_high": 250.0
+    },
+    "female_25": {
+      "low": 80.0,
+      "high": 155.0,
+      "unit": "ug/dL",
+      "display_name": "Copper",
+      "category": "mineral",
+      "critical_low": 30.0,
+      "critical_high": 250.0
+    },
+    "male_50": {
+      "low": 70.0,
+      "high": 140.0,
+      "unit": "ug/dL",
+      "display_name": "Copper",
+      "category": "mineral",
+      "critical_low": 30.0,
+      "critical_high": 250.0
+    },
+    "female_50": {
+      "low": 80.0,
+      "high": 155.0,
+      "unit": "ug/dL",
+      "display_name": "Copper",
+      "category": "mineral",
+      "critical_low": 30.0,
+      "critical_high": 250.0
+    },
+    "male_70": {
+      "low": 70.0,
+      "high": 140.0,
+      "unit": "ug/dL",
+      "display_name": "Copper",
+      "category": "mineral",
+      "critical_low": 30.0,
+      "critical_high": 250.0
+    },
+    "female_70": {
+      "low": 80.0,
+      "high": 155.0,
+      "unit": "ug/dL",
+      "display_name": "Copper",
+      "category": "mineral",
+      "critical_low": 30.0,
+      "critical_high": 250.0
+    },
+    "male_10": {
+      "low": 70.0,
+      "high": 140.0,
+      "unit": "ug/dL",
+      "display_name": "Copper",
+      "category": "mineral",
+      "critical_low": 30.0,
+      "critical_high": 250.0
+    },
+    "female_10": {
+      "low": 80.0,
+      "high": 155.0,
+      "unit": "ug/dL",
+      "display_name": "Copper",
+      "category": "mineral",
+      "critical_low": 30.0,
+      "critical_high": 250.0
+    }
+  },
+  "crp": {
+    "male_25": {
+      "low": 0.0,
+      "high": 3.0,
+      "unit": "mg/L",
+      "display_name": "CRP",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "female_25": {
+      "low": 0.0,
+      "high": 3.0,
+      "unit": "mg/L",
+      "display_name": "CRP",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "male_50": {
+      "low": 0.0,
+      "high": 3.0,
+      "unit": "mg/L",
+      "display_name": "CRP",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "female_50": {
+      "low": 0.0,
+      "high": 3.0,
+      "unit": "mg/L",
+      "display_name": "CRP",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "male_70": {
+      "low": 0.0,
+      "high": 3.0,
+      "unit": "mg/L",
+      "display_name": "CRP",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "female_70": {
+      "low": 0.0,
+      "high": 3.0,
+      "unit": "mg/L",
+      "display_name": "CRP",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "male_10": {
+      "low": 0.0,
+      "high": 3.0,
+      "unit": "mg/L",
+      "display_name": "CRP",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "female_10": {
+      "low": 0.0,
+      "high": 3.0,
+      "unit": "mg/L",
+      "display_name": "CRP",
+      "category": "inflammation",
+      "critical_high": 100.0
+    }
+  },
+  "esr": {
+    "male_25": {
+      "low": 0.0,
+      "high": 15.0,
+      "unit": "mm/hr",
+      "display_name": "ESR",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "female_25": {
+      "low": 0.0,
+      "high": 20.0,
+      "unit": "mm/hr",
+      "display_name": "ESR",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "male_50": {
+      "low": 0.0,
+      "high": 15.0,
+      "unit": "mm/hr",
+      "display_name": "ESR",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "female_50": {
+      "low": 0.0,
+      "high": 20.0,
+      "unit": "mm/hr",
+      "display_name": "ESR",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "male_70": {
+      "low": 0.0,
+      "high": 20.0,
+      "unit": "mm/hr",
+      "display_name": "ESR",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "female_70": {
+      "low": 0.0,
+      "high": 30.0,
+      "unit": "mm/hr",
+      "display_name": "ESR",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "male_10": {
+      "low": 0.0,
+      "high": 10.0,
+      "unit": "mm/hr",
+      "display_name": "ESR",
+      "category": "inflammation",
+      "critical_high": 100.0
+    },
+    "female_10": {
+      "low": 0.0,
+      "high": 15.0,
+      "unit": "mm/hr",
+      "display_name": "ESR",
+      "category": "inflammation",
+      "critical_high": 100.0
+    }
+  },
+  "homocysteine": {
+    "male_25": {
+      "low": 5.0,
+      "high": 15.0,
+      "unit": "umol/L",
+      "display_name": "Homocysteine",
+      "category": "inflammation",
+      "critical_high": 50.0
+    },
+    "female_25": {
+      "low": 5.0,
+      "high": 15.0,
+      "unit": "umol/L",
+      "display_name": "Homocysteine",
+      "category": "inflammation",
+      "critical_high": 50.0
+    },
+    "male_50": {
+      "low": 5.0,
+      "high": 15.0,
+      "unit": "umol/L",
+      "display_name": "Homocysteine",
+      "category": "inflammation",
+      "critical_high": 50.0
+    },
+    "female_50": {
+      "low": 5.0,
+      "high": 15.0,
+      "unit": "umol/L",
+      "display_name": "Homocysteine",
+      "category": "inflammation",
+      "critical_high": 50.0
+    },
+    "male_70": {
+      "low": 5.0,
+      "high": 20.0,
+      "unit": "umol/L",
+      "display_name": "Homocysteine",
+      "category": "inflammation",
+      "critical_high": 50.0
+    },
+    "female_70": {
+      "low": 5.0,
+      "high": 20.0,
+      "unit": "umol/L",
+      "display_name": "Homocysteine",
+      "category": "inflammation",
+      "critical_high": 50.0
+    },
+    "male_10": {
+      "low": 4.0,
+      "high": 12.0,
+      "unit": "umol/L",
+      "display_name": "Homocysteine",
+      "category": "inflammation",
+      "critical_high": 50.0
+    },
+    "female_10": {
+      "low": 4.0,
+      "high": 12.0,
+      "unit": "umol/L",
+      "display_name": "Homocysteine",
+      "category": "inflammation",
+      "critical_high": 50.0
+    }
+  },
+  "troponin": {
+    "male_25": {
+      "low": 0.0,
+      "high": 0.04,
+      "unit": "ng/mL",
+      "display_name": "Troponin I",
+      "category": "cardiac",
+      "critical_high": 0.4
+    },
+    "female_25": {
+      "low": 0.0,
+      "high": 0.04,
+      "unit": "ng/mL",
+      "display_name": "Troponin I",
+      "category": "cardiac",
+      "critical_high": 0.4
+    },
+    "male_50": {
+      "low": 0.0,
+      "high": 0.04,
+      "unit": "ng/mL",
+      "display_name": "Troponin I",
+      "category": "cardiac",
+      "critical_high": 0.4
+    },
+    "female_50": {
+      "low": 0.0,
+      "high": 0.04,
+      "unit": "ng/mL",
+      "display_name": "Troponin I",
+      "category": "cardiac",
+      "critical_high": 0.4
+    },
+    "male_70": {
+      "low": 0.0,
+      "high": 0.04,
+      "unit": "ng/mL",
+      "display_name": "Troponin I",
+      "category": "cardiac",
+      "critical_high": 0.4
+    },
+    "female_70": {
+      "low": 0.0,
+      "high": 0.04,
+      "unit": "ng/mL",
+      "display_name": "Troponin I",
+      "category": "cardiac",
+      "critical_high": 0.4
+    },
+    "male_10": {
+      "low": 0.0,
+      "high": 0.04,
+      "unit": "ng/mL",
+      "display_name": "Troponin I",
+      "category": "cardiac",
+      "critical_high": 0.4
+    },
+    "female_10": {
+      "low": 0.0,
+      "high": 0.04,
+      "unit": "ng/mL",
+      "display_name": "Troponin I",
+      "category": "cardiac",
+      "critical_high": 0.4
+    }
+  },
+  "bnp": {
+    "male_25": {
+      "low": 0.0,
+      "high": 100.0,
+      "unit": "pg/mL",
+      "display_name": "BNP",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "female_25": {
+      "low": 0.0,
+      "high": 100.0,
+      "unit": "pg/mL",
+      "display_name": "BNP",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "male_50": {
+      "low": 0.0,
+      "high": 100.0,
+      "unit": "pg/mL",
+      "display_name": "BNP",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "female_50": {
+      "low": 0.0,
+      "high": 100.0,
+      "unit": "pg/mL",
+      "display_name": "BNP",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "male_70": {
+      "low": 0.0,
+      "high": 200.0,
+      "unit": "pg/mL",
+      "display_name": "BNP",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "female_70": {
+      "low": 0.0,
+      "high": 200.0,
+      "unit": "pg/mL",
+      "display_name": "BNP",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "male_10": {
+      "low": 0.0,
+      "high": 100.0,
+      "unit": "pg/mL",
+      "display_name": "BNP",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "female_10": {
+      "low": 0.0,
+      "high": 100.0,
+      "unit": "pg/mL",
+      "display_name": "BNP",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    }
+  },
+  "ldh": {
+    "male_25": {
+      "low": 120.0,
+      "high": 246.0,
+      "unit": "U/L",
+      "display_name": "LDH",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "female_25": {
+      "low": 120.0,
+      "high": 246.0,
+      "unit": "U/L",
+      "display_name": "LDH",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "male_50": {
+      "low": 120.0,
+      "high": 246.0,
+      "unit": "U/L",
+      "display_name": "LDH",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "female_50": {
+      "low": 120.0,
+      "high": 246.0,
+      "unit": "U/L",
+      "display_name": "LDH",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "male_70": {
+      "low": 120.0,
+      "high": 246.0,
+      "unit": "U/L",
+      "display_name": "LDH",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "female_70": {
+      "low": 120.0,
+      "high": 246.0,
+      "unit": "U/L",
+      "display_name": "LDH",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "male_10": {
+      "low": 120.0,
+      "high": 300.0,
+      "unit": "U/L",
+      "display_name": "LDH",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    },
+    "female_10": {
+      "low": 120.0,
+      "high": 300.0,
+      "unit": "U/L",
+      "display_name": "LDH",
+      "category": "cardiac",
+      "critical_high": 1000.0
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "East Asia": [
+    "China",
+    "Japan",
+    "South Korea"
+  ],
+  "South Asia": [
+    "India",
+    "Pakistan",
+    "Bangladesh",
+    "Sri Lanka",
+    "Nepal"
+  ],
+  "Southeast Asia": [
+    "Thailand",
+    "Vietnam",
+    "Indonesia"
+  ],
+  "Central Asia": [],
+  "Western Asia": [
+    "Turkey",
+    "Iran",
+    "Saudi Arabia"
+  ],
+  "Northern Europe": [
+    "United Kingdom"
+  ],
+  "Western Europe": [
+    "France",
+    "Germany"
+  ],
+  "Eastern Europe": [],
+  "Southern Europe": [
+    "Italy",
+    "Spain",
+    "Greece"
+  ],
+  "North Africa": [],
+  "Sub-Saharan Africa": [
+    "Nigeria",
+    "Ethiopia",
+    "Kenya",
+    "South Africa"
+  ],
+  "North America": [
+    "United States"
+  ],
+  "Central America": [
+    "Mexico"
+  ],
+  "South America": [
+    "Brazil",
+    "Argentina",
+    "Peru"
+  ],
+  "Oceania": [
+    "Australia",
+    "New Zealand"
+  ]
+}

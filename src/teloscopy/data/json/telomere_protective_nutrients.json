@@ -1,0 +1,56 @@
+[
+  {
+    "nutrient": "omega_3",
+    "effect": "Reduces oxidative telomere shortening",
+    "priority": "critical",
+    "confidence": 0.88
+  },
+  {
+    "nutrient": "folate",
+    "effect": "Supports DNA methylation and repair",
+    "priority": "high",
+    "confidence": 0.82
+  },
+  {
+    "nutrient": "vitamin_d",
+    "effect": "Modulates telomerase activity",
+    "priority": "high",
+    "confidence": 0.78
+  },
+  {
+    "nutrient": "vitamin_c",
+    "effect": "Antioxidant protection of telomeric DNA",
+    "priority": "moderate",
+    "confidence": 0.75
+  },
+  {
+    "nutrient": "vitamin_e",
+    "effect": "Lipid peroxidation protection near telomeres",
+    "priority": "moderate",
+    "confidence": 0.72
+  },
+  {
+    "nutrient": "polyphenols",
+    "effect": "Upregulate telomerase via NF-\u03baB pathway modulation",
+    "priority": "moderate",
+    "confidence": 0.7
+  },
+  {
+    "nutrient": "zinc",
+    "effect": "Required co-factor for telomerase",
+    "priority": "moderate",
+    "confidence": 0.73
+  },
+  {
+    "nutrient": "magnesium",
+    "effect": "DNA stability and repair enzyme cofactor",
+    "priority": "moderate",
+    "confidence": 0.68
+  },
+  {
+    "nutrient": "anti_inflammatory",
+    "effect": "Chronic inflammation accelerates telomere attrition",
+    "priority": "high",
+    "confidence": 0.85
+  }
+]

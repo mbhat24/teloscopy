@@ -1,0 +1,265 @@
+[
+  {
+    "pattern": "fatty\\s*liver\\s*(grade\\s*[iI]{1,3}|grade\\s*[123]|mild|moderate|severe)?",
+    "organ": "liver",
+    "finding_key": "fatty_liver",
+    "severity_hint": "auto",
+    "dietary_impact": "Fat deposits in the liver require reduced saturated fat, sugar, and refined carbs.",
+    "foods_to_avoid": [
+      "alcohol",
+      "fried foods",
+      "sugary drinks",
+      "white bread",
+      "high-fructose corn syrup",
+      "fast food",
+      "processed snacks"
+    ],
+    "foods_to_increase": [
+      "coffee (moderate)",
+      "fatty fish",
+      "walnuts",
+      "olive oil",
+      "leafy greens",
+      "berries",
+      "oats",
+      "green tea"
+    ]
+  },
+  {
+    "pattern": "hepatomegaly|enlarged\\s*liver",
+    "organ": "liver",
+    "finding_key": "hepatomegaly",
+    "severity_hint": "moderate",
+    "dietary_impact": "Enlarged liver indicates hepatic stress; light, liver-friendly diet recommended.",
+    "foods_to_avoid": [
+      "alcohol",
+      "fried foods",
+      "high-fat foods",
+      "processed meats",
+      "excess sugar"
+    ],
+    "foods_to_increase": [
+      "cruciferous vegetables",
+      "garlic",
+      "turmeric",
+      "lemon water",
+      "beetroot",
+      "green tea",
+      "olive oil"
+    ]
+  },
+  {
+    "pattern": "kidney\\s*stone[s]?|renal\\s*(calcul[ui]|stone[s]?|lithiasis)",
+    "organ": "kidney",
+    "finding_key": "kidney_stones",
+    "severity_hint": "moderate",
+    "dietary_impact": "Kidney stones require increased hydration and oxalate/sodium restriction.",
+    "foods_to_avoid": [
+      "spinach (excess)",
+      "rhubarb",
+      "beet greens",
+      "nuts (excess)",
+      "chocolate (excess)",
+      "excess salt",
+      "animal protein (excess)",
+      "colas"
+    ],
+    "foods_to_increase": [
+      "water (3+ litres)",
+      "lemon juice",
+      "citrus fruits",
+      "low-fat dairy",
+      "melons",
+      "cucumbers"
+    ]
+  },
+  {
+    "pattern": "gallstone[s]?|cholelithiasis",
+    "organ": "gallbladder",
+    "finding_key": "gallstones",
+    "severity_hint": "moderate",
+    "dietary_impact": "Gallstones require a low-fat diet to reduce biliary stress.",
+    "foods_to_avoid": [
+      "fried foods",
+      "full-fat dairy",
+      "butter",
+      "cream",
+      "processed meats",
+      "high-fat baked goods",
+      "eggs (excess)"
+    ],
+    "foods_to_increase": [
+      "fruits",
+      "vegetables",
+      "whole grains",
+      "lean protein",
+      "low-fat dairy",
+      "lentils",
+      "olive oil (small amounts)"
+    ]
+  },
+  {
+    "pattern": "splenomegaly|enlarged\\s*spleen",
+    "organ": "spleen",
+    "finding_key": "splenomegaly",
+    "severity_hint": "moderate",
+    "dietary_impact": "Enlarged spleen warrants an anti-inflammatory diet with immune support.",
+    "foods_to_avoid": [
+      "alcohol",
+      "processed foods",
+      "fried foods"
+    ],
+    "foods_to_increase": [
+      "leafy greens",
+      "berries",
+      "turmeric",
+      "ginger",
+      "garlic",
+      "citrus fruits",
+      "lean protein"
+    ]
+  },
+  {
+    "pattern": "pancreatic\\s*cyst|pancreas\\s*cyst",
+    "organ": "pancreas",
+    "finding_key": "pancreatic_cyst",
+    "severity_hint": "mild",
+    "dietary_impact": "Pancreatic cyst may require a low-fat, easily digestible diet.",
+    "foods_to_avoid": [
+      "alcohol",
+      "high-fat foods",
+      "fried foods",
+      "processed meats",
+      "spicy foods (if symptomatic)"
+    ],
+    "foods_to_increase": [
+      "lean protein",
+      "whole grains",
+      "fruits",
+      "vegetables",
+      "low-fat dairy"
+    ]
+  },
+  {
+    "pattern": "pancreatitis",
+    "organ": "pancreas",
+    "finding_key": "pancreatitis",
+    "severity_hint": "severe",
+    "dietary_impact": "Inflamed pancreas requires strict low-fat diet to prevent flares.",
+    "foods_to_avoid": [
+      "alcohol",
+      "high-fat foods",
+      "fried foods",
+      "red meat",
+      "butter",
+      "cream",
+      "full-fat dairy",
+      "sugary drinks"
+    ],
+    "foods_to_increase": [
+      "lean chicken breast",
+      "fish (baked)",
+      "rice",
+      "toast",
+      "bananas",
+      "applesauce",
+      "clear broths",
+      "cooked vegetables"
+    ]
+  },
+  {
+    "pattern": "renal\\s*cyst|kidney\\s*cyst",
+    "organ": "kidney",
+    "finding_key": "renal_cyst",
+    "severity_hint": "mild",
+    "dietary_impact": "Simple renal cysts generally benign; maintain kidney-friendly diet as precaution.",
+    "foods_to_avoid": [
+      "excess sodium",
+      "excess protein",
+      "processed foods"
+    ],
+    "foods_to_increase": [
+      "water (adequate)",
+      "fruits",
+      "vegetables",
+      "whole grains"
+    ]
+  },
+  {
+    "pattern": "cirrhosis|hepatic\\s*cirrhosis",
+    "organ": "liver",
+    "finding_key": "cirrhosis",
+    "severity_hint": "severe",
+    "dietary_impact": "Liver cirrhosis demands strict dietary management with sodium and protein control.",
+    "foods_to_avoid": [
+      "alcohol",
+      "raw shellfish",
+      "excess sodium",
+      "fried foods",
+      "processed meats",
+      "excess protein"
+    ],
+    "foods_to_increase": [
+      "lean protein (moderate)",
+      "fruits",
+      "vegetables",
+      "whole grains",
+      "low-sodium foods"
+    ]
+  },
+  {
+    "pattern": "ascites",
+    "organ": "liver",
+    "finding_key": "ascites",
+    "severity_hint": "severe",
+    "dietary_impact": "Fluid accumulation requires strict sodium restriction and fluid management.",
+    "foods_to_avoid": [
+      "salt",
+      "canned foods",
+      "processed foods",
+      "pickles",
+      "soy sauce",
+      "cheese"
+    ],
+    "foods_to_increase": [
+      "fresh fruits",
+      "fresh vegetables",
+      "herbs for seasoning",
+      "lean protein"
+    ]
+  },
+  {
+    "pattern": "liver\\s*hemangioma",
+    "organ": "liver",
+    "finding_key": "liver_hemangioma",
+    "severity_hint": "mild",
+    "dietary_impact": "Liver hemangioma is usually benign; maintain general liver health.",
+    "foods_to_avoid": [
+      "excess alcohol"
+    ],
+    "foods_to_increase": [
+      "balanced diet",
+      "leafy greens",
+      "fruits"
+    ]
+  },
+  {
+    "pattern": "bile\\s*duct\\s*(dilat|obstruct)",
+    "organ": "gallbladder",
+    "finding_key": "bile_duct_dilation",
+    "severity_hint": "moderate",
+    "dietary_impact": "Bile duct dilation may impair fat digestion; low-fat diet recommended.",
+    "foods_to_avoid": [
+      "high-fat foods",
+      "fried foods",
+      "full-fat dairy",
+      "butter"
+    ],
+    "foods_to_increase": [
+      "fruits",
+      "vegetables",
+      "lean protein",
+      "whole grains"
+    ]
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "fatty_liver": [
+    "Eliminate alcohol and reduce sugar / refined carbohydrate intake for liver recovery"
+  ],
+  "hepatomegaly": [
+    "Follow a light, low-fat, liver-friendly diet"
+  ],
+  "kidney_stones": [
+    "Drink at least 3 litres of water daily",
+    "Limit oxalate-rich foods and excess sodium",
+    "Include lemon juice or citrus for urinary citrate"
+  ],
+  "gallstones": [
+    "Follow a low-fat diet; avoid large, fatty meals"
+  ],
+  "splenomegaly": [
+    "Follow an anti-inflammatory diet with immune-supportive nutrients"
+  ],
+  "pancreatic_cyst": [
+    "Maintain a low-fat, easily digestible diet"
+  ],
+  "pancreatitis": [
+    "Strict low-fat diet; avoid alcohol completely",
+    "Eat small, frequent meals rather than large ones"
+  ],
+  "cirrhosis": [
+    "Limit sodium strictly; moderate protein as advised",
+    "Avoid alcohol and raw shellfish"
+  ],
+  "ascites": [
+    "Strict sodium restriction (<2000 mg/day) and fluid management"
+  ]
+}

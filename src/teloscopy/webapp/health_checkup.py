@@ -11,9 +11,11 @@ It is **not** a substitute for clinical diagnosis or medical advice.
 
 from __future__ import annotations
 
+import json
 import logging
 import re
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 from ..nutrition.diet_advisor import DietAdvisor, DietaryRecommendation
@@ -31,6 +33,19 @@ from .models import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# JSON data directory and loader
+# ---------------------------------------------------------------------------
+
+_DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "json"
+
+
+def _load_json(name: str) -> Any:
+    """Load and return parsed JSON from *_DATA_DIR / name*."""
+    with open(_DATA_DIR / name, "r", encoding="utf-8") as fh:
+        return json.load(fh)
 
 
 # ---------------------------------------------------------------------------
@@ -60,104 +75,36 @@ class RefRange:
 
 # Default adult reference ranges.  Sex-specific overrides follow.
 _BASE_BLOOD_RANGES: dict[str, RefRange] = {
-    # CBC
-    "hemoglobin": RefRange(12.0, 17.5, "g/dL", "Hemoglobin", "CBC"),
-    "rbc_count": RefRange(4.0, 5.9, "M cells/mcL", "RBC Count", "CBC"),
-    "wbc_count": RefRange(4.0, 11.0, "K cells/mcL", "WBC Count", "CBC", critical_low=2.0, critical_high=30.0),
-    "platelet_count": RefRange(150.0, 400.0, "K/mcL", "Platelet Count", "CBC", critical_low=50.0, critical_high=1000.0),
-    "hematocrit": RefRange(36.0, 54.0, "%", "Hematocrit", "CBC"),
-    "mcv": RefRange(80.0, 100.0, "fL", "MCV", "CBC"),
-    "mch": RefRange(27.0, 33.0, "pg", "MCH", "CBC"),
-    "mchc": RefRange(31.5, 35.5, "g/dL", "MCHC", "CBC"),
-    "rdw": RefRange(11.5, 14.5, "%", "RDW", "CBC"),
-    "neutrophils": RefRange(40.0, 70.0, "%", "Neutrophils", "CBC"),
-    "lymphocytes": RefRange(20.0, 45.0, "%", "Lymphocytes", "CBC"),
-    "monocytes": RefRange(2.0, 10.0, "%", "Monocytes", "CBC"),
-    "eosinophils": RefRange(1.0, 6.0, "%", "Eosinophils", "CBC"),
-    "basophils": RefRange(0.0, 2.0, "%", "Basophils", "CBC"),
-    # Lipid Panel
-    "total_cholesterol": RefRange(0.0, 200.0, "mg/dL", "Total Cholesterol", "Lipid Panel"),
-    "ldl_cholesterol": RefRange(0.0, 100.0, "mg/dL", "LDL Cholesterol", "Lipid Panel"),
-    "hdl_cholesterol": RefRange(40.0, 100.0, "mg/dL", "HDL Cholesterol", "Lipid Panel"),
-    "triglycerides": RefRange(0.0, 150.0, "mg/dL", "Triglycerides", "Lipid Panel"),
-    "vldl": RefRange(5.0, 40.0, "mg/dL", "VLDL", "Lipid Panel"),
-    "total_cholesterol_hdl_ratio": RefRange(0.0, 5.0, "ratio", "TC/HDL Ratio", "Lipid Panel"),
-    # LFT
-    "sgot_ast": RefRange(5.0, 40.0, "U/L", "SGOT (AST)", "Liver Function"),
-    "sgpt_alt": RefRange(7.0, 56.0, "U/L", "SGPT (ALT)", "Liver Function"),
-    "alkaline_phosphatase": RefRange(44.0, 147.0, "U/L", "Alkaline Phosphatase", "Liver Function"),
-    "total_bilirubin": RefRange(0.1, 1.2, "mg/dL", "Total Bilirubin", "Liver Function"),
-    "direct_bilirubin": RefRange(0.0, 0.3, "mg/dL", "Direct Bilirubin", "Liver Function"),
-    "ggt": RefRange(0.0, 45.0, "U/L", "GGT", "Liver Function"),
-    "total_protein": RefRange(6.0, 8.3, "g/dL", "Total Protein", "Liver Function"),
-    "albumin": RefRange(3.5, 5.5, "g/dL", "Albumin", "Liver Function"),
-    "globulin": RefRange(2.0, 3.5, "g/dL", "Globulin", "Liver Function"),
-    "ag_ratio": RefRange(1.0, 2.5, "ratio", "A/G Ratio", "Liver Function"),
-    # KFT
-    "blood_urea": RefRange(7.0, 20.0, "mg/dL", "Blood Urea", "Kidney Function"),
-    "serum_creatinine": RefRange(0.6, 1.2, "mg/dL", "Serum Creatinine", "Kidney Function"),
-    "uric_acid": RefRange(3.0, 7.0, "mg/dL", "Uric Acid", "Kidney Function"),
-    "bun": RefRange(7.0, 20.0, "mg/dL", "BUN", "Kidney Function"),
-    "egfr": RefRange(90.0, 200.0, "mL/min/1.73m²", "eGFR", "Kidney Function"),
-    # Diabetes
-    "fasting_glucose": RefRange(70.0, 100.0, "mg/dL", "Fasting Glucose", "Diabetes Panel", critical_low=40.0, critical_high=400.0),
-    "hba1c": RefRange(4.0, 5.7, "%", "HbA1c", "Diabetes Panel"),
-    "postprandial_glucose": RefRange(70.0, 140.0, "mg/dL", "Postprandial Glucose", "Diabetes Panel"),
-    "fasting_insulin": RefRange(2.0, 25.0, "µIU/mL", "Fasting Insulin", "Diabetes Panel"),
-    # Thyroid
-    "tsh": RefRange(0.4, 4.0, "µIU/mL", "TSH", "Thyroid"),
-    "t3": RefRange(80.0, 200.0, "ng/dL", "T3", "Thyroid"),
-    "t4": RefRange(5.0, 12.0, "µg/dL", "T4", "Thyroid"),
-    "free_t3": RefRange(2.0, 4.4, "pg/mL", "Free T3", "Thyroid"),
-    "free_t4": RefRange(0.8, 1.8, "ng/dL", "Free T4", "Thyroid"),
-    # Vitamins
-    "vitamin_d": RefRange(30.0, 100.0, "ng/mL", "Vitamin D", "Vitamins"),
-    "vitamin_b12": RefRange(200.0, 900.0, "pg/mL", "Vitamin B12", "Vitamins"),
-    "folate": RefRange(3.0, 20.0, "ng/mL", "Folate", "Vitamins"),
-    # Minerals / Electrolytes
-    "iron": RefRange(60.0, 170.0, "µg/dL", "Iron", "Minerals"),
-    "ferritin": RefRange(12.0, 300.0, "ng/mL", "Ferritin", "Minerals"),
-    "tibc": RefRange(250.0, 400.0, "µg/dL", "TIBC", "Minerals"),
-    "transferrin_saturation": RefRange(20.0, 50.0, "%", "Transferrin Saturation", "Minerals"),
-    "calcium": RefRange(8.5, 10.5, "mg/dL", "Calcium", "Minerals", critical_low=6.0, critical_high=13.0),
-    "phosphorus": RefRange(2.5, 4.5, "mg/dL", "Phosphorus", "Minerals"),
-    "magnesium": RefRange(1.7, 2.2, "mg/dL", "Magnesium", "Minerals"),
-    "sodium": RefRange(136.0, 145.0, "mEq/L", "Sodium", "Electrolytes", critical_low=120.0, critical_high=160.0),
-    "potassium": RefRange(3.5, 5.0, "mEq/L", "Potassium", "Electrolytes", critical_low=2.5, critical_high=6.5),
-    "chloride": RefRange(98.0, 106.0, "mEq/L", "Chloride", "Electrolytes"),
-    # Inflammation
-    "crp": RefRange(0.0, 3.0, "mg/L", "C-Reactive Protein", "Inflammation"),
-    "esr": RefRange(0.0, 20.0, "mm/hr", "ESR", "Inflammation"),
-    "homocysteine": RefRange(5.0, 15.0, "µmol/L", "Homocysteine", "Inflammation"),
+    k: RefRange(
+        low=v["low"],
+        high=v["high"],
+        unit=v["unit"],
+        display_name=v["display_name"],
+        category=v["category"],
+        critical_low=v.get("critical_low"),
+        critical_high=v.get("critical_high"),
+    )
+    for k, v in _load_json("blood_reference_ranges.json").items()
 }
 
 # Sex-specific overrides for certain parameters.
 _SEX_OVERRIDES: dict[str, dict[str, tuple[float, float]]] = {
-    "hemoglobin": {"male": (13.0, 17.5), "female": (12.0, 15.5)},
-    "hematocrit": {"male": (38.0, 54.0), "female": (36.0, 48.0)},
-    "rbc_count": {"male": (4.5, 5.9), "female": (4.0, 5.5)},
-    "ferritin": {"male": (20.0, 500.0), "female": (12.0, 150.0)},
-    "iron": {"male": (65.0, 175.0), "female": (50.0, 170.0)},
-    "uric_acid": {"male": (3.5, 7.2), "female": (2.5, 6.0)},
-    "serum_creatinine": {"male": (0.7, 1.3), "female": (0.6, 1.1)},
-    "esr": {"male": (0.0, 15.0), "female": (0.0, 20.0)},
+    param: {sex: (vals["low"], vals["high"]) for sex, vals in sexes.items()}
+    for param, sexes in _load_json("sex_specific_overrides.json").items()
 }
 
 # Urine reference ranges.
 _URINE_RANGES: dict[str, RefRange] = {
-    "ph": RefRange(4.5, 8.0, "pH", "Urine pH", "Urine"),
-    "specific_gravity": RefRange(1.005, 1.030, "", "Specific Gravity", "Urine"),
-    "protein": RefRange(0.0, 14.0, "mg/dL", "Urine Protein", "Urine"),
-    "glucose": RefRange(0.0, 0.0, "mg/dL", "Urine Glucose", "Urine"),
-    "ketones": RefRange(0.0, 0.0, "mg/dL", "Urine Ketones", "Urine"),
-    "bilirubin": RefRange(0.0, 0.0, "mg/dL", "Urine Bilirubin", "Urine"),
-    "urobilinogen": RefRange(0.2, 1.0, "mg/dL", "Urobilinogen", "Urine"),
-    "blood": RefRange(0.0, 0.0, "RBC/HPF", "Urine Blood", "Urine"),
-    "nitrites": RefRange(0.0, 0.0, "", "Nitrites", "Urine"),
-    "leukocytes": RefRange(0.0, 5.0, "WBC/HPF", "Leukocytes", "Urine"),
-    "rbc_urine": RefRange(0.0, 3.0, "cells/HPF", "Urine RBC", "Urine"),
-    "wbc_urine": RefRange(0.0, 5.0, "cells/HPF", "Urine WBC", "Urine"),
-    "epithelial_cells": RefRange(0.0, 5.0, "cells/HPF", "Epithelial Cells", "Urine"),
+    k: RefRange(
+        low=v["low"],
+        high=v["high"],
+        unit=v["unit"],
+        display_name=v["display_name"],
+        category=v["category"],
+        critical_low=v.get("critical_low"),
+        critical_high=v.get("critical_high"),
+    )
+    for k, v in _load_json("urine_reference_ranges.json").items()
 }
 
 
@@ -205,134 +152,7 @@ class _ConditionRule:
 
 
 _CONDITION_RULES: list[_ConditionRule] = [
-    _ConditionRule(
-        "prediabetes", "Pre-Diabetes", "_check_prediabetes",
-        "Reduce simple carbohydrates, increase fiber and chromium",
-        nutrients_to_increase=["Fiber", "Chromium", "Magnesium"],
-        nutrients_to_decrease=["Simple sugars", "Refined carbs"],
-        foods_to_increase=["whole grains", "leafy greens", "bitter gourd", "fenugreek", "cinnamon"],
-        foods_to_avoid=["white rice (large portions)", "sugary drinks", "fruit juices", "white bread"],
-    ),
-    _ConditionRule(
-        "diabetes", "Diabetes", "_check_diabetes",
-        "Strict glycemic control; high fiber, low GI diet essential",
-        nutrients_to_increase=["Fiber", "Chromium", "Alpha-lipoic acid", "Magnesium"],
-        nutrients_to_decrease=["Simple sugars", "Refined carbs", "Saturated fat"],
-        foods_to_increase=["oats", "barley", "bitter gourd", "fenugreek seeds", "nuts", "legumes"],
-        foods_to_avoid=["white rice", "potatoes (fried)", "sugary drinks", "sweets", "white bread"],
-    ),
-    _ConditionRule(
-        "dyslipidemia", "Dyslipidemia", "_check_dyslipidemia",
-        "Reduce saturated/trans fats, increase omega-3 and soluble fiber",
-        nutrients_to_increase=["Omega-3", "Soluble fiber", "Plant sterols"],
-        nutrients_to_decrease=["Saturated fat", "Trans fat", "Dietary cholesterol"],
-        foods_to_increase=["fatty fish", "flaxseeds", "walnuts", "oats", "olive oil", "almonds"],
-        foods_to_avoid=["fried food", "red meat (excess)", "butter", "full-fat dairy", "coconut oil"],
-    ),
-    _ConditionRule(
-        "liver_stress", "Liver Stress", "_check_liver_stress",
-        "Support liver detox pathways; avoid alcohol and excess fats",
-        nutrients_to_increase=["N-acetyl cysteine", "B-vitamins", "Vitamin E"],
-        nutrients_to_decrease=["Alcohol", "Refined sugar", "Saturated fat"],
-        foods_to_increase=["cruciferous vegetables", "turmeric", "green tea", "beets", "garlic"],
-        foods_to_avoid=["alcohol", "processed foods", "fried foods", "high-sugar foods"],
-    ),
-    _ConditionRule(
-        "fatty_liver", "Fatty Liver", "_check_fatty_liver",
-        "Weight management and low-glycemic diet to reduce liver fat",
-        nutrients_to_increase=["Omega-3", "Vitamin E", "Choline"],
-        nutrients_to_decrease=["Fructose", "Saturated fat", "Refined carbs"],
-        foods_to_increase=["fatty fish", "olive oil", "coffee", "walnuts", "avocado"],
-        foods_to_avoid=["sugary drinks", "fruit juice", "white bread", "fried foods", "alcohol"],
-    ),
-    _ConditionRule(
-        "kidney_impairment", "Kidney Impairment", "_check_kidney_impairment",
-        "Moderate protein intake, limit sodium and potassium if advanced",
-        nutrients_to_increase=["Omega-3"],
-        nutrients_to_decrease=["Sodium", "Excess protein", "Phosphorus"],
-        foods_to_increase=["cabbage", "bell peppers", "blueberries", "olive oil", "egg whites"],
-        foods_to_avoid=["processed meats", "excess salt", "bananas (if potassium high)", "cola"],
-    ),
-    _ConditionRule(
-        "hyperuricemia", "Hyperuricemia / Gout Risk", "_check_hyperuricemia",
-        "Low-purine diet, increase hydration and vitamin C",
-        nutrients_to_increase=["Vitamin C", "Water"],
-        nutrients_to_decrease=["Purines", "Fructose", "Alcohol"],
-        foods_to_increase=["cherries", "low-fat dairy", "vegetables", "whole grains"],
-        foods_to_avoid=["organ meats", "shellfish", "beer", "sugary drinks", "red meat"],
-    ),
-    _ConditionRule(
-        "hypothyroidism", "Hypothyroidism", "_check_hypothyroidism",
-        "Ensure adequate iodine and selenium; limit goitrogens",
-        nutrients_to_increase=["Iodine", "Selenium", "Zinc"],
-        nutrients_to_decrease=["Goitrogens (raw cruciferous)"],
-        foods_to_increase=["iodized salt", "seafood", "brazil nuts", "eggs", "dairy"],
-        foods_to_avoid=["raw cabbage (large amounts)", "raw broccoli (excess)", "soy (excess)"],
-    ),
-    _ConditionRule(
-        "hyperthyroidism", "Hyperthyroidism", "_check_hyperthyroidism",
-        "Increase calorie and calcium intake; limit iodine",
-        nutrients_to_increase=["Calcium", "Vitamin D", "Calories"],
-        nutrients_to_decrease=["Iodine", "Caffeine"],
-        foods_to_increase=["cruciferous vegetables", "dairy", "whole grains", "lean protein"],
-        foods_to_avoid=["seaweed", "iodized salt (excess)", "caffeine"],
-    ),
-    _ConditionRule(
-        "anemia", "Anemia", "_check_anemia",
-        "Increase iron, B12, and folate; enhance iron absorption with vitamin C",
-        nutrients_to_increase=["Iron", "Vitamin B12", "Folate", "Vitamin C"],
-        nutrients_to_decrease=[],
-        foods_to_increase=["spinach", "lentils", "red meat", "liver", "beetroot", "citrus fruits"],
-        foods_to_avoid=["tea/coffee with meals (inhibits iron)", "excess calcium with iron-rich meals"],
-    ),
-    _ConditionRule(
-        "vitamin_d_deficiency", "Vitamin D Deficiency", "_check_vitamin_d_deficiency",
-        "Supplement vitamin D; increase sun exposure and dietary sources",
-        nutrients_to_increase=["Vitamin D", "Calcium"],
-        nutrients_to_decrease=[],
-        foods_to_increase=["fatty fish", "egg yolks", "fortified milk", "mushrooms (UV-exposed)"],
-        foods_to_avoid=[],
-    ),
-    _ConditionRule(
-        "vitamin_b12_deficiency", "Vitamin B12 Deficiency", "_check_b12_deficiency",
-        "Increase B12 sources; supplementation likely needed if vegetarian",
-        nutrients_to_increase=["Vitamin B12"],
-        nutrients_to_decrease=[],
-        foods_to_increase=["meat", "fish", "eggs", "dairy", "fortified cereals"],
-        foods_to_avoid=[],
-    ),
-    _ConditionRule(
-        "iron_deficiency", "Iron Deficiency", "_check_iron_deficiency",
-        "Increase heme and non-heme iron sources with vitamin C for absorption",
-        nutrients_to_increase=["Iron", "Vitamin C"],
-        nutrients_to_decrease=[],
-        foods_to_increase=["red meat", "spinach", "lentils", "tofu", "pumpkin seeds", "citrus"],
-        foods_to_avoid=["tea/coffee with iron-rich meals", "excess dairy with iron meals"],
-    ),
-    _ConditionRule(
-        "inflammation", "Chronic Inflammation", "_check_inflammation",
-        "Anti-inflammatory diet: increase omega-3, antioxidants; reduce processed foods",
-        nutrients_to_increase=["Omega-3", "Curcumin", "Antioxidants"],
-        nutrients_to_decrease=["Omega-6 (excess)", "Trans fat", "Refined sugar"],
-        foods_to_increase=["fatty fish", "turmeric", "berries", "leafy greens", "olive oil", "nuts"],
-        foods_to_avoid=["processed foods", "fried foods", "refined sugar", "red meat (excess)"],
-    ),
-    _ConditionRule(
-        "electrolyte_imbalance", "Electrolyte Imbalance", "_check_electrolyte_imbalance",
-        "Correct electrolyte levels through targeted food and hydration",
-        nutrients_to_increase=[],
-        nutrients_to_decrease=[],
-        foods_to_increase=["bananas", "coconut water", "leafy greens", "avocado"],
-        foods_to_avoid=["excess salt", "excess caffeine"],
-    ),
-    _ConditionRule(
-        "proteinuria", "Proteinuria", "_check_proteinuria",
-        "May indicate kidney stress; moderate protein, reduce sodium",
-        nutrients_to_increase=["Omega-3"],
-        nutrients_to_decrease=["Sodium", "Excess protein"],
-        foods_to_increase=["omega-3 rich fish", "berries", "olive oil"],
-        foods_to_avoid=["excess salt", "processed meats", "very high protein diets"],
-    ),
+    _ConditionRule(**entry) for entry in _load_json("condition_rules.json")
 ]
 
 
@@ -341,54 +161,8 @@ _CONDITION_RULES: list[_ConditionRule] = [
 # ---------------------------------------------------------------------------
 
 _ABDOMEN_PATTERNS: list[tuple[str, dict[str, Any]]] = [
-    (r"(?:grade\s*[1I]|mild)\s*fatty\s*liver", {
-        "organ": "liver", "finding": "Grade 1 fatty liver", "severity": "mild",
-        "dietary_impact": "Low-glycemic diet, reduce refined carbs and alcohol",
-        "foods_to_avoid": ["alcohol", "sugary drinks", "fried foods", "white bread"],
-        "foods_to_increase": ["coffee", "olive oil", "fatty fish", "walnuts", "green tea"],
-    }),
-    (r"(?:grade\s*[2II]|moderate)\s*fatty\s*liver", {
-        "organ": "liver", "finding": "Grade 2 fatty liver", "severity": "moderate",
-        "dietary_impact": "Mediterranean diet strongly recommended; weight loss needed",
-        "foods_to_avoid": ["alcohol", "sugar", "fried foods", "processed meats", "refined grains"],
-        "foods_to_increase": ["vegetables", "olive oil", "fish", "nuts", "whole grains"],
-    }),
-    (r"(?:grade\s*[3III]|severe)\s*fatty\s*liver", {
-        "organ": "liver", "finding": "Grade 3 fatty liver", "severity": "severe",
-        "dietary_impact": "Aggressive dietary intervention required; consult hepatologist",
-        "foods_to_avoid": ["alcohol", "all refined sugars", "fried foods", "processed foods"],
-        "foods_to_increase": ["vegetables", "lean protein", "olive oil", "whole grains"],
-    }),
-    (r"hepatomegaly", {
-        "organ": "liver", "finding": "Hepatomegaly (enlarged liver)", "severity": "moderate",
-        "dietary_impact": "Reduce liver workload; avoid hepatotoxins and excess fat",
-        "foods_to_avoid": ["alcohol", "fried foods", "processed foods"],
-        "foods_to_increase": ["turmeric", "garlic", "leafy greens", "beetroot"],
-    }),
-    (r"(?:kidney|renal)\s*(?:stone|calcul)", {
-        "organ": "kidney", "finding": "Kidney stones/calculi", "severity": "moderate",
-        "dietary_impact": "Increase fluid intake; adjust oxalate/calcium based on stone type",
-        "foods_to_avoid": ["excess salt", "excess animal protein", "spinach (if oxalate)", "cola"],
-        "foods_to_increase": ["water", "citrus fruits (lemon)", "low-oxalate vegetables"],
-    }),
-    (r"(?:gall|biliary)\s*(?:stone|calcul|sludge)", {
-        "organ": "gallbladder", "finding": "Gallstones/sludge", "severity": "moderate",
-        "dietary_impact": "Low-fat diet; avoid rapid weight loss; increase fiber",
-        "foods_to_avoid": ["fried foods", "high-fat dairy", "fatty meats", "eggs (excess)"],
-        "foods_to_increase": ["vegetables", "fruits", "whole grains", "lean protein"],
-    }),
-    (r"splenomegaly", {
-        "organ": "spleen", "finding": "Splenomegaly (enlarged spleen)", "severity": "moderate",
-        "dietary_impact": "Anti-inflammatory diet; ensure adequate nutrition",
-        "foods_to_avoid": ["processed foods", "excess alcohol"],
-        "foods_to_increase": ["leafy greens", "lean protein", "citrus fruits"],
-    }),
-    (r"pancrea\w*\s*(?:calcif|inflam|enlarg)", {
-        "organ": "pancreas", "finding": "Pancreatic abnormality", "severity": "moderate",
-        "dietary_impact": "Low-fat diet; small frequent meals; avoid alcohol",
-        "foods_to_avoid": ["alcohol", "fried foods", "high-fat foods", "red meat"],
-        "foods_to_increase": ["lean protein", "cooked vegetables", "whole grains"],
-    }),
+    (entry["pattern"], {k: v for k, v in entry.items() if k != "pattern"})
+    for entry in _load_json("abdomen_patterns.json")
 ]
 
 
@@ -396,19 +170,7 @@ _ABDOMEN_PATTERNS: list[tuple[str, dict[str, Any]]] = [
 # Health score weights by category
 # ---------------------------------------------------------------------------
 
-_CATEGORY_WEIGHTS: dict[str, float] = {
-    "CBC": 0.12,
-    "Lipid Panel": 0.18,
-    "Liver Function": 0.14,
-    "Kidney Function": 0.14,
-    "Diabetes Panel": 0.16,
-    "Thyroid": 0.08,
-    "Vitamins": 0.06,
-    "Minerals": 0.04,
-    "Electrolytes": 0.04,
-    "Inflammation": 0.08,
-    "Urine": 0.06,
-}
+_CATEGORY_WEIGHTS: dict[str, float] = _load_json("category_weights.json")
 
 
 # ---------------------------------------------------------------------------
@@ -1074,24 +836,7 @@ class HealthCheckupAnalyzer:
 
     def _conditions_to_risks(self, conditions: list[str]) -> list[str]:
         """Map detected conditions to risk names the DietAdvisor understands."""
-        mapping: dict[str, str] = {
-            "prediabetes": "Type 2 diabetes",
-            "diabetes": "Type 2 diabetes",
-            "dyslipidemia": "Coronary artery disease",
-            "liver_stress": "Liver disease",
-            "fatty_liver": "Non-alcoholic fatty liver disease",
-            "kidney_impairment": "Chronic kidney disease",
-            "hyperuricemia": "Gout",
-            "hypothyroidism": "Hypothyroidism",
-            "hyperthyroidism": "Hyperthyroidism",
-            "anemia": "Iron-deficiency anemia",
-            "vitamin_d_deficiency": "Osteoporosis",
-            "vitamin_b12_deficiency": "Megaloblastic anemia",
-            "iron_deficiency": "Iron-deficiency anemia",
-            "inflammation": "Chronic inflammation",
-            "electrolyte_imbalance": "Electrolyte disorder",
-            "proteinuria": "Chronic kidney disease",
-        }
+        mapping: dict[str, str] = _load_json("condition_risk_mapping.json")
         risks = []
         for cond in conditions:
             risk = mapping.get(cond)

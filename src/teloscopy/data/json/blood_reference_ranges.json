@@ -1,0 +1,434 @@
+{
+  "hemoglobin": {
+    "low": 12.0,
+    "high": 17.5,
+    "unit": "g/dL",
+    "display_name": "Hemoglobin",
+    "category": "CBC"
+  },
+  "rbc_count": {
+    "low": 4.0,
+    "high": 5.9,
+    "unit": "M cells/mcL",
+    "display_name": "RBC Count",
+    "category": "CBC"
+  },
+  "wbc_count": {
+    "low": 4.0,
+    "high": 11.0,
+    "unit": "K cells/mcL",
+    "display_name": "WBC Count",
+    "category": "CBC",
+    "critical_low": 2.0,
+    "critical_high": 30.0
+  },
+  "platelet_count": {
+    "low": 150.0,
+    "high": 400.0,
+    "unit": "K/mcL",
+    "display_name": "Platelet Count",
+    "category": "CBC",
+    "critical_low": 50.0,
+    "critical_high": 1000.0
+  },
+  "hematocrit": {
+    "low": 36.0,
+    "high": 54.0,
+    "unit": "%",
+    "display_name": "Hematocrit",
+    "category": "CBC"
+  },
+  "mcv": {
+    "low": 80.0,
+    "high": 100.0,
+    "unit": "fL",
+    "display_name": "MCV",
+    "category": "CBC"
+  },
+  "mch": {
+    "low": 27.0,
+    "high": 33.0,
+    "unit": "pg",
+    "display_name": "MCH",
+    "category": "CBC"
+  },
+  "mchc": {
+    "low": 31.5,
+    "high": 35.5,
+    "unit": "g/dL",
+    "display_name": "MCHC",
+    "category": "CBC"
+  },
+  "rdw": {
+    "low": 11.5,
+    "high": 14.5,
+    "unit": "%",
+    "display_name": "RDW",
+    "category": "CBC"
+  },
+  "neutrophils": {
+    "low": 40.0,
+    "high": 70.0,
+    "unit": "%",
+    "display_name": "Neutrophils",
+    "category": "CBC"
+  },
+  "lymphocytes": {
+    "low": 20.0,
+    "high": 45.0,
+    "unit": "%",
+    "display_name": "Lymphocytes",
+    "category": "CBC"
+  },
+  "monocytes": {
+    "low": 2.0,
+    "high": 10.0,
+    "unit": "%",
+    "display_name": "Monocytes",
+    "category": "CBC"
+  },
+  "eosinophils": {
+    "low": 1.0,
+    "high": 6.0,
+    "unit": "%",
+    "display_name": "Eosinophils",
+    "category": "CBC"
+  },
+  "basophils": {
+    "low": 0.0,
+    "high": 2.0,
+    "unit": "%",
+    "display_name": "Basophils",
+    "category": "CBC"
+  },
+  "total_cholesterol": {
+    "low": 0.0,
+    "high": 200.0,
+    "unit": "mg/dL",
+    "display_name": "Total Cholesterol",
+    "category": "Lipid Panel"
+  },
+  "ldl_cholesterol": {
+    "low": 0.0,
+    "high": 100.0,
+    "unit": "mg/dL",
+    "display_name": "LDL Cholesterol",
+    "category": "Lipid Panel"
+  },
+  "hdl_cholesterol": {
+    "low": 40.0,
+    "high": 100.0,
+    "unit": "mg/dL",
+    "display_name": "HDL Cholesterol",
+    "category": "Lipid Panel"
+  },
+  "triglycerides": {
+    "low": 0.0,
+    "high": 150.0,
+    "unit": "mg/dL",
+    "display_name": "Triglycerides",
+    "category": "Lipid Panel"
+  },
+  "vldl": {
+    "low": 5.0,
+    "high": 40.0,
+    "unit": "mg/dL",
+    "display_name": "VLDL",
+    "category": "Lipid Panel"
+  },
+  "total_cholesterol_hdl_ratio": {
+    "low": 0.0,
+    "high": 5.0,
+    "unit": "ratio",
+    "display_name": "TC/HDL Ratio",
+    "category": "Lipid Panel"
+  },
+  "sgot_ast": {
+    "low": 5.0,
+    "high": 40.0,
+    "unit": "U/L",
+    "display_name": "SGOT (AST)",
+    "category": "Liver Function"
+  },
+  "sgpt_alt": {
+    "low": 7.0,
+    "high": 56.0,
+    "unit": "U/L",
+    "display_name": "SGPT (ALT)",
+    "category": "Liver Function"
+  },
+  "alkaline_phosphatase": {
+    "low": 44.0,
+    "high": 147.0,
+    "unit": "U/L",
+    "display_name": "Alkaline Phosphatase",
+    "category": "Liver Function"
+  },
+  "total_bilirubin": {
+    "low": 0.1,
+    "high": 1.2,
+    "unit": "mg/dL",
+    "display_name": "Total Bilirubin",
+    "category": "Liver Function"
+  },
+  "direct_bilirubin": {
+    "low": 0.0,
+    "high": 0.3,
+    "unit": "mg/dL",
+    "display_name": "Direct Bilirubin",
+    "category": "Liver Function"
+  },
+  "ggt": {
+    "low": 0.0,
+    "high": 45.0,
+    "unit": "U/L",
+    "display_name": "GGT",
+    "category": "Liver Function"
+  },
+  "total_protein": {
+    "low": 6.0,
+    "high": 8.3,
+    "unit": "g/dL",
+    "display_name": "Total Protein",
+    "category": "Liver Function"
+  },
+  "albumin": {
+    "low": 3.5,
+    "high": 5.5,
+    "unit": "g/dL",
+    "display_name": "Albumin",
+    "category": "Liver Function"
+  },
+  "globulin": {
+    "low": 2.0,
+    "high": 3.5,
+    "unit": "g/dL",
+    "display_name": "Globulin",
+    "category": "Liver Function"
+  },
+  "ag_ratio": {
+    "low": 1.0,
+    "high": 2.5,
+    "unit": "ratio",
+    "display_name": "A/G Ratio",
+    "category": "Liver Function"
+  },
+  "blood_urea": {
+    "low": 7.0,
+    "high": 20.0,
+    "unit": "mg/dL",
+    "display_name": "Blood Urea",
+    "category": "Kidney Function"
+  },
+  "serum_creatinine": {
+    "low": 0.6,
+    "high": 1.2,
+    "unit": "mg/dL",
+    "display_name": "Serum Creatinine",
+    "category": "Kidney Function"
+  },
+  "uric_acid": {
+    "low": 3.0,
+    "high": 7.0,
+    "unit": "mg/dL",
+    "display_name": "Uric Acid",
+    "category": "Kidney Function"
+  },
+  "bun": {
+    "low": 7.0,
+    "high": 20.0,
+    "unit": "mg/dL",
+    "display_name": "BUN",
+    "category": "Kidney Function"
+  },
+  "egfr": {
+    "low": 90.0,
+    "high": 200.0,
+    "unit": "mL/min/1.73m\u00b2",
+    "display_name": "eGFR",
+    "category": "Kidney Function"
+  },
+  "fasting_glucose": {
+    "low": 70.0,
+    "high": 100.0,
+    "unit": "mg/dL",
+    "display_name": "Fasting Glucose",
+    "category": "Diabetes Panel",
+    "critical_low": 40.0,
+    "critical_high": 400.0
+  },
+  "hba1c": {
+    "low": 4.0,
+    "high": 5.7,
+    "unit": "%",
+    "display_name": "HbA1c",
+    "category": "Diabetes Panel"
+  },
+  "postprandial_glucose": {
+    "low": 70.0,
+    "high": 140.0,
+    "unit": "mg/dL",
+    "display_name": "Postprandial Glucose",
+    "category": "Diabetes Panel"
+  },
+  "fasting_insulin": {
+    "low": 2.0,
+    "high": 25.0,
+    "unit": "\u00b5IU/mL",
+    "display_name": "Fasting Insulin",
+    "category": "Diabetes Panel"
+  },
+  "tsh": {
+    "low": 0.4,
+    "high": 4.0,
+    "unit": "\u00b5IU/mL",
+    "display_name": "TSH",
+    "category": "Thyroid"
+  },
+  "t3": {
+    "low": 80.0,
+    "high": 200.0,
+    "unit": "ng/dL",
+    "display_name": "T3",
+    "category": "Thyroid"
+  },
+  "t4": {
+    "low": 5.0,
+    "high": 12.0,
+    "unit": "\u00b5g/dL",
+    "display_name": "T4",
+    "category": "Thyroid"
+  },
+  "free_t3": {
+    "low": 2.0,
+    "high": 4.4,
+    "unit": "pg/mL",
+    "display_name": "Free T3",
+    "category": "Thyroid"
+  },
+  "free_t4": {
+    "low": 0.8,
+    "high": 1.8,
+    "unit": "ng/dL",
+    "display_name": "Free T4",
+    "category": "Thyroid"
+  },
+  "vitamin_d": {
+    "low": 30.0,
+    "high": 100.0,
+    "unit": "ng/mL",
+    "display_name": "Vitamin D",
+    "category": "Vitamins"
+  },
+  "vitamin_b12": {
+    "low": 200.0,
+    "high": 900.0,
+    "unit": "pg/mL",
+    "display_name": "Vitamin B12",
+    "category": "Vitamins"
+  },
+  "folate": {
+    "low": 3.0,
+    "high": 20.0,
+    "unit": "ng/mL",
+    "display_name": "Folate",
+    "category": "Vitamins"
+  },
+  "iron": {
+    "low": 60.0,
+    "high": 170.0,
+    "unit": "\u00b5g/dL",
+    "display_name": "Iron",
+    "category": "Minerals"
+  },
+  "ferritin": {
+    "low": 12.0,
+    "high": 300.0,
+    "unit": "ng/mL",
+    "display_name": "Ferritin",
+    "category": "Minerals"
+  },
+  "tibc": {
+    "low": 250.0,
+    "high": 400.0,
+    "unit": "\u00b5g/dL",
+    "display_name": "TIBC",
+    "category": "Minerals"
+  },
+  "transferrin_saturation": {
+    "low": 20.0,
+    "high": 50.0,
+    "unit": "%",
+    "display_name": "Transferrin Saturation",
+    "category": "Minerals"
+  },
+  "calcium": {
+    "low": 8.5,
+    "high": 10.5,
+    "unit": "mg/dL",
+    "display_name": "Calcium",
+    "category": "Minerals",
+    "critical_low": 6.0,
+    "critical_high": 13.0
+  },
+  "phosphorus": {
+    "low": 2.5,
+    "high": 4.5,
+    "unit": "mg/dL",
+    "display_name": "Phosphorus",
+    "category": "Minerals"
+  },
+  "magnesium": {
+    "low": 1.7,
+    "high": 2.2,
+    "unit": "mg/dL",
+    "display_name": "Magnesium",
+    "category": "Minerals"
+  },
+  "sodium": {
+    "low": 136.0,
+    "high": 145.0,
+    "unit": "mEq/L",
+    "display_name": "Sodium",
+    "category": "Electrolytes",
+    "critical_low": 120.0,
+    "critical_high": 160.0
+  },
+  "potassium": {
+    "low": 3.5,
+    "high": 5.0,
+    "unit": "mEq/L",
+    "display_name": "Potassium",
+    "category": "Electrolytes",
+    "critical_low": 2.5,
+    "critical_high": 6.5
+  },
+  "chloride": {
+    "low": 98.0,
+    "high": 106.0,
+    "unit": "mEq/L",
+    "display_name": "Chloride",
+    "category": "Electrolytes"
+  },
+  "crp": {
+    "low": 0.0,
+    "high": 3.0,
+    "unit": "mg/L",
+    "display_name": "C-Reactive Protein",
+    "category": "Inflammation"
+  },
+  "esr": {
+    "low": 0.0,
+    "high": 20.0,
+    "unit": "mm/hr",
+    "display_name": "ESR",
+    "category": "Inflammation"
+  },
+  "homocysteine": {
+    "low": 5.0,
+    "high": 15.0,
+    "unit": "\u00b5mol/L",
+    "display_name": "Homocysteine",
+    "category": "Inflammation"
+  }
+}

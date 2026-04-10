@@ -1,0 +1,59 @@
+{
+  "India": [
+    "Andhra Pradesh",
+    "Assam",
+    "Goa",
+    "Gujarat",
+    "Himachal Pradesh",
+    "Karnataka",
+    "Kerala",
+    "Maharashtra",
+    "Odisha",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Uttar Pradesh",
+    "West Bengal"
+  ],
+  "China": [
+    "Fujian",
+    "Guangdong",
+    "Hunan",
+    "Shandong",
+    "Sichuan",
+    "Yunnan"
+  ],
+  "Japan": [
+    "Hokkaido",
+    "Kyoto",
+    "Okinawa",
+    "Tokyo"
+  ],
+  "Italy": [
+    "Sicily",
+    "Tuscany"
+  ],
+  "Nigeria": [
+    "Enugu",
+    "Kano",
+    "Lagos"
+  ],
+  "United States": [
+    "California",
+    "Hawaii",
+    "Louisiana",
+    "New York",
+    "Texas"
+  ],
+  "Mexico": [
+    "Oaxaca",
+    "Yucatan"
+  ],
+  "Brazil": [
+    "Amazonas",
+    "Bahia",
+    "Rio Grande do Sul"
+  ]
+}

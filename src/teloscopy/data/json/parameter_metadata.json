@@ -1,0 +1,342 @@
+{
+  "hemoglobin": {
+    "display_name": "Hemoglobin",
+    "category": "cbc"
+  },
+  "rbc_count": {
+    "display_name": "RBC Count",
+    "category": "cbc"
+  },
+  "wbc_count": {
+    "display_name": "WBC Count",
+    "category": "cbc"
+  },
+  "platelet_count": {
+    "display_name": "Platelet Count",
+    "category": "cbc"
+  },
+  "hematocrit": {
+    "display_name": "Hematocrit",
+    "category": "cbc"
+  },
+  "mcv": {
+    "display_name": "MCV",
+    "category": "cbc"
+  },
+  "mch": {
+    "display_name": "MCH",
+    "category": "cbc"
+  },
+  "mchc": {
+    "display_name": "MCHC",
+    "category": "cbc"
+  },
+  "rdw": {
+    "display_name": "RDW",
+    "category": "cbc"
+  },
+  "neutrophils": {
+    "display_name": "Neutrophils",
+    "category": "cbc"
+  },
+  "lymphocytes": {
+    "display_name": "Lymphocytes",
+    "category": "cbc"
+  },
+  "monocytes": {
+    "display_name": "Monocytes",
+    "category": "cbc"
+  },
+  "eosinophils": {
+    "display_name": "Eosinophils",
+    "category": "cbc"
+  },
+  "basophils": {
+    "display_name": "Basophils",
+    "category": "cbc"
+  },
+  "total_cholesterol": {
+    "display_name": "Total Cholesterol",
+    "category": "lipid"
+  },
+  "ldl_cholesterol": {
+    "display_name": "LDL Cholesterol",
+    "category": "lipid"
+  },
+  "hdl_cholesterol": {
+    "display_name": "HDL Cholesterol",
+    "category": "lipid"
+  },
+  "triglycerides": {
+    "display_name": "Triglycerides",
+    "category": "lipid"
+  },
+  "vldl": {
+    "display_name": "VLDL",
+    "category": "lipid"
+  },
+  "total_cholesterol_hdl_ratio": {
+    "display_name": "TC/HDL Ratio",
+    "category": "lipid"
+  },
+  "sgot_ast": {
+    "display_name": "SGOT (AST)",
+    "category": "liver"
+  },
+  "sgpt_alt": {
+    "display_name": "SGPT (ALT)",
+    "category": "liver"
+  },
+  "alkaline_phosphatase": {
+    "display_name": "Alkaline Phosphatase",
+    "category": "liver"
+  },
+  "total_bilirubin": {
+    "display_name": "Total Bilirubin",
+    "category": "liver"
+  },
+  "direct_bilirubin": {
+    "display_name": "Direct Bilirubin",
+    "category": "liver"
+  },
+  "ggt": {
+    "display_name": "GGT",
+    "category": "liver"
+  },
+  "total_protein": {
+    "display_name": "Total Protein",
+    "category": "liver"
+  },
+  "albumin": {
+    "display_name": "Albumin",
+    "category": "liver"
+  },
+  "globulin": {
+    "display_name": "Globulin",
+    "category": "liver"
+  },
+  "ag_ratio": {
+    "display_name": "A/G Ratio",
+    "category": "liver"
+  },
+  "blood_urea": {
+    "display_name": "Blood Urea",
+    "category": "kidney"
+  },
+  "serum_creatinine": {
+    "display_name": "Serum Creatinine",
+    "category": "kidney"
+  },
+  "uric_acid": {
+    "display_name": "Uric Acid",
+    "category": "kidney"
+  },
+  "bun": {
+    "display_name": "BUN",
+    "category": "kidney"
+  },
+  "egfr": {
+    "display_name": "eGFR",
+    "category": "kidney"
+  },
+  "bun_creatinine_ratio": {
+    "display_name": "BUN/Creatinine Ratio",
+    "category": "kidney"
+  },
+  "fasting_glucose": {
+    "display_name": "Fasting Glucose",
+    "category": "diabetes"
+  },
+  "hba1c": {
+    "display_name": "HbA1c",
+    "category": "diabetes"
+  },
+  "postprandial_glucose": {
+    "display_name": "Postprandial Glucose",
+    "category": "diabetes"
+  },
+  "fasting_insulin": {
+    "display_name": "Fasting Insulin",
+    "category": "diabetes"
+  },
+  "homa_ir": {
+    "display_name": "HOMA-IR",
+    "category": "diabetes"
+  },
+  "tsh": {
+    "display_name": "TSH",
+    "category": "thyroid"
+  },
+  "t3": {
+    "display_name": "T3",
+    "category": "thyroid"
+  },
+  "t4": {
+    "display_name": "T4",
+    "category": "thyroid"
+  },
+  "free_t3": {
+    "display_name": "Free T3",
+    "category": "thyroid"
+  },
+  "free_t4": {
+    "display_name": "Free T4",
+    "category": "thyroid"
+  },
+  "vitamin_d": {
+    "display_name": "Vitamin D (25-OH)",
+    "category": "vitamin"
+  },
+  "vitamin_b12": {
+    "display_name": "Vitamin B12",
+    "category": "vitamin"
+  },
+  "folate": {
+    "display_name": "Folate",
+    "category": "vitamin"
+  },
+  "vitamin_a": {
+    "display_name": "Vitamin A",
+    "category": "vitamin"
+  },
+  "vitamin_e": {
+    "display_name": "Vitamin E",
+    "category": "vitamin"
+  },
+  "vitamin_k": {
+    "display_name": "Vitamin K",
+    "category": "vitamin"
+  },
+  "iron": {
+    "display_name": "Serum Iron",
+    "category": "mineral"
+  },
+  "ferritin": {
+    "display_name": "Ferritin",
+    "category": "mineral"
+  },
+  "tibc": {
+    "display_name": "TIBC",
+    "category": "mineral"
+  },
+  "transferrin_saturation": {
+    "display_name": "Transferrin Saturation",
+    "category": "mineral"
+  },
+  "calcium": {
+    "display_name": "Calcium",
+    "category": "mineral"
+  },
+  "phosphorus": {
+    "display_name": "Phosphorus",
+    "category": "mineral"
+  },
+  "magnesium": {
+    "display_name": "Magnesium",
+    "category": "mineral"
+  },
+  "sodium": {
+    "display_name": "Sodium",
+    "category": "mineral"
+  },
+  "potassium": {
+    "display_name": "Potassium",
+    "category": "mineral"
+  },
+  "chloride": {
+    "display_name": "Chloride",
+    "category": "mineral"
+  },
+  "zinc": {
+    "display_name": "Zinc",
+    "category": "mineral"
+  },
+  "copper": {
+    "display_name": "Copper",
+    "category": "mineral"
+  },
+  "crp": {
+    "display_name": "CRP",
+    "category": "inflammation"
+  },
+  "esr": {
+    "display_name": "ESR",
+    "category": "inflammation"
+  },
+  "homocysteine": {
+    "display_name": "Homocysteine",
+    "category": "inflammation"
+  },
+  "troponin": {
+    "display_name": "Troponin I",
+    "category": "cardiac"
+  },
+  "bnp": {
+    "display_name": "BNP",
+    "category": "cardiac"
+  },
+  "ldh": {
+    "display_name": "LDH",
+    "category": "cardiac"
+  },
+  "ph": {
+    "display_name": "Urine pH",
+    "category": "urine"
+  },
+  "specific_gravity": {
+    "display_name": "Specific Gravity",
+    "category": "urine"
+  },
+  "protein": {
+    "display_name": "Urine Protein",
+    "category": "urine"
+  },
+  "glucose_urine": {
+    "display_name": "Urine Glucose",
+    "category": "urine"
+  },
+  "ketones": {
+    "display_name": "Urine Ketones",
+    "category": "urine"
+  },
+  "bilirubin_urine": {
+    "display_name": "Urine Bilirubin",
+    "category": "urine"
+  },
+  "urobilinogen": {
+    "display_name": "Urobilinogen",
+    "category": "urine"
+  },
+  "blood_urine": {
+    "display_name": "Urine Blood",
+    "category": "urine"
+  },
+  "nitrites": {
+    "display_name": "Nitrites",
+    "category": "urine"
+  },
+  "leukocytes": {
+    "display_name": "Leukocytes",
+    "category": "urine"
+  },
+  "rbc_urine": {
+    "display_name": "Urine RBC",
+    "category": "urine"
+  },
+  "wbc_urine": {
+    "display_name": "Urine WBC",
+    "category": "urine"
+  },
+  "epithelial_cells": {
+    "display_name": "Epithelial Cells",
+    "category": "urine"
+  },
+  "casts": {
+    "display_name": "Casts",
+    "category": "urine"
+  },
+  "crystals": {
+    "display_name": "Crystals",
+    "category": "urine"
+  }
+}

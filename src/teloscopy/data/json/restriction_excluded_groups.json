@@ -1,0 +1,30 @@
+{
+  "vegetarian": [
+    "fish",
+    "meat",
+    "poultry",
+    "seafood"
+  ],
+  "vegan": [
+    "dairy",
+    "eggs",
+    "fish",
+    "meat",
+    "poultry",
+    "seafood"
+  ],
+  "pescatarian": [
+    "meat",
+    "poultry"
+  ],
+  "gluten_free": [],
+  "dairy_free": [
+    "dairy"
+  ],
+  "lactose_free": [
+    "dairy"
+  ],
+  "nut_free": [
+    "nut"
+  ]
+}

@@ -19,10 +19,12 @@ Typical usage::
 
 from __future__ import annotations
 
+import json
 import math
 import re
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Callable
 
 if sys.version_info >= (3, 11):
@@ -40,6 +42,13 @@ else:
 
         def __str__(self) -> str:
             return self.value
+
+
+# ---------------------------------------------------------------------------
+# Path to bundled JSON data files
+# ---------------------------------------------------------------------------
+
+_DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "json"
 
 
 # ---------------------------------------------------------------------------
@@ -115,107 +124,17 @@ class HealthCheckupResult:
 
 
 # ---------------------------------------------------------------------------
-# Parameter metadata  (display_name, category)
+# Parameter metadata  (display_name, category)  – loaded from JSON
 # ---------------------------------------------------------------------------
 
-_PARAMETER_META: dict[str, tuple[str, str]] = {
-    # CBC
-    "hemoglobin": ("Hemoglobin", "cbc"),
-    "rbc_count": ("RBC Count", "cbc"),
-    "wbc_count": ("WBC Count", "cbc"),
-    "platelet_count": ("Platelet Count", "cbc"),
-    "hematocrit": ("Hematocrit", "cbc"),
-    "mcv": ("MCV", "cbc"),
-    "mch": ("MCH", "cbc"),
-    "mchc": ("MCHC", "cbc"),
-    "rdw": ("RDW", "cbc"),
-    "neutrophils": ("Neutrophils", "cbc"),
-    "lymphocytes": ("Lymphocytes", "cbc"),
-    "monocytes": ("Monocytes", "cbc"),
-    "eosinophils": ("Eosinophils", "cbc"),
-    "basophils": ("Basophils", "cbc"),
-    # Lipid
-    "total_cholesterol": ("Total Cholesterol", "lipid"),
-    "ldl_cholesterol": ("LDL Cholesterol", "lipid"),
-    "hdl_cholesterol": ("HDL Cholesterol", "lipid"),
-    "triglycerides": ("Triglycerides", "lipid"),
-    "vldl": ("VLDL", "lipid"),
-    "total_cholesterol_hdl_ratio": ("TC/HDL Ratio", "lipid"),
-    # Liver
-    "sgot_ast": ("SGOT (AST)", "liver"),
-    "sgpt_alt": ("SGPT (ALT)", "liver"),
-    "alkaline_phosphatase": ("Alkaline Phosphatase", "liver"),
-    "total_bilirubin": ("Total Bilirubin", "liver"),
-    "direct_bilirubin": ("Direct Bilirubin", "liver"),
-    "ggt": ("GGT", "liver"),
-    "total_protein": ("Total Protein", "liver"),
-    "albumin": ("Albumin", "liver"),
-    "globulin": ("Globulin", "liver"),
-    "ag_ratio": ("A/G Ratio", "liver"),
-    # Kidney
-    "blood_urea": ("Blood Urea", "kidney"),
-    "serum_creatinine": ("Serum Creatinine", "kidney"),
-    "uric_acid": ("Uric Acid", "kidney"),
-    "bun": ("BUN", "kidney"),
-    "egfr": ("eGFR", "kidney"),
-    "bun_creatinine_ratio": ("BUN/Creatinine Ratio", "kidney"),
-    # Diabetes
-    "fasting_glucose": ("Fasting Glucose", "diabetes"),
-    "hba1c": ("HbA1c", "diabetes"),
-    "postprandial_glucose": ("Postprandial Glucose", "diabetes"),
-    "fasting_insulin": ("Fasting Insulin", "diabetes"),
-    "homa_ir": ("HOMA-IR", "diabetes"),
-    # Thyroid
-    "tsh": ("TSH", "thyroid"),
-    "t3": ("T3", "thyroid"),
-    "t4": ("T4", "thyroid"),
-    "free_t3": ("Free T3", "thyroid"),
-    "free_t4": ("Free T4", "thyroid"),
-    # Vitamins
-    "vitamin_d": ("Vitamin D (25-OH)", "vitamin"),
-    "vitamin_b12": ("Vitamin B12", "vitamin"),
-    "folate": ("Folate", "vitamin"),
-    "vitamin_a": ("Vitamin A", "vitamin"),
-    "vitamin_e": ("Vitamin E", "vitamin"),
-    "vitamin_k": ("Vitamin K", "vitamin"),
-    # Minerals / Electrolytes
-    "iron": ("Serum Iron", "mineral"),
-    "ferritin": ("Ferritin", "mineral"),
-    "tibc": ("TIBC", "mineral"),
-    "transferrin_saturation": ("Transferrin Saturation", "mineral"),
-    "calcium": ("Calcium", "mineral"),
-    "phosphorus": ("Phosphorus", "mineral"),
-    "magnesium": ("Magnesium", "mineral"),
-    "sodium": ("Sodium", "mineral"),
-    "potassium": ("Potassium", "mineral"),
-    "chloride": ("Chloride", "mineral"),
-    "zinc": ("Zinc", "mineral"),
-    "copper": ("Copper", "mineral"),
-    # Inflammation
-    "crp": ("CRP", "inflammation"),
-    "esr": ("ESR", "inflammation"),
-    "homocysteine": ("Homocysteine", "inflammation"),
-    # Cardiac
-    "troponin": ("Troponin I", "cardiac"),
-    "bnp": ("BNP", "cardiac"),
-    "ldh": ("LDH", "cardiac"),
-    # Urine
-    "ph": ("Urine pH", "urine"),
-    "specific_gravity": ("Specific Gravity", "urine"),
-    "protein": ("Urine Protein", "urine"),
-    "glucose_urine": ("Urine Glucose", "urine"),
-    "ketones": ("Urine Ketones", "urine"),
-    "bilirubin_urine": ("Urine Bilirubin", "urine"),
-    "urobilinogen": ("Urobilinogen", "urine"),
-    "blood_urine": ("Urine Blood", "urine"),
-    "nitrites": ("Nitrites", "urine"),
-    "leukocytes": ("Leukocytes", "urine"),
-    "rbc_urine": ("Urine RBC", "urine"),
-    "wbc_urine": ("Urine WBC", "urine"),
-    "epithelial_cells": ("Epithelial Cells", "urine"),
-    "casts": ("Casts", "urine"),
-    "crystals": ("Crystals", "urine"),
-}
+def _load_parameter_meta() -> dict[str, tuple[str, str]]:
+    """Load parameter metadata from ``parameter_metadata.json``."""
+    with open(_DATA_DIR / "parameter_metadata.json", encoding="utf-8") as fh:
+        raw: dict[str, dict[str, str]] = json.load(fh)
+    return {key: (val["display_name"], val["category"]) for key, val in raw.items()}
+
+
+_PARAMETER_META: dict[str, tuple[str, str]] = _load_parameter_meta()
 
 
 # ---------------------------------------------------------------------------
@@ -861,26 +780,30 @@ BLOOD_TEST_REFERENCE_RANGES: dict[str, Callable[[int, str], ReferenceRange]] = {
 
 
 # ---------------------------------------------------------------------------
-# URINE_TEST_REFERENCE_RANGES
+# URINE_TEST_REFERENCE_RANGES  – loaded from JSON
 # ---------------------------------------------------------------------------
 
-URINE_TEST_REFERENCE_RANGES: dict[str, Callable[[int, str], ReferenceRange]] = {
-    "ph": _static(4.5, 8.0, "pH"),
-    "specific_gravity": _static(1.005, 1.030, "SG", 1.001, 1.040),
-    "protein": _static(0.0, 14.0, "mg/dL", None, 150.0),
-    "glucose_urine": _static(0.0, 15.0, "mg/dL", None, 300.0),
-    "ketones": _static(0.0, 5.0, "mg/dL", None, 80.0),
-    "bilirubin_urine": _static(0.0, 0.2, "mg/dL", None, 6.0),
-    "urobilinogen": _static(0.2, 1.0, "mg/dL", None, 8.0),
-    "blood_urine": _static(0.0, 3.0, "RBC/HPF", None, 25.0),
-    "nitrites": _static(0.0, 0.0, "pos/neg"),
-    "leukocytes": _static(0.0, 5.0, "WBC/HPF", None, 50.0),
-    "rbc_urine": _static(0.0, 3.0, "cells/HPF", None, 25.0),
-    "wbc_urine": _static(0.0, 5.0, "cells/HPF", None, 50.0),
-    "epithelial_cells": _static(0.0, 5.0, "cells/HPF", None, 25.0),
-    "casts": _static(0.0, 2.0, "casts/LPF", None, 10.0),
-    "crystals": _static(0.0, 0.0, "crystals/HPF"),
-}
+def _load_urine_ranges() -> dict[str, Callable[[int, str], ReferenceRange]]:
+    """Load urine reference ranges from ``urine_ranges_nutrition.json``.
+
+    All urine parameters are age/sex-independent so each entry is
+    reconstructed as a ``_static`` factory.
+    """
+    with open(_DATA_DIR / "urine_ranges_nutrition.json", encoding="utf-8") as fh:
+        raw: dict[str, dict[str, Any]] = json.load(fh)
+    return {
+        param: _static(
+            data["low"],
+            data["high"],
+            data["unit"],
+            data.get("critical_low"),
+            data.get("critical_high"),
+        )
+        for param, data in raw.items()
+    }
+
+
+URINE_TEST_REFERENCE_RANGES: dict[str, Callable[[int, str], ReferenceRange]] = _load_urine_ranges()
 
 
 # ---------------------------------------------------------------------------
@@ -2215,134 +2138,48 @@ def _detect_cardiac_risk(
 # ---------------------------------------------------------------------------
 
 # Pattern → (organ, finding_key, severity_hint, dietary_impact, avoid, increase)
-_ABDOMEN_PATTERNS: list[tuple[str, str, str, str, str, list[str], list[str]]] = [
-    (
-        r"fatty\s*liver\s*(grade\s*[iI]{1,3}|grade\s*[123]|mild|moderate|severe)?",
-        "liver",
-        "fatty_liver",
-        "auto",  # severity from group
-        "Fat deposits in the liver require reduced saturated fat, sugar, and refined carbs.",
-        ["alcohol", "fried foods", "sugary drinks", "white bread",
-         "high-fructose corn syrup", "fast food", "processed snacks"],
-        ["coffee (moderate)", "fatty fish", "walnuts", "olive oil",
-         "leafy greens", "berries", "oats", "green tea"],
-    ),
-    (
-        r"hepatomegaly|enlarged\s*liver",
-        "liver",
-        "hepatomegaly",
-        "moderate",
-        "Enlarged liver indicates hepatic stress; light, liver-friendly diet recommended.",
-        ["alcohol", "fried foods", "high-fat foods", "processed meats",
-         "excess sugar"],
-        ["cruciferous vegetables", "garlic", "turmeric", "lemon water",
-         "beetroot", "green tea", "olive oil"],
-    ),
-    (
-        r"kidney\s*stone[s]?|renal\s*(calcul[ui]|stone[s]?|lithiasis)",
-        "kidney",
-        "kidney_stones",
-        "moderate",
-        "Kidney stones require increased hydration and oxalate/sodium restriction.",
-        ["spinach (excess)", "rhubarb", "beet greens", "nuts (excess)",
-         "chocolate (excess)", "excess salt", "animal protein (excess)",
-         "colas"],
-        ["water (3+ litres)", "lemon juice", "citrus fruits",
-         "low-fat dairy", "melons", "cucumbers"],
-    ),
-    (
-        r"gallstone[s]?|cholelithiasis",
-        "gallbladder",
-        "gallstones",
-        "moderate",
-        "Gallstones require a low-fat diet to reduce biliary stress.",
-        ["fried foods", "full-fat dairy", "butter", "cream",
-         "processed meats", "high-fat baked goods", "eggs (excess)"],
-        ["fruits", "vegetables", "whole grains", "lean protein",
-         "low-fat dairy", "lentils", "olive oil (small amounts)"],
-    ),
-    (
-        r"splenomegaly|enlarged\s*spleen",
-        "spleen",
-        "splenomegaly",
-        "moderate",
-        "Enlarged spleen warrants an anti-inflammatory diet with immune support.",
-        ["alcohol", "processed foods", "fried foods"],
-        ["leafy greens", "berries", "turmeric", "ginger", "garlic",
-         "citrus fruits", "lean protein"],
-    ),
-    (
-        r"pancreatic\s*cyst|pancreas\s*cyst",
-        "pancreas",
-        "pancreatic_cyst",
-        "mild",
-        "Pancreatic cyst may require a low-fat, easily digestible diet.",
-        ["alcohol", "high-fat foods", "fried foods", "processed meats",
-         "spicy foods (if symptomatic)"],
-        ["lean protein", "whole grains", "fruits", "vegetables",
-         "low-fat dairy"],
-    ),
-    (
-        r"pancreatitis",
-        "pancreas",
-        "pancreatitis",
-        "severe",
-        "Inflamed pancreas requires strict low-fat diet to prevent flares.",
-        ["alcohol", "high-fat foods", "fried foods", "red meat",
-         "butter", "cream", "full-fat dairy", "sugary drinks"],
-        ["lean chicken breast", "fish (baked)", "rice", "toast",
-         "bananas", "applesauce", "clear broths", "cooked vegetables"],
-    ),
-    (
-        r"renal\s*cyst|kidney\s*cyst",
-        "kidney",
-        "renal_cyst",
-        "mild",
-        "Simple renal cysts generally benign; maintain kidney-friendly diet as precaution.",
-        ["excess sodium", "excess protein", "processed foods"],
-        ["water (adequate)", "fruits", "vegetables", "whole grains"],
-    ),
-    (
-        r"cirrhosis|hepatic\s*cirrhosis",
-        "liver",
-        "cirrhosis",
-        "severe",
-        "Liver cirrhosis demands strict dietary management with sodium and protein control.",
-        ["alcohol", "raw shellfish", "excess sodium", "fried foods",
-         "processed meats", "excess protein"],
-        ["lean protein (moderate)", "fruits", "vegetables",
-         "whole grains", "low-sodium foods"],
-    ),
-    (
-        r"ascites",
-        "liver",
-        "ascites",
-        "severe",
-        "Fluid accumulation requires strict sodium restriction and fluid management.",
-        ["salt", "canned foods", "processed foods", "pickles",
-         "soy sauce", "cheese"],
-        ["fresh fruits", "fresh vegetables", "herbs for seasoning",
-         "lean protein"],
-    ),
-    (
-        r"liver\s*hemangioma",
-        "liver",
-        "liver_hemangioma",
-        "mild",
-        "Liver hemangioma is usually benign; maintain general liver health.",
-        ["excess alcohol"],
-        ["balanced diet", "leafy greens", "fruits"],
-    ),
-    (
-        r"bile\s*duct\s*(dilat|obstruct)",
-        "gallbladder",
-        "bile_duct_dilation",
-        "moderate",
-        "Bile duct dilation may impair fat digestion; low-fat diet recommended.",
-        ["high-fat foods", "fried foods", "full-fat dairy", "butter"],
-        ["fruits", "vegetables", "lean protein", "whole grains"],
-    ),
-]
+# Loaded from JSON; each entry is converted to the tuple format expected by
+# ``process_abdomen_findings``.
+
+def _load_abdomen_patterns() -> list[tuple[str, str, str, str, str, list[str], list[str]]]:
+    """Load abdomen scan patterns from ``abdomen_patterns_nutrition.json``."""
+    with open(_DATA_DIR / "abdomen_patterns_nutrition.json", encoding="utf-8") as fh:
+        raw: list[dict[str, Any]] = json.load(fh)
+    return [
+        (
+            entry["pattern"],
+            entry["organ"],
+            entry["finding_key"],
+            entry["severity_hint"],
+            entry["dietary_impact"],
+            entry["foods_to_avoid"],
+            entry["foods_to_increase"],
+        )
+        for entry in raw
+    ]
+
+
+_ABDOMEN_PATTERNS: list[tuple[str, str, str, str, str, list[str], list[str]]] = _load_abdomen_patterns()
+
+
+# ---------------------------------------------------------------------------
+# Dietary advice mappings  – loaded from JSON
+# ---------------------------------------------------------------------------
+
+def _load_condition_advice() -> dict[str, list[str]]:
+    """Load condition → dietary-advice mapping from ``condition_advice.json``."""
+    with open(_DATA_DIR / "condition_advice.json", encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def _load_abdomen_advice() -> dict[str, list[str]]:
+    """Load abdomen-finding → dietary-advice mapping from ``abdomen_advice.json``."""
+    with open(_DATA_DIR / "abdomen_advice.json", encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+_CONDITION_ADVICE: dict[str, list[str]] = _load_condition_advice()
+_ABDOMEN_ADVICE: dict[str, list[str]] = _load_abdomen_advice()
 
 
 def process_abdomen_findings(findings_text: str) -> list[AbdomenFinding]:
@@ -2604,167 +2441,14 @@ def _build_dietary_modifications(
     mods: list[str] = []
     seen: set[str] = set()
 
-    _condition_advice: dict[str, list[str]] = {
-        "iron_deficiency_anemia": [
-            "Increase iron-rich foods such as spinach, lentils, and fortified cereals",
-            "Pair iron-rich foods with vitamin C sources to enhance absorption",
-            "Avoid tea and coffee within 1 hour of meals",
-        ],
-        "macrocytic_anemia": [
-            "Include B12-rich foods (eggs, dairy, fortified cereals) daily",
-            "Increase folate intake through leafy greens and legumes",
-        ],
-        "dyslipidemia": [
-            "Reduce saturated fat to <7% of total calories",
-            "Increase soluble fibre intake (oats, barley, legumes)",
-            "Include omega-3 rich fish at least 2-3 times per week",
-            "Replace butter/ghee with olive oil",
-            "Limit dietary cholesterol to <200 mg/day",
-        ],
-        "diabetes": [
-            "Follow a low glycaemic index diet",
-            "Distribute carbohydrate intake evenly across meals",
-            "Limit total carbohydrates to 45-50% of calories",
-            "Increase dietary fibre to 30-40 g/day",
-            "Avoid sugary drinks and fruit juices",
-        ],
-        "prediabetes": [
-            "Reduce refined carbohydrate intake",
-            "Choose whole grains over refined grains",
-            "Increase vegetable intake to at least 5 servings/day",
-            "Limit added sugars to <25 g/day",
-        ],
-        "insulin_resistance": [
-            "Adopt a low glycaemic load eating pattern",
-            "Include protein and healthy fats at every meal",
-            "Avoid large carbohydrate-only meals or snacks",
-        ],
-        "hypothyroidism": [
-            "Ensure adequate iodine from iodised salt and seafood",
-            "Include selenium-rich foods (brazil nuts, eggs, seafood)",
-            "Avoid large amounts of raw goitrogenic vegetables",
-        ],
-        "hyperthyroidism": [
-            "Increase calorie intake to compensate for elevated metabolism",
-            "Ensure adequate calcium and vitamin D for bone protection",
-            "Include cruciferous vegetables (naturally slow thyroid)",
-        ],
-        "vitamin_d_deficiency": [
-            "Include vitamin D-rich foods: fatty fish, fortified milk, egg yolks",
-            "Consider vitamin D supplementation as advised by physician",
-        ],
-        "vitamin_b12_deficiency": [
-            "Include B12 sources daily (eggs, dairy, fortified foods)",
-            "Consider sublingual B12 supplements if vegetarian/vegan",
-        ],
-        "folate_deficiency": [
-            "Increase dark leafy greens and legume consumption",
-            "Include fortified cereals and citrus fruits",
-        ],
-        "liver_stress": [
-            "Eliminate or strictly limit alcohol consumption",
-            "Reduce fried and processed food intake",
-            "Include liver-supportive foods: turmeric, garlic, green tea",
-        ],
-        "fatty_liver_indicators": [
-            "Reduce fructose and refined carbohydrate intake",
-            "Moderate coffee consumption (2-3 cups/day) may be beneficial",
-            "Increase omega-3 fatty acids from fish and walnuts",
-        ],
-        "kidney_impairment": [
-            "Moderate protein intake (0.6-0.8 g/kg/day if advanced)",
-            "Limit sodium to <2000 mg/day",
-            "Monitor potassium and phosphorus intake",
-        ],
-        "hyperuricemia": [
-            "Limit purine-rich foods (organ meats, shellfish, red meat)",
-            "Increase water intake to 2-3 litres/day",
-            "Avoid alcohol, especially beer",
-            "Include low-fat dairy and cherries",
-        ],
-        "chronic_inflammation": [
-            "Follow an anti-inflammatory dietary pattern",
-            "Increase omega-3 and reduce omega-6 ratio",
-            "Include turmeric, ginger, and green tea regularly",
-        ],
-        "electrolyte_imbalance": [
-            "Adjust mineral intake based on specific imbalance",
-            "Stay adequately hydrated",
-        ],
-        "thyroid_metabolic_dysfunction": [
-            "Support thyroid with iodine and selenium while managing lipids",
-            "Combine thyroid-friendly and heart-healthy eating patterns",
-        ],
-        "prehypertension_indicators": [
-            "Follow DASH diet principles",
-            "Limit sodium to <2300 mg/day (ideally <1500 mg)",
-            "Increase potassium-rich foods: bananas, sweet potatoes, leafy greens",
-        ],
-        "cardiac_risk_elevation": [
-            "Adopt a Mediterranean or DASH-style diet",
-            "Limit sodium, saturated fat, and trans fat",
-            "Include omega-3 rich fish 2-3 times per week",
-        ],
-        "vitamin_a_deficiency": [
-            "Include orange/red vegetables and fruits rich in beta-carotene",
-        ],
-        "vitamin_e_deficiency": [
-            "Include nuts, seeds, and vegetable oils rich in vitamin E",
-        ],
-        "zinc_deficiency": [
-            "Include zinc-rich foods: pumpkin seeds, chickpeas, meat, yogurt",
-        ],
-        "calcium_deficiency": [
-            "Increase dairy or fortified alternatives for calcium",
-            "Pair calcium with vitamin D for better absorption",
-        ],
-        "magnesium_deficiency": [
-            "Include magnesium-rich foods: dark chocolate, almonds, spinach, quinoa",
-        ],
-    }
-
     for f in findings:
-        for advice in _condition_advice.get(f.condition, []):
+        for advice in _CONDITION_ADVICE.get(f.condition, []):
             if advice not in seen:
                 seen.add(advice)
                 mods.append(advice)
 
-    _abdomen_advice: dict[str, list[str]] = {
-        "fatty_liver": [
-            "Eliminate alcohol and reduce sugar / refined carbohydrate intake for liver recovery",
-        ],
-        "hepatomegaly": [
-            "Follow a light, low-fat, liver-friendly diet",
-        ],
-        "kidney_stones": [
-            "Drink at least 3 litres of water daily",
-            "Limit oxalate-rich foods and excess sodium",
-            "Include lemon juice or citrus for urinary citrate",
-        ],
-        "gallstones": [
-            "Follow a low-fat diet; avoid large, fatty meals",
-        ],
-        "splenomegaly": [
-            "Follow an anti-inflammatory diet with immune-supportive nutrients",
-        ],
-        "pancreatic_cyst": [
-            "Maintain a low-fat, easily digestible diet",
-        ],
-        "pancreatitis": [
-            "Strict low-fat diet; avoid alcohol completely",
-            "Eat small, frequent meals rather than large ones",
-        ],
-        "cirrhosis": [
-            "Limit sodium strictly; moderate protein as advised",
-            "Avoid alcohol and raw shellfish",
-        ],
-        "ascites": [
-            "Strict sodium restriction (<2000 mg/day) and fluid management",
-        ],
-    }
-
     for a in abdomen:
-        for advice in _abdomen_advice.get(a.finding, []):
+        for advice in _ABDOMEN_ADVICE.get(a.finding, []):
             if advice not in seen:
                 seen.add(advice)
                 mods.append(advice)

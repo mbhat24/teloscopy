@@ -1,0 +1,18 @@
+{
+  "prediabetes": "Type 2 diabetes",
+  "diabetes": "Type 2 diabetes",
+  "dyslipidemia": "Coronary artery disease",
+  "liver_stress": "Liver disease",
+  "fatty_liver": "Non-alcoholic fatty liver disease",
+  "kidney_impairment": "Chronic kidney disease",
+  "hyperuricemia": "Gout",
+  "hypothyroidism": "Hypothyroidism",
+  "hyperthyroidism": "Hyperthyroidism",
+  "anemia": "Iron-deficiency anemia",
+  "vitamin_d_deficiency": "Osteoporosis",
+  "vitamin_b12_deficiency": "Megaloblastic anemia",
+  "iron_deficiency": "Iron-deficiency anemia",
+  "inflammation": "Chronic inflammation",
+  "electrolyte_imbalance": "Electrolyte disorder",
+  "proteinuria": "Chronic kidney disease"
+}

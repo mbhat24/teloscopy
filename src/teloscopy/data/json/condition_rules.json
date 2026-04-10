@@ -1,0 +1,414 @@
+[
+  {
+    "condition": "prediabetes",
+    "display_name": "Pre-Diabetes",
+    "check": "_check_prediabetes",
+    "dietary_impact": "Reduce simple carbohydrates, increase fiber and chromium",
+    "nutrients_to_increase": [
+      "Fiber",
+      "Chromium",
+      "Magnesium"
+    ],
+    "nutrients_to_decrease": [
+      "Simple sugars",
+      "Refined carbs"
+    ],
+    "foods_to_increase": [
+      "whole grains",
+      "leafy greens",
+      "bitter gourd",
+      "fenugreek",
+      "cinnamon"
+    ],
+    "foods_to_avoid": [
+      "white rice (large portions)",
+      "sugary drinks",
+      "fruit juices",
+      "white bread"
+    ]
+  },
+  {
+    "condition": "diabetes",
+    "display_name": "Diabetes",
+    "check": "_check_diabetes",
+    "dietary_impact": "Strict glycemic control; high fiber, low GI diet essential",
+    "nutrients_to_increase": [
+      "Fiber",
+      "Chromium",
+      "Alpha-lipoic acid",
+      "Magnesium"
+    ],
+    "nutrients_to_decrease": [
+      "Simple sugars",
+      "Refined carbs",
+      "Saturated fat"
+    ],
+    "foods_to_increase": [
+      "oats",
+      "barley",
+      "bitter gourd",
+      "fenugreek seeds",
+      "nuts",
+      "legumes"
+    ],
+    "foods_to_avoid": [
+      "white rice",
+      "potatoes (fried)",
+      "sugary drinks",
+      "sweets",
+      "white bread"
+    ]
+  },
+  {
+    "condition": "dyslipidemia",
+    "display_name": "Dyslipidemia",
+    "check": "_check_dyslipidemia",
+    "dietary_impact": "Reduce saturated/trans fats, increase omega-3 and soluble fiber",
+    "nutrients_to_increase": [
+      "Omega-3",
+      "Soluble fiber",
+      "Plant sterols"
+    ],
+    "nutrients_to_decrease": [
+      "Saturated fat",
+      "Trans fat",
+      "Dietary cholesterol"
+    ],
+    "foods_to_increase": [
+      "fatty fish",
+      "flaxseeds",
+      "walnuts",
+      "oats",
+      "olive oil",
+      "almonds"
+    ],
+    "foods_to_avoid": [
+      "fried food",
+      "red meat (excess)",
+      "butter",
+      "full-fat dairy",
+      "coconut oil"
+    ]
+  },
+  {
+    "condition": "liver_stress",
+    "display_name": "Liver Stress",
+    "check": "_check_liver_stress",
+    "dietary_impact": "Support liver detox pathways; avoid alcohol and excess fats",
+    "nutrients_to_increase": [
+      "N-acetyl cysteine",
+      "B-vitamins",
+      "Vitamin E"
+    ],
+    "nutrients_to_decrease": [
+      "Alcohol",
+      "Refined sugar",
+      "Saturated fat"
+    ],
+    "foods_to_increase": [
+      "cruciferous vegetables",
+      "turmeric",
+      "green tea",
+      "beets",
+      "garlic"
+    ],
+    "foods_to_avoid": [
+      "alcohol",
+      "processed foods",
+      "fried foods",
+      "high-sugar foods"
+    ]
+  },
+  {
+    "condition": "fatty_liver",
+    "display_name": "Fatty Liver",
+    "check": "_check_fatty_liver",
+    "dietary_impact": "Weight management and low-glycemic diet to reduce liver fat",
+    "nutrients_to_increase": [
+      "Omega-3",
+      "Vitamin E",
+      "Choline"
+    ],
+    "nutrients_to_decrease": [
+      "Fructose",
+      "Saturated fat",
+      "Refined carbs"
+    ],
+    "foods_to_increase": [
+      "fatty fish",
+      "olive oil",
+      "coffee",
+      "walnuts",
+      "avocado"
+    ],
+    "foods_to_avoid": [
+      "sugary drinks",
+      "fruit juice",
+      "white bread",
+      "fried foods",
+      "alcohol"
+    ]
+  },
+  {
+    "condition": "kidney_impairment",
+    "display_name": "Kidney Impairment",
+    "check": "_check_kidney_impairment",
+    "dietary_impact": "Moderate protein intake, limit sodium and potassium if advanced",
+    "nutrients_to_increase": [
+      "Omega-3"
+    ],
+    "nutrients_to_decrease": [
+      "Sodium",
+      "Excess protein",
+      "Phosphorus"
+    ],
+    "foods_to_increase": [
+      "cabbage",
+      "bell peppers",
+      "blueberries",
+      "olive oil",
+      "egg whites"
+    ],
+    "foods_to_avoid": [
+      "processed meats",
+      "excess salt",
+      "bananas (if potassium high)",
+      "cola"
+    ]
+  },
+  {
+    "condition": "hyperuricemia",
+    "display_name": "Hyperuricemia / Gout Risk",
+    "check": "_check_hyperuricemia",
+    "dietary_impact": "Low-purine diet, increase hydration and vitamin C",
+    "nutrients_to_increase": [
+      "Vitamin C",
+      "Water"
+    ],
+    "nutrients_to_decrease": [
+      "Purines",
+      "Fructose",
+      "Alcohol"
+    ],
+    "foods_to_increase": [
+      "cherries",
+      "low-fat dairy",
+      "vegetables",
+      "whole grains"
+    ],
+    "foods_to_avoid": [
+      "organ meats",
+      "shellfish",
+      "beer",
+      "sugary drinks",
+      "red meat"
+    ]
+  },
+  {
+    "condition": "hypothyroidism",
+    "display_name": "Hypothyroidism",
+    "check": "_check_hypothyroidism",
+    "dietary_impact": "Ensure adequate iodine and selenium; limit goitrogens",
+    "nutrients_to_increase": [
+      "Iodine",
+      "Selenium",
+      "Zinc"
+    ],
+    "nutrients_to_decrease": [
+      "Goitrogens (raw cruciferous)"
+    ],
+    "foods_to_increase": [
+      "iodized salt",
+      "seafood",
+      "brazil nuts",
+      "eggs",
+      "dairy"
+    ],
+    "foods_to_avoid": [
+      "raw cabbage (large amounts)",
+      "raw broccoli (excess)",
+      "soy (excess)"
+    ]
+  },
+  {
+    "condition": "hyperthyroidism",
+    "display_name": "Hyperthyroidism",
+    "check": "_check_hyperthyroidism",
+    "dietary_impact": "Increase calorie and calcium intake; limit iodine",
+    "nutrients_to_increase": [
+      "Calcium",
+      "Vitamin D",
+      "Calories"
+    ],
+    "nutrients_to_decrease": [
+      "Iodine",
+      "Caffeine"
+    ],
+    "foods_to_increase": [
+      "cruciferous vegetables",
+      "dairy",
+      "whole grains",
+      "lean protein"
+    ],
+    "foods_to_avoid": [
+      "seaweed",
+      "iodized salt (excess)",
+      "caffeine"
+    ]
+  },
+  {
+    "condition": "anemia",
+    "display_name": "Anemia",
+    "check": "_check_anemia",
+    "dietary_impact": "Increase iron, B12, and folate; enhance iron absorption with vitamin C",
+    "nutrients_to_increase": [
+      "Iron",
+      "Vitamin B12",
+      "Folate",
+      "Vitamin C"
+    ],
+    "nutrients_to_decrease": [],
+    "foods_to_increase": [
+      "spinach",
+      "lentils",
+      "red meat",
+      "liver",
+      "beetroot",
+      "citrus fruits"
+    ],
+    "foods_to_avoid": [
+      "tea/coffee with meals (inhibits iron)",
+      "excess calcium with iron-rich meals"
+    ]
+  },
+  {
+    "condition": "vitamin_d_deficiency",
+    "display_name": "Vitamin D Deficiency",
+    "check": "_check_vitamin_d_deficiency",
+    "dietary_impact": "Supplement vitamin D; increase sun exposure and dietary sources",
+    "nutrients_to_increase": [
+      "Vitamin D",
+      "Calcium"
+    ],
+    "nutrients_to_decrease": [],
+    "foods_to_increase": [
+      "fatty fish",
+      "egg yolks",
+      "fortified milk",
+      "mushrooms (UV-exposed)"
+    ],
+    "foods_to_avoid": []
+  },
+  {
+    "condition": "vitamin_b12_deficiency",
+    "display_name": "Vitamin B12 Deficiency",
+    "check": "_check_b12_deficiency",
+    "dietary_impact": "Increase B12 sources; supplementation likely needed if vegetarian",
+    "nutrients_to_increase": [
+      "Vitamin B12"
+    ],
+    "nutrients_to_decrease": [],
+    "foods_to_increase": [
+      "meat",
+      "fish",
+      "eggs",
+      "dairy",
+      "fortified cereals"
+    ],
+    "foods_to_avoid": []
+  },
+  {
+    "condition": "iron_deficiency",
+    "display_name": "Iron Deficiency",
+    "check": "_check_iron_deficiency",
+    "dietary_impact": "Increase heme and non-heme iron sources with vitamin C for absorption",
+    "nutrients_to_increase": [
+      "Iron",
+      "Vitamin C"
+    ],
+    "nutrients_to_decrease": [],
+    "foods_to_increase": [
+      "red meat",
+      "spinach",
+      "lentils",
+      "tofu",
+      "pumpkin seeds",
+      "citrus"
+    ],
+    "foods_to_avoid": [
+      "tea/coffee with iron-rich meals",
+      "excess dairy with iron meals"
+    ]
+  },
+  {
+    "condition": "inflammation",
+    "display_name": "Chronic Inflammation",
+    "check": "_check_inflammation",
+    "dietary_impact": "Anti-inflammatory diet: increase omega-3, antioxidants; reduce processed foods",
+    "nutrients_to_increase": [
+      "Omega-3",
+      "Curcumin",
+      "Antioxidants"
+    ],
+    "nutrients_to_decrease": [
+      "Omega-6 (excess)",
+      "Trans fat",
+      "Refined sugar"
+    ],
+    "foods_to_increase": [
+      "fatty fish",
+      "turmeric",
+      "berries",
+      "leafy greens",
+      "olive oil",
+      "nuts"
+    ],
+    "foods_to_avoid": [
+      "processed foods",
+      "fried foods",
+      "refined sugar",
+      "red meat (excess)"
+    ]
+  },
+  {
+    "condition": "electrolyte_imbalance",
+    "display_name": "Electrolyte Imbalance",
+    "check": "_check_electrolyte_imbalance",
+    "dietary_impact": "Correct electrolyte levels through targeted food and hydration",
+    "nutrients_to_increase": [],
+    "nutrients_to_decrease": [],
+    "foods_to_increase": [
+      "bananas",
+      "coconut water",
+      "leafy greens",
+      "avocado"
+    ],
+    "foods_to_avoid": [
+      "excess salt",
+      "excess caffeine"
+    ]
+  },
+  {
+    "condition": "proteinuria",
+    "display_name": "Proteinuria",
+    "check": "_check_proteinuria",
+    "dietary_impact": "May indicate kidney stress; moderate protein, reduce sodium",
+    "nutrients_to_increase": [
+      "Omega-3"
+    ],
+    "nutrients_to_decrease": [
+      "Sodium",
+      "Excess protein"
+    ],
+    "foods_to_increase": [
+      "omega-3 rich fish",
+      "berries",
+      "olive oil"
+    ],
+    "foods_to_avoid": [
+      "excess salt",
+      "processed meats",
+      "very high protein diets"
+    ]
+  }
+]

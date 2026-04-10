@@ -1,0 +1,3754 @@
+[
+  {
+    "region_id": "south_asia_north",
+    "name": "North India",
+    "common_foods": [
+      "roti",
+      "dal",
+      "paneer",
+      "ghee",
+      "lassi",
+      "rajma",
+      "chole",
+      "paratha",
+      "aloo gobi",
+      "basmati rice"
+    ],
+    "staple_grains": [
+      "wheat",
+      "basmati rice",
+      "maize",
+      "millet"
+    ],
+    "protein_sources": [
+      "paneer",
+      "dal",
+      "rajma",
+      "chicken",
+      "lamb",
+      "chole",
+      "yoghurt",
+      "eggs"
+    ],
+    "vegetables": [
+      "potato",
+      "cauliflower",
+      "spinach",
+      "okra",
+      "peas",
+      "tomato",
+      "onion",
+      "bottle gourd",
+      "fenugreek leaves"
+    ],
+    "fruits": [
+      "mango",
+      "guava",
+      "papaya",
+      "banana",
+      "apple",
+      "pomegranate"
+    ],
+    "spices": [
+      "turmeric",
+      "cumin",
+      "coriander",
+      "garam masala",
+      "red chilli",
+      "asafoetida",
+      "fenugreek",
+      "cardamom"
+    ],
+    "traditional_dishes": [
+      "dal makhani",
+      "butter chicken",
+      "aloo paratha",
+      "chole bhature",
+      "rajma chawal",
+      "palak paneer",
+      "tandoori chicken",
+      "biryani"
+    ]
+  },
+  {
+    "region_id": "south_asia_south",
+    "name": "South India",
+    "common_foods": [
+      "idli",
+      "dosa",
+      "sambar",
+      "rasam",
+      "coconut chutney",
+      "appam",
+      "puttu",
+      "avial",
+      "rice",
+      "tamarind rice"
+    ],
+    "staple_grains": [
+      "rice",
+      "ragi",
+      "urad dal",
+      "rice flour"
+    ],
+    "protein_sources": [
+      "fish",
+      "lentils",
+      "coconut",
+      "eggs",
+      "chicken",
+      "black gram",
+      "prawns",
+      "curd"
+    ],
+    "vegetables": [
+      "drumstick",
+      "ash gourd",
+      "snake gourd",
+      "bitter gourd",
+      "banana stem",
+      "curry leaves",
+      "tamarind",
+      "tomato"
+    ],
+    "fruits": [
+      "banana",
+      "coconut",
+      "jackfruit",
+      "mango",
+      "sapota",
+      "pineapple"
+    ],
+    "spices": [
+      "mustard seeds",
+      "curry leaves",
+      "black pepper",
+      "tamarind",
+      "coconut",
+      "red chilli",
+      "turmeric",
+      "asafoetida"
+    ],
+    "traditional_dishes": [
+      "masala dosa",
+      "idli sambar",
+      "Kerala fish curry",
+      "Hyderabadi biryani",
+      "Chettinad chicken",
+      "rasam",
+      "avial",
+      "payasam"
+    ]
+  },
+  {
+    "region_id": "south_asia_east",
+    "name": "East India",
+    "common_foods": [
+      "rice",
+      "fish curry",
+      "mishti doi",
+      "luchi",
+      "shorshe ilish",
+      "chingri malai curry",
+      "pitha",
+      "dal",
+      "moong dal",
+      "sandesh"
+    ],
+    "staple_grains": [
+      "rice",
+      "wheat",
+      "flattened rice"
+    ],
+    "protein_sources": [
+      "fish",
+      "prawns",
+      "lentils",
+      "mustard oil",
+      "paneer",
+      "eggs",
+      "chicken",
+      "curd"
+    ],
+    "vegetables": [
+      "potato",
+      "brinjal",
+      "pumpkin",
+      "pointed gourd",
+      "banana flower",
+      "green banana",
+      "radish",
+      "spinach"
+    ],
+    "fruits": [
+      "mango",
+      "lychee",
+      "jackfruit",
+      "banana",
+      "guava",
+      "palm"
+    ],
+    "spices": [
+      "mustard seeds",
+      "panch phoron",
+      "turmeric",
+      "red chilli",
+      "ginger",
+      "bay leaf",
+      "radhuni",
+      "nigella seeds"
+    ],
+    "traditional_dishes": [
+      "shorshe ilish",
+      "kosha mangsho",
+      "chingri malai curry",
+      "mishti doi",
+      "luchi alur dom",
+      "pitha",
+      "sandesh",
+      "macher jhol"
+    ]
+  },
+  {
+    "region_id": "south_asia_west",
+    "name": "West India",
+    "common_foods": [
+      "dhokla",
+      "thepla",
+      "poha",
+      "vada pav",
+      "pav bhaji",
+      "bhakri",
+      "puran poli",
+      "misal pav",
+      "dal baati",
+      "undhiyu"
+    ],
+    "staple_grains": [
+      "wheat",
+      "jowar",
+      "bajra",
+      "rice",
+      "nachni"
+    ],
+    "protein_sources": [
+      "lentils",
+      "groundnut",
+      "chickpeas",
+      "fish",
+      "buttermilk",
+      "paneer",
+      "soya",
+      "sprouts"
+    ],
+    "vegetables": [
+      "brinjal",
+      "drumstick",
+      "cluster beans",
+      "ivy gourd",
+      "raw banana",
+      "tomato",
+      "onion",
+      "green chilli"
+    ],
+    "fruits": [
+      "alphonso mango",
+      "chikoo",
+      "coconut",
+      "banana",
+      "custard apple",
+      "pomegranate"
+    ],
+    "spices": [
+      "mustard seeds",
+      "sesame",
+      "jaggery",
+      "kokum",
+      "curry leaves",
+      "asafoetida",
+      "turmeric",
+      "coriander"
+    ],
+    "traditional_dishes": [
+      "dhokla",
+      "vada pav",
+      "pav bhaji",
+      "misal pav",
+      "puran poli",
+      "dal baati churma",
+      "undhiyu",
+      "poha",
+      "shrikhand"
+    ]
+  },
+  {
+    "region_id": "east_asia",
+    "name": "East Asia",
+    "common_foods": [
+      "rice",
+      "noodles",
+      "tofu",
+      "soy sauce",
+      "miso",
+      "kimchi",
+      "bok choy",
+      "dumplings",
+      "congee",
+      "steamed buns"
+    ],
+    "staple_grains": [
+      "rice",
+      "wheat noodles",
+      "millet",
+      "buckwheat"
+    ],
+    "protein_sources": [
+      "tofu",
+      "fish",
+      "pork",
+      "chicken",
+      "edamame",
+      "eggs",
+      "tempeh",
+      "seaweed",
+      "shrimp"
+    ],
+    "vegetables": [
+      "bok choy",
+      "napa cabbage",
+      "daikon",
+      "lotus root",
+      "bamboo shoots",
+      "shiitake mushrooms",
+      "water spinach",
+      "spring onion"
+    ],
+    "fruits": [
+      "lychee",
+      "persimmon",
+      "mandarin orange",
+      "Asian pear",
+      "dragon fruit",
+      "longan"
+    ],
+    "spices": [
+      "soy sauce",
+      "ginger",
+      "garlic",
+      "sesame oil",
+      "star anise",
+      "five-spice powder",
+      "Sichuan pepper",
+      "rice vinegar"
+    ],
+    "traditional_dishes": [
+      "stir-fried vegetables",
+      "mapo tofu",
+      "sushi",
+      "ramen",
+      "bibimbap",
+      "kung pao chicken",
+      "dumplings",
+      "hot pot"
+    ]
+  },
+  {
+    "region_id": "southeast_asia",
+    "name": "Southeast Asia",
+    "common_foods": [
+      "rice",
+      "noodles",
+      "fish sauce",
+      "coconut milk",
+      "lemongrass",
+      "tofu",
+      "tempeh",
+      "satay",
+      "spring rolls",
+      "pho"
+    ],
+    "staple_grains": [
+      "jasmine rice",
+      "sticky rice",
+      "rice noodles",
+      "wheat noodles"
+    ],
+    "protein_sources": [
+      "fish",
+      "shrimp",
+      "chicken",
+      "pork",
+      "tofu",
+      "tempeh",
+      "eggs",
+      "duck",
+      "crab"
+    ],
+    "vegetables": [
+      "morning glory",
+      "bean sprouts",
+      "Thai basil",
+      "galangal",
+      "kaffir lime leaves",
+      "Thai eggplant",
+      "long beans",
+      "banana blossom"
+    ],
+    "fruits": [
+      "durian",
+      "mangosteen",
+      "rambutan",
+      "papaya",
+      "starfruit",
+      "pineapple"
+    ],
+    "spices": [
+      "lemongrass",
+      "galangal",
+      "fish sauce",
+      "shrimp paste",
+      "Thai chilli",
+      "turmeric",
+      "coriander root",
+      "lime leaves"
+    ],
+    "traditional_dishes": [
+      "pad thai",
+      "pho",
+      "green curry",
+      "nasi goreng",
+      "tom yum goong",
+      "laksa",
+      "rendang",
+      "banh mi",
+      "satay"
+    ]
+  },
+  {
+    "region_id": "middle_east",
+    "name": "Middle East",
+    "common_foods": [
+      "hummus",
+      "falafel",
+      "pita bread",
+      "tabbouleh",
+      "shawarma",
+      "fattoush",
+      "labneh",
+      "halloumi",
+      "dates",
+      "baklava"
+    ],
+    "staple_grains": [
+      "wheat",
+      "bulgur",
+      "couscous",
+      "flatbread",
+      "freekeh"
+    ],
+    "protein_sources": [
+      "lamb",
+      "chicken",
+      "chickpeas",
+      "lentils",
+      "yoghurt",
+      "halloumi",
+      "fish",
+      "eggs",
+      "fava beans"
+    ],
+    "vegetables": [
+      "eggplant",
+      "tomato",
+      "cucumber",
+      "parsley",
+      "mint",
+      "okra",
+      "zucchini",
+      "bell pepper"
+    ],
+    "fruits": [
+      "dates",
+      "figs",
+      "pomegranate",
+      "apricot",
+      "grape",
+      "orange"
+    ],
+    "spices": [
+      "sumac",
+      "za'atar",
+      "cumin",
+      "coriander",
+      "saffron",
+      "cardamom",
+      "cinnamon",
+      "allspice"
+    ],
+    "traditional_dishes": [
+      "hummus",
+      "falafel",
+      "shawarma",
+      "kibbeh",
+      "mansaf",
+      "moutabal",
+      "fattoush",
+      "tabbouleh",
+      "kunafa"
+    ]
+  },
+  {
+    "region_id": "mediterranean",
+    "name": "Mediterranean",
+    "common_foods": [
+      "olive oil",
+      "bread",
+      "tomato",
+      "feta cheese",
+      "pasta",
+      "grilled fish",
+      "legumes",
+      "wine",
+      "fresh herbs",
+      "yoghurt"
+    ],
+    "staple_grains": [
+      "wheat",
+      "barley",
+      "farro",
+      "durum wheat pasta",
+      "sourdough bread"
+    ],
+    "protein_sources": [
+      "fish",
+      "chicken",
+      "legumes",
+      "feta",
+      "mozzarella",
+      "eggs",
+      "lamb",
+      "octopus",
+      "sardines"
+    ],
+    "vegetables": [
+      "tomato",
+      "eggplant",
+      "zucchini",
+      "artichoke",
+      "olive",
+      "bell pepper",
+      "onion",
+      "garlic",
+      "leafy greens"
+    ],
+    "fruits": [
+      "grape",
+      "fig",
+      "lemon",
+      "orange",
+      "peach",
+      "melon"
+    ],
+    "spices": [
+      "oregano",
+      "basil",
+      "rosemary",
+      "thyme",
+      "garlic",
+      "bay leaf",
+      "saffron",
+      "parsley"
+    ],
+    "traditional_dishes": [
+      "Greek salad",
+      "moussaka",
+      "pasta puttanesca",
+      "ratatouille",
+      "paella",
+      "bruschetta",
+      "grilled sea bass",
+      "risotto"
+    ]
+  },
+  {
+    "region_id": "northern_europe",
+    "name": "Northern Europe",
+    "common_foods": [
+      "rye bread",
+      "potatoes",
+      "herring",
+      "salmon",
+      "berries",
+      "oats",
+      "dairy",
+      "root vegetables",
+      "cabbage",
+      "mushrooms"
+    ],
+    "staple_grains": [
+      "rye",
+      "oats",
+      "wheat",
+      "barley"
+    ],
+    "protein_sources": [
+      "salmon",
+      "herring",
+      "cod",
+      "pork",
+      "beef",
+      "chicken",
+      "dairy",
+      "eggs",
+      "venison"
+    ],
+    "vegetables": [
+      "potato",
+      "cabbage",
+      "beetroot",
+      "turnip",
+      "carrot",
+      "leek",
+      "celery root",
+      "kale",
+      "peas"
+    ],
+    "fruits": [
+      "blueberry",
+      "lingonberry",
+      "cloudberry",
+      "apple",
+      "pear",
+      "plum"
+    ],
+    "spices": [
+      "dill",
+      "caraway",
+      "juniper",
+      "horseradish",
+      "allspice",
+      "cardamom",
+      "mustard",
+      "chives"
+    ],
+    "traditional_dishes": [
+      "gravlax",
+      "smoked salmon",
+      "meatballs",
+      "rye bread sm\u00f8rrebr\u00f8d",
+      "fish soup",
+      "potato gratin",
+      "karelian pies",
+      "pickled herring"
+    ]
+  },
+  {
+    "region_id": "sub_saharan_africa",
+    "name": "Sub-Saharan Africa",
+    "common_foods": [
+      "fufu",
+      "injera",
+      "ugali",
+      "jollof rice",
+      "plantain",
+      "groundnut soup",
+      "cassava",
+      "yam",
+      "beans",
+      "millet porridge"
+    ],
+    "staple_grains": [
+      "teff",
+      "sorghum",
+      "millet",
+      "maize",
+      "rice",
+      "cassava flour"
+    ],
+    "protein_sources": [
+      "chicken",
+      "goat",
+      "fish",
+      "beans",
+      "groundnuts",
+      "lentils",
+      "cowpeas",
+      "eggs",
+      "beef"
+    ],
+    "vegetables": [
+      "okra",
+      "cassava leaves",
+      "amaranth",
+      "moringa",
+      "sweet potato leaves",
+      "pumpkin",
+      "tomato",
+      "onion"
+    ],
+    "fruits": [
+      "mango",
+      "banana",
+      "papaya",
+      "baobab",
+      "passion fruit",
+      "guava"
+    ],
+    "spices": [
+      "scotch bonnet pepper",
+      "ginger",
+      "garlic",
+      "coriander",
+      "berbere",
+      "suya spice",
+      "cumin",
+      "clove"
+    ],
+    "traditional_dishes": [
+      "jollof rice",
+      "injera with wot",
+      "fufu and soup",
+      "groundnut soup",
+      "egusi soup",
+      "ugali and sukuma",
+      "bobotie",
+      "nyama choma"
+    ]
+  },
+  {
+    "region_id": "latin_america",
+    "name": "Latin America",
+    "common_foods": [
+      "rice and beans",
+      "tortillas",
+      "empanadas",
+      "ceviche",
+      "plantain",
+      "avocado",
+      "salsa",
+      "tamales",
+      "arepas",
+      "quinoa"
+    ],
+    "staple_grains": [
+      "maize",
+      "rice",
+      "wheat",
+      "quinoa",
+      "amaranth"
+    ],
+    "protein_sources": [
+      "black beans",
+      "chicken",
+      "beef",
+      "pork",
+      "fish",
+      "eggs",
+      "cheese",
+      "lentils",
+      "shrimp"
+    ],
+    "vegetables": [
+      "tomato",
+      "bell pepper",
+      "chayote",
+      "nopales",
+      "corn",
+      "avocado",
+      "cassava",
+      "sweet potato"
+    ],
+    "fruits": [
+      "mango",
+      "papaya",
+      "guava",
+      "passion fruit",
+      "pineapple",
+      "cherimoya"
+    ],
+    "spices": [
+      "cumin",
+      "chilli",
+      "cilantro",
+      "oregano",
+      "epazote",
+      "achiote",
+      "lime",
+      "garlic"
+    ],
+    "traditional_dishes": [
+      "tacos",
+      "ceviche",
+      "feijoada",
+      "empanadas",
+      "arepas",
+      "tamales",
+      "mole poblano",
+      "arroz con pollo",
+      "gallo pinto"
+    ]
+  },
+  {
+    "region_id": "north_america",
+    "name": "North America",
+    "common_foods": [
+      "bread",
+      "eggs",
+      "chicken breast",
+      "salad",
+      "pasta",
+      "hamburger",
+      "milk",
+      "cheese",
+      "peanut butter",
+      "cereal"
+    ],
+    "staple_grains": [
+      "wheat",
+      "corn",
+      "oats",
+      "rice",
+      "barley"
+    ],
+    "protein_sources": [
+      "chicken",
+      "beef",
+      "pork",
+      "turkey",
+      "fish",
+      "eggs",
+      "beans",
+      "tofu",
+      "dairy",
+      "nuts"
+    ],
+    "vegetables": [
+      "broccoli",
+      "spinach",
+      "kale",
+      "tomato",
+      "bell pepper",
+      "sweet potato",
+      "corn",
+      "green beans",
+      "lettuce"
+    ],
+    "fruits": [
+      "apple",
+      "banana",
+      "strawberry",
+      "blueberry",
+      "orange",
+      "grape"
+    ],
+    "spices": [
+      "black pepper",
+      "garlic powder",
+      "onion powder",
+      "paprika",
+      "oregano",
+      "thyme",
+      "cayenne",
+      "cinnamon"
+    ],
+    "traditional_dishes": [
+      "grilled chicken salad",
+      "BBQ ribs",
+      "mac and cheese",
+      "clam chowder",
+      "Thanksgiving turkey",
+      "burrito bowl",
+      "Cajun gumbo",
+      "poke bowl"
+    ]
+  },
+  {
+    "region_id": "central_asia",
+    "name": "Central Asia",
+    "common_foods": [
+      "plov",
+      "naan",
+      "lagman",
+      "kefir",
+      "kurt",
+      "samsa",
+      "shashlik",
+      "beshbarmak",
+      "manti",
+      "kumis"
+    ],
+    "staple_grains": [
+      "wheat",
+      "rice",
+      "barley",
+      "millet"
+    ],
+    "protein_sources": [
+      "lamb",
+      "beef",
+      "horse meat",
+      "chicken",
+      "yoghurt",
+      "kefir",
+      "lentils",
+      "eggs"
+    ],
+    "vegetables": [
+      "carrot",
+      "onion",
+      "potato",
+      "tomato",
+      "pumpkin",
+      "radish",
+      "turnip",
+      "bell pepper"
+    ],
+    "fruits": [
+      "melon",
+      "watermelon",
+      "apricot",
+      "grape",
+      "apple",
+      "pomegranate"
+    ],
+    "spices": [
+      "cumin",
+      "coriander",
+      "black pepper",
+      "barberry",
+      "dill",
+      "fennel",
+      "sesame",
+      "garlic"
+    ],
+    "traditional_dishes": [
+      "plov",
+      "beshbarmak",
+      "lagman",
+      "manti",
+      "samsa",
+      "shashlik",
+      "kurt",
+      "shorpo"
+    ]
+  },
+  {
+    "region_id": "west_africa",
+    "name": "West Africa",
+    "common_foods": [
+      "jollof rice",
+      "fufu",
+      "egusi soup",
+      "suya",
+      "pounded yam",
+      "okra soup",
+      "plantain",
+      "garri"
+    ],
+    "staple_grains": [
+      "rice",
+      "millet",
+      "sorghum",
+      "maize",
+      "fonio"
+    ],
+    "protein_sources": [
+      "black-eyed peas",
+      "groundnuts",
+      "smoked fish",
+      "goat",
+      "chicken",
+      "cowpeas"
+    ],
+    "vegetables": [
+      "okra",
+      "spinach",
+      "tomato",
+      "bitter leaf",
+      "garden egg",
+      "scotch bonnet peppers"
+    ],
+    "fruits": [
+      "mango",
+      "papaya",
+      "pineapple",
+      "baobab fruit",
+      "shea fruit",
+      "tamarind"
+    ],
+    "spices": [
+      "scotch bonnet",
+      "locust bean (dawadawa)",
+      "crayfish powder",
+      "ginger",
+      "garlic"
+    ],
+    "traditional_dishes": [
+      "jollof rice",
+      "egusi soup with fufu",
+      "suya",
+      "chin chin",
+      "moin moin"
+    ]
+  },
+  {
+    "region_id": "east_africa",
+    "name": "East Africa",
+    "common_foods": [
+      "ugali",
+      "sukuma wiki",
+      "nyama choma",
+      "chapati",
+      "mandazi",
+      "injera"
+    ],
+    "staple_grains": [
+      "maize",
+      "teff",
+      "sorghum",
+      "finger millet",
+      "wheat"
+    ],
+    "protein_sources": [
+      "beef",
+      "goat",
+      "tilapia",
+      "lentils",
+      "beans",
+      "chicken"
+    ],
+    "vegetables": [
+      "kale",
+      "collard greens",
+      "cabbage",
+      "tomato",
+      "onion",
+      "pumpkin leaves"
+    ],
+    "fruits": [
+      "banana",
+      "mango",
+      "passion fruit",
+      "avocado",
+      "guava",
+      "jackfruit"
+    ],
+    "spices": [
+      "berbere",
+      "cardamom",
+      "cumin",
+      "turmeric",
+      "coriander",
+      "black pepper"
+    ],
+    "traditional_dishes": [
+      "ugali with sukuma wiki",
+      "nyama choma",
+      "injera with wot",
+      "pilau",
+      "mandazi"
+    ]
+  },
+  {
+    "region_id": "southern_africa",
+    "name": "Southern Africa",
+    "common_foods": [
+      "pap",
+      "biltong",
+      "bobotie",
+      "chakalaka",
+      "boerewors",
+      "vetkoek"
+    ],
+    "staple_grains": [
+      "maize",
+      "sorghum",
+      "wheat",
+      "rice"
+    ],
+    "protein_sources": [
+      "beef",
+      "lamb",
+      "chicken",
+      "fish",
+      "beans",
+      "soya"
+    ],
+    "vegetables": [
+      "butternut squash",
+      "spinach",
+      "beetroot",
+      "cabbage",
+      "pumpkin",
+      "green beans"
+    ],
+    "fruits": [
+      "naartjie",
+      "grape",
+      "peach",
+      "marula",
+      "watermelon",
+      "fig"
+    ],
+    "spices": [
+      "peri-peri",
+      "coriander",
+      "cumin",
+      "cinnamon",
+      "clove",
+      "nutmeg"
+    ],
+    "traditional_dishes": [
+      "bobotie",
+      "biltong",
+      "braai",
+      "pap and chakalaka",
+      "potjiekos"
+    ]
+  },
+  {
+    "region_id": "north_africa",
+    "name": "North Africa",
+    "common_foods": [
+      "couscous",
+      "tagine",
+      "harissa",
+      "shakshuka",
+      "msemen",
+      "bissara"
+    ],
+    "staple_grains": [
+      "wheat",
+      "barley",
+      "semolina",
+      "rice"
+    ],
+    "protein_sources": [
+      "lamb",
+      "chicken",
+      "chickpeas",
+      "lentils",
+      "sardines",
+      "eggs"
+    ],
+    "vegetables": [
+      "tomato",
+      "eggplant",
+      "zucchini",
+      "carrot",
+      "artichoke",
+      "broad beans"
+    ],
+    "fruits": [
+      "date",
+      "fig",
+      "pomegranate",
+      "orange",
+      "apricot",
+      "olive"
+    ],
+    "spices": [
+      "cumin",
+      "harissa",
+      "ras el hanout",
+      "saffron",
+      "preserved lemon",
+      "coriander"
+    ],
+    "traditional_dishes": [
+      "couscous royale",
+      "tagine",
+      "shakshuka",
+      "pastilla",
+      "merguez"
+    ]
+  },
+  {
+    "region_id": "caribbean",
+    "name": "Caribbean",
+    "common_foods": [
+      "rice and peas",
+      "jerk chicken",
+      "ackee and saltfish",
+      "roti",
+      "callaloo",
+      "plantain"
+    ],
+    "staple_grains": [
+      "rice",
+      "cornmeal",
+      "wheat flour",
+      "cassava"
+    ],
+    "protein_sources": [
+      "chicken",
+      "fish",
+      "goat",
+      "red beans",
+      "pigeon peas",
+      "saltfish"
+    ],
+    "vegetables": [
+      "callaloo",
+      "okra",
+      "scotch bonnet",
+      "cho cho",
+      "breadfruit",
+      "yam"
+    ],
+    "fruits": [
+      "mango",
+      "papaya",
+      "guava",
+      "soursop",
+      "ackee",
+      "star fruit"
+    ],
+    "spices": [
+      "allspice",
+      "scotch bonnet",
+      "thyme",
+      "ginger",
+      "garlic",
+      "nutmeg"
+    ],
+    "traditional_dishes": [
+      "jerk chicken",
+      "ackee and saltfish",
+      "rice and peas",
+      "curry goat",
+      "doubles"
+    ]
+  },
+  {
+    "region_id": "south_america",
+    "name": "South America",
+    "common_foods": [
+      "feijoada",
+      "arepa",
+      "empanada",
+      "ceviche",
+      "churrasco",
+      "quinoa"
+    ],
+    "staple_grains": [
+      "rice",
+      "corn",
+      "quinoa",
+      "wheat",
+      "cassava flour"
+    ],
+    "protein_sources": [
+      "beef",
+      "chicken",
+      "fish",
+      "black beans",
+      "lentils",
+      "llama"
+    ],
+    "vegetables": [
+      "potato",
+      "sweet potato",
+      "corn",
+      "tomato",
+      "avocado",
+      "peppers"
+    ],
+    "fruits": [
+      "acai",
+      "passion fruit",
+      "guava",
+      "papaya",
+      "cherimoya",
+      "lucuma"
+    ],
+    "spices": [
+      "aji amarillo",
+      "cumin",
+      "oregano",
+      "cilantro",
+      "garlic",
+      "chimichurri"
+    ],
+    "traditional_dishes": [
+      "feijoada",
+      "ceviche",
+      "empanadas",
+      "asado",
+      "lomo saltado"
+    ]
+  },
+  {
+    "region_id": "pacific_islands",
+    "name": "Pacific Islands",
+    "common_foods": [
+      "taro",
+      "breadfruit",
+      "coconut",
+      "poi",
+      "laulau",
+      "poke"
+    ],
+    "staple_grains": [
+      "taro",
+      "breadfruit",
+      "sweet potato",
+      "rice",
+      "cassava"
+    ],
+    "protein_sources": [
+      "tuna",
+      "mahi-mahi",
+      "octopus",
+      "pork",
+      "chicken",
+      "tofu"
+    ],
+    "vegetables": [
+      "taro leaves",
+      "sweet potato leaves",
+      "seaweed",
+      "long beans",
+      "squash"
+    ],
+    "fruits": [
+      "coconut",
+      "breadfruit",
+      "papaya",
+      "guava",
+      "pineapple",
+      "banana"
+    ],
+    "spices": [
+      "coconut cream",
+      "ginger",
+      "garlic",
+      "chilli",
+      "lemongrass",
+      "lime"
+    ],
+    "traditional_dishes": [
+      "poke bowl",
+      "laulau",
+      "poi",
+      "kalua pig",
+      "umu (earth oven)"
+    ]
+  },
+  {
+    "region_id": "eastern_europe",
+    "name": "Eastern Europe",
+    "common_foods": [
+      "borscht",
+      "pierogi",
+      "sauerkraut",
+      "kielbasa",
+      "blini",
+      "pelmeni"
+    ],
+    "staple_grains": [
+      "wheat",
+      "rye",
+      "buckwheat",
+      "barley",
+      "oats"
+    ],
+    "protein_sources": [
+      "pork",
+      "beef",
+      "chicken",
+      "carp",
+      "sour cream",
+      "cottage cheese"
+    ],
+    "vegetables": [
+      "potato",
+      "beetroot",
+      "cabbage",
+      "carrot",
+      "onion",
+      "dill"
+    ],
+    "fruits": [
+      "apple",
+      "plum",
+      "cherry",
+      "pear",
+      "currant",
+      "raspberry"
+    ],
+    "spices": [
+      "dill",
+      "caraway",
+      "paprika",
+      "horseradish",
+      "garlic",
+      "bay leaf"
+    ],
+    "traditional_dishes": [
+      "borscht",
+      "pierogi",
+      "pelmeni",
+      "goulash",
+      "blini with smetana"
+    ]
+  },
+  {
+    "region_id": "western_europe",
+    "name": "Western Europe",
+    "common_foods": [
+      "baguette",
+      "croissant",
+      "bratwurst",
+      "cheese",
+      "ratatouille",
+      "paella"
+    ],
+    "staple_grains": [
+      "wheat",
+      "rye",
+      "oats",
+      "barley",
+      "spelt"
+    ],
+    "protein_sources": [
+      "beef",
+      "pork",
+      "chicken",
+      "salmon",
+      "cheese",
+      "lentils"
+    ],
+    "vegetables": [
+      "potato",
+      "carrot",
+      "leek",
+      "asparagus",
+      "artichoke",
+      "endive"
+    ],
+    "fruits": [
+      "apple",
+      "grape",
+      "peach",
+      "pear",
+      "strawberry",
+      "citrus"
+    ],
+    "spices": [
+      "thyme",
+      "rosemary",
+      "bay leaf",
+      "tarragon",
+      "nutmeg",
+      "mustard"
+    ],
+    "traditional_dishes": [
+      "coq au vin",
+      "bratwurst",
+      "paella",
+      "fish and chips",
+      "risotto"
+    ]
+  },
+  {
+    "region_id": "central_america",
+    "name": "Central America",
+    "common_foods": [
+      "tortilla",
+      "tamale",
+      "pupusa",
+      "gallo pinto",
+      "ceviche",
+      "enchilada"
+    ],
+    "staple_grains": [
+      "corn",
+      "rice",
+      "wheat",
+      "black beans"
+    ],
+    "protein_sources": [
+      "chicken",
+      "pork",
+      "beef",
+      "black beans",
+      "cheese",
+      "fish"
+    ],
+    "vegetables": [
+      "tomato",
+      "chayote",
+      "jalape\u00f1o",
+      "avocado",
+      "corn",
+      "nopales"
+    ],
+    "fruits": [
+      "mango",
+      "papaya",
+      "pineapple",
+      "guava",
+      "plantain",
+      "tamarind"
+    ],
+    "spices": [
+      "cumin",
+      "chili powder",
+      "oregano",
+      "cilantro",
+      "achiote",
+      "epazote"
+    ],
+    "traditional_dishes": [
+      "pupusas",
+      "gallo pinto",
+      "tamales",
+      "enchiladas",
+      "sopa de frijoles"
+    ]
+  },
+  {
+    "region_id": "australian",
+    "name": "Australia & New Zealand",
+    "common_foods": [
+      "vegemite toast",
+      "meat pie",
+      "lamington",
+      "pavlova",
+      "barramundi",
+      "tim tam"
+    ],
+    "staple_grains": [
+      "wheat",
+      "oats",
+      "rice",
+      "barley"
+    ],
+    "protein_sources": [
+      "beef",
+      "lamb",
+      "kangaroo",
+      "barramundi",
+      "salmon",
+      "prawns"
+    ],
+    "vegetables": [
+      "sweet potato",
+      "beetroot",
+      "pumpkin",
+      "spinach",
+      "avocado",
+      "capsicum"
+    ],
+    "fruits": [
+      "mango",
+      "passion fruit",
+      "kiwi",
+      "macadamia",
+      "finger lime",
+      "quandong"
+    ],
+    "spices": [
+      "lemon myrtle",
+      "bush tomato",
+      "wattleseed",
+      "pepperberry",
+      "anise myrtle"
+    ],
+    "traditional_dishes": [
+      "meat pie",
+      "barramundi",
+      "pavlova",
+      "lamingtons",
+      "vegemite on toast"
+    ]
+  },
+  {
+    "region_id": "nordic",
+    "name": "Nordic (Scandinavia)",
+    "common_foods": [
+      "sm\u00f8rrebr\u00f8d",
+      "gravlax",
+      "meatballs",
+      "kn\u00e4ckebr\u00f6d",
+      "cloudberries"
+    ],
+    "staple_grains": [
+      "rye",
+      "oats",
+      "barley",
+      "spelt",
+      "wheat"
+    ],
+    "protein_sources": [
+      "salmon",
+      "herring",
+      "cod",
+      "reindeer",
+      "pork",
+      "dairy"
+    ],
+    "vegetables": [
+      "potato",
+      "root vegetables",
+      "cabbage",
+      "peas",
+      "mushrooms",
+      "kale"
+    ],
+    "fruits": [
+      "lingonberry",
+      "cloudberry",
+      "blueberry",
+      "apple",
+      "plum",
+      "rhubarb"
+    ],
+    "spices": [
+      "dill",
+      "cardamom",
+      "juniper",
+      "caraway",
+      "allspice",
+      "horseradish"
+    ],
+    "traditional_dishes": [
+      "gravlax",
+      "sm\u00f8rrebr\u00f8d",
+      "Swedish meatballs",
+      "pytt i panna",
+      "surstr\u00f6mming"
+    ]
+  },
+  {
+    "region_id": "balkans",
+    "name": "Balkans",
+    "common_foods": [
+      "burek",
+      "\u0107evapi",
+      "shopska salad",
+      "ajvar",
+      "baklava",
+      "sarma"
+    ],
+    "staple_grains": [
+      "wheat",
+      "corn",
+      "barley",
+      "rice"
+    ],
+    "protein_sources": [
+      "lamb",
+      "beef",
+      "pork",
+      "chicken",
+      "white cheese",
+      "yoghurt"
+    ],
+    "vegetables": [
+      "pepper",
+      "tomato",
+      "eggplant",
+      "onion",
+      "cabbage",
+      "spinach"
+    ],
+    "fruits": [
+      "plum",
+      "grape",
+      "fig",
+      "cherry",
+      "watermelon",
+      "quince"
+    ],
+    "spices": [
+      "paprika",
+      "garlic",
+      "bay leaf",
+      "oregano",
+      "rosemary",
+      "parsley"
+    ],
+    "traditional_dishes": [
+      "burek",
+      "\u0107evapi",
+      "moussaka",
+      "sarma",
+      "shopska salad"
+    ]
+  },
+  {
+    "region_id": "caucasus",
+    "name": "Caucasus",
+    "common_foods": [
+      "khachapuri",
+      "khinkali",
+      "dolma",
+      "lavash",
+      "churchkhela"
+    ],
+    "staple_grains": [
+      "wheat",
+      "corn",
+      "rice",
+      "barley"
+    ],
+    "protein_sources": [
+      "lamb",
+      "beef",
+      "chicken",
+      "walnut",
+      "cheese",
+      "beans"
+    ],
+    "vegetables": [
+      "eggplant",
+      "tomato",
+      "pepper",
+      "herbs",
+      "beet greens",
+      "leek"
+    ],
+    "fruits": [
+      "pomegranate",
+      "grape",
+      "persimmon",
+      "quince",
+      "cherry",
+      "apricot"
+    ],
+    "spices": [
+      "fenugreek",
+      "coriander",
+      "saffron",
+      "sumac",
+      "marigold",
+      "blue fenugreek"
+    ],
+    "traditional_dishes": [
+      "khachapuri",
+      "khinkali",
+      "dolma",
+      "lobio",
+      "plov"
+    ]
+  },
+  {
+    "region_id": "central_europe",
+    "name": "Central Europe",
+    "common_foods": [
+      "schnitzel",
+      "strudel",
+      "spaetzle",
+      "pretzel",
+      "sauerkraut",
+      "goulash"
+    ],
+    "staple_grains": [
+      "wheat",
+      "rye",
+      "spelt",
+      "barley",
+      "oats"
+    ],
+    "protein_sources": [
+      "pork",
+      "beef",
+      "chicken",
+      "trout",
+      "cheese",
+      "lentils"
+    ],
+    "vegetables": [
+      "potato",
+      "cabbage",
+      "turnip",
+      "carrot",
+      "asparagus",
+      "kohlrabi"
+    ],
+    "fruits": [
+      "apple",
+      "pear",
+      "plum",
+      "cherry",
+      "apricot",
+      "grape"
+    ],
+    "spices": [
+      "caraway",
+      "paprika",
+      "marjoram",
+      "juniper",
+      "horseradish",
+      "mustard"
+    ],
+    "traditional_dishes": [
+      "wiener schnitzel",
+      "goulash",
+      "spaetzle",
+      "apple strudel",
+      "sauerbraten"
+    ]
+  },
+  {
+    "region_id": "andean",
+    "name": "Andean Region",
+    "common_foods": [
+      "quinoa",
+      "chu\u00f1o",
+      "cuy",
+      "anticuchos",
+      "ceviche",
+      "humitas"
+    ],
+    "staple_grains": [
+      "quinoa",
+      "corn",
+      "potato",
+      "kiwicha"
+    ],
+    "protein_sources": [
+      "guinea pig (cuy)",
+      "llama",
+      "alpaca",
+      "trout",
+      "beans",
+      "eggs"
+    ],
+    "vegetables": [
+      "potato",
+      "sweet potato",
+      "oca",
+      "ulluco",
+      "corn",
+      "squash"
+    ],
+    "fruits": [
+      "lucuma",
+      "cherimoya",
+      "passion fruit",
+      "cape gooseberry",
+      "prickly pear"
+    ],
+    "spices": [
+      "aji amarillo",
+      "huacatay",
+      "cumin",
+      "oregano",
+      "garlic",
+      "rocoto"
+    ],
+    "traditional_dishes": [
+      "ceviche",
+      "lomo saltado",
+      "anticuchos",
+      "pachamanca",
+      "papa a la huancaina"
+    ]
+  },
+  {
+    "region_id": "iberian",
+    "name": "Iberian Peninsula",
+    "common_foods": [
+      "paella",
+      "gazpacho",
+      "bacalhau",
+      "tapas",
+      "churros",
+      "caldo verde"
+    ],
+    "staple_grains": [
+      "wheat",
+      "rice",
+      "corn",
+      "barley"
+    ],
+    "protein_sources": [
+      "pork (ib\u00e9rico)",
+      "sardines",
+      "cod",
+      "chicken",
+      "chorizo",
+      "chickpeas"
+    ],
+    "vegetables": [
+      "tomato",
+      "pepper",
+      "garlic",
+      "onion",
+      "potato",
+      "olive"
+    ],
+    "fruits": [
+      "orange",
+      "grape",
+      "fig",
+      "almond",
+      "lemon",
+      "quince"
+    ],
+    "spices": [
+      "saffron",
+      "paprika (piment\u00f3n)",
+      "garlic",
+      "bay leaf",
+      "oregano",
+      "parsley"
+    ],
+    "traditional_dishes": [
+      "paella",
+      "bacalhau",
+      "gazpacho",
+      "past\u00e9is de nata",
+      "fabada asturiana"
+    ]
+  },
+  {
+    "region_id": "india_kerala",
+    "name": "Kerala, India",
+    "common_foods": [
+      "rice",
+      "coconut curry",
+      "appam",
+      "puttu",
+      "avial",
+      "fish curry",
+      "karimeen pollichathu",
+      "sadya",
+      "idiyappam",
+      "parippu curry"
+    ],
+    "staple_grains": [
+      "rice",
+      "rice flour",
+      "tapioca"
+    ],
+    "protein_sources": [
+      "fish",
+      "prawns",
+      "chicken",
+      "coconut",
+      "lentils",
+      "eggs",
+      "duck"
+    ],
+    "vegetables": [
+      "drumstick",
+      "ash gourd",
+      "snake gourd",
+      "yam",
+      "banana",
+      "bitter gourd",
+      "moringa leaves",
+      "jackfruit"
+    ],
+    "fruits": [
+      "coconut",
+      "banana",
+      "jackfruit",
+      "mango",
+      "pineapple",
+      "papaya"
+    ],
+    "spices": [
+      "coconut oil",
+      "curry leaves",
+      "black pepper",
+      "turmeric",
+      "mustard seeds",
+      "fenugreek",
+      "cardamom",
+      "star anise"
+    ],
+    "traditional_dishes": [
+      "Kerala fish curry",
+      "avial",
+      "karimeen pollichathu",
+      "appam with stew",
+      "puttu and kadala curry",
+      "sadya (feast)",
+      "erissery",
+      "olan"
+    ]
+  },
+  {
+    "region_id": "india_tamil_nadu",
+    "name": "Tamil Nadu, India",
+    "common_foods": [
+      "rice",
+      "idli",
+      "dosa",
+      "sambar",
+      "rasam",
+      "pongal",
+      "chettinad chicken",
+      "filter coffee",
+      "kothu parotta",
+      "vada"
+    ],
+    "staple_grains": [
+      "rice",
+      "ragi (finger millet)",
+      "rice flour",
+      "urad dal"
+    ],
+    "protein_sources": [
+      "lentils",
+      "chicken",
+      "fish",
+      "prawns",
+      "eggs",
+      "black gram",
+      "crab"
+    ],
+    "vegetables": [
+      "drumstick",
+      "brinjal",
+      "lady finger",
+      "banana stem",
+      "bottle gourd",
+      "moringa",
+      "curry leaves"
+    ],
+    "fruits": [
+      "banana",
+      "mango",
+      "guava",
+      "jackfruit",
+      "wood apple",
+      "custard apple"
+    ],
+    "spices": [
+      "curry leaves",
+      "mustard seeds",
+      "black pepper",
+      "tamarind",
+      "asafoetida",
+      "fenugreek",
+      "dried red chili",
+      "sesame oil"
+    ],
+    "traditional_dishes": [
+      "Chettinad chicken",
+      "idli-sambar",
+      "dosa varieties",
+      "pongal",
+      "rasam",
+      "kothu parotta",
+      "fish kuzhambu",
+      "payasam"
+    ]
+  },
+  {
+    "region_id": "india_karnataka",
+    "name": "Karnataka, India",
+    "common_foods": [
+      "rice",
+      "ragi mudde",
+      "bisi bele bath",
+      "dosa",
+      "idli",
+      "mysore pak",
+      "jolada rotti",
+      "uppittu",
+      "vangibath",
+      "chitranna"
+    ],
+    "staple_grains": [
+      "rice",
+      "ragi (finger millet)",
+      "jowar (sorghum)",
+      "wheat"
+    ],
+    "protein_sources": [
+      "lentils",
+      "chicken",
+      "mutton",
+      "fish",
+      "black gram",
+      "horsegram",
+      "eggs"
+    ],
+    "vegetables": [
+      "ridge gourd",
+      "ivy gourd",
+      "drumstick",
+      "brinjal",
+      "banana flower",
+      "raw banana",
+      "bitter gourd"
+    ],
+    "fruits": [
+      "banana",
+      "mango",
+      "sapota",
+      "guava",
+      "jackfruit",
+      "pomegranate"
+    ],
+    "spices": [
+      "curry leaves",
+      "mustard seeds",
+      "coconut",
+      "jaggery",
+      "tamarind",
+      "byadagi chili",
+      "asafoetida"
+    ],
+    "traditional_dishes": [
+      "bisi bele bath",
+      "ragi mudde with saaru",
+      "Mysore masala dosa",
+      "jolada rotti with ennegai",
+      "Dharwad peda",
+      "Mangalorean fish curry"
+    ]
+  },
+  {
+    "region_id": "india_andhra",
+    "name": "Andhra Pradesh, India",
+    "common_foods": [
+      "rice",
+      "pesarattu",
+      "gongura",
+      "pulihora",
+      "biryani",
+      "gutti vankaya",
+      "pappu",
+      "avakaya",
+      "tomato pappu",
+      "royyala iguru"
+    ],
+    "staple_grains": [
+      "rice",
+      "jowar (sorghum)",
+      "green gram",
+      "wheat"
+    ],
+    "protein_sources": [
+      "chicken",
+      "mutton",
+      "prawns",
+      "fish",
+      "lentils",
+      "eggs",
+      "crab"
+    ],
+    "vegetables": [
+      "gongura (sorrel)",
+      "brinjal",
+      "drumstick",
+      "ridge gourd",
+      "ivy gourd",
+      "cluster beans",
+      "raw banana"
+    ],
+    "fruits": [
+      "mango",
+      "banana",
+      "custard apple",
+      "guava",
+      "papaya",
+      "tamarind"
+    ],
+    "spices": [
+      "red chili (guntur)",
+      "tamarind",
+      "mustard seeds",
+      "curry leaves",
+      "cumin",
+      "fenugreek",
+      "sesame oil",
+      "asafoetida"
+    ],
+    "traditional_dishes": [
+      "Hyderabadi biryani",
+      "pesarattu",
+      "gongura mamsam",
+      "gutti vankaya",
+      "royyala iguru",
+      "pulihora",
+      "avakaya pickle"
+    ]
+  },
+  {
+    "region_id": "india_maharashtra",
+    "name": "Maharashtra, India",
+    "common_foods": [
+      "bhakri",
+      "vada pav",
+      "misal pav",
+      "puran poli",
+      "poha",
+      "thalipeeth",
+      "zunka bhakri",
+      "sabudana khichdi",
+      "pav bhaji",
+      "modak"
+    ],
+    "staple_grains": [
+      "jowar (sorghum)",
+      "bajra (pearl millet)",
+      "rice",
+      "wheat"
+    ],
+    "protein_sources": [
+      "lentils",
+      "groundnuts",
+      "chicken",
+      "mutton",
+      "fish",
+      "eggs",
+      "sprouted moth beans"
+    ],
+    "vegetables": [
+      "brinjal",
+      "potato",
+      "onion",
+      "green leafy (methi)",
+      "lady finger",
+      "bottle gourd",
+      "kothimbir (coriander)"
+    ],
+    "fruits": [
+      "alphonso mango",
+      "banana",
+      "guava",
+      "custard apple",
+      "kokum",
+      "jamun"
+    ],
+    "spices": [
+      "kokum",
+      "goda masala",
+      "mustard seeds",
+      "asafoetida",
+      "turmeric",
+      "red chili",
+      "jaggery",
+      "peanut oil"
+    ],
+    "traditional_dishes": [
+      "misal pav",
+      "vada pav",
+      "puran poli",
+      "thalipeeth",
+      "zunka bhakri",
+      "modak",
+      "pav bhaji",
+      "Kolhapuri chicken"
+    ]
+  },
+  {
+    "region_id": "india_gujarat",
+    "name": "Gujarat, India",
+    "common_foods": [
+      "dhokla",
+      "thepla",
+      "khandvi",
+      "undhiyu",
+      "dal-bhat-shaak-rotli",
+      "fafda-jalebi",
+      "handvo",
+      "khakhra",
+      "sev tameta",
+      "basundi"
+    ],
+    "staple_grains": [
+      "wheat",
+      "bajra (pearl millet)",
+      "jowar (sorghum)",
+      "rice",
+      "chickpea flour"
+    ],
+    "protein_sources": [
+      "lentils",
+      "mung bean",
+      "chickpeas",
+      "buttermilk",
+      "yoghurt",
+      "peanuts",
+      "sesame"
+    ],
+    "vegetables": [
+      "bottle gourd",
+      "ridge gourd",
+      "cluster beans",
+      "surti papdi",
+      "potato",
+      "raw banana",
+      "yam"
+    ],
+    "fruits": [
+      "mango",
+      "banana",
+      "chikoo (sapota)",
+      "jamun",
+      "ber (jujube)",
+      "pomegranate"
+    ],
+    "spices": [
+      "mustard seeds",
+      "cumin",
+      "asafoetida",
+      "turmeric",
+      "green chili",
+      "jaggery",
+      "sesame",
+      "kokum"
+    ],
+    "traditional_dishes": [
+      "dhokla",
+      "undhiyu",
+      "khandvi",
+      "thepla",
+      "dal dhokli",
+      "fafda-jalebi",
+      "sev usal",
+      "basundi"
+    ]
+  },
+  {
+    "region_id": "india_rajasthan",
+    "name": "Rajasthan, India",
+    "common_foods": [
+      "dal bati churma",
+      "gatte ki sabzi",
+      "ker sangri",
+      "bajra roti",
+      "laal maas",
+      "ghevar",
+      "papad ki sabzi",
+      "pyaaz kachori"
+    ],
+    "staple_grains": [
+      "bajra (pearl millet)",
+      "wheat",
+      "jowar (sorghum)",
+      "corn",
+      "chickpea flour"
+    ],
+    "protein_sources": [
+      "lentils",
+      "chickpeas",
+      "buttermilk",
+      "ghee",
+      "yoghurt",
+      "mutton",
+      "dried beans"
+    ],
+    "vegetables": [
+      "ker (caper berry)",
+      "sangri (desert beans)",
+      "kumatiya",
+      "raw banana",
+      "potato",
+      "dried vegetables"
+    ],
+    "fruits": [
+      "ber (jujube)",
+      "pomegranate",
+      "amla",
+      "khejri beans",
+      "raw mango"
+    ],
+    "spices": [
+      "red chili",
+      "coriander",
+      "cumin",
+      "dried mango powder",
+      "ghee",
+      "asafoetida",
+      "dried ginger"
+    ],
+    "traditional_dishes": [
+      "dal bati churma",
+      "laal maas",
+      "gatte ki sabzi",
+      "ker sangri",
+      "ghevar",
+      "bajra roti with garlic chutney",
+      "pyaaz kachori"
+    ]
+  },
+  {
+    "region_id": "india_punjab",
+    "name": "Punjab, India",
+    "common_foods": [
+      "makki ki roti",
+      "sarson ka saag",
+      "butter chicken",
+      "dal makhani",
+      "chole bhature",
+      "lassi",
+      "paratha",
+      "paneer tikka",
+      "tandoori chicken",
+      "rajma"
+    ],
+    "staple_grains": [
+      "wheat",
+      "corn (maize)",
+      "basmati rice",
+      "bajra (pearl millet)"
+    ],
+    "protein_sources": [
+      "chicken",
+      "paneer",
+      "lentils",
+      "kidney beans",
+      "mutton",
+      "eggs",
+      "yoghurt",
+      "ghee"
+    ],
+    "vegetables": [
+      "mustard greens",
+      "potato",
+      "cauliflower",
+      "spinach",
+      "turnip",
+      "radish",
+      "fenugreek leaves"
+    ],
+    "fruits": [
+      "orange (kinnow)",
+      "guava",
+      "mango",
+      "pomegranate",
+      "amla"
+    ],
+    "spices": [
+      "garam masala",
+      "cumin",
+      "coriander",
+      "turmeric",
+      "red chili",
+      "ghee",
+      "dried fenugreek",
+      "amchur"
+    ],
+    "traditional_dishes": [
+      "sarson ka saag-makki ki roti",
+      "butter chicken",
+      "dal makhani",
+      "chole bhature",
+      "tandoori chicken",
+      "rajma chawal",
+      "lassi"
+    ]
+  },
+  {
+    "region_id": "india_west_bengal",
+    "name": "West Bengal, India",
+    "common_foods": [
+      "rice",
+      "ilish (hilsa)",
+      "shorshe maach",
+      "kosha mangsho",
+      "luchi-alur dom",
+      "mishti doi",
+      "rasgulla",
+      "posto (poppy seed)",
+      "begun bhaja",
+      "chingri malaikari"
+    ],
+    "staple_grains": [
+      "rice",
+      "rice flour",
+      "wheat (maida)"
+    ],
+    "protein_sources": [
+      "hilsa fish",
+      "rohu fish",
+      "prawns",
+      "chicken",
+      "mutton",
+      "lentils (masoor)",
+      "eggs",
+      "poppy seeds"
+    ],
+    "vegetables": [
+      "potato",
+      "pumpkin",
+      "brinjal",
+      "pointed gourd",
+      "banana flower",
+      "raw banana",
+      "radish",
+      "kohlrabi"
+    ],
+    "fruits": [
+      "mango (langra)",
+      "lychee",
+      "jackfruit",
+      "banana",
+      "guava",
+      "coconut"
+    ],
+    "spices": [
+      "mustard oil",
+      "panch phoron",
+      "mustard seeds",
+      "turmeric",
+      "green chili",
+      "nigella seeds",
+      "poppy seeds"
+    ],
+    "traditional_dishes": [
+      "ilish bhapa",
+      "kosha mangsho",
+      "chingri malaikari",
+      "luchi-alur dom",
+      "shukto",
+      "mishti doi",
+      "rasgulla",
+      "sandesh"
+    ]
+  },
+  {
+    "region_id": "india_uttar_pradesh",
+    "name": "Uttar Pradesh, India",
+    "common_foods": [
+      "roti",
+      "dal",
+      "aloo sabzi",
+      "biryani",
+      "kebab",
+      "chaat",
+      "petha",
+      "bedmi puri",
+      "kachori",
+      "tehri"
+    ],
+    "staple_grains": [
+      "wheat",
+      "rice",
+      "barley",
+      "chickpea flour"
+    ],
+    "protein_sources": [
+      "lentils (arhar, chana)",
+      "chicken",
+      "mutton",
+      "paneer",
+      "milk",
+      "yoghurt",
+      "eggs"
+    ],
+    "vegetables": [
+      "potato",
+      "cauliflower",
+      "spinach",
+      "peas",
+      "okra",
+      "bottle gourd",
+      "pumpkin",
+      "turnip"
+    ],
+    "fruits": [
+      "mango (dasheri)",
+      "guava",
+      "banana",
+      "amla",
+      "watermelon",
+      "litchi"
+    ],
+    "spices": [
+      "cumin",
+      "coriander",
+      "turmeric",
+      "red chili",
+      "garam masala",
+      "asafoetida",
+      "mustard oil",
+      "ghee"
+    ],
+    "traditional_dishes": [
+      "Lucknowi biryani",
+      "galawati kebab",
+      "bedmi puri-aloo",
+      "chaat varieties",
+      "petha",
+      "banarasi paan",
+      "tehri"
+    ]
+  },
+  {
+    "region_id": "india_goa",
+    "name": "Goa, India",
+    "common_foods": [
+      "fish curry rice",
+      "vindaloo",
+      "xacuti",
+      "bebinca",
+      "ros omelette",
+      "pork sorpotel",
+      "feni",
+      "prawn balch\u00e3o",
+      "sannas"
+    ],
+    "staple_grains": [
+      "rice",
+      "rice flour",
+      "wheat (pao/bread)"
+    ],
+    "protein_sources": [
+      "fish (kingfish, pomfret)",
+      "prawns",
+      "pork",
+      "chicken",
+      "clams",
+      "crab",
+      "beef",
+      "eggs"
+    ],
+    "vegetables": [
+      "kokum",
+      "raw mango",
+      "drumstick",
+      "brinjal",
+      "lady finger",
+      "breadfruit",
+      "colocasia"
+    ],
+    "fruits": [
+      "coconut",
+      "cashew fruit",
+      "mango",
+      "jackfruit",
+      "pineapple",
+      "papaya"
+    ],
+    "spices": [
+      "coconut",
+      "kokum",
+      "tamarind",
+      "red chili (kashmiri)",
+      "vinegar",
+      "cinnamon",
+      "clove",
+      "toddy vinegar"
+    ],
+    "traditional_dishes": [
+      "fish curry rice",
+      "pork vindaloo",
+      "chicken xacuti",
+      "bebinca",
+      "prawn balch\u00e3o",
+      "sorpotel",
+      "sannas",
+      "feni"
+    ]
+  },
+  {
+    "region_id": "india_odisha",
+    "name": "Odisha, India",
+    "common_foods": [
+      "pakhala bhata",
+      "dalma",
+      "chhena poda",
+      "machha besara",
+      "santula",
+      "rasgulla",
+      "mudhi mansa",
+      "kanika",
+      "enduri pitha"
+    ],
+    "staple_grains": [
+      "rice",
+      "ragi (finger millet)",
+      "rice flour"
+    ],
+    "protein_sources": [
+      "fish",
+      "prawns",
+      "crab",
+      "chicken",
+      "lentils",
+      "paneer (chhena)",
+      "mustard paste",
+      "eggs"
+    ],
+    "vegetables": [
+      "raw banana",
+      "pumpkin",
+      "drumstick",
+      "papaya (raw)",
+      "brinjal",
+      "potato",
+      "pointed gourd",
+      "colocasia"
+    ],
+    "fruits": [
+      "mango",
+      "banana",
+      "coconut",
+      "jackfruit",
+      "black plum"
+    ],
+    "spices": [
+      "mustard",
+      "panch phoron",
+      "turmeric",
+      "cumin",
+      "dried red chili",
+      "mustard oil",
+      "curry leaves"
+    ],
+    "traditional_dishes": [
+      "pakhala bhata",
+      "dalma",
+      "chhena poda",
+      "machha besara",
+      "santula",
+      "enduri pitha",
+      "mudhi mansa",
+      "chenna jhili"
+    ]
+  },
+  {
+    "region_id": "china_sichuan",
+    "name": "Sichuan, China",
+    "common_foods": [
+      "rice",
+      "mapo tofu",
+      "kung pao chicken",
+      "dan dan noodles",
+      "hot pot",
+      "twice-cooked pork",
+      "sichuan pickles",
+      "doubanjiang"
+    ],
+    "staple_grains": [
+      "rice",
+      "wheat noodles",
+      "rice noodles"
+    ],
+    "protein_sources": [
+      "pork",
+      "tofu",
+      "chicken",
+      "fish",
+      "beef",
+      "duck",
+      "eggs",
+      "silkworm"
+    ],
+    "vegetables": [
+      "chinese cabbage",
+      "water spinach",
+      "bamboo shoots",
+      "lotus root",
+      "chili peppers",
+      "garlic stems",
+      "bean sprouts"
+    ],
+    "fruits": [
+      "orange",
+      "tangerine",
+      "loquat",
+      "pomelo",
+      "kiwi"
+    ],
+    "spices": [
+      "sichuan peppercorn",
+      "dried chili",
+      "doubanjiang",
+      "ginger",
+      "garlic",
+      "star anise",
+      "fermented black beans"
+    ],
+    "traditional_dishes": [
+      "mapo tofu",
+      "kung pao chicken",
+      "dan dan noodles",
+      "sichuan hot pot",
+      "twice-cooked pork",
+      "fish-fragrant eggplant",
+      "water-boiled fish"
+    ]
+  },
+  {
+    "region_id": "china_cantonese",
+    "name": "Cantonese (Guangdong), China",
+    "common_foods": [
+      "dim sum",
+      "congee",
+      "char siu",
+      "wonton noodles",
+      "steamed fish",
+      "clay pot rice",
+      "lo mai gai",
+      "cheung fun"
+    ],
+    "staple_grains": [
+      "rice",
+      "rice noodles",
+      "wheat noodles"
+    ],
+    "protein_sources": [
+      "pork",
+      "chicken",
+      "duck",
+      "fish",
+      "shrimp",
+      "tofu",
+      "beef",
+      "eggs",
+      "oyster"
+    ],
+    "vegetables": [
+      "choy sum",
+      "gai lan (Chinese broccoli)",
+      "water spinach",
+      "winter melon",
+      "lotus root",
+      "bean sprouts",
+      "chinese mushroom"
+    ],
+    "fruits": [
+      "lychee",
+      "longan",
+      "starfruit",
+      "papaya",
+      "pomelo",
+      "banana"
+    ],
+    "spices": [
+      "ginger",
+      "scallion",
+      "oyster sauce",
+      "soy sauce",
+      "sesame oil",
+      "five-spice powder",
+      "white pepper"
+    ],
+    "traditional_dishes": [
+      "dim sum",
+      "char siu (BBQ pork)",
+      "steamed whole fish",
+      "wonton noodles",
+      "congee",
+      "clay pot rice",
+      "white cut chicken"
+    ]
+  },
+  {
+    "region_id": "china_shandong",
+    "name": "Shandong, China",
+    "common_foods": [
+      "steamed buns (mantou)",
+      "braised sea cucumber",
+      "sweet-sour carp",
+      "jiaozi",
+      "scallion pancakes",
+      "braised pork knuckle",
+      "corn porridge"
+    ],
+    "staple_grains": [
+      "wheat",
+      "corn",
+      "millet",
+      "rice"
+    ],
+    "protein_sources": [
+      "sea cucumber",
+      "fish",
+      "pork",
+      "chicken",
+      "shrimp",
+      "eggs",
+      "clam",
+      "squid"
+    ],
+    "vegetables": [
+      "chinese cabbage",
+      "scallion",
+      "garlic",
+      "potato",
+      "celery",
+      "leek",
+      "radish"
+    ],
+    "fruits": [
+      "apple (Yantai)",
+      "pear",
+      "cherry",
+      "grape",
+      "date (jujube)",
+      "peach"
+    ],
+    "spices": [
+      "scallion",
+      "ginger",
+      "garlic",
+      "soy sauce",
+      "vinegar",
+      "star anise",
+      "cinnamon"
+    ],
+    "traditional_dishes": [
+      "sweet and sour Yellow River carp",
+      "braised sea cucumber",
+      "dezhou braised chicken",
+      "jiaozi (dumplings)",
+      "Shandong mantou"
+    ]
+  },
+  {
+    "region_id": "china_jiangsu",
+    "name": "Jiangsu/Shanghai, China",
+    "common_foods": [
+      "xiaolongbao",
+      "sweet-braised pork belly",
+      "lion's head meatballs",
+      "hairy crab",
+      "scallion oil noodles",
+      "salted duck",
+      "eight-treasure rice"
+    ],
+    "staple_grains": [
+      "rice",
+      "wheat noodles",
+      "glutinous rice"
+    ],
+    "protein_sources": [
+      "pork",
+      "freshwater fish",
+      "crab",
+      "shrimp",
+      "duck",
+      "chicken",
+      "tofu",
+      "eel"
+    ],
+    "vegetables": [
+      "bamboo shoots",
+      "water chestnut",
+      "lotus root",
+      "bok choy",
+      "edamame",
+      "taro",
+      "shepherd's purse"
+    ],
+    "fruits": [
+      "bayberry (yangmei)",
+      "loquat",
+      "peach",
+      "watermelon",
+      "plum",
+      "orange"
+    ],
+    "spices": [
+      "soy sauce (light)",
+      "rice wine (Shaoxing)",
+      "sugar",
+      "ginger",
+      "scallion",
+      "vinegar",
+      "sesame oil"
+    ],
+    "traditional_dishes": [
+      "xiaolongbao",
+      "red-braised pork belly",
+      "lion's head meatballs",
+      "Nanjing salted duck",
+      "beggar's chicken",
+      "sweet and sour mandarin fish"
+    ]
+  },
+  {
+    "region_id": "china_hunan",
+    "name": "Hunan, China",
+    "common_foods": [
+      "rice",
+      "smoked pork",
+      "steamed fish head",
+      "stinky tofu",
+      "rice noodles (changsha)",
+      "mao's braised pork",
+      "pickled chili",
+      "lotus seed soup"
+    ],
+    "staple_grains": [
+      "rice",
+      "rice noodles",
+      "wheat noodles"
+    ],
+    "protein_sources": [
+      "pork",
+      "fish",
+      "chicken",
+      "duck",
+      "tofu",
+      "eggs",
+      "frog",
+      "beef"
+    ],
+    "vegetables": [
+      "lotus root",
+      "winter bamboo shoots",
+      "chili pepper",
+      "garlic bolt",
+      "water spinach",
+      "wood ear mushroom",
+      "pickled greens"
+    ],
+    "fruits": [
+      "orange",
+      "tangerine",
+      "pomelo",
+      "kiwi",
+      "chestnut"
+    ],
+    "spices": [
+      "fresh chili",
+      "pickled chili",
+      "fermented black beans",
+      "garlic",
+      "shallot",
+      "ginger",
+      "cassia bark"
+    ],
+    "traditional_dishes": [
+      "Chairman Mao's braised pork",
+      "steamed fish head with chopped chili",
+      "Changsha stinky tofu",
+      "Hunan smoked pork",
+      "dong'an chicken"
+    ]
+  },
+  {
+    "region_id": "usa_south",
+    "name": "US Southern States",
+    "common_foods": [
+      "fried chicken",
+      "collard greens",
+      "grits",
+      "cornbread",
+      "biscuits and gravy",
+      "barbecue",
+      "gumbo",
+      "catfish",
+      "sweet tea",
+      "pecan pie"
+    ],
+    "staple_grains": [
+      "corn (grits, cornbread)",
+      "wheat (biscuits)",
+      "rice"
+    ],
+    "protein_sources": [
+      "chicken",
+      "pork (BBQ)",
+      "catfish",
+      "shrimp",
+      "crawfish",
+      "turkey",
+      "black-eyed peas",
+      "eggs"
+    ],
+    "vegetables": [
+      "collard greens",
+      "okra",
+      "sweet potato",
+      "tomato",
+      "green beans",
+      "squash",
+      "turnip greens"
+    ],
+    "fruits": [
+      "peach",
+      "pecan",
+      "watermelon",
+      "blackberry",
+      "muscadine grape",
+      "fig"
+    ],
+    "spices": [
+      "cayenne pepper",
+      "paprika",
+      "garlic",
+      "onion",
+      "bay leaf",
+      "thyme",
+      "hot sauce",
+      "liquid smoke"
+    ],
+    "traditional_dishes": [
+      "fried chicken",
+      "shrimp and grits",
+      "gumbo",
+      "jambalaya",
+      "pulled pork BBQ",
+      "biscuits and gravy",
+      "pecan pie",
+      "collard greens with ham hock"
+    ]
+  },
+  {
+    "region_id": "usa_northeast",
+    "name": "US Northeast",
+    "common_foods": [
+      "clam chowder",
+      "lobster roll",
+      "bagel",
+      "pizza",
+      "cheesesteak",
+      "maple syrup",
+      "apple cider",
+      "pastrami sandwich"
+    ],
+    "staple_grains": [
+      "wheat (bread, bagels, pasta)",
+      "rye",
+      "oats"
+    ],
+    "protein_sources": [
+      "lobster",
+      "clam",
+      "cod",
+      "scallop",
+      "beef",
+      "chicken",
+      "eggs",
+      "crab"
+    ],
+    "vegetables": [
+      "potato",
+      "corn",
+      "squash",
+      "kale",
+      "cranberry",
+      "pumpkin",
+      "carrot"
+    ],
+    "fruits": [
+      "apple",
+      "blueberry",
+      "cranberry",
+      "strawberry",
+      "grape (Concord)",
+      "pear"
+    ],
+    "spices": [
+      "black pepper",
+      "oregano",
+      "basil",
+      "garlic",
+      "maple syrup",
+      "horseradish",
+      "celery seed"
+    ],
+    "traditional_dishes": [
+      "New England clam chowder",
+      "lobster roll",
+      "New York pizza",
+      "Philly cheesesteak",
+      "Boston baked beans",
+      "bagel with lox"
+    ]
+  },
+  {
+    "region_id": "usa_midwest",
+    "name": "US Midwest",
+    "common_foods": [
+      "casserole (hotdish)",
+      "bratwurst",
+      "deep-dish pizza",
+      "walleye",
+      "cheese curds",
+      "corn on the cob",
+      "wild rice",
+      "pot roast"
+    ],
+    "staple_grains": [
+      "wheat",
+      "corn",
+      "wild rice",
+      "oats",
+      "barley"
+    ],
+    "protein_sources": [
+      "beef",
+      "pork",
+      "walleye",
+      "perch",
+      "chicken",
+      "turkey",
+      "venison",
+      "cheese",
+      "eggs"
+    ],
+    "vegetables": [
+      "corn",
+      "potato",
+      "green bean",
+      "cabbage",
+      "carrot",
+      "beet",
+      "squash"
+    ],
+    "fruits": [
+      "apple",
+      "cherry (Door County)",
+      "blueberry",
+      "strawberry",
+      "rhubarb",
+      "grape"
+    ],
+    "spices": [
+      "black pepper",
+      "dill",
+      "caraway",
+      "mustard",
+      "garlic",
+      "onion powder",
+      "paprika"
+    ],
+    "traditional_dishes": [
+      "Minnesota hotdish",
+      "Chicago deep-dish pizza",
+      "bratwurst",
+      "cheese curds",
+      "Cincinnati chili",
+      "wild rice soup",
+      "pot roast"
+    ]
+  },
+  {
+    "region_id": "usa_west",
+    "name": "US West Coast",
+    "common_foods": [
+      "avocado toast",
+      "sushi",
+      "sourdough bread",
+      "wild salmon",
+      "acai bowl",
+      "fish tacos",
+      "farm-to-table salads",
+      "cioppino"
+    ],
+    "staple_grains": [
+      "wheat (sourdough)",
+      "rice",
+      "quinoa",
+      "oats"
+    ],
+    "protein_sources": [
+      "wild salmon",
+      "tuna",
+      "chicken",
+      "tofu",
+      "black beans",
+      "almonds",
+      "eggs",
+      "dungeness crab"
+    ],
+    "vegetables": [
+      "avocado",
+      "kale",
+      "artichoke",
+      "meyer lemon",
+      "heirloom tomato",
+      "sprouts",
+      "seaweed"
+    ],
+    "fruits": [
+      "avocado",
+      "strawberry",
+      "orange",
+      "date",
+      "fig",
+      "olive",
+      "pomegranate",
+      "meyer lemon"
+    ],
+    "spices": [
+      "garlic",
+      "cilantro",
+      "lime",
+      "chili flake",
+      "sriracha",
+      "soy sauce",
+      "smoked salt"
+    ],
+    "traditional_dishes": [
+      "cioppino",
+      "fish tacos",
+      "California roll",
+      "sourdough bread bowl",
+      "In-N-Out burger",
+      "acai bowl",
+      "Dungeness crab"
+    ]
+  },
+  {
+    "region_id": "usa_southwest",
+    "name": "US Southwest",
+    "common_foods": [
+      "green chile",
+      "enchiladas",
+      "tamales",
+      "pinto beans",
+      "carne asada",
+      "sopapilla",
+      "posole",
+      "Navajo fry bread",
+      "chile relleno"
+    ],
+    "staple_grains": [
+      "corn (tortilla)",
+      "wheat (flour tortilla)",
+      "pinto beans"
+    ],
+    "protein_sources": [
+      "beef",
+      "pork",
+      "chicken",
+      "pinto beans",
+      "black beans",
+      "cheese",
+      "eggs",
+      "bison"
+    ],
+    "vegetables": [
+      "green chile (Hatch)",
+      "jalape\u00f1o",
+      "squash",
+      "tomato",
+      "corn",
+      "nopal (cactus)",
+      "onion",
+      "jicama"
+    ],
+    "fruits": [
+      "prickly pear",
+      "date",
+      "pecan",
+      "fig",
+      "pomegranate",
+      "lime",
+      "melon"
+    ],
+    "spices": [
+      "green chile",
+      "red chile",
+      "cumin",
+      "oregano (Mexican)",
+      "garlic",
+      "cilantro",
+      "chipotle",
+      "epazote"
+    ],
+    "traditional_dishes": [
+      "green chile stew",
+      "enchiladas",
+      "tamales",
+      "carne asada",
+      "posole",
+      "chile relleno",
+      "sopapilla",
+      "Navajo fry bread"
+    ]
+  },
+  {
+    "region_id": "japan_okinawa",
+    "name": "Okinawa, Japan (Blue Zone)",
+    "common_foods": [
+      "beni-imo (purple sweet potato)",
+      "goya chanpuru",
+      "tofu",
+      "mozuku seaweed",
+      "soba (Okinawan)",
+      "shikuwasa",
+      "awamori",
+      "rafute"
+    ],
+    "staple_grains": [
+      "rice",
+      "sweet potato (beni-imo)",
+      "soba noodles"
+    ],
+    "protein_sources": [
+      "tofu",
+      "pork (sparingly)",
+      "fish",
+      "seaweed",
+      "miso",
+      "soy",
+      "eggs"
+    ],
+    "vegetables": [
+      "goya (bitter melon)",
+      "purple sweet potato",
+      "daikon",
+      "shikuwasa",
+      "seaweed (mozuku, kombu)",
+      "loofah",
+      "green papaya"
+    ],
+    "fruits": [
+      "shikuwasa (citrus)",
+      "pineapple",
+      "mango",
+      "dragon fruit",
+      "papaya",
+      "passion fruit"
+    ],
+    "spices": [
+      "turmeric (ukkon)",
+      "ginger",
+      "miso",
+      "soy sauce",
+      "dashi",
+      "shikuwasa juice",
+      "brown sugar"
+    ],
+    "traditional_dishes": [
+      "goya chanpuru",
+      "rafute (braised pork belly)",
+      "Okinawan soba",
+      "taco rice",
+      "jimami tofu",
+      "mozuku vinegar",
+      "beni-imo tart"
+    ]
+  },
+  {
+    "region_id": "mexico_central",
+    "name": "Central Mexico",
+    "common_foods": [
+      "tacos",
+      "tamales",
+      "mole",
+      "pozole",
+      "enchiladas",
+      "tlacoyos",
+      "quesadillas",
+      "atole",
+      "chilaquiles",
+      "huitlacoche"
+    ],
+    "staple_grains": [
+      "corn (nixtamalized)",
+      "wheat (bolillo)",
+      "amaranth",
+      "rice"
+    ],
+    "protein_sources": [
+      "beans (black, pinto)",
+      "chicken",
+      "pork",
+      "beef",
+      "cheese",
+      "eggs",
+      "chapulines (grasshoppers)",
+      "turkey"
+    ],
+    "vegetables": [
+      "nopal (cactus)",
+      "squash",
+      "chayote",
+      "tomato",
+      "tomatillo",
+      "avocado",
+      "poblano chile",
+      "huitlacoche"
+    ],
+    "fruits": [
+      "guava",
+      "prickly pear (tuna)",
+      "mamey",
+      "zapote",
+      "lime",
+      "papaya",
+      "mango",
+      "tamarind"
+    ],
+    "spices": [
+      "dried chile (ancho, pasilla, guajillo)",
+      "epazote",
+      "cumin",
+      "oregano",
+      "cinnamon",
+      "achiote",
+      "chocolate",
+      "vanilla"
+    ],
+    "traditional_dishes": [
+      "mole poblano",
+      "tacos al pastor",
+      "chiles en nogada",
+      "pozole",
+      "tamales",
+      "tlacoyos",
+      "atole",
+      "chilaquiles"
+    ]
+  },
+  {
+    "region_id": "brazil_northeast",
+    "name": "Northeast Brazil",
+    "common_foods": [
+      "acaraj\u00e9",
+      "vatap\u00e1",
+      "moqueca",
+      "tapioca crepe",
+      "carne de sol",
+      "bai\u00e3o de dois",
+      "feij\u00e3o tropeiro",
+      "cuscuz (couscous)"
+    ],
+    "staple_grains": [
+      "cassava (farinha)",
+      "rice",
+      "corn",
+      "tapioca"
+    ],
+    "protein_sources": [
+      "black beans",
+      "dried beef (carne de sol)",
+      "shrimp",
+      "fish",
+      "chicken",
+      "goat",
+      "eggs"
+    ],
+    "vegetables": [
+      "okra",
+      "pumpkin",
+      "maxixe",
+      "palm heart",
+      "sweet potato",
+      "tomato",
+      "onion"
+    ],
+    "fruits": [
+      "cashew fruit",
+      "mango",
+      "passion fruit",
+      "coconut",
+      "jackfruit",
+      "acerola",
+      "guava",
+      "caj\u00e1"
+    ],
+    "spices": [
+      "dend\u00ea (palm oil)",
+      "coconut milk",
+      "coriander",
+      "lime",
+      "malagueta pepper",
+      "cumin",
+      "annatto"
+    ],
+    "traditional_dishes": [
+      "acaraj\u00e9",
+      "vatap\u00e1",
+      "moqueca baiana",
+      "carne de sol with macaxeira",
+      "bai\u00e3o de dois",
+      "tapioca crepe",
+      "caruru"
+    ]
+  },
+  {
+    "region_id": "brazil_southeast",
+    "name": "Southeast Brazil",
+    "common_foods": [
+      "feijoada",
+      "p\u00e3o de queijo",
+      "coxinha",
+      "picanha",
+      "brigadeiro",
+      "pastel",
+      "a\u00e7a\u00ed bowl",
+      "mortadela sandwich"
+    ],
+    "staple_grains": [
+      "rice",
+      "wheat (bread)",
+      "cassava flour (farofa)",
+      "corn"
+    ],
+    "protein_sources": [
+      "black beans",
+      "beef (picanha)",
+      "chicken",
+      "pork",
+      "fish",
+      "eggs",
+      "cheese (Minas)"
+    ],
+    "vegetables": [
+      "kale (couve)",
+      "tomato",
+      "okra",
+      "chayote",
+      "corn",
+      "cassava",
+      "heart of palm"
+    ],
+    "fruits": [
+      "orange",
+      "banana",
+      "acai",
+      "guava",
+      "passion fruit",
+      "jabuticaba",
+      "persimmon"
+    ],
+    "spices": [
+      "garlic",
+      "bay leaf",
+      "cumin",
+      "parsley",
+      "scallion",
+      "black pepper",
+      "cachaca"
+    ],
+    "traditional_dishes": [
+      "feijoada",
+      "p\u00e3o de queijo",
+      "picanha na brasa",
+      "tutu de feij\u00e3o",
+      "coxinha",
+      "virado \u00e0 paulista",
+      "moqueca capixaba"
+    ]
+  },
+  {
+    "region_id": "italy_south",
+    "name": "Southern Italy",
+    "common_foods": [
+      "pasta (orecchiette, paccheri)",
+      "pizza napoletana",
+      "mozzarella di bufala",
+      "seafood",
+      "eggplant parmigiana",
+      "limoncello",
+      "sfogliatella"
+    ],
+    "staple_grains": [
+      "durum wheat (pasta)",
+      "semolina",
+      "wheat (bread)",
+      "farro"
+    ],
+    "protein_sources": [
+      "fish (swordfish, anchovies)",
+      "mussels",
+      "clams",
+      "buffalo mozzarella",
+      "beans",
+      "eggs",
+      "pork",
+      "lamb"
+    ],
+    "vegetables": [
+      "eggplant",
+      "tomato (San Marzano)",
+      "zucchini",
+      "artichoke",
+      "broccoli rabe",
+      "pepper",
+      "olive"
+    ],
+    "fruits": [
+      "lemon (Amalfi)",
+      "orange (blood)",
+      "fig",
+      "grape",
+      "pomegranate",
+      "prickly pear",
+      "melon"
+    ],
+    "spices": [
+      "basil",
+      "oregano",
+      "garlic",
+      "red pepper flakes",
+      "olive oil (extra virgin)",
+      "capers",
+      "anchovies"
+    ],
+    "traditional_dishes": [
+      "pizza napoletana",
+      "pasta alla Norma",
+      "spaghetti alle vongole",
+      "eggplant parmigiana",
+      "orecchiette con cime di rapa",
+      "sfogliatella"
+    ]
+  },
+  {
+    "region_id": "italy_north",
+    "name": "Northern Italy",
+    "common_foods": [
+      "risotto",
+      "polenta",
+      "tortellini",
+      "ossobuco",
+      "focaccia",
+      "pesto",
+      "tiramisu",
+      "cotoletta alla milanese"
+    ],
+    "staple_grains": [
+      "rice (Arborio, Carnaroli)",
+      "corn (polenta)",
+      "wheat (egg pasta)",
+      "buckwheat (pizzoccheri)"
+    ],
+    "protein_sources": [
+      "beef",
+      "veal",
+      "pork (prosciutto, pancetta)",
+      "fish (lake)",
+      "parmigiano-reggiano",
+      "eggs",
+      "gorgonzola"
+    ],
+    "vegetables": [
+      "pumpkin",
+      "radicchio",
+      "asparagus",
+      "truffle",
+      "mushroom (porcini)",
+      "artichoke",
+      "spinach"
+    ],
+    "fruits": [
+      "apple (Alto Adige)",
+      "pear",
+      "chestnut",
+      "grape",
+      "cherry",
+      "peach",
+      "hazelnut"
+    ],
+    "spices": [
+      "saffron (Milan)",
+      "rosemary",
+      "sage",
+      "nutmeg",
+      "white truffle",
+      "butter",
+      "balsamic vinegar"
+    ],
+    "traditional_dishes": [
+      "risotto alla milanese",
+      "tortellini in brodo",
+      "ossobuco",
+      "polenta taragna",
+      "pesto alla genovese",
+      "tiramisu",
+      "bollito misto"
+    ]
+  }
+]

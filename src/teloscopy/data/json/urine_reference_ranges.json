@@ -1,0 +1,93 @@
+{
+  "ph": {
+    "low": 4.5,
+    "high": 8.0,
+    "unit": "pH",
+    "display_name": "Urine pH",
+    "category": "Urine"
+  },
+  "specific_gravity": {
+    "low": 1.005,
+    "high": 1.03,
+    "unit": "",
+    "display_name": "Specific Gravity",
+    "category": "Urine"
+  },
+  "protein": {
+    "low": 0.0,
+    "high": 14.0,
+    "unit": "mg/dL",
+    "display_name": "Urine Protein",
+    "category": "Urine"
+  },
+  "glucose": {
+    "low": 0.0,
+    "high": 0.0,
+    "unit": "mg/dL",
+    "display_name": "Urine Glucose",
+    "category": "Urine"
+  },
+  "ketones": {
+    "low": 0.0,
+    "high": 0.0,
+    "unit": "mg/dL",
+    "display_name": "Urine Ketones",
+    "category": "Urine"
+  },
+  "bilirubin": {
+    "low": 0.0,
+    "high": 0.0,
+    "unit": "mg/dL",
+    "display_name": "Urine Bilirubin",
+    "category": "Urine"
+  },
+  "urobilinogen": {
+    "low": 0.2,
+    "high": 1.0,
+    "unit": "mg/dL",
+    "display_name": "Urobilinogen",
+    "category": "Urine"
+  },
+  "blood": {
+    "low": 0.0,
+    "high": 0.0,
+    "unit": "RBC/HPF",
+    "display_name": "Urine Blood",
+    "category": "Urine"
+  },
+  "nitrites": {
+    "low": 0.0,
+    "high": 0.0,
+    "unit": "",
+    "display_name": "Nitrites",
+    "category": "Urine"
+  },
+  "leukocytes": {
+    "low": 0.0,
+    "high": 5.0,
+    "unit": "WBC/HPF",
+    "display_name": "Leukocytes",
+    "category": "Urine"
+  },
+  "rbc_urine": {
+    "low": 0.0,
+    "high": 3.0,
+    "unit": "cells/HPF",
+    "display_name": "Urine RBC",
+    "category": "Urine"
+  },
+  "wbc_urine": {
+    "low": 0.0,
+    "high": 5.0,
+    "unit": "cells/HPF",
+    "display_name": "Urine WBC",
+    "category": "Urine"
+  },
+  "epithelial_cells": {
+    "low": 0.0,
+    "high": 5.0,
+    "unit": "cells/HPF",
+    "display_name": "Epithelial Cells",
+    "category": "Urine"
+  }
+}

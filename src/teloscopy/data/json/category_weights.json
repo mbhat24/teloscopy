@@ -1,0 +1,13 @@
+{
+  "CBC": 0.12,
+  "Lipid Panel": 0.18,
+  "Liver Function": 0.14,
+  "Kidney Function": 0.14,
+  "Diabetes Panel": 0.16,
+  "Thyroid": 0.08,
+  "Vitamins": 0.06,
+  "Minerals": 0.04,
+  "Electrolytes": 0.04,
+  "Inflammation": 0.08,
+  "Urine": 0.06
+}

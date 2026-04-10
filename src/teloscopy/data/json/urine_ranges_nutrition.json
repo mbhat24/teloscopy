@@ -1,0 +1,107 @@
+{
+  "ph": {
+    "low": 4.5,
+    "high": 8.0,
+    "unit": "pH",
+    "critical_low": null,
+    "critical_high": null
+  },
+  "specific_gravity": {
+    "low": 1.005,
+    "high": 1.030,
+    "unit": "SG",
+    "critical_low": 1.001,
+    "critical_high": 1.040
+  },
+  "protein": {
+    "low": 0.0,
+    "high": 14.0,
+    "unit": "mg/dL",
+    "critical_low": null,
+    "critical_high": 150.0
+  },
+  "glucose_urine": {
+    "low": 0.0,
+    "high": 15.0,
+    "unit": "mg/dL",
+    "critical_low": null,
+    "critical_high": 300.0
+  },
+  "ketones": {
+    "low": 0.0,
+    "high": 5.0,
+    "unit": "mg/dL",
+    "critical_low": null,
+    "critical_high": 80.0
+  },
+  "bilirubin_urine": {
+    "low": 0.0,
+    "high": 0.2,
+    "unit": "mg/dL",
+    "critical_low": null,
+    "critical_high": 6.0
+  },
+  "urobilinogen": {
+    "low": 0.2,
+    "high": 1.0,
+    "unit": "mg/dL",
+    "critical_low": null,
+    "critical_high": 8.0
+  },
+  "blood_urine": {
+    "low": 0.0,
+    "high": 3.0,
+    "unit": "RBC/HPF",
+    "critical_low": null,
+    "critical_high": 25.0
+  },
+  "nitrites": {
+    "low": 0.0,
+    "high": 0.0,
+    "unit": "pos/neg",
+    "critical_low": null,
+    "critical_high": null
+  },
+  "leukocytes": {
+    "low": 0.0,
+    "high": 5.0,
+    "unit": "WBC/HPF",
+    "critical_low": null,
+    "critical_high": 50.0
+  },
+  "rbc_urine": {
+    "low": 0.0,
+    "high": 3.0,
+    "unit": "cells/HPF",
+    "critical_low": null,
+    "critical_high": 25.0
+  },
+  "wbc_urine": {
+    "low": 0.0,
+    "high": 5.0,
+    "unit": "cells/HPF",
+    "critical_low": null,
+    "critical_high": 50.0
+  },
+  "epithelial_cells": {
+    "low": 0.0,
+    "high": 5.0,
+    "unit": "cells/HPF",
+    "critical_low": null,
+    "critical_high": 25.0
+  },
+  "casts": {
+    "low": 0.0,
+    "high": 2.0,
+    "unit": "casts/LPF",
+    "critical_low": null,
+    "critical_high": 10.0
+  },
+  "crystals": {
+    "low": 0.0,
+    "high": 0.0,
+    "unit": "crystals/HPF",
+    "critical_low": null,
+    "critical_high": null
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "iron_deficiency_anemia": [
+    "Increase iron-rich foods such as spinach, lentils, and fortified cereals",
+    "Pair iron-rich foods with vitamin C sources to enhance absorption",
+    "Avoid tea and coffee within 1 hour of meals"
+  ],
+  "macrocytic_anemia": [
+    "Include B12-rich foods (eggs, dairy, fortified cereals) daily",
+    "Increase folate intake through leafy greens and legumes"
+  ],
+  "dyslipidemia": [
+    "Reduce saturated fat to <7% of total calories",
+    "Increase soluble fibre intake (oats, barley, legumes)",
+    "Include omega-3 rich fish at least 2-3 times per week",
+    "Replace butter/ghee with olive oil",
+    "Limit dietary cholesterol to <200 mg/day"
+  ],
+  "diabetes": [
+    "Follow a low glycaemic index diet",
+    "Distribute carbohydrate intake evenly across meals",
+    "Limit total carbohydrates to 45-50% of calories",
+    "Increase dietary fibre to 30-40 g/day",
+    "Avoid sugary drinks and fruit juices"
+  ],
+  "prediabetes": [
+    "Reduce refined carbohydrate intake",
+    "Choose whole grains over refined grains",
+    "Increase vegetable intake to at least 5 servings/day",
+    "Limit added sugars to <25 g/day"
+  ],
+  "insulin_resistance": [
+    "Adopt a low glycaemic load eating pattern",
+    "Include protein and healthy fats at every meal",
+    "Avoid large carbohydrate-only meals or snacks"
+  ],
+  "hypothyroidism": [
+    "Ensure adequate iodine from iodised salt and seafood",
+    "Include selenium-rich foods (brazil nuts, eggs, seafood)",
+    "Avoid large amounts of raw goitrogenic vegetables"
+  ],
+  "hyperthyroidism": [
+    "Increase calorie intake to compensate for elevated metabolism",
+    "Ensure adequate calcium and vitamin D for bone protection",
+    "Include cruciferous vegetables (naturally slow thyroid)"
+  ],
+  "vitamin_d_deficiency": [
+    "Include vitamin D-rich foods: fatty fish, fortified milk, egg yolks",
+    "Consider vitamin D supplementation as advised by physician"
+  ],
+  "vitamin_b12_deficiency": [
+    "Include B12 sources daily (eggs, dairy, fortified foods)",
+    "Consider sublingual B12 supplements if vegetarian/vegan"
+  ],
+  "folate_deficiency": [
+    "Increase dark leafy greens and legume consumption",
+    "Include fortified cereals and citrus fruits"
+  ],
+  "liver_stress": [
+    "Eliminate or strictly limit alcohol consumption",
+    "Reduce fried and processed food intake",
+    "Include liver-supportive foods: turmeric, garlic, green tea"
+  ],
+  "fatty_liver_indicators": [
+    "Reduce fructose and refined carbohydrate intake",
+    "Moderate coffee consumption (2-3 cups/day) may be beneficial",
+    "Increase omega-3 fatty acids from fish and walnuts"
+  ],
+  "kidney_impairment": [
+    "Moderate protein intake (0.6-0.8 g/kg/day if advanced)",
+    "Limit sodium to <2000 mg/day",
+    "Monitor potassium and phosphorus intake"
+  ],
+  "hyperuricemia": [
+    "Limit purine-rich foods (organ meats, shellfish, red meat)",
+    "Increase water intake to 2-3 litres/day",
+    "Avoid alcohol, especially beer",
+    "Include low-fat dairy and cherries"
+  ],
+  "chronic_inflammation": [
+    "Follow an anti-inflammatory dietary pattern",
+    "Increase omega-3 and reduce omega-6 ratio",
+    "Include turmeric, ginger, and green tea regularly"
+  ],
+  "electrolyte_imbalance": [
+    "Adjust mineral intake based on specific imbalance",
+    "Stay adequately hydrated"
+  ],
+  "thyroid_metabolic_dysfunction": [
+    "Support thyroid with iodine and selenium while managing lipids",
+    "Combine thyroid-friendly and heart-healthy eating patterns"
+  ],
+  "prehypertension_indicators": [
+    "Follow DASH diet principles",
+    "Limit sodium to <2300 mg/day (ideally <1500 mg)",
+    "Increase potassium-rich foods: bananas, sweet potatoes, leafy greens"
+  ],
+  "cardiac_risk_elevation": [
+    "Adopt a Mediterranean or DASH-style diet",
+    "Limit sodium, saturated fat, and trans fat",
+    "Include omega-3 rich fish 2-3 times per week"
+  ],
+  "vitamin_a_deficiency": [
+    "Include orange/red vegetables and fruits rich in beta-carotene"
+  ],
+  "vitamin_e_deficiency": [
+    "Include nuts, seeds, and vegetable oils rich in vitamin E"
+  ],
+  "zinc_deficiency": [
+    "Include zinc-rich foods: pumpkin seeds, chickpeas, meat, yogurt"
+  ],
+  "calcium_deficiency": [
+    "Increase dairy or fortified alternatives for calcium",
+    "Pair calcium with vitamin D for better absorption"
+  ],
+  "magnesium_deficiency": [
+    "Include magnesium-rich foods: dark chocolate, almonds, spinach, quinoa"
+  ]
+}

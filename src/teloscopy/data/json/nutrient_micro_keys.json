@@ -1,0 +1,57 @@
+{
+  "folate": [
+    "folate"
+  ],
+  "omega_3": [
+    "omega_3"
+  ],
+  "vitamin_d": [
+    "vitamin_d_iu"
+  ],
+  "vitamin_c": [
+    "vitamin_c"
+  ],
+  "vitamin_a": [
+    "vitamin_a"
+  ],
+  "iron": [
+    "iron"
+  ],
+  "zinc": [
+    "zinc"
+  ],
+  "calcium": [
+    "calcium"
+  ],
+  "magnesium": [
+    "magnesium"
+  ],
+  "selenium": [
+    "selenium"
+  ],
+  "antioxidants": [
+    "vitamin_c",
+    "vitamin_e",
+    "selenium",
+    "flavonoids",
+    "anthocyanins",
+    "polyphenols"
+  ],
+  "polyphenols": [
+    "polyphenols",
+    "catechins",
+    "flavonoids",
+    "anthocyanins",
+    "punicalagins"
+  ],
+  "anti_inflammatory": [
+    "omega_3",
+    "curcumin",
+    "gingerol",
+    "anthocyanins",
+    "polyphenols"
+  ],
+  "cruciferous_vegetables": [
+    "sulforaphane"
+  ]
+}

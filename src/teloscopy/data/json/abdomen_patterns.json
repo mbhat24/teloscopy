@@ -1,0 +1,151 @@
+[
+  {
+    "pattern": "(?:grade\\s*[1I]|mild)\\s*fatty\\s*liver",
+    "organ": "liver",
+    "finding": "Grade 1 fatty liver",
+    "severity": "mild",
+    "dietary_impact": "Low-glycemic diet, reduce refined carbs and alcohol",
+    "foods_to_avoid": [
+      "alcohol",
+      "sugary drinks",
+      "fried foods",
+      "white bread"
+    ],
+    "foods_to_increase": [
+      "coffee",
+      "olive oil",
+      "fatty fish",
+      "walnuts",
+      "green tea"
+    ]
+  },
+  {
+    "pattern": "(?:grade\\s*[2II]|moderate)\\s*fatty\\s*liver",
+    "organ": "liver",
+    "finding": "Grade 2 fatty liver",
+    "severity": "moderate",
+    "dietary_impact": "Mediterranean diet strongly recommended; weight loss needed",
+    "foods_to_avoid": [
+      "alcohol",
+      "sugar",
+      "fried foods",
+      "processed meats",
+      "refined grains"
+    ],
+    "foods_to_increase": [
+      "vegetables",
+      "olive oil",
+      "fish",
+      "nuts",
+      "whole grains"
+    ]
+  },
+  {
+    "pattern": "(?:grade\\s*[3III]|severe)\\s*fatty\\s*liver",
+    "organ": "liver",
+    "finding": "Grade 3 fatty liver",
+    "severity": "severe",
+    "dietary_impact": "Aggressive dietary intervention required; consult hepatologist",
+    "foods_to_avoid": [
+      "alcohol",
+      "all refined sugars",
+      "fried foods",
+      "processed foods"
+    ],
+    "foods_to_increase": [
+      "vegetables",
+      "lean protein",
+      "olive oil",
+      "whole grains"
+    ]
+  },
+  {
+    "pattern": "hepatomegaly",
+    "organ": "liver",
+    "finding": "Hepatomegaly (enlarged liver)",
+    "severity": "moderate",
+    "dietary_impact": "Reduce liver workload; avoid hepatotoxins and excess fat",
+    "foods_to_avoid": [
+      "alcohol",
+      "fried foods",
+      "processed foods"
+    ],
+    "foods_to_increase": [
+      "turmeric",
+      "garlic",
+      "leafy greens",
+      "beetroot"
+    ]
+  },
+  {
+    "pattern": "(?:kidney|renal)\\s*(?:stone|calcul)",
+    "organ": "kidney",
+    "finding": "Kidney stones/calculi",
+    "severity": "moderate",
+    "dietary_impact": "Increase fluid intake; adjust oxalate/calcium based on stone type",
+    "foods_to_avoid": [
+      "excess salt",
+      "excess animal protein",
+      "spinach (if oxalate)",
+      "cola"
+    ],
+    "foods_to_increase": [
+      "water",
+      "citrus fruits (lemon)",
+      "low-oxalate vegetables"
+    ]
+  },
+  {
+    "pattern": "(?:gall|biliary)\\s*(?:stone|calcul|sludge)",
+    "organ": "gallbladder",
+    "finding": "Gallstones/sludge",
+    "severity": "moderate",
+    "dietary_impact": "Low-fat diet; avoid rapid weight loss; increase fiber",
+    "foods_to_avoid": [
+      "fried foods",
+      "high-fat dairy",
+      "fatty meats",
+      "eggs (excess)"
+    ],
+    "foods_to_increase": [
+      "vegetables",
+      "fruits",
+      "whole grains",
+      "lean protein"
+    ]
+  },
+  {
+    "pattern": "splenomegaly",
+    "organ": "spleen",
+    "finding": "Splenomegaly (enlarged spleen)",
+    "severity": "moderate",
+    "dietary_impact": "Anti-inflammatory diet; ensure adequate nutrition",
+    "foods_to_avoid": [
+      "processed foods",
+      "excess alcohol"
+    ],
+    "foods_to_increase": [
+      "leafy greens",
+      "lean protein",
+      "citrus fruits"
+    ]
+  },
+  {
+    "pattern": "pancrea\\w*\\s*(?:calcif|inflam|enlarg)",
+    "organ": "pancreas",
+    "finding": "Pancreatic abnormality",
+    "severity": "moderate",
+    "dietary_impact": "Low-fat diet; small frequent meals; avoid alcohol",
+    "foods_to_avoid": [
+      "alcohol",
+      "fried foods",
+      "high-fat foods",
+      "red meat"
+    ],
+    "foods_to_increase": [
+      "lean protein",
+      "cooked vegetables",
+      "whole grains"
+    ]
+  }
+]
