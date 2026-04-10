@@ -48,6 +48,7 @@ from teloscopy.facial.image_classifier import ImageType, classify_image
 from teloscopy.facial.predictor import analyze_face
 from teloscopy.genomics.disease_risk import DiseasePredictor
 from teloscopy.nutrition.diet_advisor import DietAdvisor
+from teloscopy.nutrition.regional_diets import resolve_region
 from teloscopy.webapp.models import (
     AgentInfo,
     AgentStatusEnum,
@@ -601,15 +602,20 @@ def _simulate_telomere_analysis() -> TelomereResult:
     # Random biological age in a realistic range
     bio_age: int = random.randint(20, 85)
     # Consensus model + biological noise (SD ≈ 1.2 kb)
-    mean_len: float = round(max(2.0, 11.0 - 0.040 * bio_age + random.gauss(0, 1.2)), 2)
+    # Two-phase model: faster attrition birth–20, slower 20+
+    if bio_age <= 20:
+        base_tl = 11.0 - 0.060 * bio_age
+    else:
+        base_tl = 9.80 - 0.025 * (bio_age - 20)
+    mean_len: float = round(max(4.0, base_tl + random.gauss(0, 1.2)), 2)
     std_dev: float = round(abs(mean_len * 0.12), 2)
     return TelomereResult(
         mean_length=mean_len,
         std_dev=std_dev,
-        t_s_ratio=round(mean_len / 5.0, 2),
+        t_s_ratio=round(max(0.3, (mean_len - 3.274) / 2.413), 2),
         biological_age_estimate=bio_age,
         overlay_image_url=None,
-        raw_measurements=[round(max(1.0, mean_len + random.gauss(0, std_dev or 0.5)), 2) for _ in range(20)],
+        raw_measurements=[round(max(3.0, mean_len + random.gauss(0, std_dev or 0.5)), 2) for _ in range(20)],
     )
 
 
@@ -620,10 +626,10 @@ def _telomere_from_facial(facial: FacialAnalysisResult) -> TelomereResult:
     return TelomereResult(
         mean_length=tl,
         std_dev=round(abs(tl * 0.12), 2),
-        t_s_ratio=round(tl / 5.0, 2),
+        t_s_ratio=round(max(0.3, (tl - 3.274) / 2.413), 2),
         biological_age_estimate=bio_age,
         overlay_image_url=None,
-        raw_measurements=[round(tl + random.uniform(-0.8, 0.8), 2) for _ in range(10)],
+        raw_measurements=[round(max(3.0, tl + random.gauss(0, abs(tl * 0.12) or 0.5)), 2) for _ in range(10)],
     )
 
 
@@ -760,12 +766,17 @@ async def _run_full_analysis(
         # ------------------------------------------------------------------
         # Phase 3 — Diet recommendation (real advisor)
         # ------------------------------------------------------------------
+        resolved_region = resolve_region(
+            profile.region,
+            country=getattr(profile, "country", None),
+            state=getattr(profile, "state", None),
+        )
         genetic_risk_names = [r.condition for r in risk_profile.risks[:10]]
         diet_recs = await asyncio.to_thread(
             _diet_advisor.generate_recommendations,
             genetic_risk_names,
             variant_dict,
-            profile.region,
+            resolved_region,
             profile.age,
             profile.sex.value,
             profile.dietary_restrictions or None,
@@ -773,7 +784,7 @@ async def _run_full_analysis(
         diet_meals = await asyncio.to_thread(
             _diet_advisor.create_meal_plan,
             diet_recs,
-            profile.region,
+            resolved_region,
             2000,
             7,
             profile.dietary_restrictions or None,
@@ -1197,6 +1208,8 @@ async def full_analysis(
     age: int = Form(...),
     sex: str = Form(...),
     region: str = Form(...),
+    country: str = Form(""),
+    state: str = Form(""),
     dietary_restrictions: str = Form(""),
     known_variants: str = Form(""),
 ) -> JobStatus:
@@ -1231,6 +1244,8 @@ async def full_analysis(
         age=age,
         sex=Sex(sex),
         region=region,
+        country=country or None,
+        state=state or None,
         dietary_restrictions=restrictions,
         known_variants=variants,
     )
@@ -1288,13 +1303,18 @@ async def disease_risk(request: DiseaseRiskRequest) -> DiseaseRiskResponse:
 async def diet_plan(request: DietPlanRequest) -> DietPlanResponse:
     """Generate a personalised diet plan."""
     variant_dict = _build_variant_dict(request.known_variants)
+    resolved_region = resolve_region(
+        request.region,
+        country=getattr(request, "country", None),
+        state=getattr(request, "state", None),
+    )
     try:
         genetic_risk_names = [r.disease for r in request.disease_risks]
         diet_recs = await asyncio.to_thread(
             _diet_advisor.generate_recommendations,
             genetic_risk_names,
             variant_dict,
-            request.region,
+            resolved_region,
             request.age,
             request.sex.value,
             request.dietary_restrictions or None,
@@ -1302,7 +1322,7 @@ async def diet_plan(request: DietPlanRequest) -> DietPlanResponse:
         diet_meals = await asyncio.to_thread(
             _diet_advisor.create_meal_plan,
             diet_recs,
-            request.region,
+            resolved_region,
             request.calorie_target,
             request.meal_plan_days,
             request.dietary_restrictions or None,
@@ -1399,12 +1419,17 @@ async def profile_analysis(request: ProfileAnalysisRequest) -> ProfileAnalysisRe
     # Nutrition
     if request.include_nutrition:
         try:
+            resolved_rgn = resolve_region(
+                request.region,
+                country=getattr(request, "country", None),
+                state=getattr(request, "state", None),
+            )
             genetic_risk_names = [r.disease for r in risks[:10]]
             diet_recs = await asyncio.to_thread(
                 _diet_advisor.generate_recommendations,
                 genetic_risk_names,
                 variant_dict,
-                request.region,
+                resolved_rgn,
                 request.age,
                 request.sex.value,
                 request.dietary_restrictions or None,
@@ -1412,7 +1437,7 @@ async def profile_analysis(request: ProfileAnalysisRequest) -> ProfileAnalysisRe
             diet_meals = await asyncio.to_thread(
                 _diet_advisor.create_meal_plan,
                 diet_recs,
-                request.region,
+                resolved_rgn,
                 2000,
                 7,
                 request.dietary_restrictions or None,
@@ -1454,6 +1479,11 @@ async def nutrition_plan(request: NutritionRequest) -> NutritionResponse:
     No image required.
     """
     variant_dict = _build_variant_dict(request.known_variants)
+    resolved_region = resolve_region(
+        request.region,
+        country=getattr(request, "country", None),
+        state=getattr(request, "state", None),
+    )
     try:
         # Use health conditions as genetic risk proxies
         genetic_risk_names = list(request.health_conditions)
@@ -1461,7 +1491,7 @@ async def nutrition_plan(request: NutritionRequest) -> NutritionResponse:
             _diet_advisor.generate_recommendations,
             genetic_risk_names,
             variant_dict,
-            request.region,
+            resolved_region,
             request.age,
             request.sex.value,
             request.dietary_restrictions or None,
@@ -1469,7 +1499,7 @@ async def nutrition_plan(request: NutritionRequest) -> NutritionResponse:
         diet_meals = await asyncio.to_thread(
             _diet_advisor.create_meal_plan,
             diet_recs,
-            request.region,
+            resolved_region,
             request.calorie_target,
             request.meal_plan_days,
             request.dietary_restrictions or None,

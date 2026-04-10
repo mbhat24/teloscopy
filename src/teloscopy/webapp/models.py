@@ -68,6 +68,16 @@ class UserProfile(BaseModel):
         max_length=128,
         description="Geographic region (e.g. 'East Asia', 'Northern Europe')",
     )
+    country: str | None = Field(
+        None,
+        max_length=128,
+        description="Country (e.g. 'India', 'USA', 'Japan'). Enables country-specific diet plans.",
+    )
+    state: str | None = Field(
+        None,
+        max_length=128,
+        description="State or province (e.g. 'Kerala', 'California'). Enables state-level diet personalisation.",
+    )
     dietary_restrictions: list[str] = Field(
         default_factory=list,
         description="Dietary restrictions such as 'vegetarian', 'gluten-free'",
@@ -200,6 +210,8 @@ class DietPlanRequest(BaseModel):
     age: int = Field(..., ge=1, le=150)
     sex: Sex = Field(...)
     region: str = Field(..., min_length=1, max_length=128)
+    country: str | None = Field(None, max_length=128, description="Country for regional diet")
+    state: str | None = Field(None, max_length=128, description="State/province for local diet")
     dietary_restrictions: list[str] = Field(default_factory=list)
     known_variants: list[str] = Field(default_factory=list)
     telomere_length: float | None = Field(None, description="Mean telomere length in kb")
@@ -414,6 +426,8 @@ class ProfileAnalysisRequest(BaseModel):
     age: int = Field(..., ge=1, le=150)
     sex: Sex = Field(...)
     region: str = Field(..., min_length=1, max_length=128)
+    country: str | None = Field(None, max_length=128, description="Country for regional diet")
+    state: str | None = Field(None, max_length=128, description="State/province for local diet")
     dietary_restrictions: list[str] = Field(default_factory=list)
     known_variants: list[str] = Field(default_factory=list)
     telomere_length_kb: float | None = Field(
@@ -464,6 +478,8 @@ class NutritionRequest(BaseModel):
     age: int = Field(..., ge=1, le=150)
     sex: Sex = Field(...)
     region: str = Field(..., min_length=1, max_length=128)
+    country: str | None = Field(None, max_length=128, description="Country for regional diet")
+    state: str | None = Field(None, max_length=128, description="State/province for local diet")
     dietary_restrictions: list[str] = Field(default_factory=list)
     known_variants: list[str] = Field(default_factory=list)
     health_conditions: list[str] = Field(
