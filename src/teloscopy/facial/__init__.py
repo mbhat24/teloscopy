@@ -10,3 +10,14 @@ They are NOT equivalent to actual DNA sequencing or genotyping.  Results
 must be interpreted as *indicative* only and should never replace
 clinical genetic testing.
 """
+
+from .enhanced_predictor import (
+    EnhancedGenomicProfile,
+    FacialShapeLocus,
+    HIrisPlex_S_Result,
+    compute_prediction_accuracy,
+    generate_enhanced_profile,
+    predict_facial_shape_loci,
+    predict_hirisplex_s,
+    summarise_profile,
+)

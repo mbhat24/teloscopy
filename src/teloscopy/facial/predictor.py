@@ -48,6 +48,17 @@ from typing import Any
 import cv2
 import numpy as np
 
+from teloscopy.genomics.epigenetic_clock import compute_composite_age
+from teloscopy.genomics.stela import generate_stela_profile
+from teloscopy.genomics.liquid_biopsy import estimate_cfdna_telomere
+from teloscopy.genomics.drug_targets import identify_drug_targets
+from teloscopy.genomics.multi_omics import integrate_multi_omics
+from teloscopy.facial.enhanced_predictor import (
+    predict_hirisplex_s,
+    predict_facial_shape_loci,
+    generate_enhanced_profile,
+)
+
 logger = logging.getLogger(__name__)
 
 _DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "json"
@@ -247,6 +258,13 @@ class FacialGenomicProfile:
     dermatological_analysis: DermatologicalAnalysis = field(default_factory=DermatologicalAnalysis)
     condition_screenings: list[ConditionScreening] = field(default_factory=list)
     ancestry_derived: AncestryDerivedPredictions = field(default_factory=AncestryDerivedPredictions)
+    # --- v2.1 future directions ---
+    epigenetic_clock: Any = None
+    stela_profile: Any = None
+    cfdna_telomere: Any = None
+    drug_targets: Any = None
+    multi_omics: Any = None
+    enhanced_genomic: Any = None
 
 
 # ---------------------------------------------------------------------------
@@ -1593,6 +1611,107 @@ def analyze_face(
     )
     ancestry_derived = _predict_ancestry_derived(ancestry, predicted_variants)
 
+    # --- v2.1 future direction modules ---
+    # Epigenetic clock composite age (Horvath, Hannum, PhenoAge, GrimAge)
+    try:
+        epi_clock = compute_composite_age(
+            chronological_age=chronological_age,
+            facial_biological_age=bio_age,
+            telomere_length_kb=tl_kb,
+            sex=sex,
+            measurements={
+                "wrinkle_acceleration": measurements.wrinkle_score,
+                "bmi_offset": 0.0,
+                "smoking_proxy": measurements.texture_roughness * 0.5,
+                "skin_redness": measurements.skin_redness,
+                "dark_circle_severity": measurements.dark_circle_score,
+                "puffiness_score": 0.0,
+                "uv_damage_score": measurements.uv_damage_score,
+            },
+            oxidative_stress=ox_stress,
+            skin_health_score=skin_health / 100.0,
+        )
+    except Exception as exc:
+        logger.warning("Epigenetic clock failed: %s", exc)
+        epi_clock = None
+
+    # STELA chromosome-specific telomere profile
+    try:
+        stela = generate_stela_profile(
+            mean_telomere_length_kb=tl_kb,
+            age=chronological_age,
+            sex=sex,
+        )
+    except Exception as exc:
+        logger.warning("STELA profile failed: %s", exc)
+        stela = None
+
+    # cfDNA liquid biopsy telomere estimation
+    try:
+        cfdna = estimate_cfdna_telomere(
+            leukocyte_telomere_length_kb=tl_kb,
+            chronological_age=chronological_age,
+            sex=sex,
+        )
+    except Exception as exc:
+        logger.warning("cfDNA telomere estimation failed: %s", exc)
+        cfdna = None
+
+    # Drug target discovery
+    try:
+        variant_dict = {v.rsid: v.genotype for v in predicted_variants}
+        drug_tgt = identify_drug_targets(
+            telomere_length_kb=tl_kb,
+            age=chronological_age,
+            sex=sex,
+            variants=variant_dict,
+        )
+    except Exception as exc:
+        logger.warning("Drug target discovery failed: %s", exc)
+        drug_tgt = None
+
+    # Multi-omics integration (imputed from phenotype)
+    try:
+        multi_omics_result = integrate_multi_omics(
+            telomere_length_kb=tl_kb,
+            age=chronological_age,
+            sex=sex,
+        )
+    except Exception as exc:
+        logger.warning("Multi-omics integration failed: %s", exc)
+        multi_omics_result = None
+
+    # Enhanced facial-genomic predictor (HIrisPlex-S + morphology loci)
+    try:
+        ancestry_probs = {
+            "european": ancestry.european,
+            "east_asian": ancestry.east_asian,
+            "south_asian": ancestry.south_asian,
+            "african": ancestry.african,
+            "middle_eastern": ancestry.middle_eastern,
+            "latin_american": ancestry.latin_american,
+        }
+        enhanced = generate_enhanced_profile(
+            face_measurements={
+                "face_width": measurements.face_width,
+                "face_height": measurements.face_height,
+                "face_ratio": measurements.face_ratio,
+                "nose_width": measurements.nose_width,
+                "nose_height": measurements.nose_height,
+                "lip_thickness": measurements.lip_thickness,
+                "skin_brightness": measurements.skin_brightness,
+            },
+            skin_brightness=measurements.skin_brightness,
+            hair_color_observed=hair_colour,
+            eye_color_observed=eye_colour,
+            ancestry_probs=ancestry_probs,
+            age=chronological_age,
+            sex=sex,
+        )
+    except Exception as exc:
+        logger.warning("Enhanced genomic predictor failed: %s", exc)
+        enhanced = None
+
     # Deterministic hash for reproducibility
     with open(image_path, "rb") as f:
         img_hash = hashlib.md5(f.read()[:4096]).hexdigest()  # noqa: S324
@@ -1636,4 +1755,11 @@ def analyze_face(
         dermatological_analysis=dermatology,
         condition_screenings=condition_screenings,
         ancestry_derived=ancestry_derived,
+        # v2.1 future direction modules
+        epigenetic_clock=epi_clock,
+        stela_profile=stela,
+        cfdna_telomere=cfdna,
+        drug_targets=drug_tgt,
+        multi_omics=multi_omics_result,
+        enhanced_genomic=enhanced,
     )

@@ -35,9 +35,39 @@ from teloscopy.integrations.genotype_import import (
     ValidationReport,
 )
 
+from teloscopy.integrations.cds_hooks import (
+    CDSCard,
+    CDSHookService,
+    FHIRSubscription,
+    LongitudinalTelomereRecord,
+    build_longitudinal_bundle,
+    calculate_trajectory,
+    create_pgx_interaction_subscription,
+    create_telomere_result_subscription,
+    create_variant_classification_subscription,
+    get_cds_discovery_response,
+    process_medication_prescribe_hook,
+    process_order_select_hook,
+    process_patient_view_hook,
+)
+
 __all__ = [
     "GenotypeImporter",
     "GenotypeData",
     "GenotypeRecord",
     "ValidationReport",
+    # cds_hooks
+    "CDSCard",
+    "CDSHookService",
+    "FHIRSubscription",
+    "LongitudinalTelomereRecord",
+    "build_longitudinal_bundle",
+    "calculate_trajectory",
+    "create_pgx_interaction_subscription",
+    "create_telomere_result_subscription",
+    "create_variant_classification_subscription",
+    "get_cds_discovery_response",
+    "process_medication_prescribe_hook",
+    "process_order_select_hook",
+    "process_patient_view_hook",
 ]

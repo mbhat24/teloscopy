@@ -467,6 +467,13 @@ class FacialAnalysisResult(BaseModel):
     condition_screenings: list[ConditionScreeningResponse] = []
     ancestry_derived: AncestryDerivedPredictionsResponse | None = None
     analysis_warnings: list[str] = Field(default_factory=list)
+    # v2.1 future direction modules
+    epigenetic_clock: dict | None = None
+    stela_profile: dict | None = None
+    cfdna_telomere: dict | None = None
+    drug_targets: dict | None = None
+    multi_omics: dict | None = None
+    enhanced_genomic: dict | None = None
 
 
 class AnalysisResponse(BaseModel):

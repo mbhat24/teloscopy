@@ -594,6 +594,26 @@ def _sanitize_float(v: float, default: float = 0.0) -> float:
     return v
 
 
+def _dataclass_to_dict(obj: Any) -> dict | None:
+    """Recursively convert a dataclass to a JSON-safe dict, or return None."""
+    if obj is None:
+        return None
+    from dataclasses import asdict, fields as dc_fields
+    try:
+        if hasattr(obj, "__dataclass_fields__"):
+            result = {}
+            for f in dc_fields(obj):
+                val = getattr(obj, f.name)
+                result[f.name] = _dataclass_to_dict(val) if hasattr(val, "__dataclass_fields__") else (
+                    [_dataclass_to_dict(item) if hasattr(item, "__dataclass_fields__") else item for item in val]
+                    if isinstance(val, list) else val
+                )
+            return result
+        return obj if isinstance(obj, (str, int, float, bool, type(None))) else str(obj)
+    except Exception:
+        return None
+
+
 def _translate_facial_profile(profile: Any) -> FacialAnalysisResult:
     """Convert ``facial.predictor.FacialGenomicProfile`` to Pydantic model."""
     m = profile.measurements
@@ -742,6 +762,13 @@ def _translate_facial_profile(profile: Any) -> FacialAnalysisResult:
         condition_screenings=cond_resp,
         ancestry_derived=ancestry_derived_resp,
         analysis_warnings=profile.analysis_warnings,
+        # v2.1 future direction modules — serialize dataclasses to dicts
+        epigenetic_clock=_dataclass_to_dict(getattr(profile, "epigenetic_clock", None)),
+        stela_profile=_dataclass_to_dict(getattr(profile, "stela_profile", None)),
+        cfdna_telomere=_dataclass_to_dict(getattr(profile, "cfdna_telomere", None)),
+        drug_targets=_dataclass_to_dict(getattr(profile, "drug_targets", None)),
+        multi_omics=_dataclass_to_dict(getattr(profile, "multi_omics", None)),
+        enhanced_genomic=_dataclass_to_dict(getattr(profile, "enhanced_genomic", None)),
     )
 
 
