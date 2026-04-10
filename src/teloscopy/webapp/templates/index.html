@@ -1185,6 +1185,18 @@
             justify-content: center; align-items: center;
         }
         .consent-overlay.visible { display: flex; }
+
+        /* Block ALL interaction behind the consent overlay */
+        body.consent-pending .sidebar,
+        body.consent-pending .main-content,
+        body.consent-pending .mobile-header {
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.35;
+            filter: blur(2px);
+            transition: opacity .3s, filter .3s;
+        }
+        body.consent-pending .consent-overlay { pointer-events: auto; }
         .consent-modal {
             background: var(--bg-card-solid);
             border: 1px solid var(--border);
@@ -1836,7 +1848,7 @@
                     </svg>
                     <p style="font-weight:600;color:var(--text);margin-bottom:.25rem;">Drop your lab report here or click to browse</p>
                     <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:.5rem;">We'll automatically extract all lab values &mdash; no manual entry needed.</p>
-                    <input type="file" id="chk-report-file" accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp,.txt,.csv" style="display:none;" onchange="handleReportFileSelect(this);">
+                    <input type="file" id="chk-report-file" accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp,.txt,.text,.csv" style="display:none;" onchange="handleReportFileSelect(this);">
                 </div>
 
                 <!-- Selected file info -->
@@ -2460,13 +2472,16 @@
         btn.disabled = !allChecked;
     }
 
-    /* Show consent modal on first visit or expired consent */
-    window.addEventListener('DOMContentLoaded', function () {
+    /* Show consent modal IMMEDIATELY on first visit or expired consent — block all UI */
+    function enforceConsentGate() {
         if (!hasValidConsent()) {
-            setTimeout(function () {
-                document.getElementById('consent-overlay').classList.add('visible');
-            }, 600);
+            document.body.classList.add('consent-pending');
+            document.getElementById('consent-overlay').classList.add('visible');
         }
+    }
+    /* Run as early as possible — DOMContentLoaded for element access */
+    window.addEventListener('DOMContentLoaded', function () {
+        enforceConsentGate();
         /* Wire up checkbox listeners */
         REQUIRED_CHECKS.concat(['consent-research']).forEach(function (id) {
             var el = document.getElementById(id);
@@ -2475,6 +2490,7 @@
     });
 
     window.openConsentModal = function () {
+        document.body.classList.add('consent-pending');
         var overlay = document.getElementById('consent-overlay');
         if (overlay) overlay.classList.add('visible');
         /* Close sidebar on mobile */
@@ -2519,12 +2535,13 @@
             }
         } catch (_) { /* offline fallback — user can still browse, re-consent will be attempted on next API call */ }
 
+        document.body.classList.remove('consent-pending');
         document.getElementById('consent-overlay').classList.remove('visible');
     };
 
     window.declineConsent = function () {
-        document.getElementById('consent-overlay').classList.remove('visible');
-        /* Show a brief message */
+        /* Keep consent-pending on body — user CANNOT use the app without consent.
+           Replace main content with a message but sidebar stays locked. */
         var main = document.getElementById('main-content');
         if (main) {
             main.innerHTML = '<div style="text-align:center;padding:4rem 2rem;max-width:600px;margin:0 auto;">' +
@@ -3602,7 +3619,7 @@ function escapeHtml(str) {
 
         try {
             var res = await fetch('/api/analyze', { method: 'POST', body: fd, headers: window.getConsentHeaders() });
-            if (window.handleConsent403(res)) return;
+            if (window.handleConsent403(res)) { analyzeBtn.disabled = false; profileBtn.disabled = false; progressWrapper.classList.remove('visible'); return; }
             if (!res.ok) {
                 var err = await res.json();
                 throw new Error((err.error && err.error.message) || err.detail || 'Upload failed');
@@ -3669,7 +3686,7 @@ function escapeHtml(str) {
             progressFill.setAttribute('aria-valuenow', '80');
             progressPct.textContent = '80%';
 
-            if (window.handleConsent403(res)) return;
+            if (window.handleConsent403(res)) { analyzeBtn.disabled = false; profileBtn.disabled = false; progressWrapper.classList.remove('visible'); return; }
             if (!res.ok) {
                 var err = await res.json();
                 throw new Error((err.error && err.error.message) || err.detail || 'Analysis failed');
@@ -4268,7 +4285,7 @@ function escapeHtml(str) {
                     meal_plan_days: days
                 })
             });
-            if (window.handleConsent403(res)) return;
+            if (window.handleConsent403(res)) { btn.disabled = false; return; }
             if (!res.ok) {
                 var err = await res.json();
                 throw new Error((err.error && err.error.message) || err.detail || 'Failed to generate nutrition plan');
@@ -4382,7 +4399,7 @@ function escapeHtml(str) {
                 body: formData,
                 headers: window.getConsentHeaders()
             });
-            if (window.handleConsent403(res)) return;
+            if (window.handleConsent403(res)) { parseBtn.disabled = false; parseBtn.textContent = 'Extract Lab Values'; return; }
             if (!res.ok) {
                 var err = await res.json();
                 throw new Error((err.error && err.error.message) || err.detail || 'Failed to parse report');
@@ -4545,7 +4562,7 @@ function escapeHtml(str) {
                 body: formData,
                 headers: window.getConsentHeaders()
             });
-            if (window.handleConsent403(res)) return;
+            if (window.handleConsent403(res)) { btn.disabled = false; btn.textContent = 'Upload & Analyse Directly'; return; }
             if (!res.ok) {
                 var err = await res.json();
                 throw new Error((err.error && err.error.message) || err.detail || 'Report upload analysis failed');
@@ -4637,7 +4654,7 @@ function escapeHtml(str) {
                 headers: window.withConsent({ 'Content-Type': 'application/json' }),
                 body: JSON.stringify(payload)
             });
-            if (window.handleConsent403(res)) return;
+            if (window.handleConsent403(res)) { btn.disabled = false; btn.textContent = 'Analyse Health Checkup'; return; }
             if (!res.ok) {
                 var err = await res.json();
                 throw new Error((err.error && err.error.message) || err.detail || 'Health checkup analysis failed');

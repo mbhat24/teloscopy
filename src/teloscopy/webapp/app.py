@@ -459,7 +459,7 @@ app.add_middleware(
     allow_origins=_CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
+    allow_headers=["Content-Type", "Authorization", "X-Requested-With", "X-Consent-Token"],
 )
 
 # -- Security headers -------------------------------------------------------
@@ -2513,7 +2513,7 @@ async def health_checkup(request: HealthCheckupRequest) -> HealthCheckupResponse
 # -- Health checkup report upload --------------------------------------------
 
 _REPORT_ALLOWED_EXTENSIONS: set[str] = {
-    ".pdf", ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".webp", ".txt", ".text",
+    ".pdf", ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".webp", ".txt", ".text", ".csv",
 }
 _MAX_REPORT_BYTES: int = 20 * 1024 * 1024  # 20 MiB
 
