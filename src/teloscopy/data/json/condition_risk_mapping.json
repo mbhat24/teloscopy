@@ -14,5 +14,13 @@
   "iron_deficiency": "Iron-deficiency anemia",
   "inflammation": "Chronic inflammation",
   "electrolyte_imbalance": "Electrolyte disorder",
-  "proteinuria": "Chronic kidney disease"
+  "proteinuria": "Chronic kidney disease",
+  "insulin_resistance": "Type 2 diabetes",
+  "folate_deficiency": "Megaloblastic anemia",
+  "prehypertension": "Hypertension",
+  "cardiac_risk": "Coronary artery disease",
+  "vitamin_a_deficiency": "Night blindness",
+  "vitamin_e_deficiency": "Peripheral neuropathy",
+  "zinc_deficiency": "Immune dysfunction",
+  "calcium_magnesium_deficiency": "Osteoporosis"
 }

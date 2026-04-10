@@ -1240,6 +1240,7 @@
     <div class="reveal" style="margin-bottom:1.5rem;">
         <div class="result-tabs" role="tablist" id="checkup-tabs">
             <button class="result-tab active" data-chtab="chk-profile" role="tab" aria-selected="true">Profile</button>
+            <button class="result-tab" data-chtab="chk-upload" role="tab" aria-selected="false">Upload Report</button>
             <button class="result-tab" data-chtab="chk-blood" role="tab" aria-selected="false">Blood Tests</button>
             <button class="result-tab" data-chtab="chk-urine" role="tab" aria-selected="false">Urine Tests</button>
             <button class="result-tab" data-chtab="chk-abdomen" role="tab" aria-selected="false">Abdomen Scan</button>
@@ -1323,6 +1324,67 @@
                     <label><input type="checkbox" name="chk-diet" value="halal"> Halal</label>
                     <label><input type="checkbox" name="chk-diet" value="kosher"> Kosher</label>
                     <label><input type="checkbox" name="chk-diet" value="low-sodium"> Low-sodium</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Report tab -->
+        <div id="chk-upload" class="chk-tab-panel" style="display:none;">
+            <div style="grid-column:1/-1;">
+                <div id="chk-upload-zone" style="border:2px dashed var(--border-solid);border-radius:12px;padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:border-color .2s, background .2s;background:var(--card-bg);"
+                     ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(99,102,241,.06)';"
+                     ondragleave="this.style.borderColor='var(--border-solid)';this.style.background='var(--card-bg)';"
+                     ondrop="event.preventDefault();this.style.borderColor='var(--border-solid)';this.style.background='var(--card-bg)';handleReportDrop(event);"
+                     onclick="document.getElementById('chk-report-file').click();">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="var(--text-muted)" style="margin-bottom:.75rem;" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+                    </svg>
+                    <p style="font-weight:600;color:var(--text);margin-bottom:.25rem;">Drop your lab report here or click to browse</p>
+                    <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:.5rem;">Supports PDF, images (PNG/JPG), and text files (max 20 MB)</p>
+                    <input type="file" id="chk-report-file" accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp,.txt" style="display:none;" onchange="handleReportFileSelect(this);">
+                </div>
+
+                <!-- Selected file info -->
+                <div id="chk-upload-file-info" style="display:none;margin-top:1rem;padding:.75rem 1rem;background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.15);border-radius:8px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div>
+                            <span style="font-weight:600;color:var(--text);" id="chk-upload-filename"></span>
+                            <span style="font-size:.85rem;color:var(--text-muted);margin-left:.5rem;" id="chk-upload-filesize"></span>
+                        </div>
+                        <button type="button" onclick="clearReportUpload();" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2rem;padding:.25rem;" title="Remove file">&times;</button>
+                    </div>
+                </div>
+
+                <!-- Parse button -->
+                <div style="margin-top:1rem;text-align:center;">
+                    <button type="button" class="btn btn-primary" id="chk-parse-btn" onclick="parseUploadedReport();" style="display:none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+                        Extract Lab Values
+                    </button>
+                </div>
+
+                <!-- Parse results preview -->
+                <div id="chk-parse-results" style="display:none;margin-top:1.5rem;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                        <h4 style="margin:0;color:var(--text);">Extracted Lab Values</h4>
+                        <div>
+                            <span id="chk-parse-confidence" style="padding:.25rem .75rem;border-radius:20px;font-size:.8rem;font-weight:600;"></span>
+                            <span id="chk-parse-counts" style="font-size:.85rem;color:var(--text-muted);margin-left:.5rem;"></span>
+                        </div>
+                    </div>
+                    <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1rem;">
+                        Extracted values have been filled into the Blood Tests, Urine Tests, and Abdomen Scan tabs.
+                        Please review and correct any values before running the analysis.
+                    </p>
+                    <div id="chk-parse-summary" style="overflow-x:auto;"></div>
+
+                    <!-- Unrecognized lines -->
+                    <details id="chk-unrecognized-section" style="display:none;margin-top:1rem;">
+                        <summary style="cursor:pointer;font-size:.85rem;color:var(--text-muted);">
+                            Unrecognized lines (<span id="chk-unrecognized-count">0</span>)
+                        </summary>
+                        <div id="chk-unrecognized-lines" style="margin-top:.5rem;font-size:.8rem;color:var(--text-dim);max-height:200px;overflow-y:auto;background:var(--card-bg);border:1px solid var(--border-solid);border-radius:6px;padding:.5rem;"></div>
+                    </details>
                 </div>
             </div>
         </div>
@@ -3023,6 +3085,174 @@
     };
 
     /* ---- Health Checkup ---- */
+    /* ==============================================================
+       HEALTH CHECKUP — REPORT UPLOAD
+       ============================================================== */
+
+    var _reportFile = null; /* Holds the selected report File object */
+
+    window.handleReportDrop = function (event) {
+        var files = event.dataTransfer.files;
+        if (files.length > 0) {
+            _setReportFile(files[0]);
+        }
+    };
+
+    window.handleReportFileSelect = function (input) {
+        if (input.files && input.files.length > 0) {
+            _setReportFile(input.files[0]);
+        }
+    };
+
+    function _setReportFile(file) {
+        _reportFile = file;
+        document.getElementById('chk-upload-file-info').style.display = 'block';
+        document.getElementById('chk-upload-filename').textContent = file.name;
+        var sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        document.getElementById('chk-upload-filesize').textContent = '(' + sizeMB + ' MB)';
+        document.getElementById('chk-parse-btn').style.display = 'inline-flex';
+        document.getElementById('chk-parse-results').style.display = 'none';
+    }
+
+    window.clearReportUpload = function () {
+        _reportFile = null;
+        document.getElementById('chk-report-file').value = '';
+        document.getElementById('chk-upload-file-info').style.display = 'none';
+        document.getElementById('chk-parse-btn').style.display = 'none';
+        document.getElementById('chk-parse-results').style.display = 'none';
+    };
+
+    window.parseUploadedReport = async function () {
+        if (!_reportFile) { toast('Please select a file first.', 'error'); return; }
+
+        var parseBtn = document.getElementById('chk-parse-btn');
+        parseBtn.disabled = true;
+        parseBtn.innerHTML = '<span class="spinner"></span> Extracting\u2026';
+
+        try {
+            var formData = new FormData();
+            formData.append('file', _reportFile);
+
+            var res = await fetch('/api/health-checkup/parse-report', {
+                method: 'POST',
+                body: formData
+            });
+            if (!res.ok) {
+                var err = await res.json();
+                throw new Error(err.detail || 'Failed to parse report');
+            }
+            var data = await res.json();
+            _displayParseResults(data);
+            _populateFormFromParsed(data);
+            toast('Lab values extracted! Review and correct on the other tabs, then click Analyse.', 'success');
+        } catch (err) {
+            toast(err.message, 'error');
+        }
+
+        parseBtn.disabled = false;
+        parseBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg> Extract Lab Values';
+    };
+
+    function _displayParseResults(data) {
+        var container = document.getElementById('chk-parse-results');
+        container.style.display = 'block';
+
+        /* Confidence badge */
+        var confEl = document.getElementById('chk-parse-confidence');
+        var conf = (data.confidence * 100).toFixed(0);
+        var confColor = data.confidence >= 0.6 ? '#22c55e' : (data.confidence >= 0.3 ? '#f59e0b' : '#ef4444');
+        confEl.style.background = confColor + '20';
+        confEl.style.color = confColor;
+        confEl.textContent = conf + '% confidence';
+
+        /* Counts */
+        var bloodCount = Object.keys(data.extracted_blood_tests || {}).length;
+        var urineCount = Object.keys(data.extracted_urine_tests || {}).length;
+        document.getElementById('chk-parse-counts').textContent =
+            bloodCount + ' blood, ' + urineCount + ' urine values extracted' +
+            (data.extracted_abdomen_notes ? ' + abdomen notes' : '');
+
+        /* Summary table */
+        var summaryEl = document.getElementById('chk-parse-summary');
+        var thtml = '<table style="width:100%;border-collapse:collapse;font-size:.85rem;">' +
+            '<thead><tr style="border-bottom:2px solid var(--border-solid);text-align:left;">' +
+            '<th style="padding:.5rem;">Parameter</th><th style="padding:.5rem;">Value</th><th style="padding:.5rem;">Panel</th></tr></thead><tbody>';
+
+        for (var key in (data.extracted_blood_tests || {})) {
+            thtml += '<tr style="border-bottom:1px solid var(--border-solid);">' +
+                '<td style="padding:.3rem .5rem;">' + key.replace(/_/g, ' ') + '</td>' +
+                '<td style="padding:.3rem .5rem;font-weight:600;">' + data.extracted_blood_tests[key] + '</td>' +
+                '<td style="padding:.3rem .5rem;color:var(--text-muted);">Blood</td></tr>';
+        }
+        for (var key in (data.extracted_urine_tests || {})) {
+            thtml += '<tr style="border-bottom:1px solid var(--border-solid);">' +
+                '<td style="padding:.3rem .5rem;">' + key.replace(/_/g, ' ') + '</td>' +
+                '<td style="padding:.3rem .5rem;font-weight:600;">' + data.extracted_urine_tests[key] + '</td>' +
+                '<td style="padding:.3rem .5rem;color:var(--text-muted);">Urine</td></tr>';
+        }
+        thtml += '</tbody></table>';
+        summaryEl.innerHTML = thtml;
+
+        /* Unrecognized lines */
+        var unrecSection = document.getElementById('chk-unrecognized-section');
+        var unrecLines = data.unrecognized_lines || [];
+        if (unrecLines.length > 0) {
+            unrecSection.style.display = 'block';
+            document.getElementById('chk-unrecognized-count').textContent = unrecLines.length;
+            var linesHtml = '';
+            unrecLines.forEach(function (line) {
+                linesHtml += '<div style="padding:.2rem 0;border-bottom:1px solid var(--border-solid);">' +
+                    line.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>';
+            });
+            document.getElementById('chk-unrecognized-lines').innerHTML = linesHtml;
+        } else {
+            unrecSection.style.display = 'none';
+        }
+    }
+
+    function _populateFormFromParsed(data) {
+        /* Blood test fields */
+        var bloodFields = [
+            'hemoglobin','rbc_count','wbc_count','platelet_count','hematocrit','mcv','mch','mchc','rdw',
+            'neutrophils','lymphocytes','monocytes','eosinophils','basophils',
+            'total_cholesterol','ldl_cholesterol','hdl_cholesterol','triglycerides','vldl','total_cholesterol_hdl_ratio',
+            'sgot_ast','sgpt_alt','alkaline_phosphatase','total_bilirubin','direct_bilirubin','ggt','total_protein','albumin','globulin','ag_ratio',
+            'blood_urea','serum_creatinine','uric_acid','bun','egfr',
+            'fasting_glucose','hba1c','postprandial_glucose','fasting_insulin',
+            'tsh','t3','t4','free_t3','free_t4',
+            'vitamin_d','vitamin_b12','folate','iron','ferritin','tibc','transferrin_saturation','calcium','phosphorus','magnesium',
+            'sodium','potassium','chloride',
+            'crp','esr','homocysteine'
+        ];
+        var bloodData = data.extracted_blood_tests || {};
+        bloodFields.forEach(function (f) {
+            if (bloodData[f] !== undefined && bloodData[f] !== null) {
+                var el = document.getElementById('chk-' + f);
+                if (el) el.value = bloodData[f];
+            }
+        });
+
+        /* Urine test fields */
+        var urineFields = ['ph','specific_gravity','protein','glucose','ketones','bilirubin','urobilinogen','blood','nitrites','leukocytes','rbc_urine','wbc_urine','epithelial_cells'];
+        var urineData = data.extracted_urine_tests || {};
+        urineFields.forEach(function (f) {
+            if (urineData[f] !== undefined && urineData[f] !== null) {
+                var el = document.getElementById('chk-u-' + f);
+                if (el) el.value = urineData[f];
+            }
+        });
+
+        /* Abdomen notes */
+        if (data.extracted_abdomen_notes) {
+            var abdEl = document.getElementById('chk-abdomen-notes');
+            if (abdEl) abdEl.value = data.extracted_abdomen_notes;
+        }
+    }
+
+    /* ==============================================================
+       HEALTH CHECKUP — SUBMIT
+       ============================================================== */
+
     window.startHealthCheckup = async function () {
         var age = document.getElementById('chk-age').value;
         var sex = document.getElementById('chk-sex').value;

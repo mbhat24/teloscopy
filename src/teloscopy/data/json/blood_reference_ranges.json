@@ -430,5 +430,26 @@
     "unit": "\u00b5mol/L",
     "display_name": "Homocysteine",
     "category": "Inflammation"
+  },
+  "vitamin_a": {
+    "low": 20.0,
+    "high": 60.0,
+    "unit": "\u00b5g/dL",
+    "display_name": "Vitamin A",
+    "category": "Vitamins"
+  },
+  "vitamin_e": {
+    "low": 5.0,
+    "high": 20.0,
+    "unit": "mg/L",
+    "display_name": "Vitamin E",
+    "category": "Vitamins"
+  },
+  "zinc": {
+    "low": 70.0,
+    "high": 120.0,
+    "unit": "\u00b5g/dL",
+    "display_name": "Zinc",
+    "category": "Minerals"
   }
 }

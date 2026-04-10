@@ -679,6 +679,7 @@ class BloodTestPanel(BaseModel):
     hba1c: float | None = Field(None, description="%")
     postprandial_glucose: float | None = Field(None, description="mg/dL")
     fasting_insulin: float | None = Field(None, description="µIU/mL")
+    homa_ir: float | None = Field(None, description="index")
 
     # Thyroid
     tsh: float | None = Field(None, description="µIU/mL")
@@ -691,6 +692,8 @@ class BloodTestPanel(BaseModel):
     vitamin_d: float | None = Field(None, description="ng/mL")
     vitamin_b12: float | None = Field(None, description="pg/mL")
     folate: float | None = Field(None, description="ng/mL")
+    vitamin_a: float | None = Field(None, description="µg/dL")
+    vitamin_e: float | None = Field(None, description="mg/L")
 
     # Minerals / Electrolytes
     iron: float | None = Field(None, description="µg/dL")
@@ -703,6 +706,7 @@ class BloodTestPanel(BaseModel):
     sodium: float | None = Field(None, description="mEq/L")
     potassium: float | None = Field(None, description="mEq/L")
     chloride: float | None = Field(None, description="mEq/L")
+    zinc: float | None = Field(None, description="µg/dL")
 
     # Inflammation
     crp: float | None = Field(None, description="mg/L")
@@ -861,4 +865,50 @@ class HealthCheckupResponse(BaseModel):
     disclaimer: str = Field(
         default="For research/educational use only — not clinical or diagnostic advice. "
         "Lab interpretation is approximate. Always consult your physician for medical decisions.",
+    )
+
+
+# ---------------------------------------------------------------------------
+# Report Upload — parse preview
+# ---------------------------------------------------------------------------
+
+
+class ReportParsePreview(BaseModel):
+    """Preview of parsed lab values from an uploaded report.
+
+    Returned by the ``/api/health-checkup/parse-report`` endpoint so the
+    user can review and correct extracted values before running the full
+    analysis.
+    """
+
+    extracted_blood_tests: dict[str, float] = Field(
+        default_factory=dict,
+        description="Blood test values extracted from the report, keyed by BloodTestPanel field names.",
+    )
+    extracted_urine_tests: dict[str, float] = Field(
+        default_factory=dict,
+        description="Urine test values extracted from the report, keyed by UrineTestPanel field names.",
+    )
+    extracted_abdomen_notes: str = Field(
+        "",
+        description="Abdomen/ultrasound section text extracted from the report.",
+    )
+    unrecognized_lines: list[str] = Field(
+        default_factory=list,
+        description="Lines from the report that contained numbers but could not be matched to known parameters.",
+    )
+    confidence: float = Field(
+        0.0,
+        ge=0.0,
+        le=1.0,
+        description="Overall confidence score for the extraction (0.0–1.0).",
+    )
+    file_type: str = Field(
+        "unknown",
+        description="Detected file type: 'pdf', 'image', 'text', or 'unknown'.",
+    )
+    text_length: int = Field(
+        0,
+        ge=0,
+        description="Number of characters extracted from the uploaded file.",
     )

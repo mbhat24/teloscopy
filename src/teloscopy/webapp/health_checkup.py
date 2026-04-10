@@ -628,6 +628,195 @@ class HealthCheckupAnalyzer:
         severity = "moderate" if urine.protein is not None and urine.protein > 30 else "mild"
         return severity, evidence
 
+    def _check_insulin_resistance(
+        self, blood: BloodTestPanel | None, _u: UrineTestPanel | None, _s: str, _a: int,
+    ) -> tuple[str, list[str]] | None:
+        if blood is None:
+            return None
+        evidence = []
+        # Compute HOMA-IR if both fasting glucose and fasting insulin available
+        homa_ir = None
+        if blood.fasting_glucose is not None and blood.fasting_insulin is not None:
+            homa_ir = (blood.fasting_glucose * blood.fasting_insulin) / 405.0
+        # Use provided homa_ir if available and not computed
+        if homa_ir is None and blood.homa_ir is not None:
+            homa_ir = blood.homa_ir
+        if blood.fasting_insulin is not None and blood.fasting_insulin > 25:
+            evidence.append(f"Fasting insulin {blood.fasting_insulin} µIU/mL (>25)")
+        if homa_ir is not None and homa_ir > 2.5:
+            evidence.append(f"HOMA-IR {homa_ir:.2f} (>2.5)")
+        # Secondary pattern: prediabetic glucose + high triglycerides
+        if (blood.fasting_glucose is not None and 100 <= blood.fasting_glucose <= 125
+                and blood.triglycerides is not None and blood.triglycerides > 150):
+            evidence.append(
+                f"Fasting glucose {blood.fasting_glucose} mg/dL (100-125) with "
+                f"triglycerides {blood.triglycerides} mg/dL (>150)"
+            )
+        if not evidence:
+            return None
+        severity = "moderate" if len(evidence) >= 2 else "mild"
+        return severity, evidence
+
+    def _check_folate_deficiency(
+        self, blood: BloodTestPanel | None, _u: UrineTestPanel | None, _s: str, _a: int,
+    ) -> tuple[str, list[str]] | None:
+        if blood is None:
+            return None
+        evidence = []
+        if blood.folate is not None and blood.folate < 3.0:
+            severity_level = "severe" if blood.folate < 2.0 else "moderate"
+            evidence.append(f"Folate {blood.folate} ng/mL (<3.0 = deficient)")
+        # Elevated homocysteine with low-normal folate
+        if (blood.homocysteine is not None and blood.homocysteine > 15
+                and blood.folate is not None and blood.folate < 5.0):
+            evidence.append(
+                f"Homocysteine {blood.homocysteine} µmol/L (>15) with "
+                f"folate {blood.folate} ng/mL (<5.0)"
+            )
+        if not evidence:
+            return None
+        severity = "severe" if (blood.folate is not None and blood.folate < 2.0) else (
+            "moderate" if len(evidence) >= 2 else "mild"
+        )
+        return severity, evidence
+
+    def _check_prehypertension(
+        self, blood: BloodTestPanel | None, _u: UrineTestPanel | None, _s: str, _a: int,
+    ) -> tuple[str, list[str]] | None:
+        if blood is None:
+            return None
+        evidence = []
+        if blood.sodium is not None and blood.sodium > 145:
+            evidence.append(f"Sodium {blood.sodium} mEq/L (>145)")
+        if blood.potassium is not None and blood.potassium < 3.5:
+            evidence.append(f"Potassium {blood.potassium} mEq/L (<3.5)")
+        if blood.homocysteine is not None and blood.homocysteine > 12:
+            evidence.append(f"Homocysteine {blood.homocysteine} µmol/L (>12)")
+        if not evidence:
+            return None
+        severity = "moderate" if len(evidence) >= 2 else "mild"
+        return severity, evidence
+
+    def _check_cardiac_risk(
+        self, blood: BloodTestPanel | None, _u: UrineTestPanel | None, _s: str, _a: int,
+    ) -> tuple[str, list[str]] | None:
+        if blood is None:
+            return None
+        evidence = []
+        crp_high = blood.crp is not None and blood.crp > 3.0
+        if crp_high:
+            evidence.append(f"CRP {blood.crp} mg/L (>3.0)")
+        # Lipid risk markers (only flag if CRP is elevated)
+        lipid_risk = False
+        if blood.total_cholesterol_hdl_ratio is not None and blood.total_cholesterol_hdl_ratio > 5.0:
+            lipid_risk = True
+            evidence.append(f"TC/HDL ratio {blood.total_cholesterol_hdl_ratio} (>5.0)")
+        if blood.ldl_cholesterol is not None and blood.ldl_cholesterol > 160:
+            lipid_risk = True
+            evidence.append(f"LDL {blood.ldl_cholesterol} mg/dL (>160)")
+        if blood.triglycerides is not None and blood.triglycerides > 200:
+            lipid_risk = True
+            evidence.append(f"Triglycerides {blood.triglycerides} mg/dL (>200)")
+        # Elevated homocysteine as independent cardiac risk
+        if blood.homocysteine is not None and blood.homocysteine > 15:
+            evidence.append(f"Homocysteine {blood.homocysteine} µmol/L (>15)")
+        # Require CRP + lipid risk, OR homocysteine alone
+        has_crp_lipid = crp_high and lipid_risk
+        has_homocysteine = blood.homocysteine is not None and blood.homocysteine > 15
+        if not (has_crp_lipid or has_homocysteine):
+            return None
+        severity = "severe" if (has_crp_lipid and len(evidence) >= 4) else (
+            "moderate" if len(evidence) >= 3 else "mild"
+        )
+        return severity, evidence
+
+    def _check_vitamin_a_deficiency(
+        self, blood: BloodTestPanel | None, _u: UrineTestPanel | None, _s: str, _a: int,
+    ) -> tuple[str, list[str]] | None:
+        if blood is None:
+            return None
+        evidence = []
+        # Direct marker if available
+        if blood.vitamin_a is not None and blood.vitamin_a < 20:
+            severity_tag = "severe" if blood.vitamin_a < 10 else "moderate"
+            evidence.append(f"Vitamin A {blood.vitamin_a} µg/dL (<20 = deficient)")
+        # Co-occurrence pattern: low iron + low ferritin often co-occur with vitamin A deficiency
+        if (blood.iron is not None and blood.iron < 60
+                and blood.ferritin is not None and blood.ferritin < 30):
+            evidence.append(
+                f"Iron {blood.iron} µg/dL (<60) with ferritin {blood.ferritin} ng/mL (<30) "
+                f"(often co-occurs with vitamin A deficiency)"
+            )
+        if not evidence:
+            return None
+        severity = "severe" if (blood.vitamin_a is not None and blood.vitamin_a < 10) else (
+            "moderate" if len(evidence) >= 2 else "mild"
+        )
+        return severity, evidence
+
+    def _check_vitamin_e_deficiency(
+        self, blood: BloodTestPanel | None, _u: UrineTestPanel | None, _s: str, _a: int,
+    ) -> tuple[str, list[str]] | None:
+        if blood is None:
+            return None
+        evidence = []
+        # Direct marker if available
+        if blood.vitamin_e is not None and blood.vitamin_e < 5.0:
+            evidence.append(f"Vitamin E {blood.vitamin_e} mg/L (<5.0 = deficient)")
+        # Vitamin E is lipid-soluble; very low cholesterol impairs transport
+        if blood.total_cholesterol is not None and blood.total_cholesterol < 150:
+            evidence.append(
+                f"Total cholesterol {blood.total_cholesterol} mg/dL (<150, "
+                f"may impair fat-soluble vitamin transport)"
+            )
+        if not evidence:
+            return None
+        severity = "moderate" if len(evidence) >= 2 else "mild"
+        return severity, evidence
+
+    def _check_zinc_deficiency(
+        self, blood: BloodTestPanel | None, _u: UrineTestPanel | None, _s: str, _a: int,
+    ) -> tuple[str, list[str]] | None:
+        if blood is None:
+            return None
+        evidence = []
+        # Direct marker if available
+        if blood.zinc is not None and blood.zinc < 70:
+            evidence.append(f"Zinc {blood.zinc} µg/dL (<70 = deficient)")
+        # Co-occurrence pattern: low ALP + low albumin suggest zinc deficiency
+        if (blood.alkaline_phosphatase is not None and blood.alkaline_phosphatase < 44
+                and blood.albumin is not None and blood.albumin < 3.5):
+            evidence.append(
+                f"ALP {blood.alkaline_phosphatase} U/L (<44) with albumin "
+                f"{blood.albumin} g/dL (<3.5) (suggestive of zinc deficiency)"
+            )
+        if not evidence:
+            return None
+        severity = "moderate" if len(evidence) >= 2 else "mild"
+        return severity, evidence
+
+    def _check_calcium_magnesium_deficiency(
+        self, blood: BloodTestPanel | None, _u: UrineTestPanel | None, _s: str, _a: int,
+    ) -> tuple[str, list[str]] | None:
+        if blood is None:
+            return None
+        evidence = []
+        if blood.calcium is not None and blood.calcium < 8.5:
+            evidence.append(f"Calcium {blood.calcium} mg/dL (<8.5 = low)")
+        if blood.magnesium is not None and blood.magnesium < 1.7:
+            evidence.append(f"Magnesium {blood.magnesium} mg/dL (<1.7 = low)")
+        # Elevated phosphorus with low calcium suggests imbalance
+        if (blood.phosphorus is not None and blood.phosphorus > 4.5
+                and blood.calcium is not None and blood.calcium < 8.5):
+            evidence.append(
+                f"Phosphorus {blood.phosphorus} mg/dL (>4.5) with low calcium "
+                f"(calcium-phosphorus imbalance)"
+            )
+        if not evidence:
+            return None
+        severity = "moderate" if len(evidence) >= 2 else "mild"
+        return severity, evidence
+
     # -- abdomen scan parsing ------------------------------------------------
 
     def _parse_abdomen(self, notes: str | None) -> list[AbdomenFindingResponse]:

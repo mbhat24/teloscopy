@@ -1,0 +1,501 @@
+{
+  "Coronary artery disease": {
+    "male": 580.0,
+    "female": 340.0
+  },
+  "Hypercholesterolaemia": {
+    "all": 1200.0
+  },
+  "Atrial fibrillation": {
+    "male": 210.0,
+    "female": 130.0
+  },
+  "Aortic stenosis": {
+    "all": 45.0
+  },
+  "Hypertension": {
+    "all": 1500.0
+  },
+  "Stroke": {
+    "male": 240.0,
+    "female": 180.0
+  },
+  "Heart failure": {
+    "male": 190.0,
+    "female": 130.0
+  },
+  "Aortic aneurysm": {
+    "male": 18.0,
+    "female": 4.0
+  },
+  "Peripheral artery disease": {
+    "all": 130.0
+  },
+  "Dilated cardiomyopathy": {
+    "all": 7.0
+  },
+  "Long QT syndrome": {
+    "all": 2.5
+  },
+  "Breast cancer": {
+    "female": 130.0,
+    "male": 1.3
+  },
+  "Ovarian cancer": {
+    "female": 11.0
+  },
+  "Colorectal cancer": {
+    "male": 45.0,
+    "female": 34.0
+  },
+  "Li-Fraumeni syndrome cancers": {
+    "all": 2.0
+  },
+  "Endometrial cancer": {
+    "female": 28.0
+  },
+  "Lynch syndrome cancers": {
+    "all": 5.0
+  },
+  "Prostate cancer": {
+    "male": 110.0
+  },
+  "Lung cancer": {
+    "male": 60.0,
+    "female": 45.0
+  },
+  "Melanoma": {
+    "all": 22.0
+  },
+  "Pancreatic cancer": {
+    "all": 13.0
+  },
+  "Bladder cancer": {
+    "male": 36.0,
+    "female": 9.0
+  },
+  "Thyroid cancer": {
+    "male": 8.0,
+    "female": 23.0
+  },
+  "Gastric cancer": {
+    "male": 12.0,
+    "female": 6.0
+  },
+  "Hepatocellular carcinoma": {
+    "male": 10.0,
+    "female": 3.5
+  },
+  "Renal cell carcinoma": {
+    "male": 18.0,
+    "female": 9.0
+  },
+  "Glioblastoma": {
+    "all": 3.2
+  },
+  "Non-Hodgkin lymphoma": {
+    "all": 20.0
+  },
+  "Chronic lymphocytic leukaemia": {
+    "all": 5.0
+  },
+  "Acute myeloid leukaemia": {
+    "all": 4.0
+  },
+  "Type 2 diabetes": {
+    "all": 600.0
+  },
+  "Type 1 diabetes": {
+    "all": 15.0
+  },
+  "Gestational diabetes": {
+    "female": 700.0
+  },
+  "MODY": {
+    "all": 2.5
+  },
+  "Diabetic nephropathy": {
+    "all": 80.0
+  },
+  "Diabetic retinopathy": {
+    "all": 90.0
+  },
+  "Alzheimer's disease": {
+    "male": 120.0,
+    "female": 170.0
+  },
+  "Late-onset Alzheimer's disease": {
+    "male": 100.0,
+    "female": 150.0
+  },
+  "Early-onset Alzheimer's disease": {
+    "all": 5.0
+  },
+  "Parkinson's disease": {
+    "male": 20.0,
+    "female": 12.0
+  },
+  "Huntington's disease": {
+    "all": 0.5
+  },
+  "Amyotrophic lateral sclerosis": {
+    "all": 2.0
+  },
+  "Multiple sclerosis": {
+    "female": 8.0,
+    "male": 4.0
+  },
+  "Epilepsy": {
+    "all": 50.0
+  },
+  "Migraine": {
+    "female": 300.0,
+    "male": 150.0
+  },
+  "Essential tremor": {
+    "all": 50.0
+  },
+  "Restless leg syndrome": {
+    "all": 100.0
+  },
+  "Rheumatoid arthritis": {
+    "male": 25.0,
+    "female": 50.0
+  },
+  "Systemic lupus erythematosus": {
+    "female": 5.0,
+    "male": 0.5
+  },
+  "Celiac disease": {
+    "all": 15.0
+  },
+  "Crohn's disease": {
+    "all": 8.0
+  },
+  "Ulcerative colitis": {
+    "all": 12.0
+  },
+  "Psoriasis": {
+    "all": 80.0
+  },
+  "Ankylosing spondylitis": {
+    "male": 7.0,
+    "female": 2.0
+  },
+  "Graves' disease": {
+    "female": 30.0,
+    "male": 5.0
+  },
+  "Hashimoto's thyroiditis": {
+    "female": 40.0,
+    "male": 8.0
+  },
+  "Obesity": {
+    "all": 900.0
+  },
+  "Hyperhomocysteinaemia": {
+    "all": 200.0
+  },
+  "Neural tube defects (offspring)": {
+    "female": 10.0
+  },
+  "Non-alcoholic fatty liver disease": {
+    "all": 300.0
+  },
+  "Gout": {
+    "male": 100.0,
+    "female": 20.0
+  },
+  "Hyperlipidemia": {
+    "all": 500.0
+  },
+  "Metabolic syndrome": {
+    "all": 400.0
+  },
+  "Age-related macular degeneration": {
+    "all": 80.0
+  },
+  "Primary open-angle glaucoma": {
+    "all": 40.0
+  },
+  "Exfoliation glaucoma": {
+    "all": 15.0
+  },
+  "Myopia": {
+    "all": 500.0
+  },
+  "Cataracts": {
+    "all": 350.0
+  },
+  "Keratoconus": {
+    "all": 5.0
+  },
+  "Retinitis pigmentosa": {
+    "all": 2.5
+  },
+  "Osteoporosis": {
+    "female": 300.0,
+    "male": 80.0
+  },
+  "Paget's disease of bone": {
+    "all": 3.0
+  },
+  "Osteoarthritis": {
+    "all": 250.0
+  },
+  "Ankylosing spondylitis (spine)": {
+    "male": 7.0,
+    "female": 2.0
+  },
+  "Sickle cell disease": {
+    "all": 3.0
+  },
+  "Hereditary haemochromatosis": {
+    "all": 5.0
+  },
+  "Beta-thalassaemia": {
+    "all": 2.0
+  },
+  "Deep vein thrombosis": {
+    "all": 130.0
+  },
+  "Factor V Leiden thrombophilia": {
+    "all": 40.0
+  },
+  "Iron deficiency anemia": {
+    "female": 200.0,
+    "male": 50.0
+  },
+  "G6PD deficiency": {
+    "male": 30.0,
+    "female": 5.0
+  },
+  "Haemophilia susceptibility": {
+    "male": 1.0
+  },
+  "Asthma": {
+    "all": 250.0
+  },
+  "Chronic obstructive pulmonary disease": {
+    "all": 150.0
+  },
+  "Idiopathic pulmonary fibrosis": {
+    "all": 8.0
+  },
+  "Sarcoidosis": {
+    "all": 10.0
+  },
+  "Chronic kidney disease": {
+    "all": 160.0
+  },
+  "IgA nephropathy": {
+    "all": 5.0
+  },
+  "Nephrolithiasis": {
+    "male": 120.0,
+    "female": 60.0
+  },
+  "Focal segmental glomerulosclerosis": {
+    "all": 3.0
+  },
+  "Polycystic kidney disease": {
+    "all": 4.0
+  },
+  "NAFLD/NASH": {
+    "all": 250.0
+  },
+  "Primary biliary cholangitis": {
+    "female": 6.0,
+    "male": 1.0
+  },
+  "Wilson's disease": {
+    "all": 0.5
+  },
+  "Alpha-1 antitrypsin deficiency": {
+    "all": 2.0
+  },
+  "Major depressive disorder": {
+    "female": 400.0,
+    "male": 250.0
+  },
+  "Bipolar disorder": {
+    "all": 15.0
+  },
+  "Schizophrenia": {
+    "all": 15.0
+  },
+  "Generalised anxiety disorder": {
+    "all": 200.0
+  },
+  "Attention deficit hyperactivity disorder": {
+    "all": 80.0
+  },
+  "Post-traumatic stress disorder": {
+    "all": 50.0
+  },
+  "Obsessive-compulsive disorder": {
+    "all": 20.0
+  },
+  "Anorexia nervosa": {
+    "female": 12.0,
+    "male": 1.5
+  },
+  "Polycystic ovary syndrome": {
+    "female": 150.0
+  },
+  "Endometriosis": {
+    "female": 100.0
+  },
+  "Male infertility": {
+    "male": 40.0
+  },
+  "Premature ovarian insufficiency": {
+    "female": 10.0
+  },
+  "Preeclampsia": {
+    "female": 350.0
+  },
+  "Psoriasis (dermatological)": {
+    "all": 80.0
+  },
+  "Atopic dermatitis": {
+    "all": 200.0
+  },
+  "Vitiligo": {
+    "all": 15.0
+  },
+  "Alopecia areata": {
+    "all": 20.0
+  },
+  "Systemic sclerosis": {
+    "female": 3.0,
+    "male": 0.5
+  },
+  "Celiac disease (GI)": {
+    "all": 15.0
+  },
+  "Crohn's disease (GI)": {
+    "all": 8.0
+  },
+  "Ulcerative colitis (GI)": {
+    "all": 12.0
+  },
+  "Irritable bowel syndrome": {
+    "all": 200.0
+  },
+  "Gastro-oesophageal reflux disease": {
+    "all": 350.0
+  },
+  "Barrett's oesophagus": {
+    "male": 15.0,
+    "female": 5.0
+  },
+  "Graves' disease (endocrine)": {
+    "female": 30.0,
+    "male": 5.0
+  },
+  "Hashimoto's thyroiditis (endocrine)": {
+    "female": 40.0,
+    "male": 8.0
+  },
+  "Addison's disease": {
+    "all": 1.0
+  },
+  "Hyperparathyroidism": {
+    "female": 10.0,
+    "male": 4.0
+  },
+  "Cushing's susceptibility": {
+    "all": 1.5
+  },
+  "HIV progression": {
+    "all": 15.0
+  },
+  "Hepatitis B susceptibility": {
+    "all": 30.0
+  },
+  "Malaria resistance (sickle trait)": {
+    "all": 500.0
+  },
+  "Malaria resistance (blood group)": {
+    "all": 500.0
+  },
+  "Tuberculosis susceptibility": {
+    "all": 25.0
+  },
+  "COVID-19 severity": {
+    "all": 200.0
+  },
+  "Periodontal disease": {
+    "all": 350.0
+  },
+  "Dental caries susceptibility": {
+    "all": 600.0
+  },
+  "Cleft lip and palate": {
+    "all": 10.0
+  },
+  "Narcolepsy": {
+    "all": 3.0
+  },
+  "Obstructive sleep apnea": {
+    "male": 200.0,
+    "female": 80.0
+  },
+  "Insomnia": {
+    "all": 300.0
+  },
+  "Restless leg syndrome (sleep)": {
+    "all": 100.0
+  },
+  "Telomere length (short)": {
+    "all": 500.0
+  },
+  "Longevity": {
+    "all": 50.0
+  },
+  "Werner syndrome": {
+    "all": 0.1
+  },
+  "Progeria-related laminopathy": {
+    "all": 0.05
+  },
+  "Age-related hearing loss": {
+    "all": 250.0
+  },
+  "Otosclerosis": {
+    "all": 30.0
+  },
+  "Meniere's disease": {
+    "all": 10.0
+  },
+  "Noise-induced hearing loss": {
+    "all": 150.0
+  },
+  "Chronic pain sensitivity": {
+    "all": 200.0
+  },
+  "Fibromyalgia": {
+    "female": 60.0,
+    "male": 10.0
+  },
+  "Migraine with aura": {
+    "female": 100.0,
+    "male": 40.0
+  },
+  "Warfarin sensitivity": {
+    "all": 80.0
+  },
+  "Statin myopathy": {
+    "all": 50.0
+  },
+  "Clopidogrel resistance": {
+    "all": 30.0
+  },
+  "Methotrexate toxicity": {
+    "all": 20.0
+  },
+  "Opioid sensitivity": {
+    "all": 60.0
+  }
+}

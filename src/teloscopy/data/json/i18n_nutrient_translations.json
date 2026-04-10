@@ -1,0 +1,122 @@
+{
+  "omega_3": {
+    "en": "Omega-3 fatty acids",
+    "es": "Ácidos grasos omega-3",
+    "fr": "Acides gras oméga-3",
+    "de": "Omega-3-Fettsäuren",
+    "zh": "Omega-3脂肪酸",
+    "hi": "ओमेगा-3 फैटी एसिड",
+    "ar": "أحماض أوميغا 3 الدهنية",
+    "pt": "Ácidos graxos ômega-3",
+    "ja": "オメガ3脂肪酸",
+    "ko": "오메가-3 지방산"
+  },
+  "folate": {
+    "en": "Folate",
+    "es": "Folato",
+    "fr": "Folate",
+    "de": "Folsäure",
+    "zh": "叶酸",
+    "hi": "फोलेट",
+    "ar": "حمض الفوليك",
+    "pt": "Folato",
+    "ja": "葉酸",
+    "ko": "엽산"
+  },
+  "vitamin_d": {
+    "en": "Vitamin D",
+    "es": "Vitamina D",
+    "fr": "Vitamine D",
+    "de": "Vitamin D",
+    "zh": "维生素D",
+    "hi": "विटामिन डी",
+    "ar": "فيتامين د",
+    "pt": "Vitamina D",
+    "ja": "ビタミンD",
+    "ko": "비타민 D"
+  },
+  "vitamin_c": {
+    "en": "Vitamin C",
+    "es": "Vitamina C",
+    "fr": "Vitamine C",
+    "de": "Vitamin C",
+    "zh": "维生素C",
+    "hi": "विटामिन सी",
+    "ar": "فيتامين ج",
+    "pt": "Vitamina C",
+    "ja": "ビタミンC",
+    "ko": "비타민 C"
+  },
+  "zinc": {
+    "en": "Zinc",
+    "es": "Zinc",
+    "fr": "Zinc",
+    "de": "Zink",
+    "zh": "锌",
+    "hi": "जिंक",
+    "ar": "زنك",
+    "pt": "Zinco",
+    "ja": "亜鉛",
+    "ko": "아연"
+  },
+  "selenium": {
+    "en": "Selenium",
+    "es": "Selenio",
+    "fr": "Sélénium",
+    "de": "Selen",
+    "zh": "硒",
+    "hi": "सेलेनियम",
+    "ar": "سيلينيوم",
+    "pt": "Selênio",
+    "ja": "セレン",
+    "ko": "셀레늄"
+  },
+  "iron": {
+    "en": "Iron",
+    "es": "Hierro",
+    "fr": "Fer",
+    "de": "Eisen",
+    "zh": "铁",
+    "hi": "लोहा",
+    "ar": "حديد",
+    "pt": "Ferro",
+    "ja": "鉄",
+    "ko": "철분"
+  },
+  "calcium": {
+    "en": "Calcium",
+    "es": "Calcio",
+    "fr": "Calcium",
+    "de": "Kalzium",
+    "zh": "钙",
+    "hi": "कैल्शियम",
+    "ar": "كالسيوم",
+    "pt": "Cálcio",
+    "ja": "カルシウム",
+    "ko": "칼슘"
+  },
+  "magnesium": {
+    "en": "Magnesium",
+    "es": "Magnesio",
+    "fr": "Magnésium",
+    "de": "Magnesium",
+    "zh": "镁",
+    "hi": "मैग्नीशियम",
+    "ar": "مغنيسيوم",
+    "pt": "Magnésio",
+    "ja": "マグネシウム",
+    "ko": "마그네슘"
+  },
+  "polyphenols": {
+    "en": "Polyphenols",
+    "es": "Polifenoles",
+    "fr": "Polyphénols",
+    "de": "Polyphenole",
+    "zh": "多酚",
+    "hi": "पॉलीफेनोल",
+    "ar": "بوليفينول",
+    "pt": "Polifenóis",
+    "ja": "ポリフェノール",
+    "ko": "폴리페놀"
+  }
+}

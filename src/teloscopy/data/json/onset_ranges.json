@@ -1,0 +1,714 @@
+{
+  "Coronary artery disease": {
+    "min": 40,
+    "max": 85
+  },
+  "Hypercholesterolaemia": {
+    "min": 20,
+    "max": 70
+  },
+  "Atrial fibrillation": {
+    "min": 50,
+    "max": 90
+  },
+  "Aortic stenosis": {
+    "min": 55,
+    "max": 90
+  },
+  "Hypertension": {
+    "min": 30,
+    "max": 80
+  },
+  "Stroke": {
+    "min": 45,
+    "max": 90
+  },
+  "Heart failure": {
+    "min": 50,
+    "max": 90
+  },
+  "Aortic aneurysm": {
+    "min": 55,
+    "max": 85
+  },
+  "Peripheral artery disease": {
+    "min": 50,
+    "max": 85
+  },
+  "Dilated cardiomyopathy": {
+    "min": 20,
+    "max": 70
+  },
+  "Long QT syndrome": {
+    "min": 5,
+    "max": 40
+  },
+  "Breast cancer": {
+    "min": 30,
+    "max": 80
+  },
+  "Ovarian cancer": {
+    "min": 40,
+    "max": 75
+  },
+  "Prostate cancer": {
+    "min": 50,
+    "max": 85
+  },
+  "Colorectal cancer": {
+    "min": 40,
+    "max": 80
+  },
+  "Lung cancer": {
+    "min": 45,
+    "max": 80
+  },
+  "Melanoma": {
+    "min": 25,
+    "max": 80
+  },
+  "Pancreatic cancer": {
+    "min": 50,
+    "max": 80
+  },
+  "Bladder cancer": {
+    "min": 50,
+    "max": 80
+  },
+  "Thyroid cancer": {
+    "min": 20,
+    "max": 65
+  },
+  "Gastric cancer": {
+    "min": 45,
+    "max": 80
+  },
+  "Hepatocellular carcinoma": {
+    "min": 45,
+    "max": 80
+  },
+  "Renal cell carcinoma": {
+    "min": 40,
+    "max": 75
+  },
+  "Endometrial cancer": {
+    "min": 40,
+    "max": 75
+  },
+  "Glioblastoma": {
+    "min": 40,
+    "max": 75
+  },
+  "Non-Hodgkin lymphoma": {
+    "min": 35,
+    "max": 80
+  },
+  "Chronic lymphocytic leukaemia": {
+    "min": 50,
+    "max": 80
+  },
+  "Acute myeloid leukaemia": {
+    "min": 40,
+    "max": 80
+  },
+  "Li-Fraumeni syndrome cancers": {
+    "min": 5,
+    "max": 60
+  },
+  "Lynch syndrome cancers": {
+    "min": 25,
+    "max": 70
+  },
+  "Type 2 diabetes": {
+    "min": 30,
+    "max": 75
+  },
+  "Type 1 diabetes": {
+    "min": 1,
+    "max": 30
+  },
+  "Gestational diabetes": {
+    "min": 18,
+    "max": 45
+  },
+  "MODY": {
+    "min": 10,
+    "max": 35
+  },
+  "Diabetic nephropathy": {
+    "min": 40,
+    "max": 80
+  },
+  "Diabetic retinopathy": {
+    "min": 35,
+    "max": 80
+  },
+  "Alzheimer's disease": {
+    "min": 60,
+    "max": 95
+  },
+  "Late-onset Alzheimer's disease": {
+    "min": 65,
+    "max": 95
+  },
+  "Early-onset Alzheimer's disease": {
+    "min": 30,
+    "max": 65
+  },
+  "Parkinson's disease": {
+    "min": 50,
+    "max": 85
+  },
+  "Huntington's disease": {
+    "min": 30,
+    "max": 60
+  },
+  "Amyotrophic lateral sclerosis": {
+    "min": 40,
+    "max": 75
+  },
+  "Multiple sclerosis": {
+    "min": 20,
+    "max": 50
+  },
+  "Epilepsy": {
+    "min": 5,
+    "max": 60
+  },
+  "Migraine": {
+    "min": 10,
+    "max": 50
+  },
+  "Essential tremor": {
+    "min": 40,
+    "max": 80
+  },
+  "Restless leg syndrome": {
+    "min": 30,
+    "max": 70
+  },
+  "Cognitive decline": {
+    "min": 55,
+    "max": 90
+  },
+  "Peripheral neuropathy": {
+    "min": 40,
+    "max": 80
+  },
+  "Vascular dementia": {
+    "min": 60,
+    "max": 90
+  },
+  "Rheumatoid arthritis": {
+    "min": 25,
+    "max": 70
+  },
+  "Systemic lupus erythematosus": {
+    "min": 15,
+    "max": 50
+  },
+  "Celiac disease": {
+    "min": 2,
+    "max": 60
+  },
+  "Crohn's disease": {
+    "min": 15,
+    "max": 45
+  },
+  "Ulcerative colitis": {
+    "min": 15,
+    "max": 50
+  },
+  "Psoriasis": {
+    "min": 15,
+    "max": 55
+  },
+  "Ankylosing spondylitis": {
+    "min": 17,
+    "max": 45
+  },
+  "Graves' disease": {
+    "min": 20,
+    "max": 55
+  },
+  "Hashimoto's thyroiditis": {
+    "min": 20,
+    "max": 60
+  },
+  "Sj\u00f6gren's syndrome": {
+    "min": 30,
+    "max": 65
+  },
+  "Juvenile idiopathic arthritis": {
+    "min": 1,
+    "max": 16
+  },
+  "Dermatomyositis": {
+    "min": 20,
+    "max": 65
+  },
+  "Hyperhomocysteinaemia": {
+    "min": 20,
+    "max": 70
+  },
+  "Neural tube defects (offspring)": {
+    "min": 18,
+    "max": 45
+  },
+  "Obesity": {
+    "min": 5,
+    "max": 60
+  },
+  "Non-alcoholic fatty liver disease": {
+    "min": 30,
+    "max": 70
+  },
+  "Gout": {
+    "min": 30,
+    "max": 70
+  },
+  "Hyperlipidemia": {
+    "min": 20,
+    "max": 70
+  },
+  "Metabolic syndrome": {
+    "min": 25,
+    "max": 70
+  },
+  "Hypertriglyceridaemia": {
+    "min": 20,
+    "max": 70
+  },
+  "Age-related macular degeneration": {
+    "min": 50,
+    "max": 90
+  },
+  "Primary open-angle glaucoma": {
+    "min": 40,
+    "max": 80
+  },
+  "Exfoliation glaucoma": {
+    "min": 50,
+    "max": 85
+  },
+  "Myopia": {
+    "min": 5,
+    "max": 25
+  },
+  "Cataracts": {
+    "min": 50,
+    "max": 85
+  },
+  "Keratoconus": {
+    "min": 10,
+    "max": 35
+  },
+  "Retinitis pigmentosa": {
+    "min": 5,
+    "max": 40
+  },
+  "Primary angle-closure glaucoma": {
+    "min": 40,
+    "max": 80
+  },
+  "Osteoporosis": {
+    "min": 45,
+    "max": 90
+  },
+  "Paget's disease of bone": {
+    "min": 50,
+    "max": 80
+  },
+  "Osteoarthritis": {
+    "min": 40,
+    "max": 80
+  },
+  "Ankylosing spondylitis (spine)": {
+    "min": 17,
+    "max": 45
+  },
+  "Fracture risk": {
+    "min": 50,
+    "max": 90
+  },
+  "Sickle cell disease": {
+    "min": 0,
+    "max": 5
+  },
+  "Beta-thalassaemia": {
+    "min": 0,
+    "max": 5
+  },
+  "Hereditary haemochromatosis": {
+    "min": 30,
+    "max": 60
+  },
+  "Deep vein thrombosis": {
+    "min": 20,
+    "max": 80
+  },
+  "Factor V Leiden thrombophilia": {
+    "min": 20,
+    "max": 80
+  },
+  "Iron deficiency anemia": {
+    "min": 15,
+    "max": 70
+  },
+  "G6PD deficiency": {
+    "min": 0,
+    "max": 10
+  },
+  "Haemophilia susceptibility": {
+    "min": 0,
+    "max": 10
+  },
+  "Elevated ferritin": {
+    "min": 30,
+    "max": 70
+  },
+  "Immune thrombocytopenia": {
+    "min": 15,
+    "max": 70
+  },
+  "Asthma": {
+    "min": 3,
+    "max": 40
+  },
+  "Chronic obstructive pulmonary disease": {
+    "min": 40,
+    "max": 80
+  },
+  "Idiopathic pulmonary fibrosis": {
+    "min": 50,
+    "max": 80
+  },
+  "Sarcoidosis": {
+    "min": 20,
+    "max": 50
+  },
+  "Chronic kidney disease": {
+    "min": 40,
+    "max": 80
+  },
+  "IgA nephropathy": {
+    "min": 15,
+    "max": 50
+  },
+  "Nephrolithiasis": {
+    "min": 20,
+    "max": 60
+  },
+  "Focal segmental glomerulosclerosis": {
+    "min": 15,
+    "max": 50
+  },
+  "Polycystic kidney disease": {
+    "min": 20,
+    "max": 55
+  },
+  "End-stage renal disease": {
+    "min": 45,
+    "max": 80
+  },
+  "NAFLD/NASH": {
+    "min": 30,
+    "max": 70
+  },
+  "Primary biliary cholangitis": {
+    "min": 35,
+    "max": 65
+  },
+  "Wilson's disease": {
+    "min": 5,
+    "max": 30
+  },
+  "Alpha-1 antitrypsin deficiency": {
+    "min": 20,
+    "max": 55
+  },
+  "Hepatitis C clearance": {
+    "min": 20,
+    "max": 70
+  },
+  "Major depressive disorder": {
+    "min": 15,
+    "max": 65
+  },
+  "Bipolar disorder": {
+    "min": 15,
+    "max": 45
+  },
+  "Schizophrenia": {
+    "min": 16,
+    "max": 40
+  },
+  "Generalised anxiety disorder": {
+    "min": 18,
+    "max": 60
+  },
+  "Attention deficit hyperactivity disorder": {
+    "min": 5,
+    "max": 14
+  },
+  "Post-traumatic stress disorder": {
+    "min": 18,
+    "max": 70
+  },
+  "Obsessive-compulsive disorder": {
+    "min": 10,
+    "max": 35
+  },
+  "Anorexia nervosa": {
+    "min": 12,
+    "max": 25
+  },
+  "Polycystic ovary syndrome": {
+    "min": 15,
+    "max": 40
+  },
+  "Endometriosis": {
+    "min": 15,
+    "max": 45
+  },
+  "Male infertility": {
+    "min": 18,
+    "max": 50
+  },
+  "Premature ovarian insufficiency": {
+    "min": 25,
+    "max": 40
+  },
+  "Preeclampsia": {
+    "min": 18,
+    "max": 45
+  },
+  "Psoriasis (dermatological)": {
+    "min": 15,
+    "max": 55
+  },
+  "Atopic dermatitis": {
+    "min": 0,
+    "max": 15
+  },
+  "Vitiligo": {
+    "min": 10,
+    "max": 40
+  },
+  "Alopecia areata": {
+    "min": 10,
+    "max": 45
+  },
+  "Systemic sclerosis": {
+    "min": 25,
+    "max": 55
+  },
+  "Ichthyosis vulgaris": {
+    "min": 0,
+    "max": 5
+  },
+  "Celiac disease (GI)": {
+    "min": 2,
+    "max": 60
+  },
+  "Crohn's disease (GI)": {
+    "min": 15,
+    "max": 45
+  },
+  "Ulcerative colitis (GI)": {
+    "min": 15,
+    "max": 50
+  },
+  "Irritable bowel syndrome": {
+    "min": 20,
+    "max": 55
+  },
+  "Gastro-oesophageal reflux disease": {
+    "min": 30,
+    "max": 70
+  },
+  "Barrett's oesophagus": {
+    "min": 40,
+    "max": 70
+  },
+  "Graves' disease (endocrine)": {
+    "min": 20,
+    "max": 55
+  },
+  "Hashimoto's thyroiditis (endocrine)": {
+    "min": 20,
+    "max": 60
+  },
+  "Addison's disease": {
+    "min": 20,
+    "max": 50
+  },
+  "Hyperparathyroidism": {
+    "min": 40,
+    "max": 75
+  },
+  "Cushing's susceptibility": {
+    "min": 20,
+    "max": 55
+  },
+  "Thyroid hormone resistance": {
+    "min": 0,
+    "max": 20
+  },
+  "HIV progression": {
+    "min": 18,
+    "max": 70
+  },
+  "Hepatitis B susceptibility": {
+    "min": 10,
+    "max": 70
+  },
+  "Malaria resistance (sickle trait)": {
+    "min": 0,
+    "max": 60
+  },
+  "Malaria resistance (blood group)": {
+    "min": 0,
+    "max": 60
+  },
+  "Tuberculosis susceptibility": {
+    "min": 10,
+    "max": 70
+  },
+  "COVID-19 severity": {
+    "min": 30,
+    "max": 90
+  },
+  "Plasmodium vivax malaria": {
+    "min": 0,
+    "max": 60
+  },
+  "Invasive pneumococcal disease": {
+    "min": 0,
+    "max": 70
+  },
+  "Severe influenza": {
+    "min": 20,
+    "max": 80
+  },
+  "Periodontal disease": {
+    "min": 25,
+    "max": 70
+  },
+  "Dental caries susceptibility": {
+    "min": 5,
+    "max": 60
+  },
+  "Cleft lip and palate": {
+    "min": 0,
+    "max": 0
+  },
+  "Amelogenesis imperfecta": {
+    "min": 0,
+    "max": 5
+  },
+  "Narcolepsy": {
+    "min": 10,
+    "max": 30
+  },
+  "Obstructive sleep apnea": {
+    "min": 30,
+    "max": 70
+  },
+  "Insomnia": {
+    "min": 20,
+    "max": 70
+  },
+  "Restless leg syndrome (sleep)": {
+    "min": 30,
+    "max": 70
+  },
+  "Short sleep phenotype": {
+    "min": 10,
+    "max": 40
+  },
+  "Delayed sleep phase": {
+    "min": 10,
+    "max": 30
+  },
+  "Telomere length (short)": {
+    "min": 30,
+    "max": 90
+  },
+  "Longevity": {
+    "min": 75,
+    "max": 110
+  },
+  "Werner syndrome": {
+    "min": 10,
+    "max": 40
+  },
+  "Progeria-related laminopathy": {
+    "min": 1,
+    "max": 15
+  },
+  "Centenarian longevity": {
+    "min": 90,
+    "max": 115
+  },
+  "Age-related hearing loss": {
+    "min": 50,
+    "max": 85
+  },
+  "Otosclerosis": {
+    "min": 20,
+    "max": 50
+  },
+  "Meniere's disease": {
+    "min": 30,
+    "max": 60
+  },
+  "Noise-induced hearing loss": {
+    "min": 20,
+    "max": 70
+  },
+  "Congenital deafness": {
+    "min": 0,
+    "max": 2
+  },
+  "Non-syndromic hearing loss": {
+    "min": 0,
+    "max": 10
+  },
+  "Chronic pain sensitivity": {
+    "min": 20,
+    "max": 70
+  },
+  "Fibromyalgia": {
+    "min": 25,
+    "max": 60
+  },
+  "Migraine with aura": {
+    "min": 10,
+    "max": 50
+  },
+  "Temporomandibular disorder": {
+    "min": 20,
+    "max": 50
+  },
+  "Warfarin sensitivity": {
+    "min": 18,
+    "max": 90
+  },
+  "Statin myopathy": {
+    "min": 30,
+    "max": 80
+  },
+  "Clopidogrel resistance": {
+    "min": 30,
+    "max": 80
+  },
+  "Methotrexate toxicity": {
+    "min": 18,
+    "max": 80
+  },
+  "Opioid sensitivity": {
+    "min": 18,
+    "max": 80
+  }
+}

@@ -1,0 +1,1890 @@
+{
+  "rs429358": {
+    "european": [
+      0.15,
+      "APOE",
+      "Alzheimer's / cardiovascular"
+    ],
+    "east_asian": [
+      0.09,
+      "APOE",
+      "Alzheimer's / cardiovascular"
+    ],
+    "african": [
+      0.27,
+      "APOE",
+      "Alzheimer's / cardiovascular"
+    ],
+    "south_asian": [
+      0.12,
+      "APOE",
+      "Alzheimer's / cardiovascular"
+    ],
+    "latin_american": [
+      0.11,
+      "APOE",
+      "Alzheimer's / cardiovascular"
+    ],
+    "middle_eastern": [
+      0.14,
+      "APOE",
+      "Alzheimer's / cardiovascular"
+    ]
+  },
+  "rs7903146": {
+    "european": [
+      0.3,
+      "TCF7L2",
+      "Type 2 diabetes"
+    ],
+    "east_asian": [
+      0.03,
+      "TCF7L2",
+      "Type 2 diabetes"
+    ],
+    "african": [
+      0.28,
+      "TCF7L2",
+      "Type 2 diabetes"
+    ],
+    "south_asian": [
+      0.32,
+      "TCF7L2",
+      "Type 2 diabetes"
+    ],
+    "latin_american": [
+      0.24,
+      "TCF7L2",
+      "Type 2 diabetes"
+    ],
+    "middle_eastern": [
+      0.29,
+      "TCF7L2",
+      "Type 2 diabetes"
+    ]
+  },
+  "rs1801133": {
+    "european": [
+      0.33,
+      "MTHFR",
+      "Folate metabolism"
+    ],
+    "east_asian": [
+      0.44,
+      "MTHFR",
+      "Folate metabolism"
+    ],
+    "african": [
+      0.1,
+      "MTHFR",
+      "Folate metabolism"
+    ],
+    "south_asian": [
+      0.15,
+      "MTHFR",
+      "Folate metabolism"
+    ],
+    "latin_american": [
+      0.42,
+      "MTHFR",
+      "Folate metabolism"
+    ],
+    "middle_eastern": [
+      0.28,
+      "MTHFR",
+      "Folate metabolism"
+    ]
+  },
+  "rs4988235": {
+    "european": [
+      0.75,
+      "LCT",
+      "Lactose tolerance"
+    ],
+    "east_asian": [
+      0.01,
+      "LCT",
+      "Lactose tolerance"
+    ],
+    "african": [
+      0.15,
+      "LCT",
+      "Lactose tolerance"
+    ],
+    "south_asian": [
+      0.3,
+      "LCT",
+      "Lactose tolerance"
+    ],
+    "latin_american": [
+      0.5,
+      "LCT",
+      "Lactose tolerance"
+    ],
+    "middle_eastern": [
+      0.55,
+      "LCT",
+      "Lactose tolerance"
+    ]
+  },
+  "rs1229984": {
+    "european": [
+      0.05,
+      "ADH1B",
+      "Alcohol metabolism"
+    ],
+    "east_asian": [
+      0.7,
+      "ADH1B",
+      "Alcohol metabolism"
+    ],
+    "african": [
+      0.03,
+      "ADH1B",
+      "Alcohol metabolism"
+    ],
+    "south_asian": [
+      0.1,
+      "ADH1B",
+      "Alcohol metabolism"
+    ],
+    "latin_american": [
+      0.15,
+      "ADH1B",
+      "Alcohol metabolism"
+    ],
+    "middle_eastern": [
+      0.08,
+      "ADH1B",
+      "Alcohol metabolism"
+    ]
+  },
+  "rs671": {
+    "european": [
+      0.0,
+      "ALDH2",
+      "Alcohol flush / acetaldehyde"
+    ],
+    "east_asian": [
+      0.28,
+      "ALDH2",
+      "Alcohol flush / acetaldehyde"
+    ],
+    "african": [
+      0.0,
+      "ALDH2",
+      "Alcohol flush / acetaldehyde"
+    ],
+    "south_asian": [
+      0.02,
+      "ALDH2",
+      "Alcohol flush / acetaldehyde"
+    ],
+    "latin_american": [
+      0.02,
+      "ALDH2",
+      "Alcohol flush / acetaldehyde"
+    ],
+    "middle_eastern": [
+      0.0,
+      "ALDH2",
+      "Alcohol flush / acetaldehyde"
+    ]
+  },
+  "rs762551": {
+    "european": [
+      0.33,
+      "CYP1A2",
+      "Slow caffeine metabolism"
+    ],
+    "east_asian": [
+      0.4,
+      "CYP1A2",
+      "Slow caffeine metabolism"
+    ],
+    "african": [
+      0.24,
+      "CYP1A2",
+      "Slow caffeine metabolism"
+    ],
+    "south_asian": [
+      0.3,
+      "CYP1A2",
+      "Slow caffeine metabolism"
+    ],
+    "latin_american": [
+      0.36,
+      "CYP1A2",
+      "Slow caffeine metabolism"
+    ],
+    "middle_eastern": [
+      0.3,
+      "CYP1A2",
+      "Slow caffeine metabolism"
+    ]
+  },
+  "rs1800562": {
+    "european": [
+      0.06,
+      "HFE",
+      "Iron overload risk"
+    ],
+    "east_asian": [
+      0.0,
+      "HFE",
+      "Iron overload risk"
+    ],
+    "african": [
+      0.0,
+      "HFE",
+      "Iron overload risk"
+    ],
+    "south_asian": [
+      0.01,
+      "HFE",
+      "Iron overload risk"
+    ],
+    "latin_american": [
+      0.02,
+      "HFE",
+      "Iron overload risk"
+    ],
+    "middle_eastern": [
+      0.02,
+      "HFE",
+      "Iron overload risk"
+    ]
+  },
+  "rs12913832": {
+    "european": [
+      0.72,
+      "HERC2",
+      "Blue/green eye colour"
+    ],
+    "east_asian": [
+      0.01,
+      "HERC2",
+      "Blue/green eye colour"
+    ],
+    "african": [
+      0.01,
+      "HERC2",
+      "Blue/green eye colour"
+    ],
+    "south_asian": [
+      0.05,
+      "HERC2",
+      "Blue/green eye colour"
+    ],
+    "latin_american": [
+      0.25,
+      "HERC2",
+      "Blue/green eye colour"
+    ],
+    "middle_eastern": [
+      0.2,
+      "HERC2",
+      "Blue/green eye colour"
+    ]
+  },
+  "rs1426654": {
+    "european": [
+      0.98,
+      "SLC24A5",
+      "Light skin pigmentation"
+    ],
+    "east_asian": [
+      0.02,
+      "SLC24A5",
+      "Light skin pigmentation"
+    ],
+    "african": [
+      0.01,
+      "SLC24A5",
+      "Light skin pigmentation"
+    ],
+    "south_asian": [
+      0.5,
+      "SLC24A5",
+      "Light skin pigmentation"
+    ],
+    "latin_american": [
+      0.55,
+      "SLC24A5",
+      "Light skin pigmentation"
+    ],
+    "middle_eastern": [
+      0.8,
+      "SLC24A5",
+      "Light skin pigmentation"
+    ]
+  },
+  "rs16891982": {
+    "european": [
+      0.87,
+      "SLC45A2",
+      "Light pigmentation"
+    ],
+    "east_asian": [
+      0.02,
+      "SLC45A2",
+      "Light pigmentation"
+    ],
+    "african": [
+      0.01,
+      "SLC45A2",
+      "Light pigmentation"
+    ],
+    "south_asian": [
+      0.2,
+      "SLC45A2",
+      "Light pigmentation"
+    ],
+    "latin_american": [
+      0.45,
+      "SLC45A2",
+      "Light pigmentation"
+    ],
+    "middle_eastern": [
+      0.6,
+      "SLC45A2",
+      "Light pigmentation"
+    ]
+  },
+  "rs1805007": {
+    "european": [
+      0.1,
+      "MC1R",
+      "Red hair / fair skin / freckling"
+    ],
+    "east_asian": [
+      0.0,
+      "MC1R",
+      "Red hair / fair skin / freckling"
+    ],
+    "african": [
+      0.0,
+      "MC1R",
+      "Red hair / fair skin / freckling"
+    ],
+    "south_asian": [
+      0.01,
+      "MC1R",
+      "Red hair / fair skin / freckling"
+    ],
+    "latin_american": [
+      0.03,
+      "MC1R",
+      "Red hair / fair skin / freckling"
+    ],
+    "middle_eastern": [
+      0.03,
+      "MC1R",
+      "Red hair / fair skin / freckling"
+    ]
+  },
+  "rs2476601": {
+    "european": [
+      0.1,
+      "PTPN22",
+      "Autoimmune disease susceptibility"
+    ],
+    "east_asian": [
+      0.0,
+      "PTPN22",
+      "Autoimmune disease susceptibility"
+    ],
+    "african": [
+      0.01,
+      "PTPN22",
+      "Autoimmune disease susceptibility"
+    ],
+    "south_asian": [
+      0.04,
+      "PTPN22",
+      "Autoimmune disease susceptibility"
+    ],
+    "latin_american": [
+      0.04,
+      "PTPN22",
+      "Autoimmune disease susceptibility"
+    ],
+    "middle_eastern": [
+      0.06,
+      "PTPN22",
+      "Autoimmune disease susceptibility"
+    ]
+  },
+  "rs4880": {
+    "european": [
+      0.47,
+      "SOD2",
+      "Reduced antioxidant defence"
+    ],
+    "east_asian": [
+      0.14,
+      "SOD2",
+      "Reduced antioxidant defence"
+    ],
+    "african": [
+      0.37,
+      "SOD2",
+      "Reduced antioxidant defence"
+    ],
+    "south_asian": [
+      0.4,
+      "SOD2",
+      "Reduced antioxidant defence"
+    ],
+    "latin_american": [
+      0.4,
+      "SOD2",
+      "Reduced antioxidant defence"
+    ],
+    "middle_eastern": [
+      0.42,
+      "SOD2",
+      "Reduced antioxidant defence"
+    ]
+  },
+  "rs9939609": {
+    "european": [
+      0.42,
+      "FTO",
+      "Obesity / appetite regulation"
+    ],
+    "east_asian": [
+      0.14,
+      "FTO",
+      "Obesity / appetite regulation"
+    ],
+    "african": [
+      0.45,
+      "FTO",
+      "Obesity / appetite regulation"
+    ],
+    "south_asian": [
+      0.32,
+      "FTO",
+      "Obesity / appetite regulation"
+    ],
+    "latin_american": [
+      0.34,
+      "FTO",
+      "Obesity / appetite regulation"
+    ],
+    "middle_eastern": [
+      0.38,
+      "FTO",
+      "Obesity / appetite regulation"
+    ]
+  },
+  "rs10811661": {
+    "european": [
+      0.83,
+      "CDKN2A/B",
+      "Type 2 diabetes"
+    ],
+    "east_asian": [
+      0.6,
+      "CDKN2A/B",
+      "Type 2 diabetes"
+    ],
+    "african": [
+      0.9,
+      "CDKN2A/B",
+      "Type 2 diabetes"
+    ],
+    "south_asian": [
+      0.85,
+      "CDKN2A/B",
+      "Type 2 diabetes"
+    ],
+    "latin_american": [
+      0.78,
+      "CDKN2A/B",
+      "Type 2 diabetes"
+    ],
+    "middle_eastern": [
+      0.82,
+      "CDKN2A/B",
+      "Type 2 diabetes"
+    ]
+  },
+  "rs1333049": {
+    "european": [
+      0.47,
+      "CDKN2B-AS1",
+      "Coronary artery disease"
+    ],
+    "east_asian": [
+      0.52,
+      "CDKN2B-AS1",
+      "Coronary artery disease"
+    ],
+    "african": [
+      0.26,
+      "CDKN2B-AS1",
+      "Coronary artery disease"
+    ],
+    "south_asian": [
+      0.55,
+      "CDKN2B-AS1",
+      "Coronary artery disease"
+    ],
+    "latin_american": [
+      0.4,
+      "CDKN2B-AS1",
+      "Coronary artery disease"
+    ],
+    "middle_eastern": [
+      0.5,
+      "CDKN2B-AS1",
+      "Coronary artery disease"
+    ]
+  },
+  "rs4646994": {
+    "european": [
+      0.45,
+      "ACE",
+      "Salt-sensitive hypertension"
+    ],
+    "east_asian": [
+      0.38,
+      "ACE",
+      "Salt-sensitive hypertension"
+    ],
+    "african": [
+      0.6,
+      "ACE",
+      "Salt-sensitive hypertension"
+    ],
+    "south_asian": [
+      0.52,
+      "ACE",
+      "Salt-sensitive hypertension"
+    ],
+    "latin_american": [
+      0.48,
+      "ACE",
+      "Salt-sensitive hypertension"
+    ],
+    "middle_eastern": [
+      0.48,
+      "ACE",
+      "Salt-sensitive hypertension"
+    ]
+  },
+  "rs174546": {
+    "european": [
+      0.35,
+      "FADS1",
+      "Reduced omega-3 conversion"
+    ],
+    "east_asian": [
+      0.55,
+      "FADS1",
+      "Reduced omega-3 conversion"
+    ],
+    "african": [
+      0.9,
+      "FADS1",
+      "Reduced omega-3 conversion"
+    ],
+    "south_asian": [
+      0.45,
+      "FADS1",
+      "Reduced omega-3 conversion"
+    ],
+    "latin_american": [
+      0.5,
+      "FADS1",
+      "Reduced omega-3 conversion"
+    ],
+    "middle_eastern": [
+      0.4,
+      "FADS1",
+      "Reduced omega-3 conversion"
+    ]
+  },
+  "rs1129038": {
+    "european": [
+      0.25,
+      "HERC2",
+      "Blue eye colour"
+    ],
+    "east_asian": [
+      0.01,
+      "HERC2",
+      "Blue eye colour"
+    ],
+    "african": [
+      0.01,
+      "HERC2",
+      "Blue eye colour"
+    ],
+    "south_asian": [
+      0.04,
+      "HERC2",
+      "Blue eye colour"
+    ],
+    "latin_american": [
+      0.15,
+      "HERC2",
+      "Blue eye colour"
+    ],
+    "middle_eastern": [
+      0.12,
+      "HERC2",
+      "Blue eye colour"
+    ]
+  },
+  "rs12896399": {
+    "european": [
+      0.45,
+      "SLC24A4",
+      "Eye/hair colour"
+    ],
+    "east_asian": [
+      0.05,
+      "SLC24A4",
+      "Eye/hair colour"
+    ],
+    "african": [
+      0.1,
+      "SLC24A4",
+      "Eye/hair colour"
+    ],
+    "south_asian": [
+      0.2,
+      "SLC24A4",
+      "Eye/hair colour"
+    ],
+    "latin_american": [
+      0.3,
+      "SLC24A4",
+      "Eye/hair colour"
+    ],
+    "middle_eastern": [
+      0.25,
+      "SLC24A4",
+      "Eye/hair colour"
+    ]
+  },
+  "rs1393350": {
+    "european": [
+      0.22,
+      "TYR",
+      "Green/hazel eye colour"
+    ],
+    "east_asian": [
+      0.02,
+      "TYR",
+      "Green/hazel eye colour"
+    ],
+    "african": [
+      0.01,
+      "TYR",
+      "Green/hazel eye colour"
+    ],
+    "south_asian": [
+      0.08,
+      "TYR",
+      "Green/hazel eye colour"
+    ],
+    "latin_american": [
+      0.12,
+      "TYR",
+      "Green/hazel eye colour"
+    ],
+    "middle_eastern": [
+      0.1,
+      "TYR",
+      "Green/hazel eye colour"
+    ]
+  },
+  "rs1800407": {
+    "european": [
+      0.06,
+      "OCA2",
+      "Eye colour modifier"
+    ],
+    "east_asian": [
+      0.0,
+      "OCA2",
+      "Eye colour modifier"
+    ],
+    "african": [
+      0.0,
+      "OCA2",
+      "Eye colour modifier"
+    ],
+    "south_asian": [
+      0.02,
+      "OCA2",
+      "Eye colour modifier"
+    ],
+    "latin_american": [
+      0.03,
+      "OCA2",
+      "Eye colour modifier"
+    ],
+    "middle_eastern": [
+      0.03,
+      "OCA2",
+      "Eye colour modifier"
+    ]
+  },
+  "rs2402130": {
+    "european": [
+      0.48,
+      "SLC24A4",
+      "Eye and hair colour"
+    ],
+    "east_asian": [
+      0.06,
+      "SLC24A4",
+      "Eye and hair colour"
+    ],
+    "african": [
+      0.12,
+      "SLC24A4",
+      "Eye and hair colour"
+    ],
+    "south_asian": [
+      0.22,
+      "SLC24A4",
+      "Eye and hair colour"
+    ],
+    "latin_american": [
+      0.32,
+      "SLC24A4",
+      "Eye and hair colour"
+    ],
+    "middle_eastern": [
+      0.28,
+      "SLC24A4",
+      "Eye and hair colour"
+    ]
+  },
+  "rs1805008": {
+    "european": [
+      0.09,
+      "MC1R",
+      "Red hair / fair skin (R160W)"
+    ],
+    "east_asian": [
+      0.0,
+      "MC1R",
+      "Red hair / fair skin (R160W)"
+    ],
+    "african": [
+      0.0,
+      "MC1R",
+      "Red hair / fair skin (R160W)"
+    ],
+    "south_asian": [
+      0.01,
+      "MC1R",
+      "Red hair / fair skin (R160W)"
+    ],
+    "latin_american": [
+      0.03,
+      "MC1R",
+      "Red hair / fair skin (R160W)"
+    ],
+    "middle_eastern": [
+      0.02,
+      "MC1R",
+      "Red hair / fair skin (R160W)"
+    ]
+  },
+  "rs1805009": {
+    "european": [
+      0.02,
+      "MC1R",
+      "Red hair (D294H)"
+    ],
+    "east_asian": [
+      0.0,
+      "MC1R",
+      "Red hair (D294H)"
+    ],
+    "african": [
+      0.0,
+      "MC1R",
+      "Red hair (D294H)"
+    ],
+    "south_asian": [
+      0.0,
+      "MC1R",
+      "Red hair (D294H)"
+    ],
+    "latin_american": [
+      0.01,
+      "MC1R",
+      "Red hair (D294H)"
+    ],
+    "middle_eastern": [
+      0.01,
+      "MC1R",
+      "Red hair (D294H)"
+    ]
+  },
+  "rs2228479": {
+    "european": [
+      0.1,
+      "MC1R",
+      "Hair/eye colour modifier (V92M)"
+    ],
+    "east_asian": [
+      0.25,
+      "MC1R",
+      "Hair/eye colour modifier (V92M)"
+    ],
+    "african": [
+      0.01,
+      "MC1R",
+      "Hair/eye colour modifier (V92M)"
+    ],
+    "south_asian": [
+      0.08,
+      "MC1R",
+      "Hair/eye colour modifier (V92M)"
+    ],
+    "latin_american": [
+      0.12,
+      "MC1R",
+      "Hair/eye colour modifier (V92M)"
+    ],
+    "middle_eastern": [
+      0.06,
+      "MC1R",
+      "Hair/eye colour modifier (V92M)"
+    ]
+  },
+  "rs885479": {
+    "european": [
+      0.06,
+      "MC1R",
+      "Hair colour modifier (R163Q)"
+    ],
+    "east_asian": [
+      0.7,
+      "MC1R",
+      "Hair colour modifier (R163Q)"
+    ],
+    "african": [
+      0.01,
+      "MC1R",
+      "Hair colour modifier (R163Q)"
+    ],
+    "south_asian": [
+      0.15,
+      "MC1R",
+      "Hair colour modifier (R163Q)"
+    ],
+    "latin_american": [
+      0.2,
+      "MC1R",
+      "Hair colour modifier (R163Q)"
+    ],
+    "middle_eastern": [
+      0.05,
+      "MC1R",
+      "Hair colour modifier (R163Q)"
+    ]
+  },
+  "rs35264875": {
+    "european": [
+      0.1,
+      "TPCN2",
+      "Blond hair colour"
+    ],
+    "east_asian": [
+      0.01,
+      "TPCN2",
+      "Blond hair colour"
+    ],
+    "african": [
+      0.01,
+      "TPCN2",
+      "Blond hair colour"
+    ],
+    "south_asian": [
+      0.03,
+      "TPCN2",
+      "Blond hair colour"
+    ],
+    "latin_american": [
+      0.06,
+      "TPCN2",
+      "Blond hair colour"
+    ],
+    "middle_eastern": [
+      0.04,
+      "TPCN2",
+      "Blond hair colour"
+    ]
+  },
+  "rs1800414": {
+    "european": [
+      0.01,
+      "OCA2",
+      "East Asian skin lightening"
+    ],
+    "east_asian": [
+      0.55,
+      "OCA2",
+      "East Asian skin lightening"
+    ],
+    "african": [
+      0.0,
+      "OCA2",
+      "East Asian skin lightening"
+    ],
+    "south_asian": [
+      0.05,
+      "OCA2",
+      "East Asian skin lightening"
+    ],
+    "latin_american": [
+      0.08,
+      "OCA2",
+      "East Asian skin lightening"
+    ],
+    "middle_eastern": [
+      0.01,
+      "OCA2",
+      "East Asian skin lightening"
+    ]
+  },
+  "rs10756819": {
+    "european": [
+      0.68,
+      "BNC2",
+      "Skin pigmentation / freckling"
+    ],
+    "east_asian": [
+      0.25,
+      "BNC2",
+      "Skin pigmentation / freckling"
+    ],
+    "african": [
+      0.8,
+      "BNC2",
+      "Skin pigmentation / freckling"
+    ],
+    "south_asian": [
+      0.5,
+      "BNC2",
+      "Skin pigmentation / freckling"
+    ],
+    "latin_american": [
+      0.55,
+      "BNC2",
+      "Skin pigmentation / freckling"
+    ],
+    "middle_eastern": [
+      0.45,
+      "BNC2",
+      "Skin pigmentation / freckling"
+    ]
+  },
+  "rs6059655": {
+    "european": [
+      0.1,
+      "ASIP",
+      "Skin pigmentation"
+    ],
+    "east_asian": [
+      0.02,
+      "ASIP",
+      "Skin pigmentation"
+    ],
+    "african": [
+      0.05,
+      "ASIP",
+      "Skin pigmentation"
+    ],
+    "south_asian": [
+      0.06,
+      "ASIP",
+      "Skin pigmentation"
+    ],
+    "latin_american": [
+      0.08,
+      "ASIP",
+      "Skin pigmentation"
+    ],
+    "middle_eastern": [
+      0.07,
+      "ASIP",
+      "Skin pigmentation"
+    ]
+  },
+  "rs1015362": {
+    "european": [
+      0.17,
+      "ASIP",
+      "Skin/hair pigmentation, tanning"
+    ],
+    "east_asian": [
+      0.05,
+      "ASIP",
+      "Skin/hair pigmentation, tanning"
+    ],
+    "african": [
+      0.08,
+      "ASIP",
+      "Skin/hair pigmentation, tanning"
+    ],
+    "south_asian": [
+      0.1,
+      "ASIP",
+      "Skin/hair pigmentation, tanning"
+    ],
+    "latin_american": [
+      0.12,
+      "ASIP",
+      "Skin/hair pigmentation, tanning"
+    ],
+    "middle_eastern": [
+      0.1,
+      "ASIP",
+      "Skin/hair pigmentation, tanning"
+    ]
+  },
+  "rs7559271": {
+    "european": [
+      0.48,
+      "PAX3",
+      "Nose bridge width / nasion position"
+    ],
+    "east_asian": [
+      0.35,
+      "PAX3",
+      "Nose bridge width / nasion position"
+    ],
+    "african": [
+      0.55,
+      "PAX3",
+      "Nose bridge width / nasion position"
+    ],
+    "south_asian": [
+      0.42,
+      "PAX3",
+      "Nose bridge width / nasion position"
+    ],
+    "latin_american": [
+      0.5,
+      "PAX3",
+      "Nose bridge width / nasion position"
+    ],
+    "middle_eastern": [
+      0.45,
+      "PAX3",
+      "Nose bridge width / nasion position"
+    ]
+  },
+  "rs927833": {
+    "european": [
+      0.38,
+      "DCHS2",
+      "Nose protrusion / wing breadth"
+    ],
+    "east_asian": [
+      0.22,
+      "DCHS2",
+      "Nose protrusion / wing breadth"
+    ],
+    "african": [
+      0.5,
+      "DCHS2",
+      "Nose protrusion / wing breadth"
+    ],
+    "south_asian": [
+      0.4,
+      "DCHS2",
+      "Nose protrusion / wing breadth"
+    ],
+    "latin_american": [
+      0.45,
+      "DCHS2",
+      "Nose protrusion / wing breadth"
+    ],
+    "middle_eastern": [
+      0.35,
+      "DCHS2",
+      "Nose protrusion / wing breadth"
+    ]
+  },
+  "rs2045323": {
+    "european": [
+      0.41,
+      "RUNX2",
+      "Nose bridge width"
+    ],
+    "east_asian": [
+      0.3,
+      "RUNX2",
+      "Nose bridge width"
+    ],
+    "african": [
+      0.6,
+      "RUNX2",
+      "Nose bridge width"
+    ],
+    "south_asian": [
+      0.45,
+      "RUNX2",
+      "Nose bridge width"
+    ],
+    "latin_american": [
+      0.48,
+      "RUNX2",
+      "Nose bridge width"
+    ],
+    "middle_eastern": [
+      0.42,
+      "RUNX2",
+      "Nose bridge width"
+    ]
+  },
+  "rs4648379": {
+    "european": [
+      0.32,
+      "SUPT3H",
+      "Nose tip shape / columella inclination"
+    ],
+    "east_asian": [
+      0.2,
+      "SUPT3H",
+      "Nose tip shape / columella inclination"
+    ],
+    "african": [
+      0.45,
+      "SUPT3H",
+      "Nose tip shape / columella inclination"
+    ],
+    "south_asian": [
+      0.35,
+      "SUPT3H",
+      "Nose tip shape / columella inclination"
+    ],
+    "latin_american": [
+      0.38,
+      "SUPT3H",
+      "Nose tip shape / columella inclination"
+    ],
+    "middle_eastern": [
+      0.3,
+      "SUPT3H",
+      "Nose tip shape / columella inclination"
+    ]
+  },
+  "rs3827760": {
+    "european": [
+      0.01,
+      "EDAR",
+      "Hair thickness / chin / ear morphology"
+    ],
+    "east_asian": [
+      0.9,
+      "EDAR",
+      "Hair thickness / chin / ear morphology"
+    ],
+    "african": [
+      0.0,
+      "EDAR",
+      "Hair thickness / chin / ear morphology"
+    ],
+    "south_asian": [
+      0.05,
+      "EDAR",
+      "Hair thickness / chin / ear morphology"
+    ],
+    "latin_american": [
+      0.4,
+      "EDAR",
+      "Hair thickness / chin / ear morphology"
+    ],
+    "middle_eastern": [
+      0.01,
+      "EDAR",
+      "Hair thickness / chin / ear morphology"
+    ]
+  },
+  "rs642961": {
+    "european": [
+      0.19,
+      "IRF6",
+      "Lip shape / thickness"
+    ],
+    "east_asian": [
+      0.12,
+      "IRF6",
+      "Lip shape / thickness"
+    ],
+    "african": [
+      0.15,
+      "IRF6",
+      "Lip shape / thickness"
+    ],
+    "south_asian": [
+      0.16,
+      "IRF6",
+      "Lip shape / thickness"
+    ],
+    "latin_american": [
+      0.18,
+      "IRF6",
+      "Lip shape / thickness"
+    ],
+    "middle_eastern": [
+      0.17,
+      "IRF6",
+      "Lip shape / thickness"
+    ]
+  },
+  "rs11684042": {
+    "european": [
+      0.43,
+      "TFAP2B",
+      "Chin cleft / dimple"
+    ],
+    "east_asian": [
+      0.3,
+      "TFAP2B",
+      "Chin cleft / dimple"
+    ],
+    "african": [
+      0.35,
+      "TFAP2B",
+      "Chin cleft / dimple"
+    ],
+    "south_asian": [
+      0.38,
+      "TFAP2B",
+      "Chin cleft / dimple"
+    ],
+    "latin_american": [
+      0.4,
+      "TFAP2B",
+      "Chin cleft / dimple"
+    ],
+    "middle_eastern": [
+      0.37,
+      "TFAP2B",
+      "Chin cleft / dimple"
+    ]
+  },
+  "rs6740960": {
+    "european": [
+      0.25,
+      "TMEM163",
+      "Facial width"
+    ],
+    "east_asian": [
+      0.4,
+      "TMEM163",
+      "Facial width"
+    ],
+    "african": [
+      0.3,
+      "TMEM163",
+      "Facial width"
+    ],
+    "south_asian": [
+      0.28,
+      "TMEM163",
+      "Facial width"
+    ],
+    "latin_american": [
+      0.32,
+      "TMEM163",
+      "Facial width"
+    ],
+    "middle_eastern": [
+      0.27,
+      "TMEM163",
+      "Facial width"
+    ]
+  },
+  "rs11803731": {
+    "european": [
+      0.4,
+      "TCHH",
+      "Hair curliness (L790M)"
+    ],
+    "east_asian": [
+      0.01,
+      "TCHH",
+      "Hair curliness (L790M)"
+    ],
+    "african": [
+      0.05,
+      "TCHH",
+      "Hair curliness (L790M)"
+    ],
+    "south_asian": [
+      0.1,
+      "TCHH",
+      "Hair curliness (L790M)"
+    ],
+    "latin_american": [
+      0.2,
+      "TCHH",
+      "Hair curliness (L790M)"
+    ],
+    "middle_eastern": [
+      0.15,
+      "TCHH",
+      "Hair curliness (L790M)"
+    ]
+  },
+  "rs2180439": {
+    "european": [
+      0.56,
+      "AR/EDA2R",
+      "Male pattern baldness"
+    ],
+    "east_asian": [
+      0.45,
+      "AR/EDA2R",
+      "Male pattern baldness"
+    ],
+    "african": [
+      0.4,
+      "AR/EDA2R",
+      "Male pattern baldness"
+    ],
+    "south_asian": [
+      0.5,
+      "AR/EDA2R",
+      "Male pattern baldness"
+    ],
+    "latin_american": [
+      0.48,
+      "AR/EDA2R",
+      "Male pattern baldness"
+    ],
+    "middle_eastern": [
+      0.52,
+      "AR/EDA2R",
+      "Male pattern baldness"
+    ]
+  },
+  "rs929626": {
+    "european": [
+      0.43,
+      "EBF1",
+      "Male pattern baldness (vertex)"
+    ],
+    "east_asian": [
+      0.35,
+      "EBF1",
+      "Male pattern baldness (vertex)"
+    ],
+    "african": [
+      0.5,
+      "EBF1",
+      "Male pattern baldness (vertex)"
+    ],
+    "south_asian": [
+      0.4,
+      "EBF1",
+      "Male pattern baldness (vertex)"
+    ],
+    "latin_american": [
+      0.42,
+      "EBF1",
+      "Male pattern baldness (vertex)"
+    ],
+    "middle_eastern": [
+      0.44,
+      "EBF1",
+      "Male pattern baldness (vertex)"
+    ]
+  },
+  "rs258322": {
+    "european": [
+      0.28,
+      "STXBP5L",
+      "Perceived facial age"
+    ],
+    "east_asian": [
+      0.2,
+      "STXBP5L",
+      "Perceived facial age"
+    ],
+    "african": [
+      0.35,
+      "STXBP5L",
+      "Perceived facial age"
+    ],
+    "south_asian": [
+      0.25,
+      "STXBP5L",
+      "Perceived facial age"
+    ],
+    "latin_american": [
+      0.3,
+      "STXBP5L",
+      "Perceived facial age"
+    ],
+    "middle_eastern": [
+      0.26,
+      "STXBP5L",
+      "Perceived facial age"
+    ]
+  },
+  "rs2228145": {
+    "european": [
+      0.39,
+      "IL6R",
+      "Inflammation / skin aging"
+    ],
+    "east_asian": [
+      0.25,
+      "IL6R",
+      "Inflammation / skin aging"
+    ],
+    "african": [
+      0.05,
+      "IL6R",
+      "Inflammation / skin aging"
+    ],
+    "south_asian": [
+      0.3,
+      "IL6R",
+      "Inflammation / skin aging"
+    ],
+    "latin_american": [
+      0.28,
+      "IL6R",
+      "Inflammation / skin aging"
+    ],
+    "middle_eastern": [
+      0.35,
+      "IL6R",
+      "Inflammation / skin aging"
+    ]
+  },
+  "rs1801260": {
+    "european": [
+      0.22,
+      "CLOCK",
+      "Circadian rhythm / photoaging"
+    ],
+    "east_asian": [
+      0.15,
+      "CLOCK",
+      "Circadian rhythm / photoaging"
+    ],
+    "african": [
+      0.18,
+      "CLOCK",
+      "Circadian rhythm / photoaging"
+    ],
+    "south_asian": [
+      0.2,
+      "CLOCK",
+      "Circadian rhythm / photoaging"
+    ],
+    "latin_american": [
+      0.19,
+      "CLOCK",
+      "Circadian rhythm / photoaging"
+    ],
+    "middle_eastern": [
+      0.21,
+      "CLOCK",
+      "Circadian rhythm / photoaging"
+    ]
+  },
+  "rs4244285": {
+    "european": [
+      0.15,
+      "CYP2C19",
+      "Drug metabolism (clopidogrel, PPIs)"
+    ],
+    "east_asian": [
+      0.3,
+      "CYP2C19",
+      "Drug metabolism (clopidogrel, PPIs)"
+    ],
+    "african": [
+      0.15,
+      "CYP2C19",
+      "Drug metabolism (clopidogrel, PPIs)"
+    ],
+    "south_asian": [
+      0.35,
+      "CYP2C19",
+      "Drug metabolism (clopidogrel, PPIs)"
+    ],
+    "latin_american": [
+      0.12,
+      "CYP2C19",
+      "Drug metabolism (clopidogrel, PPIs)"
+    ],
+    "middle_eastern": [
+      0.12,
+      "CYP2C19",
+      "Drug metabolism (clopidogrel, PPIs)"
+    ]
+  },
+  "rs12248560": {
+    "european": [
+      0.21,
+      "CYP2C19",
+      "Ultra-rapid drug metabolism"
+    ],
+    "east_asian": [
+      0.04,
+      "CYP2C19",
+      "Ultra-rapid drug metabolism"
+    ],
+    "african": [
+      0.18,
+      "CYP2C19",
+      "Ultra-rapid drug metabolism"
+    ],
+    "south_asian": [
+      0.15,
+      "CYP2C19",
+      "Ultra-rapid drug metabolism"
+    ],
+    "latin_american": [
+      0.16,
+      "CYP2C19",
+      "Ultra-rapid drug metabolism"
+    ],
+    "middle_eastern": [
+      0.2,
+      "CYP2C19",
+      "Ultra-rapid drug metabolism"
+    ]
+  },
+  "rs1065852": {
+    "european": [
+      0.2,
+      "CYP2D6",
+      "Drug metabolism (codeine, tamoxifen)"
+    ],
+    "east_asian": [
+      0.01,
+      "CYP2D6",
+      "Drug metabolism (codeine, tamoxifen)"
+    ],
+    "african": [
+      0.02,
+      "CYP2D6",
+      "Drug metabolism (codeine, tamoxifen)"
+    ],
+    "south_asian": [
+      0.08,
+      "CYP2D6",
+      "Drug metabolism (codeine, tamoxifen)"
+    ],
+    "latin_american": [
+      0.1,
+      "CYP2D6",
+      "Drug metabolism (codeine, tamoxifen)"
+    ],
+    "middle_eastern": [
+      0.1,
+      "CYP2D6",
+      "Drug metabolism (codeine, tamoxifen)"
+    ]
+  },
+  "rs776746": {
+    "european": [
+      0.94,
+      "CYP3A5",
+      "Drug metabolism (tacrolimus)"
+    ],
+    "east_asian": [
+      0.75,
+      "CYP3A5",
+      "Drug metabolism (tacrolimus)"
+    ],
+    "african": [
+      0.3,
+      "CYP3A5",
+      "Drug metabolism (tacrolimus)"
+    ],
+    "south_asian": [
+      0.65,
+      "CYP3A5",
+      "Drug metabolism (tacrolimus)"
+    ],
+    "latin_american": [
+      0.75,
+      "CYP3A5",
+      "Drug metabolism (tacrolimus)"
+    ],
+    "middle_eastern": [
+      0.85,
+      "CYP3A5",
+      "Drug metabolism (tacrolimus)"
+    ]
+  },
+  "rs9923231": {
+    "european": [
+      0.4,
+      "VKORC1",
+      "Warfarin dose sensitivity"
+    ],
+    "east_asian": [
+      0.92,
+      "VKORC1",
+      "Warfarin dose sensitivity"
+    ],
+    "african": [
+      0.1,
+      "VKORC1",
+      "Warfarin dose sensitivity"
+    ],
+    "south_asian": [
+      0.35,
+      "VKORC1",
+      "Warfarin dose sensitivity"
+    ],
+    "latin_american": [
+      0.45,
+      "VKORC1",
+      "Warfarin dose sensitivity"
+    ],
+    "middle_eastern": [
+      0.42,
+      "VKORC1",
+      "Warfarin dose sensitivity"
+    ]
+  },
+  "rs4149056": {
+    "european": [
+      0.15,
+      "SLCO1B1",
+      "Statin myopathy risk"
+    ],
+    "east_asian": [
+      0.12,
+      "SLCO1B1",
+      "Statin myopathy risk"
+    ],
+    "african": [
+      0.02,
+      "SLCO1B1",
+      "Statin myopathy risk"
+    ],
+    "south_asian": [
+      0.05,
+      "SLCO1B1",
+      "Statin myopathy risk"
+    ],
+    "latin_american": [
+      0.08,
+      "SLCO1B1",
+      "Statin myopathy risk"
+    ],
+    "middle_eastern": [
+      0.1,
+      "SLCO1B1",
+      "Statin myopathy risk"
+    ]
+  },
+  "rs1045642": {
+    "european": [
+      0.52,
+      "ABCB1",
+      "Drug efflux / bioavailability"
+    ],
+    "east_asian": [
+      0.4,
+      "ABCB1",
+      "Drug efflux / bioavailability"
+    ],
+    "african": [
+      0.1,
+      "ABCB1",
+      "Drug efflux / bioavailability"
+    ],
+    "south_asian": [
+      0.45,
+      "ABCB1",
+      "Drug efflux / bioavailability"
+    ],
+    "latin_american": [
+      0.42,
+      "ABCB1",
+      "Drug efflux / bioavailability"
+    ],
+    "middle_eastern": [
+      0.5,
+      "ABCB1",
+      "Drug efflux / bioavailability"
+    ]
+  },
+  "rs3745274": {
+    "european": [
+      0.28,
+      "CYP2B6",
+      "Drug metabolism (efavirenz, methadone)"
+    ],
+    "east_asian": [
+      0.18,
+      "CYP2B6",
+      "Drug metabolism (efavirenz, methadone)"
+    ],
+    "african": [
+      0.35,
+      "CYP2B6",
+      "Drug metabolism (efavirenz, methadone)"
+    ],
+    "south_asian": [
+      0.25,
+      "CYP2B6",
+      "Drug metabolism (efavirenz, methadone)"
+    ],
+    "latin_american": [
+      0.3,
+      "CYP2B6",
+      "Drug metabolism (efavirenz, methadone)"
+    ],
+    "middle_eastern": [
+      0.25,
+      "CYP2B6",
+      "Drug metabolism (efavirenz, methadone)"
+    ]
+  },
+  "rs2736100": {
+    "european": [
+      0.49,
+      "TERT",
+      "Telomere length / longevity"
+    ],
+    "east_asian": [
+      0.6,
+      "TERT",
+      "Telomere length / longevity"
+    ],
+    "african": [
+      0.3,
+      "TERT",
+      "Telomere length / longevity"
+    ],
+    "south_asian": [
+      0.45,
+      "TERT",
+      "Telomere length / longevity"
+    ],
+    "latin_american": [
+      0.5,
+      "TERT",
+      "Telomere length / longevity"
+    ],
+    "middle_eastern": [
+      0.47,
+      "TERT",
+      "Telomere length / longevity"
+    ]
+  },
+  "rs10936599": {
+    "european": [
+      0.25,
+      "TERC",
+      "Telomere length"
+    ],
+    "east_asian": [
+      0.1,
+      "TERC",
+      "Telomere length"
+    ],
+    "african": [
+      0.3,
+      "TERC",
+      "Telomere length"
+    ],
+    "south_asian": [
+      0.2,
+      "TERC",
+      "Telomere length"
+    ],
+    "latin_american": [
+      0.22,
+      "TERC",
+      "Telomere length"
+    ],
+    "middle_eastern": [
+      0.23,
+      "TERC",
+      "Telomere length"
+    ]
+  },
+  "rs1801282": {
+    "european": [
+      0.12,
+      "PPARG",
+      "Insulin sensitivity"
+    ],
+    "east_asian": [
+      0.04,
+      "PPARG",
+      "Insulin sensitivity"
+    ],
+    "african": [
+      0.01,
+      "PPARG",
+      "Insulin sensitivity"
+    ],
+    "south_asian": [
+      0.08,
+      "PPARG",
+      "Insulin sensitivity"
+    ],
+    "latin_american": [
+      0.1,
+      "PPARG",
+      "Insulin sensitivity"
+    ],
+    "middle_eastern": [
+      0.09,
+      "PPARG",
+      "Insulin sensitivity"
+    ]
+  },
+  "rs1800795": {
+    "european": [
+      0.42,
+      "IL6",
+      "Systemic inflammation"
+    ],
+    "east_asian": [
+      0.01,
+      "IL6",
+      "Systemic inflammation"
+    ],
+    "african": [
+      0.05,
+      "IL6",
+      "Systemic inflammation"
+    ],
+    "south_asian": [
+      0.2,
+      "IL6",
+      "Systemic inflammation"
+    ],
+    "latin_american": [
+      0.25,
+      "IL6",
+      "Systemic inflammation"
+    ],
+    "middle_eastern": [
+      0.3,
+      "IL6",
+      "Systemic inflammation"
+    ]
+  }
+}

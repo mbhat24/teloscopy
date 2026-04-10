@@ -1,0 +1,324 @@
+{
+  "cardiovascular": [
+    {
+      "action": "Regular lipid panel screening",
+      "frequency": "Every 1\u20132 years after age 40",
+      "detail": "Monitor LDL-C, HDL-C, triglycerides, and Lp(a)."
+    },
+    {
+      "action": "Blood pressure monitoring",
+      "frequency": "At every clinical visit",
+      "detail": "Target < 130/80 mmHg for high-risk individuals."
+    },
+    {
+      "action": "Lifestyle modification",
+      "frequency": "Ongoing",
+      "detail": "Mediterranean diet, \u2265 150 min/week moderate exercise, smoking cessation."
+    }
+  ],
+  "cancer": [
+    {
+      "action": "Genetic counselling referral",
+      "frequency": "Once (with updates as guidelines change)",
+      "detail": "Discuss BRCA, Lynch, and TP53 implications."
+    },
+    {
+      "action": "Cancer-specific screening programme",
+      "frequency": "Per national guidelines",
+      "detail": "Mammography, colonoscopy, PSA, or skin checks as indicated by variant profile."
+    }
+  ],
+  "diabetes": [
+    {
+      "action": "Fasting glucose / HbA1c screening",
+      "frequency": "Annually from age 35 or earlier if high-risk",
+      "detail": "Pre-diabetes detection allows lifestyle intervention."
+    },
+    {
+      "action": "Weight management programme",
+      "frequency": "Ongoing",
+      "detail": "Maintain BMI 18.5\u201324.9; consider dietitian referral."
+    }
+  ],
+  "alzheimers": [
+    {
+      "action": "Cognitive screening",
+      "frequency": "Every 1\u20132 years after age 55",
+      "detail": "MoCA or MMSE; discuss emerging amyloid biomarkers."
+    },
+    {
+      "action": "Modifiable risk reduction",
+      "frequency": "Ongoing",
+      "detail": "Cardiovascular risk management, social engagement, physical activity, sleep hygiene."
+    }
+  ],
+  "autoimmune": [
+    {
+      "action": "Autoantibody panel",
+      "frequency": "If symptomatic",
+      "detail": "ANA, RF, anti-CCP, HLA typing as directed by clinician."
+    },
+    {
+      "action": "Monitor inflammatory markers",
+      "frequency": "As directed",
+      "detail": "CRP, ESR for early detection of flares."
+    }
+  ],
+  "metabolic": [
+    {
+      "action": "Homocysteine level testing",
+      "frequency": "Baseline + follow-up if elevated",
+      "detail": "B-vitamin supplementation can reduce levels."
+    },
+    {
+      "action": "Nutritional counselling",
+      "frequency": "Ongoing",
+      "detail": "Folate-rich diet; prenatal folic acid supplementation for MTHFR carriers."
+    }
+  ],
+  "eye": [
+    {
+      "action": "Dilated eye examination",
+      "frequency": "Every 1\u20132 years after age 50",
+      "detail": "Early detection of drusen and RPE changes."
+    },
+    {
+      "action": "AREDS2 supplementation discussion",
+      "frequency": "Once (if intermediate AMD detected)",
+      "detail": "Lutein + zeaxanthin, zinc, vitamins C/E."
+    }
+  ],
+  "neurological": [
+    {
+      "action": "Neurological evaluation",
+      "frequency": "If symptomatic or family history positive",
+      "detail": "DaTscan, genetic counselling for LRRK2 carriers."
+    },
+    {
+      "action": "Brain health optimisation",
+      "frequency": "Ongoing",
+      "detail": "Regular aerobic exercise, cognitive engagement, adequate sleep."
+    }
+  ],
+  "bone": [
+    {
+      "action": "DEXA bone density scan",
+      "frequency": "Every 2 years after age 50 (women) / 65 (men)",
+      "detail": "Assess fracture risk; consider FRAX calculation."
+    },
+    {
+      "action": "Calcium + Vitamin D optimisation",
+      "frequency": "Ongoing",
+      "detail": "1 000\u20131 200 mg Ca/day; 800\u20131 000 IU Vitamin D/day."
+    }
+  ],
+  "blood": [
+    {
+      "action": "Complete blood count + iron studies",
+      "frequency": "Annually if carrier status confirmed",
+      "detail": "Monitor ferritin and transferrin saturation for HFE; Hb electrophoresis for HBB."
+    },
+    {
+      "action": "Genetic counselling for family planning",
+      "frequency": "Once",
+      "detail": "Carrier screening for partner; discuss reproductive options."
+    }
+  ],
+  "respiratory": [
+    {
+      "action": "Pulmonary function testing (spirometry)",
+      "frequency": "Annually if symptomatic or high-risk",
+      "detail": "Monitor FEV1/FVC ratio; early detection of airflow limitation."
+    },
+    {
+      "action": "Smoking cessation support",
+      "frequency": "Ongoing",
+      "detail": "Pharmacotherapy and behavioural counselling; avoid second-hand smoke."
+    },
+    {
+      "action": "Asthma action plan",
+      "frequency": "Review annually",
+      "detail": "Step-wise therapy; allergen avoidance; inhaler technique review."
+    }
+  ],
+  "kidney": [
+    {
+      "action": "Renal function monitoring (eGFR, uACR)",
+      "frequency": "Annually from age 40 or if high-risk",
+      "detail": "Early detection of CKD; monitor albuminuria."
+    },
+    {
+      "action": "Blood pressure and glucose control",
+      "frequency": "Ongoing",
+      "detail": "ACE inhibitors/ARBs for proteinuria; strict glycaemic targets if diabetic."
+    }
+  ],
+  "liver": [
+    {
+      "action": "Liver function tests + hepatic ultrasound",
+      "frequency": "Annually if metabolic risk factors present",
+      "detail": "Monitor ALT, AST, GGT; screen for steatosis/fibrosis."
+    },
+    {
+      "action": "Hepatitis screening",
+      "frequency": "Once (universal) + if exposure risk",
+      "detail": "HBsAg, anti-HCV; vaccination for hepatitis B if non-immune."
+    }
+  ],
+  "mental_health": [
+    {
+      "action": "Mental health screening (PHQ-9, GAD-7)",
+      "frequency": "Annually or if symptomatic",
+      "detail": "Early identification of depression and anxiety."
+    },
+    {
+      "action": "Psychosocial support and therapy",
+      "frequency": "Ongoing as needed",
+      "detail": "CBT, counselling; consider psychiatric referral for mood disorders."
+    }
+  ],
+  "reproductive": [
+    {
+      "action": "Reproductive hormone panel",
+      "frequency": "If symptomatic or planning pregnancy",
+      "detail": "FSH, LH, AMH, testosterone; ultrasound for PCOS/endometriosis."
+    },
+    {
+      "action": "Preconception genetic counselling",
+      "frequency": "Once before pregnancy",
+      "detail": "Carrier screening; discuss hereditary risks and reproductive options."
+    }
+  ],
+  "dermatological": [
+    {
+      "action": "Dermatological examination",
+      "frequency": "Annually or if symptomatic",
+      "detail": "Full-body skin check; monitor moles and lesions."
+    },
+    {
+      "action": "Emollient and barrier care",
+      "frequency": "Ongoing",
+      "detail": "Daily moisturisation for atopic dermatitis; sun protection for vitiligo."
+    }
+  ],
+  "gastrointestinal": [
+    {
+      "action": "Endoscopy / colonoscopy screening",
+      "frequency": "Per clinical indication or national guidelines",
+      "detail": "Evaluate for IBD, Barrett's oesophagus, celiac disease."
+    },
+    {
+      "action": "Dietary assessment and modification",
+      "frequency": "Ongoing",
+      "detail": "Gluten-free diet for celiac; low-FODMAP trial for IBS."
+    }
+  ],
+  "endocrine": [
+    {
+      "action": "Thyroid function testing (TSH, fT4)",
+      "frequency": "Every 1\u20132 years if at-risk or symptomatic",
+      "detail": "Screen for hypo/hyperthyroidism; thyroid antibodies if autoimmune suspected."
+    },
+    {
+      "action": "Endocrine hormone panel",
+      "frequency": "If symptomatic",
+      "detail": "Cortisol, ACTH, PTH, calcium as clinically indicated."
+    }
+  ],
+  "infectious_susceptibility": [
+    {
+      "action": "Vaccination status review",
+      "frequency": "Annually",
+      "detail": "Ensure up-to-date HBV, influenza, pneumococcal, COVID-19 vaccinations."
+    },
+    {
+      "action": "Exposure risk assessment",
+      "frequency": "If travelling or high-risk behaviour",
+      "detail": "HIV testing, TB screening (Mantoux/IGRA), malaria prophylaxis."
+    }
+  ],
+  "dental": [
+    {
+      "action": "Regular dental examination and cleaning",
+      "frequency": "Every 6 months",
+      "detail": "Periodontal probing; radiographs as indicated."
+    },
+    {
+      "action": "Oral hygiene optimisation",
+      "frequency": "Ongoing",
+      "detail": "Electric toothbrush, fluoride toothpaste, interdental cleaning."
+    }
+  ],
+  "sleep": [
+    {
+      "action": "Sleep study (polysomnography)",
+      "frequency": "If symptomatic (EDS, snoring, insomnia)",
+      "detail": "Diagnose OSA, narcolepsy, or other sleep disorders."
+    },
+    {
+      "action": "Sleep hygiene counselling",
+      "frequency": "Ongoing",
+      "detail": "Consistent schedule, dark/cool room, limit caffeine/alcohol."
+    }
+  ],
+  "aging": [
+    {
+      "action": "Comprehensive geriatric assessment",
+      "frequency": "Every 1\u20132 years after age 65",
+      "detail": "Functional status, cognitive screening, fall risk, nutrition."
+    },
+    {
+      "action": "Telomere-supportive lifestyle",
+      "frequency": "Ongoing",
+      "detail": "Stress management, regular exercise, antioxidant-rich diet."
+    }
+  ],
+  "hearing": [
+    {
+      "action": "Audiometric screening",
+      "frequency": "Every 2\u20133 years after age 50",
+      "detail": "Pure-tone audiometry; speech recognition testing."
+    },
+    {
+      "action": "Hearing protection",
+      "frequency": "Ongoing",
+      "detail": "Ear protection in noisy environments; limit headphone volume."
+    }
+  ],
+  "pain": [
+    {
+      "action": "Pain assessment and management plan",
+      "frequency": "If chronic pain present",
+      "detail": "Multidisciplinary approach: physiotherapy, psychology, pharmacology."
+    },
+    {
+      "action": "Pharmacogenomic-guided prescribing",
+      "frequency": "Once (before starting pain medication)",
+      "detail": "COMT, OPRM1 genotype to guide analgesic selection and dosing."
+    }
+  ],
+  "pharmacogenomics": [
+    {
+      "action": "Pre-prescribing pharmacogenomic panel",
+      "frequency": "Once (results are lifelong)",
+      "detail": "CYP2C9, CYP2C19, VKORC1, SLCO1B1 genotyping before relevant drugs."
+    },
+    {
+      "action": "Drug interaction and dosing review",
+      "frequency": "At each new prescription",
+      "detail": "Consult pharmacogenomic results; adjust doses per CPIC/DPWG guidelines."
+    }
+  ],
+  "cardiac_arrhythmia": [
+    {
+      "action": "ECG and Holter monitoring",
+      "frequency": "If symptomatic or family history positive",
+      "detail": "12-lead ECG; 24-48 hr Holter for arrhythmia detection."
+    },
+    {
+      "action": "Electrophysiology referral",
+      "frequency": "If arrhythmia confirmed",
+      "detail": "Catheter ablation, ICD, or antiarrhythmic medication."
+    }
+  ]
+}

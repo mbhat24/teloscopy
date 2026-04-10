@@ -50,6 +50,12 @@ from teloscopy.genomics.disease_risk import DiseasePredictor
 from teloscopy.nutrition.diet_advisor import DietAdvisor
 from teloscopy.nutrition.regional_diets import resolve_region
 from teloscopy.webapp.health_checkup import HealthCheckupAnalyzer
+from teloscopy.webapp.report_parser import (
+    compute_extraction_confidence,
+    detect_file_type,
+    extract_text,
+    parse_lab_report,
+)
 from teloscopy.webapp.models import (
     AgentInfo,
     AgentStatusEnum,
@@ -57,6 +63,7 @@ from teloscopy.webapp.models import (
     AnalysisResponse,
     AncestryDerivedPredictionsResponse,
     AncestryEstimateResponse,
+    BloodTestPanel,
     ConditionScreeningResponse,
     DermatologicalAnalysisResponse,
     DietPlanRequest,
@@ -83,10 +90,12 @@ from teloscopy.webapp.models import (
     ProfileAnalysisResponse,
     ReconstructedDNAResponse,
     ReconstructedSequenceResponse,
+    ReportParsePreview,
     RiskLevel,
     Sex,
     TelomereResult,
     UploadResponse,
+    UrineTestPanel,
     UserProfile,
 )
 
@@ -1657,6 +1666,219 @@ async def health_checkup(request: HealthCheckupRequest) -> HealthCheckupResponse
         response = await asyncio.to_thread(_health_analyzer.analyze, request)
     except Exception:
         logger.exception("health-checkup analysis failed")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Health checkup analysis failed. Please try again.",
+        )
+    return response
+
+
+# -- Health checkup report upload --------------------------------------------
+
+_REPORT_ALLOWED_EXTENSIONS: set[str] = {
+    ".pdf", ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".webp", ".txt", ".text",
+}
+_MAX_REPORT_BYTES: int = 20 * 1024 * 1024  # 20 MiB
+
+
+@app.post(
+    "/api/health-checkup/parse-report",
+    response_model=ReportParsePreview,
+    tags=["Health Checkup"],
+    summary="Parse uploaded lab report (preview)",
+    description=(
+        "Upload a lab report (PDF, image, or text file) and get a preview "
+        "of extracted lab values. Use this to review and correct values "
+        "before running the full health checkup analysis."
+    ),
+    dependencies=[Depends(rate_limit(10, 60))],
+)
+async def parse_report_preview(file: UploadFile = File(...)) -> ReportParsePreview:
+    """Parse an uploaded lab report and return extracted values for review.
+
+    Supports PDF, image (via OCR), and plain text files.
+    """
+    filename = file.filename or "report"
+    ext = Path(filename).suffix.lower()
+    if ext and ext not in _REPORT_ALLOWED_EXTENSIONS:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file type '{ext}'. Allowed: {', '.join(sorted(_REPORT_ALLOWED_EXTENSIONS))}",
+        )
+
+    contents: bytes = await file.read()
+    if len(contents) > _MAX_REPORT_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail="File exceeds the 20 MiB limit for report uploads.",
+        )
+    if not contents:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Uploaded file is empty.",
+        )
+
+    # Detect file type and extract text
+    file_type = detect_file_type(contents, filename)
+    text = await asyncio.to_thread(extract_text, contents, filename)
+
+    if not text.strip():
+        return ReportParsePreview(
+            confidence=0.0,
+            file_type=file_type,
+            text_length=0,
+            unrecognized_lines=["Could not extract any text from the uploaded file."],
+        )
+
+    # Parse lab values from extracted text
+    blood_tests, urine_tests, abdomen_text = await asyncio.to_thread(
+        parse_lab_report, text
+    )
+
+    # Compute confidence
+    confidence = compute_extraction_confidence(blood_tests, urine_tests, abdomen_text, text)
+
+    # Collect unrecognized lines (lines with numbers that weren't matched)
+    import re as _re
+
+    unrecognized: list[str] = []
+    recognized_values = set()
+    for v in blood_tests.values():
+        recognized_values.add(str(v))
+    for v in urine_tests.values():
+        recognized_values.add(str(v))
+
+    for line in text.split("\n"):
+        line_stripped = line.strip()
+        if not line_stripped or len(line_stripped) < 5:
+            continue
+        if _re.search(r"\d+\.?\d*", line_stripped):
+            # Check if any recognized value appears in this line
+            has_recognized = False
+            for rv in recognized_values:
+                if rv in line_stripped:
+                    has_recognized = True
+                    break
+            if not has_recognized and len(unrecognized) < 50:
+                unrecognized.append(line_stripped[:200])
+
+    return ReportParsePreview(
+        extracted_blood_tests=blood_tests,
+        extracted_urine_tests=urine_tests,
+        extracted_abdomen_notes=abdomen_text,
+        unrecognized_lines=unrecognized,
+        confidence=confidence,
+        file_type=file_type,
+        text_length=len(text),
+    )
+
+
+@app.post(
+    "/api/health-checkup/upload",
+    response_model=HealthCheckupResponse,
+    tags=["Health Checkup"],
+    summary="Upload lab report and analyse",
+    description=(
+        "Upload a lab report (PDF, image, or text) along with profile data "
+        "to get a full health checkup analysis. The report is parsed "
+        "automatically and values are used for condition detection, health "
+        "scoring, and personalised diet planning."
+    ),
+    dependencies=[Depends(rate_limit(10, 60))],
+)
+async def health_checkup_upload(
+    file: UploadFile = File(...),
+    age: int = Form(...),
+    sex: str = Form(...),
+    region: str = Form(...),
+    country: str = Form(None),
+    state: str = Form(None),
+    dietary_restrictions: str = Form(""),
+    known_variants: str = Form(""),
+    calorie_target: int = Form(2000),
+    meal_plan_days: int = Form(7),
+    health_conditions: str = Form(""),
+) -> HealthCheckupResponse:
+    """Upload a lab report file and run full health checkup analysis.
+
+    The uploaded file is parsed to extract blood test, urine test, and
+    abdomen scan values.  These are combined with the provided profile
+    data and run through the same analysis pipeline as the manual entry
+    endpoint (``/api/health-checkup``).
+    """
+    filename = file.filename or "report"
+    ext = Path(filename).suffix.lower()
+    if ext and ext not in _REPORT_ALLOWED_EXTENSIONS:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file type '{ext}'. Allowed: {', '.join(sorted(_REPORT_ALLOWED_EXTENSIONS))}",
+        )
+
+    contents: bytes = await file.read()
+    if len(contents) > _MAX_REPORT_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail="File exceeds the 20 MiB limit for report uploads.",
+        )
+    if not contents:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Uploaded file is empty.",
+        )
+
+    # Extract text and parse lab values
+    text = await asyncio.to_thread(extract_text, contents, filename)
+    if not text.strip():
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                "Could not extract text from the uploaded file. "
+                "Please try a different format or use manual entry."
+            ),
+        )
+
+    blood_dict, urine_dict, abdomen_text = await asyncio.to_thread(
+        parse_lab_report, text
+    )
+
+    if not blood_dict and not urine_dict:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                "No lab values could be extracted from the uploaded file. "
+                "Please check the file format or use manual entry."
+            ),
+        )
+
+    # Parse comma-separated form fields
+    restrictions: list[str] = [r.strip() for r in dietary_restrictions.split(",") if r.strip()]
+    variants: list[str] = [v.strip() for v in known_variants.split(",") if v.strip()]
+    conditions: list[str] = [c.strip() for c in health_conditions.split(",") if c.strip()]
+
+    # Build request from parsed data
+    blood_panel = BloodTestPanel(**blood_dict) if blood_dict else None
+    urine_panel = UrineTestPanel(**urine_dict) if urine_dict else None
+
+    checkup_request = HealthCheckupRequest(
+        age=age,
+        sex=Sex(sex),
+        region=region,
+        country=country or None,
+        state=state or None,
+        dietary_restrictions=restrictions,
+        known_variants=variants,
+        blood_tests=blood_panel,
+        urine_tests=urine_panel,
+        abdomen_scan_notes=abdomen_text or None,
+        calorie_target=calorie_target,
+        meal_plan_days=meal_plan_days,
+        health_conditions=conditions,
+    )
+
+    try:
+        response = await asyncio.to_thread(_health_analyzer.analyze, checkup_request)
+    except Exception:
+        logger.exception("health-checkup upload analysis failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Health checkup analysis failed. Please try again.",

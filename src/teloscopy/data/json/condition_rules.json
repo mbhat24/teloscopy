@@ -410,5 +410,218 @@
       "processed meats",
       "very high protein diets"
     ]
+  },
+  {
+    "condition": "insulin_resistance",
+    "display_name": "Insulin Resistance",
+    "check": "_check_insulin_resistance",
+    "dietary_impact": "Low glycemic load diet; increase fiber, reduce refined carbs and sugar",
+    "nutrients_to_increase": [
+      "Fiber",
+      "Chromium",
+      "Magnesium",
+      "Omega-3"
+    ],
+    "nutrients_to_decrease": [
+      "Simple sugars",
+      "Refined carbs",
+      "Saturated fat"
+    ],
+    "foods_to_increase": [
+      "whole grains",
+      "legumes",
+      "nuts",
+      "cinnamon",
+      "leafy greens",
+      "fatty fish"
+    ],
+    "foods_to_avoid": [
+      "white bread",
+      "sugary drinks",
+      "pastries",
+      "white rice (large portions)",
+      "fruit juices"
+    ]
+  },
+  {
+    "condition": "folate_deficiency",
+    "display_name": "Folate Deficiency",
+    "check": "_check_folate_deficiency",
+    "dietary_impact": "Increase folate-rich foods; critical for DNA synthesis and cell division",
+    "nutrients_to_increase": [
+      "Folate",
+      "Vitamin B12",
+      "Vitamin C"
+    ],
+    "nutrients_to_decrease": [],
+    "foods_to_increase": [
+      "dark leafy greens",
+      "legumes",
+      "fortified cereals",
+      "citrus fruits",
+      "asparagus",
+      "avocado"
+    ],
+    "foods_to_avoid": [
+      "excess alcohol (depletes folate)"
+    ]
+  },
+  {
+    "condition": "prehypertension",
+    "display_name": "Prehypertension Indicators",
+    "check": "_check_prehypertension",
+    "dietary_impact": "DASH diet principles; limit sodium, increase potassium and magnesium",
+    "nutrients_to_increase": [
+      "Potassium",
+      "Magnesium",
+      "Calcium",
+      "Fiber"
+    ],
+    "nutrients_to_decrease": [
+      "Sodium",
+      "Alcohol",
+      "Caffeine (excess)"
+    ],
+    "foods_to_increase": [
+      "bananas",
+      "sweet potatoes",
+      "spinach",
+      "low-fat dairy",
+      "whole grains",
+      "beets"
+    ],
+    "foods_to_avoid": [
+      "excess salt",
+      "processed meats",
+      "canned soups",
+      "pickles",
+      "soy sauce"
+    ]
+  },
+  {
+    "condition": "cardiac_risk",
+    "display_name": "Cardiac Risk Elevation",
+    "check": "_check_cardiac_risk",
+    "dietary_impact": "Mediterranean/DASH-style diet; reduce saturated fat and sodium, increase omega-3",
+    "nutrients_to_increase": [
+      "Omega-3",
+      "Fiber",
+      "Antioxidants",
+      "Folate"
+    ],
+    "nutrients_to_decrease": [
+      "Saturated fat",
+      "Trans fat",
+      "Sodium",
+      "Refined sugar"
+    ],
+    "foods_to_increase": [
+      "fatty fish",
+      "olive oil",
+      "nuts",
+      "whole grains",
+      "berries",
+      "leafy greens"
+    ],
+    "foods_to_avoid": [
+      "fried foods",
+      "processed meats",
+      "excess salt",
+      "sugary drinks",
+      "butter"
+    ]
+  },
+  {
+    "condition": "vitamin_a_deficiency",
+    "display_name": "Vitamin A Deficiency",
+    "check": "_check_vitamin_a_deficiency",
+    "dietary_impact": "Increase beta-carotene and preformed vitamin A sources",
+    "nutrients_to_increase": [
+      "Vitamin A",
+      "Beta-carotene",
+      "Zinc"
+    ],
+    "nutrients_to_decrease": [],
+    "foods_to_increase": [
+      "sweet potatoes",
+      "carrots",
+      "spinach",
+      "liver",
+      "eggs",
+      "mango"
+    ],
+    "foods_to_avoid": []
+  },
+  {
+    "condition": "vitamin_e_deficiency",
+    "display_name": "Vitamin E Deficiency",
+    "check": "_check_vitamin_e_deficiency",
+    "dietary_impact": "Increase vitamin E from nuts, seeds, and oils; ensure adequate fat absorption",
+    "nutrients_to_increase": [
+      "Vitamin E",
+      "Healthy fats"
+    ],
+    "nutrients_to_decrease": [],
+    "foods_to_increase": [
+      "almonds",
+      "sunflower seeds",
+      "wheat germ oil",
+      "spinach",
+      "avocado",
+      "olive oil"
+    ],
+    "foods_to_avoid": [
+      "very low-fat diets (impair vitamin E absorption)"
+    ]
+  },
+  {
+    "condition": "zinc_deficiency",
+    "display_name": "Zinc Deficiency",
+    "check": "_check_zinc_deficiency",
+    "dietary_impact": "Increase zinc-rich foods; important for immune function and wound healing",
+    "nutrients_to_increase": [
+      "Zinc",
+      "Protein"
+    ],
+    "nutrients_to_decrease": [],
+    "foods_to_increase": [
+      "pumpkin seeds",
+      "chickpeas",
+      "lentils",
+      "meat",
+      "yogurt",
+      "cashews"
+    ],
+    "foods_to_avoid": [
+      "excess phytates (unsoaked legumes/grains) with zinc-rich meals"
+    ]
+  },
+  {
+    "condition": "calcium_magnesium_deficiency",
+    "display_name": "Calcium/Magnesium Deficiency",
+    "check": "_check_calcium_magnesium_deficiency",
+    "dietary_impact": "Increase calcium and magnesium intake; ensure adequate vitamin D for absorption",
+    "nutrients_to_increase": [
+      "Calcium",
+      "Magnesium",
+      "Vitamin D"
+    ],
+    "nutrients_to_decrease": [
+      "Excess phosphorus",
+      "Excess sodium"
+    ],
+    "foods_to_increase": [
+      "dairy",
+      "fortified plant milk",
+      "dark leafy greens",
+      "almonds",
+      "dark chocolate",
+      "quinoa"
+    ],
+    "foods_to_avoid": [
+      "excess caffeine",
+      "excess soda (phosphoric acid)",
+      "very high sodium foods"
+    ]
   }
 ]

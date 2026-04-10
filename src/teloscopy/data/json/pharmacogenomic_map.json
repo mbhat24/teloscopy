@@ -1,0 +1,105 @@
+{
+  "rs4244285": {
+    "gene": "CYP2C19",
+    "star": "*2",
+    "function": "no_function",
+    "drugs": [
+      "clopidogrel",
+      "omeprazole",
+      "escitalopram",
+      "voriconazole"
+    ],
+    "recommendation_het": "Intermediate metabolizer \u2014 consider alternative to clopidogrel; standard PPI dosing likely adequate.",
+    "recommendation_hom": "Poor metabolizer \u2014 clopidogrel contraindicated (use prasugrel/ticagrelor); consider PPI dose reduction."
+  },
+  "rs12248560": {
+    "gene": "CYP2C19",
+    "star": "*17",
+    "function": "increased_function",
+    "drugs": [
+      "clopidogrel",
+      "escitalopram",
+      "sertraline",
+      "voriconazole"
+    ],
+    "recommendation_het": "Rapid metabolizer \u2014 enhanced clopidogrel activation; may need higher SSRI doses.",
+    "recommendation_hom": "Ultra-rapid metabolizer \u2014 increased clopidogrel effect; reduced voriconazole efficacy."
+  },
+  "rs1065852": {
+    "gene": "CYP2D6",
+    "star": "*4",
+    "function": "no_function",
+    "drugs": [
+      "codeine",
+      "tramadol",
+      "tamoxifen",
+      "metoprolol",
+      "fluoxetine"
+    ],
+    "recommendation_het": "Intermediate metabolizer \u2014 reduced codeine\u2192morphine conversion; standard tamoxifen may suffice.",
+    "recommendation_hom": "Poor metabolizer \u2014 codeine/tramadol ineffective; tamoxifen activation impaired; use alternatives."
+  },
+  "rs776746": {
+    "gene": "CYP3A5",
+    "star": "*3",
+    "function": "non_expressor",
+    "drugs": [
+      "tacrolimus",
+      "cyclosporine",
+      "midazolam"
+    ],
+    "recommendation_het": "Intermediate expressor \u2014 may need standard tacrolimus dosing.",
+    "recommendation_hom": "CYP3A5 non-expressor \u2014 standard tacrolimus dosing; expressors need ~50% higher doses."
+  },
+  "rs9923231": {
+    "gene": "VKORC1",
+    "star": "-1639G>A",
+    "function": "increased_sensitivity",
+    "drugs": [
+      "warfarin",
+      "acenocoumarol",
+      "phenprocoumon"
+    ],
+    "recommendation_het": "Intermediate warfarin sensitivity \u2014 consider ~25% dose reduction from standard.",
+    "recommendation_hom": "High warfarin sensitivity \u2014 consider ~50% dose reduction; start low, monitor INR closely."
+  },
+  "rs4149056": {
+    "gene": "SLCO1B1",
+    "star": "*5 (Val174Ala)",
+    "function": "decreased_transport",
+    "drugs": [
+      "simvastatin",
+      "atorvastatin",
+      "rosuvastatin",
+      "pravastatin"
+    ],
+    "recommendation_het": "Increased statin myopathy risk \u2014 avoid simvastatin >20mg; consider rosuvastatin.",
+    "recommendation_hom": "High statin myopathy risk \u2014 avoid simvastatin entirely; use low-dose rosuvastatin or pravastatin."
+  },
+  "rs1045642": {
+    "gene": "ABCB1",
+    "star": "3435C>T",
+    "function": "reduced_efflux",
+    "drugs": [
+      "digoxin",
+      "cyclosporine",
+      "tacrolimus",
+      "fexofenadine"
+    ],
+    "recommendation_het": "Slightly altered drug bioavailability \u2014 monitor digoxin levels if prescribed.",
+    "recommendation_hom": "Reduced P-glycoprotein function \u2014 increased bioavailability of substrate drugs; dose adjustments may be needed."
+  },
+  "rs3745274": {
+    "gene": "CYP2B6",
+    "star": "*6",
+    "function": "decreased_function",
+    "drugs": [
+      "efavirenz",
+      "methadone",
+      "cyclophosphamide",
+      "bupropion"
+    ],
+    "recommendation_het": "Intermediate metabolizer \u2014 consider efavirenz dose reduction to 400mg.",
+    "recommendation_hom": "Poor metabolizer \u2014 efavirenz 200-400mg recommended; higher methadone levels expected."
+  }
+}

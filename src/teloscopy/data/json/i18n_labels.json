@@ -1,0 +1,74 @@
+{
+  "title": {
+    "en": "Personalised Nutrition Plan",
+    "es": "Plan de Nutrición Personalizado",
+    "fr": "Plan Nutritionnel Personnalisé",
+    "de": "Personalisierter Ernährungsplan",
+    "zh": "个性化营养计划",
+    "hi": "व्यक्तिगत पोषण योजना",
+    "ar": "خطة التغذية الشخصية",
+    "pt": "Plano Nutricional Personalizado",
+    "ja": "パーソナライズ栄養プラン",
+    "ko": "맞춤형 영양 계획"
+  },
+  "breakfast": {
+    "en": "Breakfast",
+    "es": "Desayuno",
+    "fr": "Petit-déjeuner",
+    "de": "Frühstück",
+    "zh": "早餐",
+    "hi": "नाश्ता",
+    "ar": "إفطار",
+    "pt": "Café da manhã",
+    "ja": "朝食",
+    "ko": "아침식사"
+  },
+  "lunch": {
+    "en": "Lunch",
+    "es": "Almuerzo",
+    "fr": "Déjeuner",
+    "de": "Mittagessen",
+    "zh": "午餐",
+    "hi": "दोपहर का खाना",
+    "ar": "غداء",
+    "pt": "Almoço",
+    "ja": "昼食",
+    "ko": "점심식사"
+  },
+  "dinner": {
+    "en": "Dinner",
+    "es": "Cena",
+    "fr": "Dîner",
+    "de": "Abendessen",
+    "zh": "晚餐",
+    "hi": "रात का खाना",
+    "ar": "عشاء",
+    "pt": "Jantar",
+    "ja": "夕食",
+    "ko": "저녁식사"
+  },
+  "snacks": {
+    "en": "Snacks",
+    "es": "Meriendas",
+    "fr": "Collations",
+    "de": "Snacks",
+    "zh": "点心",
+    "hi": "नाश्ता",
+    "ar": "وجبات خفيفة",
+    "pt": "Lanches",
+    "ja": "おやつ",
+    "ko": "간식"
+  },
+  "disclaimer": {
+    "en": "This nutrition plan is generated from genetic and health data for educational purposes only. Consult a registered dietitian or physician before making significant dietary changes.",
+    "es": "Este plan nutricional se genera a partir de datos genéticos y de salud solo con fines educativos. Consulte a un dietista o médico antes de realizar cambios dietéticos significativos.",
+    "fr": "Ce plan nutritionnel est généré à partir de données génétiques et de santé à des fins éducatives uniquement. Consultez un diététicien ou un médecin avant d'apporter des modifications alimentaires.",
+    "de": "Dieser Ernährungsplan wird aus genetischen und Gesundheitsdaten nur zu Bildungszwecken erstellt. Konsultieren Sie einen Ernährungs­berater oder Arzt, bevor Sie wesentliche Ernährungs­änderungen vornehmen.",
+    "zh": "本营养计划基于基因和健康数据生成，仅供教育目的。在进行重大饮食改变之前，请咨询注册营养师或医生。",
+    "hi": "यह पोषण योजना केवल शैक्षिक उद्देश्यों के लिए आनुवंशिक और स्वास्थ्य डेटा से तैयार की गई है। महत्वपूर्ण आहार परिवर्तन करने से पहले किसी पंजीकृत आहार विशेषज्ञ या चिकित्सक से परामर्श करें।",
+    "ar": "تم إنشاء خطة التغذية هذه من البيانات الجينية والصحية لأغراض تعليمية فقط. استشر أخصائي تغذية أو طبيبًا قبل إجراء تغييرات غذائية كبيرة.",
+    "pt": "Este plano nutricional é gerado a partir de dados genéticos e de saúde apenas para fins educacionais. Consulte um nutricionista ou médico antes de fazer mudanças significativas na dieta.",
+    "ja": "この栄養プランは、遺伝子データと健康データから教育目的のみで生成されています。大幅な食事の変更を行う前に、管理栄養士または医師にご相談ください。",
+    "ko": "이 영양 계획은 교육 목적으로만 유전자 및 건강 데이터에서 생성되었습니다. 중요한 식이 변경을 하기 전에 등록 영양사 또는 의사와 상담하십시오."
+  }
+}
