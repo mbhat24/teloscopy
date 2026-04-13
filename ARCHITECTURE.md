@@ -10,20 +10,19 @@
 4. [Multi-Agent System](#4-multi-agent-system)
 5. [Core Modules Reference](#5-core-modules-reference)
 6. [Web Application](#6-web-application)
-7. [Android Application](#7-android-application)
-8. [Data Layer — JSON Data Files](#8-data-layer--json-data-files)
-9. [Disease Risk Prediction Engine](#9-disease-risk-prediction-engine)
-10. [Nutrigenomic Diet Advisor](#10-nutrigenomic-diet-advisor)
-11. [Health Checkup System](#11-health-checkup-system)
-12. [Facial-Genomic Analysis](#12-facial-genomic-analysis)
-13. [Image Analysis Pipeline](#13-image-analysis-pipeline)
-14. [API Reference](#14-api-reference)
-15. [Test Suite](#15-test-suite)
-16. [Deployment Architecture](#16-deployment-architecture)
-17. [Security & Privacy](#17-security--privacy)
-18. [Scientific Background](#18-scientific-background)
-19. [Performance Considerations](#19-performance-considerations)
-20. [Future Roadmap](#20-future-roadmap)
+7. [Data Layer — JSON Data Files](#7-data-layer--json-data-files)
+8. [Disease Risk Prediction Engine](#8-disease-risk-prediction-engine)
+9. [Nutrigenomic Diet Advisor](#9-nutrigenomic-diet-advisor)
+10. [Health Checkup System](#10-health-checkup-system)
+11. [Facial-Genomic Analysis](#11-facial-genomic-analysis)
+12. [Image Analysis Pipeline](#12-image-analysis-pipeline)
+13. [API Reference](#13-api-reference)
+14. [Test Suite](#14-test-suite)
+15. [Deployment Architecture](#15-deployment-architecture)
+16. [Security & Privacy](#16-security--privacy)
+17. [Scientific Background](#17-scientific-background)
+18. [Performance Considerations](#18-performance-considerations)
+19. [Future Roadmap](#19-future-roadmap)
 
 ---
 
@@ -31,7 +30,7 @@
 
 Teloscopy is a **multi-agent genomic intelligence platform** that:
 
-1. Accepts fluorescence microscopy images (qFISH) or face photos via web upload, CLI, Android app, or iOS app
+1. Accepts fluorescence microscopy images (qFISH) or face photos via web upload, CLI, or Python API
 2. Analyzes telomere length at each chromosome end using computer vision
 3. Predicts disease risk using telomere data + 560 genetic variants (SNPs)
 4. Generates personalized diet plans based on genetics + geographic food availability across 35 regions
@@ -43,7 +42,7 @@ Teloscopy is a **multi-agent genomic intelligence platform** that:
                            TELOSCOPY v2.0
     ┌─────────────────────────────────────────────────────────┐
     │                                                         │
-    │   USER ──────► WEB UI / CLI / Android / iOS / Python API   │
+    │   USER ──────► WEB UI / CLI / Python API                  │
     │                      │                                  │
     │                      ▼                                  │
     │            ┌─────────────────┐                          │
@@ -86,11 +85,9 @@ Teloscopy is a **multi-agent genomic intelligence platform** that:
 | Python source files | 63 files across 16 subpackages |
 | Python lines of code | ~37,000 |
 | JSON data files | 43 files (~46,400 lines) |
-| Android Kotlin files | 22 files (~7,700 lines) |
-| iOS Swift files | 10+ files (~3,000 lines) |
 | HTML templates | 2 files (~5,400 lines) |
 | Test files | 11 files (530+ tests, ~5,200 lines) |
-| **Total codebase** | **~105,000+ lines** |
+| **Total codebase** | **~94,000+ lines** |
 
 ---
 
@@ -110,8 +107,7 @@ Teloscopy uses a **microkernel + multi-agent** architecture:
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │                     PRESENTATION LAYER                        │
-│  Web UI (FastAPI+Jinja2) │ CLI (Click) │ Android (Compose)   │
-│  iOS (SwiftUI)                                                │
+│  Web UI (FastAPI+Jinja2) │ CLI (Click) │ Mobile API            │
 ├──────────────────────────────────────────────────────────────┤
 │                     ORCHESTRATION LAYER                       │
 │  OrchestratorAgent  │  Workflow Engine  │  Message Router     │
@@ -138,8 +134,6 @@ Teloscopy uses a **microkernel + multi-agent** architecture:
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
 | Web Frontend | Vanilla HTML/CSS/JS + Chart.js | Upload UI, results display, dashboard |
-| Android | Jetpack Compose + Material3 + Hilt | Native mobile client |
-| iOS | SwiftUI + Combine | Native iOS client |
 | API Server | FastAPI + Uvicorn | REST API, async processing |
 | Image Processing | scikit-image, OpenCV, tifffile | Core CV pipeline |
 | Deep Learning | Cellpose (optional) | Chromosome segmentation |
@@ -298,25 +292,6 @@ teloscopy/
 │   ├── test_pipeline.py            [ 181]  # 14 tests — telomere analysis pipeline
 │   ├── test_synthetic.py           [ 123]  # 16 tests — synthetic image generation
 │   └── test_webapp.py              [ 322]  # 19 tests — FastAPI endpoints
-│
-└── android/                                # Android app (Jetpack Compose)
-    ├── build.gradle.kts                    # Root Gradle config
-    ├── settings.gradle.kts                 # Single :app module
-    ├── gradle/libs.versions.toml           # Version catalog (106 lines)
-    └── app/
-        ├── build.gradle.kts                # compileSdk 34, minSdk 26
-        └── src/main/
-            ├── AndroidManifest.xml
-            └── java/com/teloscopy/app/     # 22 Kotlin files (see Section 7)
-
-└── ios/                                    # iOS app (SwiftUI)
-    └── Teloscopy/
-        ├── TeloscopyApp.swift              # App entry point with TabView
-        ├── Views/                          # 5 SwiftUI view files
-        ├── Models/                         # Data models
-        ├── Services/                       # API + sync services
-        ├── Assets.xcassets/                # Asset catalog
-        └── Info.plist                      # App configuration
 ```
 
 ### 3.2 Dependencies
@@ -747,92 +722,13 @@ The `HealthCheckupAnalyzer` class orchestrates lab interpretation:
 
 ---
 
-## 7. Android Application
+## 7. Data Layer — JSON Data Files
 
-### 7.1 Architecture Overview
-
-**MVVM + Repository pattern** with **Hilt dependency injection**:
-
-```
-UI (Compose Screens) → ViewModels (StateFlow) → Repository (Result<T>) → Retrofit API → FastAPI Backend
-```
-
-| Property | Value |
-|----------|-------|
-| Package | `com.teloscopy.app` |
-| compileSdk / targetSdk | 34 |
-| minSdk | 26 (Android 8.0) |
-| Kotlin | 2.0.0 |
-| Compose BOM | 2024.06.00 |
-| Architecture | Single Activity + Compose Navigation (5 screens) |
-| Theme | Dark-first (cyan/purple/green genomic palette) |
-
-### 7.2 File Structure (22 Kotlin files, 7,718 lines)
-
-```
-com.teloscopy.app/
-├── MainActivity.kt              [309]  # Single activity, modal drawer + bottom nav
-├── TeloscopyApp.kt              [ 12]  # @HiltAndroidApp entry point
-├── data/
-│   ├── api/
-│   │   ├── ApiModels.kt         [354]  # 25 Moshi data classes matching server models
-│   │   └── TeloscopyApi.kt      [121]  # Retrofit interface (10 endpoints)
-│   └── repository/
-│       └── AnalysisRepository.kt[240]  # Result<T> wrapper, safeApiCall()
-├── di/
-│   └── AppModule.kt             [ 88]  # Hilt: Moshi, OkHttp, Retrofit, DataStore
-├── ui/
-│   ├── components/
-│   │   ├── DiseaseRiskCard.kt   [206]  # Expandable risk card with probability bar
-│   │   ├── MealPlanCard.kt      [147]  # Expandable day card (meals + snacks)
-│   │   ├── SectionHeader.kt     [ 63]  # Icon + title + colored divider
-│   │   ├── ShimmerEffect.kt     [171]  # Loading skeleton animations
-│   │   └── StatCard.kt          [ 78]  # Compact metric card
-│   ├── navigation/
-│   │   └── NavGraph.kt          [204]  # 5 routes: Home, Analysis, Results, Profile, Settings
-│   ├── screens/
-│   │   ├── HomeScreen.kt        [707]  # Dashboard with quick stats + actions
-│   │   ├── AnalysisScreen.kt    [830]  # Camera/gallery upload + profile form
-│   │   ├── ResultsScreen.kt     [1845] # 8+ result sections (largest file)
-│   │   ├── ProfileAnalysisScreen[773]  # Profile-only analysis form + results
-│   │   └── SettingsScreen.kt    [798]  # Server config, appearance, about
-│   └── theme/
-│       ├── Color.kt             [ 66]  # Dark palette + risk-level colors
-│       ├── Theme.kt             [ 78]  # Material3 dark theme
-│       └── Type.kt              [ 45]  # Custom typography
-└── viewmodel/
-    ├── AnalysisViewModel.kt     [361]  # Image analysis lifecycle (polling every 2s)
-    └── ProfileViewModel.kt      [222]  # Profile/disease-risk/nutrition analysis
-```
-
-### 7.3 Android API Interface
-
-| Endpoint | HTTP | Request | Response |
-|----------|------|---------|----------|
-| `api/analyze` | POST | Multipart (image + profile) | `JobStatus` (202) |
-| `api/status/{job_id}` | GET | — | `JobStatus` |
-| `api/results/{job_id}` | GET | — | `AnalysisResponse` |
-| `api/profile-analysis` | POST | JSON `ProfileAnalysisRequest` | `ProfileAnalysisResponse` |
-| `api/disease-risk` | POST | JSON `DiseaseRiskRequest` | `DiseaseRiskResponse` |
-| `api/nutrition` | POST | JSON `NutritionRequest` | `NutritionResponse` |
-| `api/validate-image` | POST | Multipart file | `ImageValidationResponse` |
-| `api/health` | GET | — | `HealthResponse` |
-| `api/health-checkup/parse-report` | POST | Multipart file | `ReportParsePreview` |
-| `api/health-checkup/upload` | POST | Multipart (file + profile) | `HealthCheckupResponse` |
-
-### 7.4 Key Dependencies
-
-Compose + Material3, Navigation Compose, Hilt (DI), Retrofit + OkHttp + Moshi (networking/JSON), CameraX, Coil (image loading), Vico Charts, DataStore Preferences, Accompanist (permissions)
-
----
-
-## 8. Data Layer — JSON Data Files
-
-### 8.1 Overview
+### 7.1 Overview
 
 43 JSON data files totaling ~46,400 lines in `src/teloscopy/data/json/`.
 
-### 8.2 Complete Catalog
+### 7.2 Complete Catalog
 
 #### Genomics / Disease Risk (7 files)
 
@@ -926,7 +822,7 @@ Compose + Material3, Navigation Compose, Hilt (DI), Retrofit + OkHttp + Moshi (n
 
 **Loaded by**: `nutrition/i18n.py`
 
-### 8.3 Module → JSON Loading Map
+### 7.3 Module → JSON Loading Map
 
 | Python Module | JSON Files Loaded |
 |---------------|-------------------|
@@ -941,9 +837,9 @@ Compose + Material3, Navigation Compose, Hilt (DI), Retrofit + OkHttp + Moshi (n
 
 ---
 
-## 9. Disease Risk Prediction Engine
+## 8. Disease Risk Prediction Engine
 
-### 9.1 Architecture
+### 8.1 Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -977,7 +873,7 @@ Compose + Material3, Navigation Compose, Hilt (DI), Retrofit + OkHttp + Moshi (n
 └──────────────────────────────────────────────────────────────┘
 ```
 
-### 9.2 Disease Categories
+### 8.2 Disease Categories
 
 | Category | Conditions | Key Genes |
 |----------|-----------|-----------|
@@ -994,9 +890,9 @@ Compose + Material3, Navigation Compose, Hilt (DI), Retrofit + OkHttp + Moshi (n
 
 ---
 
-## 10. Nutrigenomic Diet Advisor
+## 9. Nutrigenomic Diet Advisor
 
-### 10.1 Architecture
+### 9.1 Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────┐
@@ -1037,7 +933,7 @@ Compose + Material3, Navigation Compose, Hilt (DI), Retrofit + OkHttp + Moshi (n
 └──────────────────────────────────────────────────────────┘
 ```
 
-### 10.2 Geographic Coverage
+### 9.2 Geographic Coverage
 
 | Region | Sub-Regions | Countries with State Detail |
 |--------|-------------|---------------------------|
@@ -1053,7 +949,7 @@ Compose + Material3, Navigation Compose, Hilt (DI), Retrofit + OkHttp + Moshi (n
 
 ---
 
-## 11. Health Checkup System
+## 10. Health Checkup System
 
 Two parallel implementations:
 
@@ -1086,7 +982,7 @@ Path 3: Combined Upload + Profile
 
 ---
 
-## 12. Facial-Genomic Analysis
+## 11. Facial-Genomic Analysis
 
 ### Pipeline (10 steps in `facial/predictor.py`)
 
@@ -1120,7 +1016,7 @@ Input: Face photo + chronological_age + sex
 
 ---
 
-## 13. Image Analysis Pipeline
+## 12. Image Analysis Pipeline
 
 ### 9-Step Pipeline (telomere/)
 
@@ -1176,9 +1072,9 @@ Step 9: CALIBRATION (optional)
 
 ---
 
-## 14. API Reference
+## 13. API Reference
 
-### 14.1 All REST Endpoints (20 routes)
+### 13.1 All REST Endpoints (20 routes)
 
 #### HTML Pages
 | Method | Path | Description |
@@ -1220,7 +1116,7 @@ Step 9: CALIBRATION (optional)
 | POST | `/api/health-checkup/parse-report` | 10/60s | Multipart file (PDF/image/text) | `ReportParsePreview` | Extract lab values for preview |
 | POST | `/api/health-checkup/upload` | 10/60s | Multipart (file + profile) | `HealthCheckupResponse` | Upload report + auto-analyze |
 
-### 14.2 Python API
+### 13.2 Python API
 
 ```python
 # Image Analysis
@@ -1272,15 +1168,15 @@ result = await orchestrator.process_full_analysis(
 
 ---
 
-## 15. Test Suite
+## 14. Test Suite
 
-### 15.1 Overview
+### 14.1 Overview
 
 **520 tests across 10 files, 69 test classes, 4,848 lines**
 
 All tests run with `pytest` and pass consistently. No `conftest.py` — each file uses inline fixtures.
 
-### 15.2 Test Coverage by Module
+### 14.2 Test Coverage by Module
 
 | Test File | Lines | Tests | Classes | Module Tested |
 |-----------|-------|-------|---------|---------------|
@@ -1294,16 +1190,15 @@ All tests run with `pytest` and pass consistently. No `conftest.py` — each fil
 | `test_synthetic.py` | 123 | 16 | 3 | Synthetic qFISH image generation |
 | `test_webapp.py` | 322 | 19 | 7 | FastAPI endpoints (9 route groups) |
 
-### 15.3 Testing Highlights
+### 14.3 Testing Highlights
 
 - **Parametrized diet tests** across 10–30 geographic regions
 - **Boundary value testing** for lab thresholds (e.g., glucose 99/100/126)
 - **Regression tests** (e.g., "butter chicken must never appear in vegetarian plan")
 - **Async agent tests** via `asyncio.run()` wrapper
 - **Integration tests** covering full end-to-end pipeline with synthetic images
-- **No Android tests** — only backend Python tests
 
-### 15.4 Running Tests
+### 14.4 Running Tests
 
 ```bash
 # All tests
@@ -1318,9 +1213,9 @@ pytest tests/ --cov=teloscopy --cov-report=html
 
 ---
 
-## 16. Deployment Architecture
+## 15. Deployment Architecture
 
-### 16.1 Installation Options
+### 15.1 Installation Options
 
 ```bash
 # Option A: pip (simplest)
@@ -1337,7 +1232,7 @@ docker-compose up
 make install-dev && make test && make run
 ```
 
-### 16.2 Docker Architecture
+### 15.2 Docker Architecture
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -1351,11 +1246,11 @@ make install-dev && make test && make run
 └──────────────────────────────────────────────────┘
 ```
 
-### 16.3 Render.com Deployment
+### 15.3 Render.com Deployment
 
 Configured via `render.yaml` (free tier, web service). Environment variables include `TELOSCOPY_CONSENT_SECRET` for HMAC consent token signing.
 
-### 16.4 CI/CD Pipeline (GitHub Actions)
+### 15.4 CI/CD Pipeline (GitHub Actions)
 
 ```
 Trigger: push/PR to main
@@ -1364,17 +1259,9 @@ Trigger: push/PR to main
   └── docker: build + smoke test
 ```
 
-### 16.5 Android Build
-
-```bash
-# Requirements: JDK 17, Android SDK (compileSdk 34)
-cd android && ./gradlew assembleDebug
-# Output: app/build/outputs/apk/debug/app-debug.apk (~21 MB)
-```
-
 ---
 
-## 17. Security & Privacy
+## 16. Security & Privacy
 
 ### Data Handling
 - **No external API calls**: All analysis runs locally
@@ -1410,14 +1297,14 @@ cd android && ./gradlew assembleDebug
 
 ---
 
-## 18. Scientific Background
+## 17. Scientific Background
 
-### 18.1 Telomere Biology
+### 17.1 Telomere Biology
 - **Normal range**: 5,000–15,000 base pairs (newborn ~11,000; elderly ~4,000)
 - **Shortening rate**: ~50–100 bp/year in leukocytes
 - **Critical length**: ~3,000–5,000 bp triggers cellular senescence
 
-### 18.2 Telomere-Disease Evidence
+### 17.2 Telomere-Disease Evidence
 
 | Association | Evidence Level | Key Studies |
 |------------|---------------|-------------|
@@ -1428,7 +1315,7 @@ cd android && ./gradlew assembleDebug
 | Diet → Telomere length | Moderate | Crous-Bou et al., BMJ 2014 |
 | Stress → Telomere shortening | Strong | Epel et al., PNAS 2004 |
 
-### 18.3 Nutrigenomics Evidence
+### 17.3 Nutrigenomics Evidence
 
 | Gene-Nutrient Interaction | Evidence |
 |--------------------------|----------|
@@ -1438,7 +1325,7 @@ cd android && ./gradlew assembleDebug
 | CYP1A2 → Caffeine metabolism | Strong (slow metabolizers: MI risk with >2 cups/day) |
 | APOE e4 → Fat metabolism | Strong (benefit from low-saturated-fat diet) |
 
-### 18.4 Competitive Landscape
+### 17.4 Competitive Landscape
 
 | Tool | qFISH | Disease Risk | Diet | Multi-Agent | Open Source |
 |------|-------|-------------|------|-------------|-------------|
@@ -1450,7 +1337,7 @@ cd android && ./gradlew assembleDebug
 
 ---
 
-## 19. Performance Considerations
+## 18. Performance Considerations
 
 ### Processing Times (estimated)
 
@@ -1475,7 +1362,7 @@ cd android && ./gradlew assembleDebug
 
 ---
 
-## 20. Future Roadmap
+## 19. Future Roadmap
 
 ### Completed Phases
 
@@ -1489,7 +1376,7 @@ cd android && ./gradlew assembleDebug
 - [x] Web UI with image/face upload
 - [x] Health checkup analysis (24 conditions)
 - [x] Lab report document upload (PDF/image/text)
-- [x] Android app (Jetpack Compose, 5 screens)
+- [x] Android app (Jetpack Compose, 5 screens) — moved to `android-app` branch
 - [x] Docker + pip + Render deployment
 
 **Phase 2: Enhanced Intelligence** ✓
@@ -1517,9 +1404,9 @@ cd android && ./gradlew assembleDebug
 **Phase 5: Production Readiness** ✓
 - [x] Real microscopy training dataset — `data/training.py`, `scripts/generate_training_data.py`
 - [x] Published benchmarks — `data/benchmarks.py`, `scripts/run_benchmarks.py`, `benchmark_results/`
-- [x] iOS companion app (SwiftUI, 5 screens) — `ios/Teloscopy/`
+- [x] iOS companion app (SwiftUI, 5 screens) — moved to `android-app` branch
 - [x] Multi-institution clinical trial integration — `clinical/trials.py`, `clinical/endpoints.py`
-- [x] Android CI/CD (GitHub Actions) — `.github/workflows/android-ci.yml`
+- [x] Android CI/CD (GitHub Actions) — moved to `android-app` branch
 - [x] Mobile download redirects to GitHub Releases — `webapp/app.py` (`/api/download/android`, `/api/download/ios`)
 
 ---
