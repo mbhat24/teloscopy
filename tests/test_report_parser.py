@@ -22,10 +22,14 @@ try:
     from teloscopy.webapp.report_parser import (
         BLOOD_ALIAS_MAP,
         URINE_ALIAS_MAP,
+        _identify_columns,
         _normalize_name,
+        _parse_structured_tables,
         _resolve_alias,
         compute_extraction_confidence,
         detect_file_type,
+        extract_and_parse,
+        extract_tables_from_pdf,
         extract_text,
         parse_lab_report,
     )
@@ -636,3 +640,263 @@ class TestAmbiguousBareNames:
         blood, urine, abdomen = parse_lab_report(text)
         assert blood.get("total_protein") == 7.2
         assert urine.get("protein") == 0.5
+
+
+# ---------------------------------------------------------------------------
+# _identify_columns — table column identification
+# ---------------------------------------------------------------------------
+
+
+class TestIdentifyColumns:
+    """Tests for the table column identification heuristic."""
+
+    def test_standard_indian_lab_header(self):
+        """Common Indian lab report header: Test Name | Result | Unit | Reference Range."""
+        header = ["Test Name", "Result", "Unit", "Reference Range"]
+        name_col, value_col, unit_col, ref_col = _identify_columns(header)
+        assert name_col == 0
+        assert value_col == 1
+        assert unit_col == 2
+        assert ref_col == 3
+
+    def test_keyword_variations(self):
+        """Alternative header keywords should still be recognized."""
+        header = ["Investigation", "Observed Value", "Measure", "Normal Range"]
+        name_col, value_col, unit_col, ref_col = _identify_columns(header)
+        assert name_col == 0
+        assert value_col == 1
+        assert unit_col == 2
+        assert ref_col == 3
+
+    def test_partial_header(self):
+        """When only some columns match, others should be None."""
+        header = ["Parameter", "Value"]
+        name_col, value_col, unit_col, ref_col = _identify_columns(header)
+        assert name_col == 0
+        assert value_col == 1
+        assert unit_col is None
+        assert ref_col is None
+
+    def test_positional_fallback(self):
+        """Unknown headers should fall back to col 0 = name, col 1 = value."""
+        header = ["Col A", "Col B", "Col C"]
+        name_col, value_col, unit_col, ref_col = _identify_columns(header)
+        assert name_col == 0
+        assert value_col == 1
+
+    def test_single_column(self):
+        """Single-column tables cannot have name + value."""
+        header = ["Only Column"]
+        name_col, value_col, _, _ = _identify_columns(header)
+        assert name_col is None or value_col is None
+
+    def test_empty_cells_in_header(self):
+        """None/empty cells should be skipped gracefully."""
+        header = [None, "Test Name", "", "Result", "Unit"]
+        name_col, value_col, unit_col, _ = _identify_columns(header)
+        assert name_col == 1
+        assert value_col == 3
+        assert unit_col == 4
+
+    def test_bio_ref_range(self):
+        """'Biological Ref. Range' is a common variant in Indian reports."""
+        header = ["Test", "Value", "Unit", "Biological Ref. Range"]
+        _, _, _, ref_col = _identify_columns(header)
+        assert ref_col == 3
+
+
+# ---------------------------------------------------------------------------
+# _parse_structured_tables — structured table parsing
+# ---------------------------------------------------------------------------
+
+
+class TestParseStructuredTables:
+    """Tests for parsing structured table data into name-value pairs."""
+
+    def test_basic_table(self):
+        """Standard lab table with header row + data rows."""
+        table = [
+            ["Test Name", "Result", "Unit", "Reference Range"],
+            ["Hemoglobin", "14.5", "g/dL", "12.0-17.5"],
+            ["RBC Count", "5.2", "M/mcL", "4.5-5.5"],
+            ["WBC Count", "7500", "cells/mcL", "4000-11000"],
+        ]
+        results = _parse_structured_tables([table])
+        assert len(results) == 3
+        names = {r[0] for r in results}
+        assert "Hemoglobin" in names
+        assert "RBC Count" in names
+        assert "WBC Count" in names
+        # Check values
+        values = {r[0]: r[1] for r in results}
+        assert values["Hemoglobin"] == 14.5
+        assert values["RBC Count"] == 5.2
+        assert values["WBC Count"] == 7500.0
+
+    def test_value_with_flag(self):
+        """Values like '14.5 H' (high flag) should still extract the number."""
+        table = [
+            ["Test", "Result"],
+            ["Hemoglobin", "14.5 H"],
+            ["Glucose", "* 250"],
+        ]
+        results = _parse_structured_tables([table])
+        values = {r[0]: r[1] for r in results}
+        assert values["Hemoglobin"] == 14.5
+        assert values["Glucose"] == 250.0
+
+    def test_empty_cells_skipped(self):
+        """Rows with None/empty name or value cells should be skipped."""
+        table = [
+            ["Test", "Result"],
+            ["Hemoglobin", "14.5"],
+            [None, "12.0"],       # No name
+            ["RBC Count", None],  # No value
+            ["", "5.0"],          # Empty name
+        ]
+        results = _parse_structured_tables([table])
+        assert len(results) == 1
+        assert results[0][0] == "Hemoglobin"
+
+    def test_multiple_tables(self):
+        """Multiple tables should all be parsed."""
+        table1 = [
+            ["Test", "Result"],
+            ["Hemoglobin", "14.5"],
+        ]
+        table2 = [
+            ["Parameter", "Value"],
+            ["TSH", "2.5"],
+        ]
+        results = _parse_structured_tables([table1, table2])
+        assert len(results) == 2
+        names = {r[0] for r in results}
+        assert "Hemoglobin" in names
+        assert "TSH" in names
+
+    def test_no_header_numeric_first_row(self):
+        """If the first row has a numeric value col, treat it as data."""
+        table = [
+            ["Hemoglobin", "14.5"],
+            ["RBC Count", "5.2"],
+        ]
+        results = _parse_structured_tables([table])
+        assert len(results) == 2
+
+    def test_non_numeric_value_skipped(self):
+        """Non-numeric value cells should be skipped."""
+        table = [
+            ["Test", "Result"],
+            ["Hemoglobin", "Normal"],
+            ["TSH", "2.5"],
+        ]
+        results = _parse_structured_tables([table])
+        assert len(results) == 1
+        assert results[0][0] == "TSH"
+
+    def test_too_few_rows_skipped(self):
+        """Tables with fewer than 2 rows are skipped."""
+        table = [["Test", "Result"]]
+        results = _parse_structured_tables([table])
+        assert len(results) == 0
+
+    def test_empty_table_list(self):
+        """Empty table list returns empty results."""
+        results = _parse_structured_tables([])
+        assert len(results) == 0
+
+
+# ---------------------------------------------------------------------------
+# parse_lab_report — with structured tables
+# ---------------------------------------------------------------------------
+
+
+class TestParseLabReportWithTables:
+    """Tests for parse_lab_report when structured_tables are provided."""
+
+    def test_structured_tables_override_text(self):
+        """When structured tables provide a value, text-based parsing uses same value."""
+        text = "Hemoglobin: 14.5 g/dL\n"
+        tables = [[
+            ["Test Name", "Result", "Unit"],
+            ["Hemoglobin", "14.5", "g/dL"],
+            ["TSH", "2.5", "mIU/L"],
+        ]]
+        blood, urine, abdomen = parse_lab_report(text, structured_tables=tables)
+        assert blood.get("hemoglobin") == 14.5
+        assert blood.get("tsh") == 2.5
+
+    def test_tables_plus_text_combined(self):
+        """Structured tables + text should combine values from both sources."""
+        text = "Fasting Glucose: 98 mg/dL\nHbA1c: 5.6 %\n"
+        tables = [[
+            ["Test", "Result"],
+            ["Hemoglobin", "14.5"],
+            ["Total Cholesterol", "210"],
+        ]]
+        blood, urine, abdomen = parse_lab_report(text, structured_tables=tables)
+        # From tables
+        assert blood.get("hemoglobin") == 14.5
+        assert blood.get("total_cholesterol") == 210.0
+        # From text
+        assert blood.get("fasting_glucose") == 98.0
+        assert blood.get("hba1c") == 5.6
+
+    def test_table_value_wins_over_text_duplicate(self):
+        """Table pass runs first, so table value should win for duplicates."""
+        text = "Hemoglobin: 12.0 g/dL\n"
+        tables = [[
+            ["Test", "Result"],
+            ["Hemoglobin", "14.5"],
+        ]]
+        blood, urine, abdomen = parse_lab_report(text, structured_tables=tables)
+        assert blood["hemoglobin"] == 14.5  # Table wins (first pass)
+
+    def test_none_tables_backward_compatible(self):
+        """None structured_tables should work exactly like old behavior."""
+        text = "Hemoglobin: 14.5 g/dL\nTSH: 2.5 mIU/L"
+        blood, urine, abdomen = parse_lab_report(text, structured_tables=None)
+        assert blood.get("hemoglobin") == 14.5
+        assert blood.get("tsh") == 2.5
+
+    def test_indian_lab_table_format(self):
+        """Realistic Indian lab report table with all common columns."""
+        text = "COMPLETE BLOOD COUNT\n"
+        tables = [[
+            ["Investigation", "Observed Value", "Unit", "Biological Ref. Range"],
+            ["Haemoglobin", "13.8", "g/dL", "12.0-17.5"],
+            ["RBC Count", "4.9", "M/mcL", "4.5-5.5"],
+            ["WBC Count", "6800", "cells/mcL", "4000-11000"],
+            ["Platelet Count", "225000", "/mcL", "150000-400000"],
+            ["Hematocrit", "41.5", "%", "36-54"],
+        ]]
+        blood, urine, abdomen = parse_lab_report(text, structured_tables=tables)
+        assert blood.get("hemoglobin") == 13.8
+        assert blood.get("rbc_count") == 4.9
+        assert blood.get("wbc_count") == 6800.0
+        assert blood.get("platelet_count") == 225000.0
+        assert blood.get("hematocrit") == 41.5
+
+
+# ---------------------------------------------------------------------------
+# extract_and_parse — combined extraction + parsing
+# ---------------------------------------------------------------------------
+
+
+class TestExtractAndParse:
+    """Tests for the extract_and_parse convenience function."""
+
+    def test_text_file(self):
+        """Plain text should parse without table extraction."""
+        content = b"Hemoglobin: 14.5 g/dL\nTSH: 2.5 mIU/L\n"
+        blood, urine, abdomen, confidence = extract_and_parse(content, "report.txt")
+        assert blood.get("hemoglobin") == 14.5
+        assert blood.get("tsh") == 2.5
+        assert confidence > 0.0
+
+    def test_empty_file(self):
+        """Empty file should return empty results."""
+        blood, urine, abdomen, confidence = extract_and_parse(b"", "empty.txt")
+        assert blood == {}
+        assert urine == {}
+        assert confidence == 0.0

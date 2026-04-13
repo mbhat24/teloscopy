@@ -230,7 +230,9 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
         doc = fitz.open(stream=file_bytes, filetype="pdf")
         pages: list[str] = []
         for page in doc:
-            pages.append(page.get_text())
+            # sort=True reorders text blocks by visual reading order (top-to-
+            # bottom, left-to-right) so multi-column layouts don't interleave.
+            pages.append(page.get_text(sort=True))
         doc.close()
         text = "\n".join(pages)
         if text.strip():
@@ -308,6 +310,209 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
         "As a workaround, you can upload the scanned page as an image file "
         "(PNG/JPEG) or manually type your lab values into the form."
     )
+
+
+# ---------------------------------------------------------------------------
+# Structured table extraction from PDF
+# ---------------------------------------------------------------------------
+
+
+def extract_tables_from_pdf(file_bytes: bytes) -> list[list[list[str | None]]]:
+    """Extract structured tables from a PDF using dedicated table-detection APIs.
+
+    Tries PyMuPDF ``page.find_tables()`` first (no extra dependencies), then
+    falls back to pdfplumber ``page.extract_tables()``.
+
+    Parameters
+    ----------
+    file_bytes : bytes
+        Raw bytes of the PDF file.
+
+    Returns
+    -------
+    list[list[list[str | None]]]
+        A list of tables. Each table is a list of rows; each row is a list
+        of cell strings (or ``None`` for empty cells).
+    """
+    tables: list[list[list[str | None]]] = []
+
+    # Strategy 1: PyMuPDF find_tables (available since PyMuPDF 1.23.0)
+    try:
+        import fitz
+
+        doc = fitz.open(stream=file_bytes, filetype="pdf")
+        for page in doc:
+            try:
+                found = page.find_tables()
+                for tbl in found.tables:
+                    rows = tbl.extract()
+                    if rows and len(rows) >= 2:  # need header + at least 1 data row
+                        tables.append(rows)
+            except Exception as exc:
+                logger.debug("find_tables failed on page: %s", exc)
+        doc.close()
+        if tables:
+            logger.info("Extracted %d tables via PyMuPDF find_tables", len(tables))
+            return tables
+    except (ImportError, AttributeError):
+        logger.debug("PyMuPDF find_tables not available")
+    except Exception as exc:
+        logger.warning("PyMuPDF table extraction failed: %s", exc)
+
+    # Strategy 2: pdfplumber extract_tables
+    try:
+        import io
+        import pdfplumber
+
+        with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
+            for page in pdf.pages:
+                try:
+                    page_tables = page.extract_tables()
+                    for tbl in (page_tables or []):
+                        if tbl and len(tbl) >= 2:
+                            tables.append(tbl)
+                except Exception as exc:
+                    logger.debug("pdfplumber extract_tables failed on page: %s", exc)
+        if tables:
+            logger.info("Extracted %d tables via pdfplumber", len(tables))
+            return tables
+    except ImportError:
+        logger.debug("pdfplumber not available for table extraction")
+    except Exception as exc:
+        logger.warning("pdfplumber table extraction failed: %s", exc)
+
+    return tables
+
+
+# ---------------------------------------------------------------------------
+# Parse structured table data into lab values
+# ---------------------------------------------------------------------------
+
+# Column header patterns for identifying table columns
+_NAME_COL_PATTERNS = re.compile(
+    r"(?:test|parameter|investigation|analyte|component|biomarker|name)",
+    re.IGNORECASE,
+)
+_VALUE_COL_PATTERNS = re.compile(
+    r"(?:result|value|observed|reading|finding|report)",
+    re.IGNORECASE,
+)
+_UNIT_COL_PATTERNS = re.compile(r"(?:unit|measure)", re.IGNORECASE)
+_REF_COL_PATTERNS = re.compile(
+    r"(?:reference|ref|normal|range|biological|bio\.?\s*ref)",
+    re.IGNORECASE,
+)
+
+
+def _identify_columns(
+    header_row: list[str | None],
+) -> tuple[int | None, int | None, int | None, int | None]:
+    """Identify which column indices correspond to name, value, unit, reference.
+
+    Uses both keyword matching on header text and positional heuristics.
+    Indian lab reports commonly have columns ordered as:
+    Test Name | Result/Value | Unit | Reference Range (| Method)
+
+    Returns
+    -------
+    tuple of (name_col, value_col, unit_col, ref_col)
+        Column indices, or None if not identified.
+    """
+    name_col = value_col = unit_col = ref_col = None
+    cells = [str(c).strip() if c else "" for c in header_row]
+
+    for i, cell in enumerate(cells):
+        if not cell:
+            continue
+        if _NAME_COL_PATTERNS.search(cell) and name_col is None:
+            name_col = i
+        elif _VALUE_COL_PATTERNS.search(cell) and value_col is None:
+            value_col = i
+        elif _UNIT_COL_PATTERNS.search(cell) and unit_col is None:
+            unit_col = i
+        elif _REF_COL_PATTERNS.search(cell) and ref_col is None:
+            ref_col = i
+
+    # Positional fallback: if we couldn't identify columns by header text
+    # but have at least 2 columns, assume col 0 = name, col 1 = value.
+    ncols = len(cells)
+    if name_col is None and ncols >= 2:
+        name_col = 0
+    if value_col is None and ncols >= 2:
+        # Pick the first non-name column that contains a number in any data row
+        value_col = 1
+
+    return name_col, value_col, unit_col, ref_col
+
+
+def _parse_structured_tables(
+    tables: list[list[list[str | None]]],
+    in_urine_section_fn: Any = None,
+) -> list[tuple[str, float, int]]:
+    """Parse structured table data into (name, value, position) tuples.
+
+    Parameters
+    ----------
+    tables : list of tables (each table = list of rows, each row = list of cells)
+    in_urine_section_fn : callable, optional
+        Not used here (urine detection happens at the recording stage).
+
+    Returns
+    -------
+    list[tuple[str, float, int]]
+        List of (parameter_name, numeric_value, pseudo_position) tuples.
+    """
+    results: list[tuple[str, float, int]] = []
+    pos = 0
+
+    for table in tables:
+        if not table or len(table) < 2:
+            continue
+
+        # Try to identify columns from the first row (header)
+        name_col, value_col, unit_col, ref_col = _identify_columns(table[0])
+
+        if name_col is None or value_col is None:
+            continue
+
+        # Check if the first row is actually a header (no numeric value in the
+        # value column) or if it's a data row
+        first_val = str(table[0][value_col]).strip() if table[0][value_col] else ""
+        start_row = 0 if re.match(r"^[-+]?\d+(?:\.\d+)?$", first_val) else 1
+
+        for row in table[start_row:]:
+            if not row or len(row) <= max(name_col, value_col):
+                continue
+
+            name_cell = row[name_col]
+            value_cell = row[value_col]
+
+            if not name_cell or not value_cell:
+                continue
+
+            name = str(name_cell).strip()
+            val_str = str(value_cell).strip()
+
+            # Skip sub-header rows (all-caps section titles, empty values, etc.)
+            if not name or not val_str:
+                continue
+
+            # Extract numeric value from the cell (handle cases like "14.5 H" or
+            # "* 14.5" where flags are embedded in the value column)
+            num_match = re.search(r"[-+]?\d+(?:\.\d+)?", val_str)
+            if not num_match:
+                continue
+
+            try:
+                value = float(num_match.group())
+            except (ValueError, TypeError):
+                continue
+
+            results.append((name, value, pos))
+            pos += 100  # pseudo-positions spaced apart
+
+    logger.debug("Structured table parsing found %d name-value pairs", len(results))
+    return results
 
 
 # ---------------------------------------------------------------------------
@@ -413,10 +618,14 @@ def _resolve_alias(
     return None
 
 
-def parse_lab_report(text: str) -> tuple[dict[str, float], dict[str, float], str]:
+def parse_lab_report(
+    text: str,
+    structured_tables: list[list[list[str | None]]] | None = None,
+) -> tuple[dict[str, float], dict[str, float], str]:
     """Parse lab report text and extract structured lab values.
 
     Handles multiple common formats:
+    - Structured tables extracted from PDF (highest confidence)
     - Colon-separated: "Hemoglobin: 14.5 g/dL"
     - Space-separated: "Hemoglobin     14.5    g/dL"
     - Table format:    "Hemoglobin | 14.5 | 13-17 | g/dL"
@@ -428,6 +637,9 @@ def parse_lab_report(text: str) -> tuple[dict[str, float], dict[str, float], str
     ----------
     text : str
         Raw text extracted from a lab report (PDF, OCR, or manual paste).
+    structured_tables : list, optional
+        Pre-extracted table data from PDF table detection APIs.
+        Each table is a list of rows, each row a list of cell strings.
 
     Returns
     -------
@@ -484,6 +696,13 @@ def parse_lab_report(text: str) -> tuple[dict[str, float], dict[str, float], str
         else:
             urine_tests[field] = value
         return True
+
+    # Pass 0: Structured table data (highest confidence — comes from PDF
+    # table-detection APIs like PyMuPDF find_tables or pdfplumber)
+    if structured_tables:
+        table_pairs = _parse_structured_tables(structured_tables)
+        for name, value, pos in table_pairs:
+            _record_value(name, value, pos)
 
     # Pass 1: Table format (pipe-separated)
     for m in _TABLE_PATTERN.finditer(text):
@@ -680,3 +899,44 @@ def extract_text(file_bytes: bytes, filename: str) -> str:
             return file_bytes.decode("utf-8")
         except UnicodeDecodeError:
             return ""
+
+
+def extract_and_parse(
+    file_bytes: bytes,
+    filename: str,
+) -> tuple[dict[str, float], dict[str, float], str, float]:
+    """Extract text + tables from a file and parse lab values in one step.
+
+    This is the recommended entry point for PDF lab reports — it combines
+    text extraction, structured table extraction, lab-value parsing, and
+    confidence scoring into a single call.
+
+    Parameters
+    ----------
+    file_bytes : bytes
+        Raw file content.
+    filename : str
+        Original filename.
+
+    Returns
+    -------
+    blood_tests : dict[str, float]
+    urine_tests : dict[str, float]
+    abdomen_text : str
+    confidence : float
+    """
+    file_type = detect_file_type(file_bytes, filename)
+
+    text = extract_text(file_bytes, filename)
+
+    # For PDFs, also try structured table extraction
+    structured_tables: list[list[list[str | None]]] | None = None
+    if file_type == "pdf":
+        try:
+            structured_tables = extract_tables_from_pdf(file_bytes) or None
+        except Exception as exc:
+            logger.warning("Table extraction failed, continuing with text only: %s", exc)
+
+    blood, urine, abdomen = parse_lab_report(text, structured_tables=structured_tables)
+    confidence = compute_extraction_confidence(blood, urine, abdomen, text)
+    return blood, urine, abdomen, confidence

@@ -59,6 +59,7 @@ from teloscopy.webapp.health_checkup import HealthCheckupAnalyzer
 from teloscopy.webapp.report_parser import (
     compute_extraction_confidence,
     detect_file_type,
+    extract_tables_from_pdf,
     extract_text,
     parse_lab_report,
 )
@@ -2631,8 +2632,15 @@ async def parse_report_preview(file: UploadFile = File(...)) -> ReportParsePrevi
         )
 
     # Parse lab values from extracted text
+    # For PDFs, also extract structured tables for higher-confidence parsing
+    structured_tables = None
+    if file_type == "pdf":
+        try:
+            structured_tables = await asyncio.to_thread(extract_tables_from_pdf, contents) or None
+        except Exception:
+            pass  # Fall back to text-only parsing
     blood_tests, urine_tests, abdomen_text = await asyncio.to_thread(
-        parse_lab_report, text
+        parse_lab_report, text, structured_tables
     )
 
     # Compute confidence
@@ -2748,8 +2756,14 @@ async def health_checkup_upload(
             detail=detail,
         )
 
+    structured_tables = None
+    if file_type == "pdf":
+        try:
+            structured_tables = await asyncio.to_thread(extract_tables_from_pdf, contents) or None
+        except Exception:
+            pass
     blood_dict, urine_dict, abdomen_text = await asyncio.to_thread(
-        parse_lab_report, text
+        parse_lab_report, text, structured_tables
     )
 
     if not blood_dict and not urine_dict:
