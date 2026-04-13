@@ -89,13 +89,25 @@ for _alias, _field in BLOOD_ALIAS_MAP.items():
 # Matches a numeric value (integer or float, optionally negative)
 _NUM_PATTERN = r"[-+]?\d+(?:\.\d+)?"
 
+# Reference range pattern — matches trailing "[12-17]", "(12.0-17.5)",
+# "12-17", "< 200", "> 5.0" etc. that often follow units in Indian lab reports.
+_REF_RANGE_SUFFIX = (
+    r"(?:"
+    r"[ \t]*[\[\(][\d\.\-<> /,]+[\]\)]"   # e.g. [12-17], (12.0-17.5), [<200]
+    r"|[ \t]+\d+\.?\d*[ \t]*[\-–][ \t]*\d+\.?\d*"  # e.g. 12-17 or 12.0 - 17.5
+    r"|[ \t]+[<>]=?[ \t]*\d+\.?\d*"        # e.g. <200 or >= 5.0
+    r")*"
+)
+
 # Pattern: "Parameter Name : 14.5 g/dL" or "Parameter Name: 14.5"
+# Also handles: "Parameter Name: 14.5 g/dL [12.0-17.5]" or "(12-17)"
 _COLON_PATTERN = re.compile(
     r"^[ \t\-\*]*"                         # leading whitespace/bullets (no newline)
     r"(?P<name>[A-Za-z0-9 \t\-/\(\)\.\,%&']+?)"  # parameter name (no newline)
     r"[ \t]*[:=][ \t]*"                    # separator (colon or equals)
     r"(?P<value>" + _NUM_PATTERN + r")"    # numeric value
-    r"(?:[ \t]*(?P<unit>[A-Za-z/%µ\.\ \t\-\d]+))?"  # optional unit
+    r"(?:[ \t]*(?P<unit>[A-Za-z/%µ\.]+(?:[/ \t][A-Za-z]+)*))??"  # optional unit (lazy, no digits/brackets)
+    + _REF_RANGE_SUFFIX +                  # optional trailing reference range
     r"[ \t]*$",
     re.MULTILINE,
 )
@@ -107,6 +119,7 @@ _SPACE_PATTERN = re.compile(
     r"[ \t]{2,}"                            # at least 2 spaces/tabs separating
     r"(?P<value>" + _NUM_PATTERN + r")"
     r"(?:[ \t]+(?P<unit>[A-Za-z/%µ\.\-]+))?"
+    + _REF_RANGE_SUFFIX +                  # optional trailing reference range
     r"",
     re.MULTILINE,
 )
@@ -117,6 +130,16 @@ _TABLE_PATTERN = re.compile(
     r"[ \t]*\|[ \t]*"
     r"(?P<value>" + _NUM_PATTERN + r")"
     r"(?:[ \t]*\|[^|\n]*)*",               # remaining columns (ref range, unit) — stop at newline
+    re.MULTILINE,
+)
+
+# Pattern: CSV format "Parameter,14.5,g/dL,12-17"
+_CSV_PATTERN = re.compile(
+    r"^[ \t]*"
+    r"(?P<name>[A-Za-z][A-Za-z0-9 \t\-/\(\)\.\,%&']+?)"
+    r"[ \t]*,[ \t]*"
+    r"(?P<value>" + _NUM_PATTERN + r")"
+    r"(?:[ \t]*,[^\n]*)?",                  # remaining CSV columns (unit, ref range)
     re.MULTILINE,
 )
 
@@ -139,6 +162,45 @@ _URINE_SECTION_MARKERS = re.compile(
 # ---------------------------------------------------------------------------
 
 
+def _ocr_pdf_pages(file_bytes: bytes) -> str:
+    """Render PDF pages as images and OCR them (fallback for scanned PDFs).
+
+    Requires PyMuPDF (fitz) for page rendering and pytesseract + Pillow
+    for OCR.  Returns empty string if any dependency is missing.
+    """
+    try:
+        import fitz  # PyMuPDF for page rendering
+        import pytesseract
+        from PIL import Image
+    except ImportError:
+        logger.debug("OCR fallback unavailable: need fitz + pytesseract + Pillow")
+        return ""
+
+    try:
+        import io
+
+        doc = fitz.open(stream=file_bytes, filetype="pdf")
+        pages: list[str] = []
+        for page_num, page in enumerate(doc):
+            # Render page at 300 DPI for better OCR accuracy
+            mat = fitz.Matrix(300 / 72, 300 / 72)
+            pix = page.get_pixmap(matrix=mat)
+            img_bytes = pix.tobytes("png")
+            image = Image.open(io.BytesIO(img_bytes))
+            page_text = pytesseract.image_to_string(image)
+            if page_text.strip():
+                pages.append(page_text)
+            logger.debug("OCR page %d: %d chars", page_num + 1, len(page_text))
+        doc.close()
+        text = "\n".join(pages)
+        if text.strip():
+            logger.info("PDF OCR extracted via PyMuPDF + pytesseract (%d chars)", len(text))
+        return text
+    except Exception as exc:
+        logger.warning("PDF OCR fallback failed: %s", exc)
+        return ""
+
+
 def extract_text_from_pdf(file_bytes: bytes) -> str:
     """Extract text content from a PDF file.
 
@@ -146,6 +208,7 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
     1. PyMuPDF (fitz) — fastest, most reliable
     2. pdfplumber — good table extraction
     3. PyPDF2 / pypdf — basic text extraction
+    4. OCR fallback — render pages as images and run pytesseract
 
     Parameters
     ----------
@@ -157,10 +220,13 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
     str
         Extracted text from all pages.
     """
+    has_pdf_lib = False
+
     # Try PyMuPDF first
     try:
         import fitz  # PyMuPDF
 
+        has_pdf_lib = True
         doc = fitz.open(stream=file_bytes, filetype="pdf")
         pages: list[str] = []
         for page in doc:
@@ -181,6 +247,7 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
 
         import pdfplumber
 
+        has_pdf_lib = True
         pages = []
         with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
             for page in pdf.pages:
@@ -205,6 +272,7 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
         except ImportError:
             from PyPDF2 import PdfReader  # type: ignore[no-redef]
 
+        has_pdf_lib = True
         reader = PdfReader(io.BytesIO(file_bytes))
         pages = []
         for page in reader.pages:
@@ -220,10 +288,25 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
     except Exception as exc:
         logger.warning("pypdf extraction failed: %s", exc)
 
+    # OCR fallback — render PDF pages as images and run pytesseract.
+    # This handles scanned PDFs with no text layer.
+    text = _ocr_pdf_pages(file_bytes)
+    if text.strip():
+        return text
+
+    if not has_pdf_lib:
+        raise RuntimeError(
+            "No PDF parsing library is installed on the server. "
+            "The administrator needs to install PyMuPDF, pdfplumber, or pypdf. "
+            "As a workaround, you can copy-paste your lab report text into the manual entry form."
+        )
+
+    # All methods returned empty — likely a scanned PDF without OCR support
     raise RuntimeError(
-        "No PDF parsing library is installed on the server. "
-        "The administrator needs to install PyMuPDF, pdfplumber, or pypdf. "
-        "As a workaround, you can copy-paste your lab report text into the manual entry form."
+        "The PDF appears to be a scanned image without a text layer. "
+        "OCR libraries (pytesseract, Pillow) are not available to process it. "
+        "As a workaround, you can upload the scanned page as an image file "
+        "(PNG/JPEG) or manually type your lab values into the form."
     )
 
 
@@ -337,6 +420,8 @@ def parse_lab_report(text: str) -> tuple[dict[str, float], dict[str, float], str
     - Colon-separated: "Hemoglobin: 14.5 g/dL"
     - Space-separated: "Hemoglobin     14.5    g/dL"
     - Table format:    "Hemoglobin | 14.5 | 13-17 | g/dL"
+    - CSV format:      "Hemoglobin,14.5,g/dL,13-17"
+    - Reference ranges: "Hemoglobin: 14.5 g/dL [12.0-17.5]"
     - Mixed formats within the same report
 
     Parameters
@@ -418,7 +503,16 @@ def parse_lab_report(text: str) -> tuple[dict[str, float], dict[str, float], str
             continue
         _record_value(name, value, m.start())
 
-    # Pass 3: Space-separated format (more greedy, use last)
+    # Pass 3: CSV format (comma-separated)
+    for m in _CSV_PATTERN.finditer(text):
+        name = m.group("name").strip()
+        try:
+            value = float(m.group("value"))
+        except (ValueError, TypeError):
+            continue
+        _record_value(name, value, m.start())
+
+    # Pass 4: Space-separated format (more greedy, use last)
     for m in _SPACE_PATTERN.finditer(text):
         name = m.group("name").strip()
         try:

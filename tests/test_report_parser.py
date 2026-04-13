@@ -516,3 +516,123 @@ class TestRealisticReport:
         # Confidence should be high for a comprehensive report
         conf = compute_extraction_confidence(blood, urine, abdomen, text)
         assert conf > 0.3
+
+
+# ---------------------------------------------------------------------------
+# parse_lab_report — reference ranges in brackets/parentheses
+# ---------------------------------------------------------------------------
+
+
+class TestParseReferenceRanges:
+    """Tests for handling reference ranges after values."""
+
+    def test_square_brackets(self):
+        """Values with [ref-range] after unit should still parse."""
+        text = "Hemoglobin: 14.5 g/dL [12.0-17.5]\nRBC Count: 5.2 M/mcL [4.5-5.5]"
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("hemoglobin") == 14.5
+        assert blood.get("rbc_count") == 5.2
+
+    def test_parentheses(self):
+        """Values with (ref-range) after unit should still parse."""
+        text = "Fasting Glucose: 98 mg/dL (70-110)\nHbA1c: 5.6 % (4.0-5.6)"
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("fasting_glucose") == 98.0
+        assert blood.get("hba1c") == 5.6
+
+    def test_bracket_with_less_than(self):
+        """Reference ranges with < or > inside brackets."""
+        text = "Total Cholesterol: 210 mg/dL [<200]\nLDL Cholesterol: 130 mg/dL [<100]"
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("total_cholesterol") == 210.0
+        assert blood.get("ldl_cholesterol") == 130.0
+
+    def test_value_without_ref_still_works(self):
+        """Values without reference ranges should still parse (no regression)."""
+        text = "Hemoglobin: 14.5 g/dL\nTSH: 2.5 mIU/L"
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("hemoglobin") == 14.5
+        assert blood.get("tsh") == 2.5
+
+
+# ---------------------------------------------------------------------------
+# parse_lab_report — CSV format
+# ---------------------------------------------------------------------------
+
+
+class TestParseCsvFormat:
+    """Tests for parsing CSV (comma-separated) lab reports."""
+
+    def test_csv_basic(self):
+        text = "Hemoglobin,14.5,g/dL,12-17\nRBC Count,5.2,M/mcL,4.5-5.5"
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("hemoglobin") == 14.5
+        assert blood.get("rbc_count") == 5.2
+
+    def test_csv_with_unit(self):
+        text = "TSH,3.2,mIU/L,0.4-4.0\nFree T4,1.2,ng/dL,0.8-1.8"
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("tsh") == 3.2
+        assert blood.get("free_t4") == 1.2
+
+    def test_csv_minimal(self):
+        """CSV with just name and value."""
+        text = "Hemoglobin,14.5\nAlbumin,4.1"
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("hemoglobin") == 14.5
+        assert blood.get("albumin") == 4.1
+
+
+# ---------------------------------------------------------------------------
+# parse_lab_report — ambiguous bare names
+# ---------------------------------------------------------------------------
+
+
+class TestAmbiguousBareNames:
+    """Tests for bare names (glucose, bilirubin, protein) panel resolution."""
+
+    def test_bare_glucose_defaults_to_blood(self):
+        """Bare 'Glucose' outside urine section → blood fasting_glucose."""
+        text = "Glucose: 95 mg/dL"
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("fasting_glucose") == 95.0
+        assert urine.get("glucose") is None
+
+    def test_bare_bilirubin_defaults_to_blood(self):
+        """Bare 'Bilirubin' outside urine section → blood total_bilirubin."""
+        text = "Bilirubin: 0.8 mg/dL"
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("total_bilirubin") == 0.8
+        assert urine.get("bilirubin") is None
+
+    def test_bare_protein_defaults_to_blood(self):
+        """Bare 'Protein' outside urine section → blood total_protein."""
+        text = "Protein: 7.2 g/dL"
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("total_protein") == 7.2
+        assert urine.get("protein") is None
+
+    def test_bare_glucose_in_urine_section(self):
+        """Bare 'Glucose' inside urine section → urine glucose."""
+        text = (
+            "Hemoglobin: 14.0\n"
+            "\n"
+            "Urine Routine Examination\n"
+            "Glucose: 0\n"
+            "pH: 6.0\n"
+        )
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("hemoglobin") == 14.0
+        assert urine.get("glucose") == 0.0
+
+    def test_bare_protein_in_urine_section(self):
+        """Bare 'Protein' inside urine section → urine protein."""
+        text = (
+            "Total Protein: 7.2 g/dL\n"
+            "\n"
+            "Urine Routine Examination\n"
+            "Protein: 0.5\n"
+        )
+        blood, urine, abdomen = parse_lab_report(text)
+        assert blood.get("total_protein") == 7.2
+        assert urine.get("protein") == 0.5
